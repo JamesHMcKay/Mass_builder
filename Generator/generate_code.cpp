@@ -277,7 +277,23 @@ int main (int argc, char *argv[])
   
   
   
+  
   string c_file_diagrams = "output/diagrams.txt";
+  if (argc==1)
+  {
+  
+  cout << "using all available diagrams"<< endl;
+  }
+  else {
+  
+  c_file_diagrams = argv[1];
+  
+  }
+  
+  
+  
+  
+  
   const char *file_diagrams = c_file_diagrams.c_str();
   
   
@@ -604,7 +620,7 @@ main_output << "void Self_energy::init_tsil(Data data)\n"
 << "}\n"
 << "\n"
 << "\n"
-<< "void Self_energy::run_tsil (Data data) \n"
+<< "void Self_energy::run_tsil (Data &data) \n"
 << "{\n"
 << "TSIL_REAL M=data.M_chi;\n"
 << "p=M;\n"
@@ -636,6 +652,9 @@ for (int i=0;i<particle_names_short.size();i++)
   }
   main_output << ";" << endl;
   main_output << "cout << \"Self energy of particle "<< particle_name_tmp << " = \" << SE_"<<particle_names_short[i]<<" << endl;"<<endl;
+  
+  main_output << "data.SE_"<< (i+1) << " = " << "real(SE_"<<particle_names_short[i]<<");"<<endl;
+  
 }
 
   main_output << "}" << endl;

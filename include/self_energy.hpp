@@ -30,7 +30,7 @@ class Self_energy
    } //constructor
   
   
-   void run_tsil(Data data);
+   void run_tsil(Data &data);
   
    void init_tsil(Data data);
   

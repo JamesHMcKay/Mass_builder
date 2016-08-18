@@ -37,4 +37,7 @@ Self_energy se(data);
 
 se.run_tsil(data);
 
+
+cout << "SE_1 - SE_2 = " << data.SE_1 - data.SE_2 << endl;
+
 }

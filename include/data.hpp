@@ -21,6 +21,26 @@ struct Data
 {
   public:
   
+  /*  PLANS
+  
+  There is lots that can be done here, mainly through abstration of particle names and
+  how this will interact with the generator codes.
+  
+  Make all particle arbitrary, and refer to them with strings, or tags
+  these should correspond to the same tags as used in the generator
+  
+  for example, we have 10 free particles, p1 - p10, these are always arbitrary
+  and can get assigned on the creation of the code.  Need to get these out of the
+  FeynArts model file perhaps.  So every entry in this file needs to have a tag
+  and a mass value.
+  
+  Need to have a clear system for defining which mass is being updated by
+  the self energy calculation as well
+  
+  
+  */
+  
+  
   
   // default SM parameters
   // masses
@@ -55,8 +75,6 @@ struct Data
   double M_chin,M_chip,M_chipp; // place holder for neutral, charged and doubly charged components of Chi
   
   
- // double cw2=0.767595;//0.77; // FlexibleSUSY value
-//  double sw2=1.0-cw2;
   
   double sw2=(1-pow(M_w/M_z,2));//0.23126;
   double cw2=1.0-sw2;
@@ -90,8 +108,8 @@ struct Data
   
   //
   
-  double particle_1_SE;
-  double particle_2_SE;
+  double SE_1;
+  double SE_2;
   
   
   
