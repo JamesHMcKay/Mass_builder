@@ -21,7 +21,7 @@
 using namespace std;
 
 
-void draw_all_diagrams(std::string particle)
+void draw_all_diagrams(std::string particle, string model)
 {
 
   bool verbose=1;
@@ -40,7 +40,8 @@ void draw_all_diagrams(std::string particle)
   
   
   
-  
+  if (particle == "chi0")particle = "F[6]";
+  if (particle == "chi1")particle = "F[5]";
   
   ofstream myfile;
   myfile.open ("make_figures.m");
@@ -61,11 +62,11 @@ void draw_all_diagrams(std::string particle)
   <<"SetOptions[DiracSlash, Dimension -> D, FeynCalcInternal -> True];\n"
   <<"SetOptions[DiracTrace, DiracTraceEvaluate -> True];\n"
   <<"$GenericMixing = True;\n"
-  <<" (*MDM_tripletEWSB*)\n"
   <<"t12 = CreateTopologies[2, 1 -> 1, ExcludeTopologies -> Internal];\n"
-  <<"chi0 = InsertFields[t12, {F[6]} -> {F[6]},InsertionLevel -> {Particles}, GenericModel -> Lorentz,Model -> \"MDM_tripletEWSB\"];\n"
-  <<"chi1 = InsertFields[t12, {F[5]} -> {F[5]},InsertionLevel -> {Particles}, GenericModel -> Lorentz,Model -> \"MDM_tripletEWSB\"];\n"
-  <<"Export[\""<<s_cwd<<"/FA_diagrams/all_diagrams_"<<particle<<".pdf\",Paint["<<particle<<"]];\n"  // print the FA diagram to pdf in local directory
+  <<"alldiags = InsertFields[t12, {"<<particle<<"} -> {"<<particle<<"},InsertionLevel -> {Particles}, GenericModel -> Lorentz,Model -> \""<<model<<"\"];\n"
+  //<<"chi0 = InsertFields[t12, {F[6]} -> {F[6]},InsertionLevel -> {Particles}, GenericModel -> Lorentz,Model -> \"MDM_tripletEWSB\"];\n"
+  //<<"chi1 = InsertFields[t12, {F[5]} -> {F[5]},InsertionLevel -> {Particles}, GenericModel -> Lorentz,Model -> \"MDM_tripletEWSB\"];\n"
+  <<"Export[\""<<s_cwd<<"/FA_diagrams/all_diagrams_"<<particle<<".pdf\",Paint[alldiags]];\n"  // print the FA diagram to pdf in local directory
   <<endl;
 
   #ifdef RUN_ALL
@@ -81,7 +82,7 @@ void draw_all_diagrams(std::string particle)
 
 
 
-void draw_diagrams(vector<std::string> particles, vector<std::string> diagrams, int nd)
+void draw_diagrams(vector<std::string> particles, vector<std::string> diagrams, int nd,string model)
 {
 
   bool verbose=1;
@@ -123,8 +124,8 @@ void draw_diagrams(vector<std::string> particles, vector<std::string> diagrams, 
   <<"$GenericMixing = True;\n"
   <<" (*MDM_tripletEWSB*)\n"
   <<"t12 = CreateTopologies[2, 1 -> 1, ExcludeTopologies -> Internal];\n"
-  <<"chi0 = InsertFields[t12, {F[6]} -> {F[6]},InsertionLevel -> {Particles}, GenericModel -> Lorentz,Model -> \"MDM_tripletEWSB\"];\n"
-  <<"chi1 = InsertFields[t12, {F[5]} -> {F[5]},InsertionLevel -> {Particles}, GenericModel -> Lorentz,Model -> \"MDM_tripletEWSB\"];\n"
+  //<<"chi0 = InsertFields[t12, {F[6]} -> {F[6]},InsertionLevel -> {Particles}, GenericModel -> Lorentz,Model -> \"MDM_tripletEWSB\"];\n"
+  //<<"chi1 = InsertFields[t12, {F[5]} -> {F[5]},InsertionLevel -> {Particles}, GenericModel -> Lorentz,Model -> \"MDM_tripletEWSB\"];\n"
   <<endl;
   
   
@@ -136,8 +137,9 @@ void draw_diagrams(vector<std::string> particles, vector<std::string> diagrams, 
   bool first = 1;
   for (int i=0;i<particle_names_short.size();i++)
   {
-  
   string particle_name_tmp = particle_names_short[i];
+  myfile<<particle_name_tmp<<" = InsertFields[t12, {"<<particle_name_tmp<<"} -> {"<<particle_name_tmp<<"},InsertionLevel -> {Particles}, GenericModel -> Lorentz,Model -> \""<<model<<"];"<<endl;
+  
   myfile<< "subdiags" << particle_name_tmp <<" =   DiagramExtract["<<particle_name_tmp;
   for (int d = 0; d<nd;d++)
   {
@@ -172,6 +174,7 @@ int main(int argc, char *argv[])
 {
 
 vector<std::string> particles, diagrams;
+string model;
 
 if (argc==1)
 {
@@ -193,7 +196,8 @@ if (option=="-f")
         if (!line.length() || line[0] == '#')
            continue;
         std::istringstream iss(line);
-        iss>> particles_in[i] >> diagrams_in[i];
+        if (i==0) iss >> model;
+        else iss>> particles_in[i] >> diagrams_in[i];
         i=i+1;
   }
 // run over all entries in the input file
@@ -207,14 +211,15 @@ cout << "drawing all diagrams specified in the input list" << endl;
   particles[k]=particles_in[k];
   diagrams[k]=diagrams_in[k];
   }
-  draw_diagrams(particles,diagrams,i);
+  draw_diagrams(particles,diagrams,i,model);
   
 
 }
 else if (option == "-a")
 {
-string particle;
-if (argc==3) {cout <<"drawing all diagrams for particle "<<argv[2]<<endl;;draw_all_diagrams(argv[2]);}
+//string particle;
+//string model;
+if (argc==4) {cout <<"drawing all diagrams for particle "<<argv[2]<<endl;;draw_all_diagrams(argv[2],argv[3]);}
 else {cout << "please specify a particle after -a to use this option"<< endl;}
 
 

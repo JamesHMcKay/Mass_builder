@@ -18,6 +18,8 @@ sed -i '' -e 's/TBI(4,Power(p,2),List(List(1,mz),List(1,mc)))/1.0L*Bcz/g' $FAout
 
 sed -i '' -e 's/TBI(4,Power(p,2),List(List(1,mw),List(1,mc)))/1.0L*Bcw/g' $FAoutput
 
+sed -i '' -e 's/TBI(4,Power(p,2),List(List(1,ms),List(1,ms)))/1.0L*Bss/g' $FAoutput
+
 sed -i '' -e 's/TAI(4,0,List(List(1,mw)))/1.0L*Aw/g' $FAoutput
 
 sed -i '' -e 's/TAI(4,0,List(List(1,mz)))/1.0L*Az/g' $FAoutput
@@ -25,6 +27,8 @@ sed -i '' -e 's/TAI(4,0,List(List(1,mz)))/1.0L*Az/g' $FAoutput
 sed -i '' -e 's/TAI(4,0,List(List(1,mc)))/1.0L*Ac/g' $FAoutput
 
 sed -i '' -e 's/TAI(4,0,List(List(1,ma)))/1.0L*Aa/g' $FAoutput
+
+sed -i '' -e 's/TAI(4,0,List(List(1,ms)))/1.0L*As/g' $FAoutput
 
 
 

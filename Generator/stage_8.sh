@@ -3,9 +3,12 @@ cd /Users/jamesmckay/Documents/Programs/Mass_builder/Generator
 
 
 tag=$(head tag.txt)
+model=$(head model.txt)
+if [ ! -e "models/"$model"/output/" ]; then
+  mkdir models/"$model"/output
+fi
 
-cp names_updated.txt output/integrals.txt
-cp output_tidy.txt output/coeff_integrals_"$tag".txt
+cp output_tidy.txt models/"$model"/output/coeff_integrals_"$tag".txt
 
 
 
@@ -18,6 +21,3 @@ sed -n '/= 0 ;/!p' output.txt > output_tidy2.txt
 cut -d' ' -f3 output_tidy2.txt >> names_updated_temp.txt
 
 cut -c2-20 names_updated_temp.txt >> names_updated.txt
-
-
-cp names_updated.txt output/products.txt

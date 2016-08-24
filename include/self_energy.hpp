@@ -13,7 +13,10 @@
 #include <fstream>
 
 
+
+
 using namespace std;
+
 typedef complex<double> dcomp;
 
 class Self_energy
@@ -37,5 +40,6 @@ class Self_energy
   
    
 };
+//}
 
 #endif
