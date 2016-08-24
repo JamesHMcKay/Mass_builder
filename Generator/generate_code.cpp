@@ -500,6 +500,7 @@ int main (int argc, char *argv[])
   << "TSIL_REAL Cos(TSIL_REAL a){return cos(a);}\n"
   << "int          init(Data data);\n"
   << "TSIL_COMPLEXCPP operator*(int a, TSIL_COMPLEXCPP b){TSIL_COMPLEXCPP c=a;return c*b;}\n"
+  << "TSIL_COMPLEXCPP Complex(double a,double b){dcomp i;i=-1;i=sqrt(i);TSIL_COMPLEXCPP result = a + i*b; return result ;}\n"
   <<endl;
   
   int count = 0;
@@ -514,7 +515,7 @@ int main (int argc, char *argv[])
   if (count != 0){main_output<< ";"<<endl;}
   else {main_output<<endl;}
   
-  main_output << "TSIL_COMPLEXCPP  i=Power(-1,0.5);\n";
+  main_output << "TSIL_COMPLEXCPP  i;\n";
   vector<std::string> masses;
   string c_file_masses = "models/" + model+"/masses.txt";  // need to make this model independent
   const char *file_masses = c_file_masses.c_str();
@@ -615,7 +616,7 @@ main_output<< "\n";
 
 
 
-main_output<<"i=Power(-1,0.5);\n"
+main_output<<"dcomp ii=-1;ii=sqrt(ii);i=ii;\n"
 <<"Pi=PI;\n"
 <<"return 0;\n"
 <<"}\n";
@@ -705,7 +706,10 @@ for (int i=0;i<particle_names_short.size();i++)
   
   }
   main_output << ";" << endl;
-  main_output << "cout << \"Self energy of particle "<< particle_name_tmp_short << " = \" << SE_"<<particle_name_tmp_short<<" << endl;"<<endl;
+  
+  main_output << "SE_"<<particle_name_tmp_short << " = " << "SE_"<<particle_name_tmp_short<<"*TSIL_POW(PI,4);"<<endl;
+  
+  main_output << "cout << \"Self energy of particle "<< particle_name_tmp_short << " = \" << real(SE_"<<particle_name_tmp_short<<") << endl;"<<endl;
   
   main_output << "data.SE_"<< particle_name_tmp_short << " = " << "real(SE_"<<particle_name_tmp_short<<");"<<endl;
   

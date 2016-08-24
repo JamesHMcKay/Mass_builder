@@ -40,9 +40,6 @@ void draw_all_diagrams(std::string particle, string model)
   
   
   
-  if (particle == "chi0")particle = "F[6]";
-  if (particle == "chi1")particle = "F[5]";
-  
   ofstream myfile;
   myfile.open ("make_figures.m");
 
@@ -63,9 +60,7 @@ void draw_all_diagrams(std::string particle, string model)
   <<"SetOptions[DiracTrace, DiracTraceEvaluate -> True];\n"
   <<"$GenericMixing = True;\n"
   <<"t12 = CreateTopologies[2, 1 -> 1, ExcludeTopologies -> Internal];\n"
-  <<"alldiags = InsertFields[t12, {"<<particle<<"} -> {"<<particle<<"},InsertionLevel -> {Particles}, GenericModel -> Lorentz,Model -> \""<<model<<"\"];\n"
-  //<<"chi0 = InsertFields[t12, {F[6]} -> {F[6]},InsertionLevel -> {Particles}, GenericModel -> Lorentz,Model -> \"MDM_tripletEWSB\"];\n"
-  //<<"chi1 = InsertFields[t12, {F[5]} -> {F[5]},InsertionLevel -> {Particles}, GenericModel -> Lorentz,Model -> \"MDM_tripletEWSB\"];\n"
+  <<"alldiags = InsertFields[t12, {"<<particle<<"} -> {"<<particle<<"},InsertionLevel -> {Particles}, GenericModel -> Lorentz,Model -> \""<<s_cwd<<"/models/"<<model<<"/"<<model<<"\"];\n"
   <<"Export[\""<<s_cwd<<"/FA_diagrams/all_diagrams_"<<particle<<".pdf\",Paint[alldiags]];\n"  // print the FA diagram to pdf in local directory
   <<endl;
 
@@ -138,8 +133,7 @@ void draw_diagrams(vector<std::string> particles, vector<std::string> diagrams, 
   for (int i=0;i<particle_names_short.size();i++)
   {
   string particle_name_tmp = particle_names_short[i];
-  myfile<<particle_name_tmp<<" = InsertFields[t12, {"<<particle_name_tmp<<"} -> {"<<particle_name_tmp<<"},InsertionLevel -> {Particles}, GenericModel -> Lorentz,Model -> \""<<model<<"];"<<endl;
-  
+  myfile<<particle_name_tmp<<" = InsertFields[t12, {"<<particle_name_tmp<<"} -> {"<<particle_name_tmp<<"},InsertionLevel -> {Particles}, GenericModel -> Lorentz,Model -> \""<<s_cwd<<"/models/"<<model<<"/"<<model<<"\"];\n";
   myfile<< "subdiags" << particle_name_tmp <<" =   DiagramExtract["<<particle_name_tmp;
   for (int d = 0; d<nd;d++)
   {

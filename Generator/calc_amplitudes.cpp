@@ -1,10 +1,15 @@
-// to compile g++ -o stage_1 stage_1.cpp
+/*
+Mass Builder - the missing link in automated two-loop self energy calculations
+Please refer to the documentation for details or the readme.txt for simple run instructions
 
+Last edited 24/09/16
+James McKay
 
-/* goal: produce list of all possible permutations for objects F(x,y,z,u,v)
-where (x,y,z,u,v) are in the set (a,b,c,d,e, ... ), somehow avoid repetitions
-in this process */
+--- calc_amplitudes.cpp ---
 
+this is where it all happens
+
+*/
 
 #include <iostream>
 #include <string>
@@ -211,9 +216,10 @@ bool check_done()
 bool calc_diagram(string diagram,string particle,string model)
 {
 
-  bool verbose=0;
+  bool verbose=1;
   bool success=0,done=0;
   bool sum_integrals=1;
+  int loop_level = 2;
 
   cout << "calculating diagram " << diagram << " for particle " << particle << " in model " << model << endl;
 
@@ -305,8 +311,10 @@ bool calc_diagram(string diagram,string particle,string model)
   <<"SetOptions[DiracSlash, Dimension -> D, FeynCalcInternal -> True];\n"
   <<"SetOptions[DiracTrace, DiracTraceEvaluate -> True];\n"
   <<"$GenericMixing = True;\n"
-  <<" (*MDM_tripletEWSB*)\n"
-  <<"t12 = CreateTopologies[2, 1 -> 1, ExcludeTopologies -> Internal];\n"
+  <<" (*MDM_tripletEWSB*)\n";
+  if (loop_level == 2)
+  {
+  myfile<<"t12 = CreateTopologies[2, 1 -> 1, ExcludeTopologies -> Internal];\n"
   <<"alldiags = InsertFields[t12, {"<<particle_full<<"} -> {"<<particle_full<<"},InsertionLevel -> {Particles}, GenericModel -> Lorentz,Model -> \""<<s_cwd<<"/models/"<<model<<"/"<<model<<"\"];\n"
   <<"subdiags0 =   DiagramExtract[alldiags, "<<diagram<<"]\n"
   <<"Export[\""<<s_cwd<<"/current_diagram.pdf\",Paint[subdiags0]];\n"  // print the FA diagram to pdf in local directory
@@ -314,8 +322,21 @@ bool calc_diagram(string diagram,string particle,string model)
   <<"amp0 = amp0 /. MajoranaSpinor[p, mc] -> 1 /.Spinor[Momentum[p], mc, 1] -> 1;\n"
   <<"SetOptions[Eps, Dimension -> D];\n"
   <<"fullamp0 = (amp0) // DiracSimplify // FCMultiLoopTID[#, {k1, k2}] & //DiracSimplify;\n"
-  <<"tfiamp0 = fullamp0 // ToTFI[#, k1, k2, p] & // ChangeDimension[#, 4] &;\n"
-  <<"Print[tfiamp0]\n"
+  <<"tfiamp0 = fullamp0 // ToTFI[#, k1, k2, p] & // ChangeDimension[#, 4] &;\n";
+  }
+  if (loop_level == 1)
+  {
+  myfile<<"t12 = CreateTopologies[1, 1 -> 1, ExcludeTopologies -> Internal];\n"
+  <<"alldiags = InsertFields[t12, {"<<particle_full<<"} -> {"<<particle_full<<"},InsertionLevel -> {Particles}, GenericModel -> Lorentz,Model -> \""<<s_cwd<<"/models/"<<model<<"/"<<model<<"\"];\n"
+  <<"subdiags0 =   DiagramExtract[alldiags, "<<diagram<<"]\n"
+  <<"Export[\""<<s_cwd<<"/current_diagram.pdf\",Paint[subdiags0]];\n"  // print the FA diagram to pdf in local directory
+  <<"amp0 := FCFAConvert[CreateFeynAmp[subdiags0], IncomingMomenta -> {p}, OutgoingMomenta -> {p}, LoopMomenta -> {k1} ,UndoChiralSplittings -> True,(*TransversePolarizationVectors\[Rule] {k1},*)DropSumOver -> True, List -> False, ChangeDimension -> 4] // Contract\n"
+  <<"amp0 = amp0 /. MajoranaSpinor[p, mc] -> 1 /.Spinor[Momentum[p], mc, 1] -> 1;\n"
+  <<"SetOptions[Eps, Dimension -> D];\n"
+  <<"fullamp0 = (amp0) // DiracSimplify // FCMultiLoopTID[#, {k1}] & //DiracSimplify;\n"
+  <<"tfiamp0 = fullamp0 // ToTFI[#, k1, p] & // ChangeDimension[#, 4] &;\n";
+  }
+  myfile<<"Print[tfiamp0]\n"
   <<"SEn = FullSimplify[TarcerRecurse[tfiamp0] /. D -> 4 /.MajoranaSpinor[p, mc] -> 1] /. Spinor[Momentum[p], mc, 1] -> 1;\n"
   <<"DumpSave[\"stage_3.mx\", SEn];\n"
   <<"Print[SEn]"<< endl;
