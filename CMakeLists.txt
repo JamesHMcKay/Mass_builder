@@ -7,7 +7,7 @@ set(SRC_FILES src/main.cpp src/self_energy.cpp src/supplements.cpp )
 
 
 set(HEADER_FILES_GEN include/calc_amplitudes.hpp include/utils.hpp)
-set(SRC_FILES_GEN src/mass_builder.cpp src/calc_amplitudes.cpp src/generate_figures.cpp src/generate_code.cpp src/utils.cpp)
+set(SRC_FILES_GEN src/mass_builder.cpp src/calc_amplitudes.cpp src/generate_code.cpp src/utils.cpp)
 
 
 

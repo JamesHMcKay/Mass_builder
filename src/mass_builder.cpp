@@ -82,6 +82,11 @@ if (option=="-g")
 {
 Generate_code::main_function(argc,argv);
 }
+else if (option == "-a")
+{
+Calc_amplitudes ca;
+ca.generate_figures(argc,argv);
+}
 else
 {
 run_calc_diagram(argc, argv);
