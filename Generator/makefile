@@ -1,3 +1,6 @@
+mass_builder: mass_builder.o generate_code generate_figures
+	g++ -g -o mass_builder mass_builder.o -I
+
 calc_amplitudes: calc_amplitudes.o generate_code generate_figures
 	g++ -g -o calc_amplitudes calc_amplitudes.o
 

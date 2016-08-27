@@ -164,7 +164,7 @@ void draw_diagrams(vector<std::string> particles, vector<std::string> diagrams, 
 // main routine to manage a diagram by diagram procedure
 
 
-int main(int argc, char *argv[])
+int generate_figures(int argc, char *argv[])
 {
 
 vector<std::string> particles, diagrams;
