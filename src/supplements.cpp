@@ -15,7 +15,7 @@
 
 namespace supplementary_code
 {
-#include "/Users/jamesmckay/Documents/Programs/tsil-1.3/tsil_cpp.h"  // Required TSIL header file
+ /*TSIL_INCLUDE_PATH */#include "/Users/jamesmckay/Documents/Programs/tsil-1.3/tsil_cpp.h"  // Required TSIL header file
  
 using namespace std;
  

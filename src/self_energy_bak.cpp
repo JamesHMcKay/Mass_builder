@@ -12,7 +12,6 @@
 #include <cfloat>
 #include <cstdlib>
 #include <ctime>
-#include "/Users/jamesmckay/Documents/Programs/tsil-1.3/tsil_cpp.h"  // Required TSIL header file
 #include "self_energy.hpp"
  
 
