@@ -17,25 +17,7 @@ Reads the user input file and initialises the Data structure
 then passes this onto the run_tsil function.
 
 */
-
-
-
 #include "data.hpp"
-
-#include <iostream>
-#include <string>
-#include <fstream>
-#include <sstream>
-#include <complex>
-#include <vector>
-#include <cmath>
-#include <cfloat>
-#include <cstdlib>
-#include <ctime>
-#include <algorithm>
-#include <ctime>
-
-#include <unistd.h>
 
 #include "calc_amplitudes.hpp"
 #include "generate_code.hpp"

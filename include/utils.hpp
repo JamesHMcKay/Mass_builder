@@ -1,8 +1,6 @@
 #ifndef UTILS_H
 #define UTILS_H
 
-// useful functions that are super specific to any area of the code
-
 
 #include <iostream>
 #include <string>
@@ -31,8 +29,25 @@ void get_data(vector<std::string> &A, vector<std::string> &B,int &n,const char *
 
 void print_math_header(ofstream &myfile);
 
+void print_math_body(ofstream &file,int loop_order,string particle_full,string diagram,string model,string cwd);
 
+void print_product(ofstream &myfile,string name_1,string name_2,string SEn="SEn");
 
+void print_A(ofstream &myfile, string elements,string SEn="SEn");
+
+void print_B(ofstream &myfile, string elements,string SEn="SEn");
+
+void print_V(ofstream &myfile, string elements,string SEn="SEn");
+
+void print_T(ofstream &myfile, string elements,string SEn="SEn");
+
+void print_J(ofstream &myfile, string elements,string SEn="SEn");
+
+void print_K(ofstream &myfile, string elements,string SEn="SEn");
+
+void print_F(ofstream &myfile, string elements,string SEn="SEn");
+
+bool check_done();
 
 
 }

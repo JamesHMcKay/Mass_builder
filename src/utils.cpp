@@ -104,11 +104,172 @@ void print_math_header(ofstream &file)
 }
 
 
+void print_math_body(ofstream &file,int loop_order,string particle_full,string diagram,string model,string cwd)
+{
+ 
+  if (loop_order == 2)
+  {
+  file<<"t12 = CreateTopologies[2, 1 -> 1, ExcludeTopologies -> Internal];\n"
+  <<"alldiags = InsertFields[t12, {"<<particle_full<<"} -> {"<<particle_full<<"},InsertionLevel -> {Particles}, GenericModel -> Lorentz,Model -> \""<<cwd<<"/models/"<<model<<"/"<<model<<"\"];\n"
+  <<"subdiags0 =   DiagramExtract[alldiags, "<<diagram<<"]\n"
+  //<<"Export[\""<<s_cwd<<"/current_diagram.pdf\",Paint[subdiags0]];\n"  // print the FA diagram to pdf in local directory
+  <<"amp0 := FCFAConvert[CreateFeynAmp[subdiags0], IncomingMomenta -> {p}, OutgoingMomenta -> {p}, LoopMomenta -> {k1, k2} ,UndoChiralSplittings -> True,DropSumOver -> True, List -> False, ChangeDimension -> 4] // Contract\n"
+  <<"amp0 = amp0 /. MajoranaSpinor[p, mc] -> 1 /.Spinor[Momentum[p], mc, 1] -> 1;\n"
+  <<"SetOptions[Eps, Dimension -> D];\n"
+  <<"fullamp0 = (amp0) // DiracSimplify // FCMultiLoopTID[#, {k1, k2}] & //DiracSimplify;\n"
+  <<"tfiamp0 = fullamp0 // ToTFI[#, k1, k2, p] & // ChangeDimension[#, 4] &;\n";
+  }
+  if (loop_order == 1)
+  {
+  file<<"t12 = CreateTopologies[1, 1 -> 1, ExcludeTopologies -> Internal];\n"
+  <<"alldiags = InsertFields[t12, {"<<particle_full<<"} -> {"<<particle_full<<"},InsertionLevel -> {Particles}, GenericModel -> Lorentz,Model -> \""<<cwd<<"/models/"<<model<<"/"<<model<<"\"];\n"
+  <<"subdiags0 =   DiagramExtract[alldiags, "<<diagram<<"]\n"
+ // <<"Export[\""<<s_cwd<<"/current_diagram.pdf\",Paint[subdiags0]];\n"  // print the FA diagram to pdf in local directory
+  <<"amp0 := FCFAConvert[CreateFeynAmp[subdiags0], IncomingMomenta -> {p}, OutgoingMomenta -> {p}, LoopMomenta -> {k1} ,UndoChiralSplittings -> True,DropSumOver -> True, List -> False, ChangeDimension -> 4] // Contract\n"
+  <<"amp0 = amp0 /. MajoranaSpinor[p, mc] -> 1 /.Spinor[Momentum[p], mc, 1] -> 1;\n"
+  <<"SetOptions[Eps, Dimension -> D];\n"
+  <<"fullamp0 = (amp0) // DiracSimplify // FCMultiLoopTID[#, {k1}] & //DiracSimplify;\n"
+  <<"tfiamp0 = fullamp0 // ToTFI[#, k1, p] & // ChangeDimension[#, 4] &;\n";
+  }
+
+
+}
+
+void print_product(ofstream &myfile,string name_1,string name_2,string SEn)
+{
+
+
+  string elements1,elements2;
+  stringstream _e1,_e2,_e3,_e4,_e5, _type1;
+  string e1,e2,e3,e4,e5, type1;
+  _type1 << name_1[0];
+  _type1 >> type1;
+  _e1 << name_1[1];_e1 >> e1;
+  _e2 << name_1[2];_e2 >> e2;
+  _e3 << name_1[3];_e3 >> e3;
+  _e4 << name_1[4];_e4 >> e4;
+  _e5 << name_1[5];_e5 >> e5;
+  
+  stringstream _f1,_f2,_f3,_f4,_f5, _type2;
+  string f1,f2,f3,f4,f5, type2;
+  _type2 << name_2[0];
+  _type2 >> type2;
+  
+  if (type1 =="F"){goto end;}
+  if (type2 =="F"){goto end;}
+    
+  _f1 << name_2[1];_f1 >> f1;
+  _f2 << name_2[2];_f2 >> f2;
+  _f3 << name_2[3];_f3 >> f3;
+  _f4 << name_2[4];_f4 >> f4;
+  _f5 << name_2[5];_f5 >> f5;
+
+
+  if (type1=="A") elements1 = e1;
+  if (type1=="B") elements1 = e1 + e2;
+  if (type1=="J") elements1 = e1 + e2 + e3;
+  if (type1=="T") elements1 = e1 + e2 + e3;
+  if (type1=="K") elements1 = e1 + e2 + e3;
+  if (type1=="V") elements1 = e1 + e2 + e3 + e4;
+
+  if (type2=="A") elements2 = f1;
+  if (type2=="B") elements2 = f1 + f2;
+  if (type2=="J") elements2 = f1 + f2 + f3;
+  if (type2=="T") elements2 = f1 + f2 + f3;
+  if (type2=="K") elements2 = f1 + f2 + f3;
+  if (type2=="V") elements2 = f1 + f2 + f3 + f4;
+
+
+
+  myfile << type1 << elements1 << type2 << elements2 << " = ";
+  if (type1=="A") myfile << "TAI[4, 0, {1, m" << elements1[0] << "}]";
+  if (type1=="B") myfile << "TBI[4, Pair[Momentum[p],Momentum[p]], {{1, m" << elements1[0] << "}, {1, m" << elements1[1] << "}}]";
+  if (type1=="J") myfile << "TJI[4, Pair[Momentum[p],Momentum[p]], {{1, m" << elements1[0] << "}, {1, m" << elements1[1] << "}, {1, m" << elements1[2] << "}}]";
+  if (type1=="T") myfile << "TJI[4, Pair[Momentum[p],Momentum[p]], {{2, m" << elements1[0] << "}, {1, m" << elements1[1] << "}, {1, m" << elements1[2] << "}}]";
+  if (type1=="K") myfile << "TJI[4, 0, {{1, m" << elements1[0] << "}, {1, m" << elements1[1] << "}, {1, m" << elements1[2] << "}}]";
+  if (type1=="V") myfile << "TVI[4, Pair[Momentum[p],Momentum[p]], {{1, m" << elements1[0] << "}, {1, m" << elements1[1] << "}, {1, m" << elements1[2] << "}, {1, m" << elements1[3] << "}}]";
+  myfile << " * ";
+  if (type2=="A") myfile << "TAI[4, 0, {1, m" << elements2[0] << "}];";
+  if (type2=="B") myfile << "TBI[4, Pair[Momentum[p],Momentum[p]], {{1, m" << elements2[0] << "}, {1, m" << elements2[1] << "}}];";
+  if (type2=="J") myfile << "TJI[4, Pair[Momentum[p],Momentum[p]], {{1, m" << elements2[0] << "}, {1, m" << elements2[1] << "}, {1, m" << elements2[2] << "}}];";
+  if (type2=="T") myfile << "TJI[4, Pair[Momentum[p],Momentum[p]], {{2, m" << elements2[0] << "}, {1, m" << elements2[1] << "}, {1, m" << elements2[2] << "}}];";
+  if (type2=="K") myfile << "TJI[4, 0, {{1, m" << elements2[0] << "}, {1, m" << elements2[1] << "}, {1, m" << elements2[2] << "}}];";
+  if (type2=="V") myfile << "TVI[4, Pair[Momentum[p],Momentum[p]], {{1, m" << elements2[0] << "}, {1, m" << elements2[1] << "}, {1, m" << elements2[2] << "}, {1, m" << elements2[3] << "}}];";
+  myfile << endl;
+  if ((type1 == type2) && (elements1==elements2)) myfile << "C"<< type1 << elements1 << type2 << elements2 << " = Coefficient["<<SEn<<","<< type1 << elements1 << ", 2];" << endl;
+  else myfile << "C"<< type1 << elements1 << type2 << elements2 << " = - (1/2)* Coefficient["<<SEn<<","<< type1 << elements1 << type2 << elements2 << ", 1];" << endl;
+  end:;
+}
+
+
+
+void print_A(ofstream &myfile, string elements,string SEn)
+{
+if (SEn == "SEn") myfile << "A"<< elements << " = " << "TAI[4, 0, {1, m" << elements[0] << "}];" << endl;
+myfile << "CA"<< elements << " = Coefficient["<<SEn<<", A" << elements << ", 1];" << endl;
+}
+
+void print_B(ofstream &myfile, string elements,string SEn)
+{
+if (SEn == "SEn") myfile << "B"<< elements << " = " << "TBI[4, Pair[Momentum[p],Momentum[p]], {{1, m" << elements[0] << "}, {1, m" << elements[1] << "}}];" << endl;
+myfile << "CB"<< elements << " = Coefficient["<<SEn<<", B" << elements << ", 1];" << endl;
+}
+
+void print_V(ofstream &myfile, string elements,string SEn)
+{
+if (SEn == "SEn") myfile << "V"<< elements << " = " << "TVI[4, Pair[Momentum[p],Momentum[p]], {{1, m" << elements[0] << "}, {1, m" << elements[1] << "}, {1, m" << elements[2] << "}, {1, m" << elements[3] << "}}];" << endl;
+myfile << "CV"<< elements << " = Coefficient["<<SEn<<", V" << elements << ", 1];" << endl;
+}
+
+void print_T(ofstream &myfile, string elements,string SEn)
+{
+if (SEn == "SEn") myfile << "T"<< elements << " = " << "TJI[4, Pair[Momentum[p],Momentum[p]], {{2, m" << elements[0] << "}, {1, m" << elements[1] << "}, {1, m" << elements[2] << "}}];" << endl;
+myfile << "CT"<< elements << " = Coefficient["<<SEn<<", T" << elements << ", 1];" << endl;
+}
+
+void print_J(ofstream &myfile, string elements,string SEn)
+{
+if (SEn == "SEn") myfile << "J"<< elements << " = " << "TJI[4, Pair[Momentum[p],Momentum[p]], {{1, m" << elements[0] << "}, {1, m" << elements[1] << "}, {1, m" << elements[2] << "}}];" << endl;
+myfile << "CJ"<< elements << " = Coefficient["<<SEn<<", J" << elements << ", 1];" << endl;
+}
+
+void print_K(ofstream &myfile, string elements,string SEn)
+{
+if (SEn == "SEn") myfile << "K"<< elements << " = " << "TJI[4, 0, {{1, m" << elements[0] << "}, {1, m" << elements[1] << "}, {1, m" << elements[2] << "}}];" << endl;
+myfile << "CK"<< elements << " = Coefficient["<<SEn<<", K" << elements << ", 1];" << endl;
+}
+
+
+void print_F(ofstream &myfile, string elements,string SEn)
+{
+if (SEn == "SEn") myfile << "F"<< elements << " = " << "TFI[4, Pair[Momentum[p],Momentum[p]], {{1, m" << elements[0] << "}, {1, m" << elements[1] << "}, {1, m" << elements[2] << "}, {1, m" << elements[3] << "}, {1, m" << elements[4] << "}}];" << endl;
+myfile << "CF"<< elements << " = Coefficient["<<SEn<<", F" << elements << ", 1];" << endl;
+}
 
 
 
 
+bool check_done()
+{
 
+ 
+  std::ifstream file("output/result.txt");
+  std::string str;
+  std::string result;
+  std::getline(file, str);
+  result += str;
+  
+ 
+  // need to check if the result of diff is zero, if not then throw an error
+  
+  bool success = 0;
+  if (result == "0") {cout << "Successful!!!" << endl, success = 1;}
+  else { cout << "Something has gone terribly wrong, check the symmetries are being accounted for properly when writting the basis integrals \n" <<\
+  "(and thus no double up of terms) and that all cross terms are being considered." << endl; success = 0;}
+  
+  return success;
+
+}
 
 
 
