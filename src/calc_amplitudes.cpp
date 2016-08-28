@@ -409,8 +409,8 @@ bool Calc_amplitudes::calc_diagram(string diagram,string particle,string model)
   system("chmod +x output/stage_3.m ");
   if (verbose) system("./output/stage_3.m");
   else system("./output/stage_3.m  >/dev/null");
-  system("chmod u+x scripts/stage_4.sh");
-  system("./scripts/stage_4.sh");
+  system("chmod u+x scripts/script_1.sh");
+  system("./scripts/script_1.sh");
   #endif
   
   
@@ -553,8 +553,8 @@ bool Calc_amplitudes::calc_diagram(string diagram,string particle,string model)
   system("chmod +x output/stage_6.m ");
   if(verbose) system("./output/stage_6.m ");
   else system("./output/stage_6.m  >/dev/null ");
-  system("chmod u+x scripts/stage_8.sh");
-  system("./scripts/stage_8.sh ");
+  system("chmod u+x scripts/script_2.sh");
+  system("./scripts/script_2.sh ");
   #endif
   
   int m = n;
@@ -716,8 +716,8 @@ bool Calc_amplitudes::calc_diagram(string diagram,string particle,string model)
   system("chmod +x output/stage_8.m ");
   if(verbose) system("./output/stage_8.m");
   else system("./output/stage_8.m  >/dev/null ");
-  system("chmod u+x scripts/stage_9.sh");
-  system("./scripts/stage_9.sh");
+  system("chmod u+x scripts/script_3.sh");
+  system("./scripts/script_3.sh");
   #endif
  
   success = check_done();

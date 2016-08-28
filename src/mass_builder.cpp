@@ -78,7 +78,6 @@ if (option=="-f")
   const char* file_diagrams_tmp = "models/";
   string c_file_diagrams = file_diagrams_tmp + model + "/diagrams" + ext;
   const char *file_diagrams = c_file_diagrams.c_str();
-  cout << "reading file " << file_diagrams << endl;
   std::ifstream input(file_diagrams);
   std::string line;
   while(getline(input, line))
