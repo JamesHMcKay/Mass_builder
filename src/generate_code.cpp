@@ -454,7 +454,7 @@ int main_function (int argc, char *argv[])
   
   int count = 0;
   main_output<< "TSIL_COMPLEXCPP ";
-  for (int i =0; i<integrals.size() ; i++)
+  for (unsigned int i =0; i<integrals.size() ; i++)
   {
   count = count + 1;
   if (i!=(integrals.size()-1) && count !=5) {main_output << integrals[i] << ", ";}
@@ -511,7 +511,7 @@ int main_function (int argc, char *argv[])
   //vector<std::string> V_A,V_B,V_C,V_D;
   //int nv = 0;
   
-  for (int i = 0; i<integrals.size();i++)
+  for (unsigned int i = 0; i<integrals.size();i++)
   {
   string name = integrals[i];
   stringstream _e1,_e2,_e3,_e4,_e5, _type;
@@ -628,7 +628,7 @@ vector<std::string> particle_names_short_reduced;
 
 
 
-for (int i=0;i<particle_names_short.size();i++)
+for (unsigned int i=0;i<particle_names_short.size();i++)
 {
   
   string particle_name_tmp = particle_names_short[i];
@@ -710,7 +710,7 @@ data_h << "double m"<< masses[i]<<";"<<endl;
 
 // create a variable for the self energy of each particle we have
 
-for (int i=0;i<particle_names_short_reduced.size();i++)
+for (unsigned int i=0;i<particle_names_short_reduced.size();i++)
 {
 data_h << "double SE_" << particle_names_short_reduced[i]<<";"<<endl;
 }

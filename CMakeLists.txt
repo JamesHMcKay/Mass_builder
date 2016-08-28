@@ -12,12 +12,6 @@ set(SRC_FILES_GEN src/mass_builder.cpp src/calc_amplitudes.cpp src/generate_code
 
 
 
-set(Boost_INCLUDE_DIR /usr/local/Cellar/boost/1.59.0/include)
-set(Boost_LIBRARY_DIR /usr/local/Cellar/boost/1.59.0/lib)
-
-find_package(Boost COMPONENTS system filesystem REQUIRED)
-include_directories(${Boost_INCLUDE_DIR})
-link_directories(${Boost_LIBRARY_DIR})
 
 LINK_DIRECTORIES(/Users/jamesmckay/Documents/Programs/tsil-1.3)
 
@@ -26,7 +20,6 @@ set(CMAKE_CXX_FLAGS -L.)
 
 add_executable(mass_builder ${SRC_FILES_GEN} ${HEADER_FILES_GEN} ${SRC_FILES} ${HEADER_FILES})
 
-target_link_libraries(mass_builder ${Boost_LIBRARIES} )
 TARGET_LINK_LIBRARIES(mass_builder libtsil.a)
 
 if (CMAKE_COMPILER_IS_GNUCXX)

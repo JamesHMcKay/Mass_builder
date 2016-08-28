@@ -25,7 +25,7 @@ public:
 Calc_amplitudes(){}
 
 bool calc_diagram(std::string diagram,std::string particle,std::string model);
-int generate_figures(int argc, char *argv[]);
+void generate_figures(int argc, char *argv[]);
 };
 
 #endif

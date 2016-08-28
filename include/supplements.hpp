@@ -35,7 +35,7 @@ class Supplements
    } //constructor
   
   
-   void add_derivatives(Data &data);
+   void add_derivatives(/*Data &data*/);
   
   
   

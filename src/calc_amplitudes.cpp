@@ -179,7 +179,7 @@ bool Calc_amplitudes::calc_diagram(string diagram,string particle,string model)
 {
 
   bool verbose=0;
-  bool success=0,done=0;
+  bool success=0;
   bool sum_integrals=1;
   int loop_level = 2;
 
@@ -199,10 +199,6 @@ bool Calc_amplitudes::calc_diagram(string diagram,string particle,string model)
  
  string particle_full=particle;
  particle = part_1+part_2;
-  
-  
-  time_t t = time(0);   // get time now to print into generated files
-  struct tm * now = localtime( & t );
   
   
   
@@ -264,7 +260,7 @@ bool Calc_amplitudes::calc_diagram(string diagram,string particle,string model)
   <<"alldiags = InsertFields[t12, {"<<particle_full<<"} -> {"<<particle_full<<"},InsertionLevel -> {Particles}, GenericModel -> Lorentz,Model -> \""<<s_cwd<<"/models/"<<model<<"/"<<model<<"\"];\n"
   <<"subdiags0 =   DiagramExtract[alldiags, "<<diagram<<"]\n"
   //<<"Export[\""<<s_cwd<<"/current_diagram.pdf\",Paint[subdiags0]];\n"  // print the FA diagram to pdf in local directory
-  <<"amp0 := FCFAConvert[CreateFeynAmp[subdiags0], IncomingMomenta -> {p}, OutgoingMomenta -> {p}, LoopMomenta -> {k1, k2} ,UndoChiralSplittings -> True,(*TransversePolarizationVectors\[Rule] {k1},*)DropSumOver -> True, List -> False, ChangeDimension -> 4] // Contract\n"
+  <<"amp0 := FCFAConvert[CreateFeynAmp[subdiags0], IncomingMomenta -> {p}, OutgoingMomenta -> {p}, LoopMomenta -> {k1, k2} ,UndoChiralSplittings -> True,DropSumOver -> True, List -> False, ChangeDimension -> 4] // Contract\n"
   <<"amp0 = amp0 /. MajoranaSpinor[p, mc] -> 1 /.Spinor[Momentum[p], mc, 1] -> 1;\n"
   <<"SetOptions[Eps, Dimension -> D];\n"
   <<"fullamp0 = (amp0) // DiracSimplify // FCMultiLoopTID[#, {k1, k2}] & //DiracSimplify;\n"
@@ -276,7 +272,7 @@ bool Calc_amplitudes::calc_diagram(string diagram,string particle,string model)
   <<"alldiags = InsertFields[t12, {"<<particle_full<<"} -> {"<<particle_full<<"},InsertionLevel -> {Particles}, GenericModel -> Lorentz,Model -> \""<<s_cwd<<"/models/"<<model<<"/"<<model<<"\"];\n"
   <<"subdiags0 =   DiagramExtract[alldiags, "<<diagram<<"]\n"
  // <<"Export[\""<<s_cwd<<"/current_diagram.pdf\",Paint[subdiags0]];\n"  // print the FA diagram to pdf in local directory
-  <<"amp0 := FCFAConvert[CreateFeynAmp[subdiags0], IncomingMomenta -> {p}, OutgoingMomenta -> {p}, LoopMomenta -> {k1} ,UndoChiralSplittings -> True,(*TransversePolarizationVectors\[Rule] {k1},*)DropSumOver -> True, List -> False, ChangeDimension -> 4] // Contract\n"
+  <<"amp0 := FCFAConvert[CreateFeynAmp[subdiags0], IncomingMomenta -> {p}, OutgoingMomenta -> {p}, LoopMomenta -> {k1} ,UndoChiralSplittings -> True,DropSumOver -> True, List -> False, ChangeDimension -> 4] // Contract\n"
   <<"amp0 = amp0 /. MajoranaSpinor[p, mc] -> 1 /.Spinor[Momentum[p], mc, 1] -> 1;\n"
   <<"SetOptions[Eps, Dimension -> D];\n"
   <<"fullamp0 = (amp0) // DiracSimplify // FCMultiLoopTID[#, {k1}] & //DiracSimplify;\n"
@@ -576,7 +572,7 @@ bool Calc_amplitudes::calc_diagram(string diagram,string particle,string model)
   if (n == 0){
   // just use Bases instead but remove all F terms!
   
-  for (int i=0;i<Bases.size();i++)
+  for (unsigned int i=0;i<Bases.size();i++)
   {
   
   string nameB = Bases[i];
@@ -815,12 +811,6 @@ void draw_all_diagrams(std::string particle, string model)
 
 
 
-
-  
-  time_t t = time(0);   // get time now to print into generated files
-  struct tm * now = localtime( & t );
-  
-  
   
   
   string s_cwd(getcwd(NULL,0));
@@ -855,15 +845,6 @@ void draw_diagrams(vector<std::string> particles, vector<std::string> diagrams, 
 
   bool verbose=0;
 
-
-
-
-  
-  time_t t = time(0);   // get time now to print into generated files
-  struct tm * now = localtime( & t );
-  
-  
-  
   
   string s_cwd(getcwd(NULL,0));
   
@@ -888,8 +869,8 @@ void draw_diagrams(vector<std::string> particles, vector<std::string> diagrams, 
 
   sort(particle_names_short.begin(),particle_names_short.end());
   particle_names_short.erase( unique( particle_names_short.begin(), particle_names_short.end() ), particle_names_short.end() );
-  bool first = 1;
-  for (int i=0;i<particle_names_short.size();i++)
+  
+  for (unsigned int i=0;i<particle_names_short.size();i++)
   {
   string particle_name_tmp = particle_names_short[i];
   myfile<<particle_name_tmp<<" = InsertFields[t12, {"<<particle_name_tmp<<"} -> {"<<particle_name_tmp<<"},InsertionLevel -> {Particles}, GenericModel -> Lorentz,Model -> \""<<s_cwd<<"/models/"<<model<<"/"<<model<<"\"];\n";
@@ -898,13 +879,13 @@ void draw_diagrams(vector<std::string> particles, vector<std::string> diagrams, 
   {
   if (particles[d] == particle_name_tmp)
   {
-  //if (first) myfile <<", ( "<<diagrams[d];
+  
   myfile <<", "<<diagrams[d];
-  first =0;
+  //first =0;
   }
   }
   myfile <<"]\n";
-  first = 1;
+  //first = 1;
   myfile <<"Export[\""<<s_cwd<<"FA_diagrams/subset_diagrams_"<<particle_name_tmp<<".pdf\",Paint[subdiags"<<particle_name_tmp<<"]];\n"  // print the FA diagram to pdf in local directory
   <<endl;
   }
@@ -923,7 +904,7 @@ void draw_diagrams(vector<std::string> particles, vector<std::string> diagrams, 
 // main routine to manage a diagram by diagram procedure
 
 
-int Calc_amplitudes::generate_figures(int argc, char *argv[])
+void Calc_amplitudes::generate_figures(int argc, char *argv[])
 {
 
 vector<std::string> particles, diagrams;
