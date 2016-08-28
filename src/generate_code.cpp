@@ -17,7 +17,7 @@ make must be run in the build directory after this program has been run
 
 
 
-/* goal: generate cpp code in the directory ../src/ that contains a function
+/* goal: generate cpp code in the directory src/ that contains a function
 definition containing the coefficients and the total self energy SE = ...
 also create a DoTSIL function to evaluate the integrals
 
@@ -243,7 +243,7 @@ int main_function (int argc, char *argv[])
   
   
   ofstream functions;
-  functions.open ("generator/functions.txt");
+  functions.open ("output/functions.txt");
   
   
   
@@ -257,7 +257,7 @@ int main_function (int argc, char *argv[])
   }
   else {
   model = argv[2];
-  c_file_diagrams = "../models/"+ model + "/diagrams.txt";
+  c_file_diagrams = "models/"+ model + "/diagrams.txt";
   }
   cout << "using model = " << model << endl;
   
@@ -296,9 +296,9 @@ int main_function (int argc, char *argv[])
   _part_2 >> part_2;
   particle_name = part_1+part_2;
   
-  string c_coeff_integrals = "../models/" + model +coeff_integrals_tmp + underscore + particle_name + underscore + tag + ext;
-  string c_coeff_products = "../models/" + model + coeff_products_tmp + underscore + particle_name + underscore + tag + ext;
-  string c_summation = "../models/" + model + summation_tmp + underscore + particle_name + underscore + tag + ext;
+  string c_coeff_integrals = "models/" + model +coeff_integrals_tmp + underscore + particle_name + underscore + tag + ext;
+  string c_coeff_products = "models/" + model + coeff_products_tmp + underscore + particle_name + underscore + tag + ext;
+  string c_summation = "models/" + model + summation_tmp + underscore + particle_name + underscore + tag + ext;
   
   const char *coeff_integrals = c_coeff_integrals.c_str();
   const char *coeff_products = c_coeff_products.c_str();
@@ -404,7 +404,7 @@ int main_function (int argc, char *argv[])
  
   
   const char* file_integrals_tmp = "/output/basis_integrals"; // vector containing file names
-  string c_file_integrals = "../models/" + model + file_integrals_tmp + underscore + particle_name + underscore + tag + ext;
+  string c_file_integrals = "models/" + model + file_integrals_tmp + underscore + particle_name + underscore + tag + ext;
   const char *file_integrals = c_file_integrals.c_str();
   
   
@@ -440,12 +440,14 @@ int main_function (int argc, char *argv[])
 
   
   //const char *ext_cpp = ".cpp";
-  const char* main_output_tmp = "../src/self_energy.cpp"; // vector containing file names
+  const char* main_output_tmp = "src/self_energy.cpp"; // vector containing file names
   string c_main_output = main_output_tmp;// + ext_cpp;
   const char *main_output_file = c_main_output.c_str();
   
   ofstream main_output;
   main_output.open (main_output_file);
+  
+  
   
  /* TSIL_PATH */ std::string TSIL = "/Users/jamesmckay/Documents/Programs/tsil-1.3/tsil_cpp.h";  
   
@@ -500,7 +502,7 @@ int main_function (int argc, char *argv[])
   
   main_output << "TSIL_COMPLEXCPP  i;\n";
   vector<std::string> masses;
-  string c_file_masses = "../models/" + model+"/masses.txt";  // need to make this model independent
+  string c_file_masses = "models/" + model+"/masses.txt";  // need to make this model independent
   const char *file_masses = c_file_masses.c_str();
   int nm; // number of diagrams, length of diagram_number vector
   get_data(masses, nm,file_masses);
@@ -520,7 +522,7 @@ int main_function (int argc, char *argv[])
   // model specific variables need to be written here
   
   vector<std::string> couplings;
-  string c_file_couplings = "../models/" + model + "/couplings.txt";  // need to make this model independent
+  string c_file_couplings = "models/" + model + "/couplings.txt";  // need to make this model independent
   const char *file_couplings = c_file_couplings.c_str();
   int nc; // number of diagrams, length of diagram_number vector
   get_data(couplings, nc,file_couplings);
@@ -534,7 +536,7 @@ int main_function (int argc, char *argv[])
   main_output<< "\n";
 
   
-  
+  cout << "here 4 "<< endl;
   //  DoTSIL function
   
   
@@ -597,7 +599,7 @@ else main_output << "m"<<masses[i] << " = data.m"<<masses[i]<<" , m" << masses[i
 main_output<<";"<<endl;
 main_output<< "\n";
 
-
+cout << "here 5 "<< endl;
 
 main_output<<"dcomp ii=-1;ii=sqrt(ii);i=ii;\n"
 <<"Pi=PI;\n"
@@ -609,7 +611,7 @@ main_output<<"dcomp ii=-1;ii=sqrt(ii);i=ii;\n"
   
   
   
-  ifstream infile4("generator/functions.txt");
+  ifstream infile4("output/functions.txt");
   
   string content2 = "";
   int ii;
@@ -631,7 +633,7 @@ main_output<<"dcomp ii=-1;ii=sqrt(ii);i=ii;\n"
   
   
   
-  
+  cout << "here 6 "<< endl;
   
   
   // MAIN FUNCTION CALL
@@ -709,10 +711,10 @@ for (int i=0;i<particle_names_short.size();i++)
   // create header file with required masses and couplings which can be set via user input at runtime
   
   
-  
+  cout << "here 7 "<< endl;
   
   ofstream data_h;
-  data_h.open ("../include/data.hpp");
+  data_h.open ("include/data.hpp");
 
   
 data_h << "#ifndef DATA_H\n"
@@ -759,13 +761,13 @@ data_h<<"  Data (){};\n"
 <<"Data(int argc, char* argv[]) {\n"
 <<"double param [99];\n"
 <<"std::string name [99]; int i=0;\n"
-<<"if (argc==1)\n"
+<<"if (argc==2)\n"
 <<"{\n"
 <<"cout << \"Please enter a data file in the format ./main input.txt, using default values \" << endl;\n"
 <<"}\n"
 <<"else\n"
 <<"{\n"
-<<"std::ifstream input(argv[1]);\n"
+<<"std::ifstream input(argv[2]);\n"
 <<"std::string line;\n"
 <<"while(getline(input, line)) {\n"
 <<"if (!line.length() || line[0] == '#')\n"

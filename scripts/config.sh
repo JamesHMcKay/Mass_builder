@@ -39,22 +39,7 @@ sed -i '' -e "s|.*TSIL_INCLUDE_PATH.*| /\*TSIL_INCLUDE_PATH \*/#include \"$TSIL_
 sed -i '' -e "s|.*TSIL_PATH.*| /\* TSIL_PATH \*/ std::string TSIL = \"$TSIL_PATH\";  |g" src/*.cpp
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 cp src/self_energy_bak.cpp src/self_energy.cpp
 mkdir build
-mkdir build/output
-mkdir build/generator
+mkdir output
 

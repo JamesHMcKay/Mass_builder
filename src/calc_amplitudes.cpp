@@ -151,7 +151,7 @@ bool check_done()
 {
 
  
-  std::ifstream file("result.txt");
+  std::ifstream file("output/result.txt");
   std::string str;
   std::string result;
   std::getline(file, str);
@@ -211,14 +211,14 @@ bool Calc_amplitudes::calc_diagram(string diagram,string particle,string model)
   string tag = particle + "_" + diagram;//"chi0_13";
   
   ofstream tag_out;
-  tag_out.open ("tag.txt"); // store current tag = particle name + diagram number
+  tag_out.open ("output/tag.txt"); // store current tag = particle name + diagram number
   
   tag_out << tag << endl;
   
   tag_out.close();
   
   ofstream model_out;
-  model_out.open ("model.txt"); // store current tag = particle name + diagram number
+  model_out.open ("output/model.txt"); // store current tag = particle name + diagram number
   
   model_out << model << endl;
   
@@ -226,15 +226,15 @@ bool Calc_amplitudes::calc_diagram(string diagram,string particle,string model)
   
   
   
-  system("touch names_updated.txt");
-  system("touch names_updated_temp.txt");
+  system("touch output/names_updated.txt");
+  system("touch output/names_updated_temp.txt");
   
   int n = 0;
   vector<std::string> output0, output1,output2;
   vector<double> dup;
   vector<std::string> A;
   
-  const char* file_masses_tmp = "../models/";
+  const char* file_masses_tmp = "models/";
   string c_file_masses = file_masses_tmp + model + "/masses" + ext;
   const char *file_masses = c_file_masses.c_str();
   
@@ -250,7 +250,7 @@ bool Calc_amplitudes::calc_diagram(string diagram,string particle,string model)
   
   
   ofstream myfile;
-  myfile.open ("stage_3.m");
+  myfile.open ("output/stage_3.m");
 
 
   //if (particle == "chi0")particle = "F[6]";
@@ -262,7 +262,7 @@ bool Calc_amplitudes::calc_diagram(string diagram,string particle,string model)
   if (loop_level == 2)
   {
   myfile<<"t12 = CreateTopologies[2, 1 -> 1, ExcludeTopologies -> Internal];\n"
-  <<"alldiags = InsertFields[t12, {"<<particle_full<<"} -> {"<<particle_full<<"},InsertionLevel -> {Particles}, GenericModel -> Lorentz,Model -> \""<<s_cwd<<"/../models/"<<model<<"/"<<model<<"\"];\n"
+  <<"alldiags = InsertFields[t12, {"<<particle_full<<"} -> {"<<particle_full<<"},InsertionLevel -> {Particles}, GenericModel -> Lorentz,Model -> \""<<s_cwd<<"/models/"<<model<<"/"<<model<<"\"];\n"
   <<"subdiags0 =   DiagramExtract[alldiags, "<<diagram<<"]\n"
   //<<"Export[\""<<s_cwd<<"/current_diagram.pdf\",Paint[subdiags0]];\n"  // print the FA diagram to pdf in local directory
   <<"amp0 := FCFAConvert[CreateFeynAmp[subdiags0], IncomingMomenta -> {p}, OutgoingMomenta -> {p}, LoopMomenta -> {k1, k2} ,UndoChiralSplittings -> True,(*TransversePolarizationVectors\[Rule] {k1},*)DropSumOver -> True, List -> False, ChangeDimension -> 4] // Contract\n"
@@ -274,7 +274,7 @@ bool Calc_amplitudes::calc_diagram(string diagram,string particle,string model)
   if (loop_level == 1)
   {
   myfile<<"t12 = CreateTopologies[1, 1 -> 1, ExcludeTopologies -> Internal];\n"
-  <<"alldiags = InsertFields[t12, {"<<particle_full<<"} -> {"<<particle_full<<"},InsertionLevel -> {Particles}, GenericModel -> Lorentz,Model -> \""<<s_cwd<<"../models/"<<model<<"/"<<model<<"\"];\n"
+  <<"alldiags = InsertFields[t12, {"<<particle_full<<"} -> {"<<particle_full<<"},InsertionLevel -> {Particles}, GenericModel -> Lorentz,Model -> \""<<s_cwd<<"/models/"<<model<<"/"<<model<<"\"];\n"
   <<"subdiags0 =   DiagramExtract[alldiags, "<<diagram<<"]\n"
  // <<"Export[\""<<s_cwd<<"/current_diagram.pdf\",Paint[subdiags0]];\n"  // print the FA diagram to pdf in local directory
   <<"amp0 := FCFAConvert[CreateFeynAmp[subdiags0], IncomingMomenta -> {p}, OutgoingMomenta -> {p}, LoopMomenta -> {k1} ,UndoChiralSplittings -> True,(*TransversePolarizationVectors\[Rule] {k1},*)DropSumOver -> True, List -> False, ChangeDimension -> 4] // Contract\n"
@@ -285,7 +285,7 @@ bool Calc_amplitudes::calc_diagram(string diagram,string particle,string model)
   }
   myfile<<"Print[tfiamp0]\n"
   <<"SEn = FullSimplify[TarcerRecurse[tfiamp0] /. D -> 4 /.MajoranaSpinor[p, mc] -> 1] /. Spinor[Momentum[p], mc, 1] -> 1;\n"
-  <<"DumpSave[\"stage_3.mx\", SEn];\n"
+  <<"DumpSave[\""<<s_cwd<<"/output/stage_3.mx\", SEn];\n"
   <<"Print[\"----------- The self energy is ---------- = \"]\n"
   <<"Print[SEn]\n"
   <<"Print[\"-------------------- = \"]"<< endl;
@@ -300,7 +300,7 @@ bool Calc_amplitudes::calc_diagram(string diagram,string particle,string model)
 
 
   ofstream myfile_names;
-  myfile_names.open ("names.txt");
+  myfile_names.open ("output/names.txt");
   
   vector<std::string> Bases;
   int nb = 0;
@@ -385,7 +385,7 @@ bool Calc_amplitudes::calc_diagram(string diagram,string particle,string model)
   
   
   
-  myfile << "Export[\""<<s_cwd<<"/output.txt\", {" << endl;
+  myfile << "Export[\""<<s_cwd<<"/output/output.txt\", {" << endl;
   
   
   
@@ -407,11 +407,11 @@ bool Calc_amplitudes::calc_diagram(string diagram,string particle,string model)
   
 
   #ifdef RUN_ALL
-  system("chmod +x stage_3.m ");
-  if (verbose) system("./stage_3.m");
-  else system("./stage_3.m  >/dev/null");
-  system("chmod u+x ../scripts/stage_4.sh");
-  system("./../scripts/stage_4.sh");
+  system("chmod +x output/stage_3.m ");
+  if (verbose) system("./output/stage_3.m");
+  else system("./output/stage_3.m  >/dev/null");
+  system("chmod u+x scripts/stage_4.sh");
+  system("./scripts/stage_4.sh");
   #endif
   
   
@@ -429,7 +429,7 @@ bool Calc_amplitudes::calc_diagram(string diagram,string particle,string model)
   vector<std::string> integrals;
   
   
-  const char* file_integrals_tmp = "names_updated";
+  const char* file_integrals_tmp = "output/names_updated";
   string c_file_integrals = file_integrals_tmp + blank + ext;
   const char *file_integrals = c_file_integrals.c_str();
   
@@ -438,12 +438,12 @@ bool Calc_amplitudes::calc_diagram(string diagram,string particle,string model)
   if (n==0) {integrals = Bases; n = Bases.size(); sum_integrals = 0;}
   
   
-  string prev = "\"stage_3.mx\"";
+  string prev = "stage_3.mx\"";
   ofstream myfile_stage6;
-  myfile_stage6.open ("stage_6.m");
+  myfile_stage6.open ("output/stage_6.m");
   
   utils::print_math_header(myfile_stage6);
-  myfile_stage6<<"Get[" << prev << "]\n"
+  myfile_stage6<<"Get[\"" << s_cwd <<"/output/"<< prev << "]\n"
   <<"Print[SEn]"<< endl;
   
   
@@ -495,8 +495,7 @@ bool Calc_amplitudes::calc_diagram(string diagram,string particle,string model)
   
   myfile_stage6 << "Print[diff]"<<endl;
   
-  
-  myfile_stage6 << "Export[\"result.txt\",diff]"<<endl;
+  myfile_stage6 << "Export[\""<<s_cwd<<"/output/result.txt\", diff]" << endl;
 
   
   
@@ -525,7 +524,7 @@ bool Calc_amplitudes::calc_diagram(string diagram,string particle,string model)
   }
   
   
-  myfile_stage6 << "Export[\""<<s_cwd<<"/output.txt\", {" << endl;
+  myfile_stage6 << "Export[\""<<s_cwd<<"/output/output.txt\", {" << endl;
   if (n>0)
   {
     for (int i=0;i<n-1;i++)
@@ -552,11 +551,11 @@ bool Calc_amplitudes::calc_diagram(string diagram,string particle,string model)
   
   
   #ifdef RUN_ALL
-  system("chmod +x stage_6.m ");
-  if(verbose) system("./stage_6.m ");
-  else system("./stage_6.m  >/dev/null ");
-  system("chmod u+x ../scripts/stage_8.sh");
-  system("./../scripts/stage_8.sh ");
+  system("chmod +x output/stage_6.m ");
+  if(verbose) system("./output/stage_6.m ");
+  else system("./output/stage_6.m  >/dev/null ");
+  system("chmod u+x scripts/stage_8.sh");
+  system("./scripts/stage_8.sh ");
   #endif
   
   int m = n;
@@ -603,13 +602,13 @@ bool Calc_amplitudes::calc_diagram(string diagram,string particle,string model)
   
   
   ofstream myfile_stage8;
-  myfile_stage8.open ("stage_8.m");
+  myfile_stage8.open ("output/stage_8.m");
   
   
   
-  prev = "\"stage_3.mx\"";
+  prev = "stage_3.mx\"";
   utils::print_math_header(myfile_stage8);
-  myfile_stage8<<"Get[" << prev << "]\n"
+  myfile_stage8<<"Get[\"" << s_cwd <<"/output/"<< prev << "]\n"
   <<"Print[SEn]"<< endl;
 
     
@@ -676,11 +675,11 @@ bool Calc_amplitudes::calc_diagram(string diagram,string particle,string model)
   myfile_stage8 << "Print[\" --------------------------------------- \"]" <<endl;
   
   myfile_stage8 << "Print[diff]"<<endl;
-  myfile_stage8 << "Export[\"result.txt\",diff]"<<endl;
+  myfile_stage8 << "Export[\""<<s_cwd<<"/output/result.txt\", diff]" << endl;
   
   // print out coefficients of products
   
-  myfile_stage8 << "Export[\""<<s_cwd<<"/output_products.txt\", {" << endl;
+  myfile_stage8 << "Export[\""<<s_cwd<<"/output/output_products.txt\", {" << endl;
   
   for (int i = 0; i<n;i++)
   {
@@ -697,7 +696,7 @@ bool Calc_amplitudes::calc_diagram(string diagram,string particle,string model)
   
   // print out in a form useful for determing products later on
   
-  myfile_stage8 << "Export[\""<<s_cwd<<"/output_products_2.txt\", {" << endl;
+  myfile_stage8 << "Export[\""<<s_cwd<<"/output/output_products_2.txt\", {" << endl;
   
   for (int i = 0; i<n;i++)
   {
@@ -716,11 +715,11 @@ bool Calc_amplitudes::calc_diagram(string diagram,string particle,string model)
   myfile_stage8.close();
   
   #ifdef RUN_ALL
-  system("chmod +x stage_8.m ");
-  if(verbose) system("./stage_8.m");
-  else system("./stage_8.m  >/dev/null ");
-  system("chmod u+x ../scripts/stage_9.sh");
-  system("./../scripts/stage_9.sh");
+  system("chmod +x output/stage_8.m ");
+  if(verbose) system("./output/stage_8.m");
+  else system("./output/stage_8.m  >/dev/null ");
+  system("chmod u+x scripts/stage_9.sh");
+  system("./scripts/stage_9.sh");
   #endif
  
   success = check_done();
@@ -736,7 +735,7 @@ bool Calc_amplitudes::calc_diagram(string diagram,string particle,string model)
   
   
   const char* basis_integrals_tmp = "/output/basis_integrals_"; // vector containing file names
-  string c_basis_integrals = "../models/" + model + basis_integrals_tmp + tag + ext;
+  string c_basis_integrals = "models/" + model + basis_integrals_tmp + tag + ext;
   const char *basis_integrals = c_basis_integrals.c_str();
 
 
@@ -767,7 +766,7 @@ bool Calc_amplitudes::calc_diagram(string diagram,string particle,string model)
   
   
   const char* summation_tmp = "/output/summation_"; // vector containing file names
-  string c_summation = "../models/" + model +summation_tmp + tag + ext;
+  string c_summation = "models/" + model +summation_tmp + tag + ext;
   const char *summation = c_summation.c_str();
 
   ofstream summation_out;
@@ -831,19 +830,19 @@ void draw_all_diagrams(std::string particle, string model)
   
   
   ofstream myfile;
-  myfile.open ("make_figures.m");
+  myfile.open ("output/make_figures.m");
 
 
   utils::print_math_header(myfile);
   myfile<<"t12 = CreateTopologies[2, 1 -> 1, ExcludeTopologies -> Internal];\n"
-  <<"alldiags = InsertFields[t12, {"<<particle<<"} -> {"<<particle<<"},InsertionLevel -> {Particles}, GenericModel -> Lorentz,Model -> \""<<s_cwd<<"/../models/"<<model<<"/"<<model<<"\"];\n"
-  <<"Export[\""<<s_cwd<<"/../FA_diagrams/all_diagrams_"<<particle<<".pdf\",Paint[alldiags]];\n"  // print the FA diagram to pdf in local directory
+  <<"alldiags = InsertFields[t12, {"<<particle<<"} -> {"<<particle<<"},InsertionLevel -> {Particles}, GenericModel -> Lorentz,Model -> \""<<s_cwd<<"/models/"<<model<<"/"<<model<<"\"];\n"
+  <<"Export[\""<<s_cwd<<"FA_diagrams/all_diagrams_"<<particle<<".pdf\",Paint[alldiags]];\n"  // print the FA diagram to pdf in local directory
   <<endl;
 
   #ifdef RUN_ALL
-  system("chmod +x make_figures.m ");
-  if (verbose) system("./make_figures.m");
-  else system("./make_figures.m  >/dev/null");
+  system("chmod +x output/make_figures.m ");
+  if (verbose) system("./output/make_figures.m");
+  else system("./output/make_figures.m  >/dev/null");
   #endif
   
   
@@ -875,7 +874,7 @@ void draw_diagrams(vector<std::string> particles, vector<std::string> diagrams, 
   
   
   ofstream myfile;
-  myfile.open ("make_figures.m");
+  myfile.open ("output/make_figures.m");
 
 
  utils::print_math_header(myfile);
@@ -895,7 +894,7 @@ void draw_diagrams(vector<std::string> particles, vector<std::string> diagrams, 
   for (int i=0;i<particle_names_short.size();i++)
   {
   string particle_name_tmp = particle_names_short[i];
-  myfile<<particle_name_tmp<<" = InsertFields[t12, {"<<particle_name_tmp<<"} -> {"<<particle_name_tmp<<"},InsertionLevel -> {Particles}, GenericModel -> Lorentz,Model -> \""<<s_cwd<<"/../models/"<<model<<"/"<<model<<"\"];\n";
+  myfile<<particle_name_tmp<<" = InsertFields[t12, {"<<particle_name_tmp<<"} -> {"<<particle_name_tmp<<"},InsertionLevel -> {Particles}, GenericModel -> Lorentz,Model -> \""<<s_cwd<<"/models/"<<model<<"/"<<model<<"\"];\n";
   myfile<< "subdiags" << particle_name_tmp <<" =   DiagramExtract["<<particle_name_tmp;
   for (int d = 0; d<nd;d++)
   {
@@ -908,14 +907,14 @@ void draw_diagrams(vector<std::string> particles, vector<std::string> diagrams, 
   }
   myfile <<"]\n";
   first = 1;
-  myfile <<"Export[\""<<s_cwd<<"/../FA_diagrams/subset_diagrams_"<<particle_name_tmp<<".pdf\",Paint[subdiags"<<particle_name_tmp<<"]];\n"  // print the FA diagram to pdf in local directory
+  myfile <<"Export[\""<<s_cwd<<"FA_diagrams/subset_diagrams_"<<particle_name_tmp<<".pdf\",Paint[subdiags"<<particle_name_tmp<<"]];\n"  // print the FA diagram to pdf in local directory
   <<endl;
   }
 
   #ifdef RUN_ALL
-  system("chmod +x make_figures.m ");
-  if (verbose) system("./make_figures.m");
-  else system("./make_figures.m  >/dev/null");
+  system("chmod +x output/make_figures.m ");
+  if (verbose) system("./output/make_figures.m");
+  else system("./output/make_figures.m  >/dev/null");
   #endif
   
   

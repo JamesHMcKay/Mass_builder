@@ -19,13 +19,13 @@ double P, Q;
 Data(int argc, char* argv[]) {
 double param [99];
 std::string name [99]; int i=0;
-if (argc==1)
+if (argc==2)
 {
 cout << "Please enter a data file in the format ./main input.txt, using default values " << endl;
 }
 else
 {
-std::ifstream input(argv[1]);
+std::ifstream input(argv[2]);
 std::string line;
 while(getline(input, line)) {
 if (!line.length() || line[0] == '#')
