@@ -22,24 +22,29 @@ if [ "$MATH_PATH" == "math" ]; then
   MATH_PATH="/usr/local/bin/math"
 fi
 
+# add the Mathematica path into the required locations in the source files
 sed -i '' -e "s|.*MATH_PATH.*| /\*MATH_PATH \*/  file<< \"#!$MATH_PATH -script\"<<endl;|g" src/utils.cpp
 
 
 echo "Please enter path to TSIL header tsil_cpp.h"
-echo "for example /Users/jamesmckay/Documents/Programs/tsil-1.3/tsil_cpp.h"
+echo "for example /Users/<user_name>/Programs/tsil-1.3/tsil_cpp.h"
 read TSIL_PATH
 
+# following is default for my system, could use find / -name tsil_cpp.h to search but this is slow
 if [ "$TSIL_PATH" == d ]; then
   TSIL_PATH=/Users/jamesmckay/Documents/Programs/tsil-1.3/tsil_cpp.h
 fi
 
-
+# add the TSIL path into the required places
 sed -i '' -e "s|.*TSIL_INCLUDE_PATH.*| /\*TSIL_INCLUDE_PATH \*/#include \"$TSIL_PATH\"  // Required TSIL header file|g" src/*.cpp
 
 sed -i '' -e "s|.*TSIL_PATH.*| /\* TSIL_PATH \*/ std::string TSIL = \"$TSIL_PATH\";  |g" src/*.cpp
 
 
+# create bare self_energy.cpp so compile works before actual code generated
 cp src/self_energy_bak.cpp src/self_energy.cpp
+# create working directories and build directory
 mkdir build
 mkdir output
+mkdir FA_diagrams
 

@@ -2,12 +2,15 @@
 Mass Builder - the missing link in automated two-loop self energy calculations
 Please refer to the documentation for details or the readme.txt for simple run instructions
 
-Last edited 24/09/16
+Last edited 28/09/16
 James McKay
 
 --- calc_amplitudes.cpp ---
 
-this is where it all happens
+generate mathematica scripts to compute all coefficients and find required basis integrals
+also includes functions for sending FeynArts diagrams directory to pdf in the folder FAdiagrams
+
+run ./mass_builder -g <model_name> after to generate code and ./mass_builder -e input.txt to evaluate
 
 */
 
@@ -951,8 +954,6 @@ cout << "drawing all diagrams specified in the input list" << endl;
 }
 else if (option == "-a")
 {
-//string particle;
-//string model;
 if (argc==4) {cout <<"drawing all diagrams for particle "<<argv[2]<<endl;;draw_all_diagrams(argv[2],argv[3]);}
 else {cout << "please specify a particle after -a to use this option"<< endl;}
 
