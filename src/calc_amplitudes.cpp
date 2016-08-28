@@ -178,7 +178,7 @@ bool check_done()
 bool Calc_amplitudes::calc_diagram(string diagram,string particle,string model)
 {
 
-  bool verbose=1;
+  bool verbose=0;
   bool success=0,done=0;
   bool sum_integrals=1;
   int loop_level = 2;
@@ -197,7 +197,6 @@ bool Calc_amplitudes::calc_diagram(string diagram,string particle,string model)
   _part_2 << particle[2];
   _part_2 >> part_2;
  
- cout << "new name = " << part_1+part_2 << endl;
  string particle_full=particle;
  particle = part_1+part_2;
   
@@ -573,7 +572,6 @@ bool Calc_amplitudes::calc_diagram(string diagram,string particle,string model)
 
   vector<std::string> products;
   get_data(products, n,file_integrals);
-  cout << "product n = " << n << endl;
   
   if (n == 0){
   // just use Bases instead but remove all F terms!
@@ -813,7 +811,7 @@ bool Calc_amplitudes::calc_diagram(string diagram,string particle,string model)
 void draw_all_diagrams(std::string particle, string model)
 {
 
-  bool verbose=1;
+  bool verbose=0;
 
 
 
@@ -855,7 +853,7 @@ void draw_all_diagrams(std::string particle, string model)
 void draw_diagrams(vector<std::string> particles, vector<std::string> diagrams, int nd,string model)
 {
 
-  bool verbose=1;
+  bool verbose=0;
 
 
 

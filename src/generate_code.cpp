@@ -84,42 +84,6 @@ using namespace utils;
 namespace Generate_code
 {
 
-void get_data_2_columns(vector<std::string> &A, vector<std::string> &B,int &n,const char *filename)
-{
-
-cout << "reading file = " << filename << endl;
-n=0;
-std::ifstream input(filename);
-std::string line;
-while(getline(input, line)) {
-      if (!line.length() || line[0] == '#')
-         continue;
-      std::istringstream iss(line);
-      n=n+1;
-   }
-  
-
-
-A.resize(n);
-B.resize(n);
-
-
-n=0;
-std::ifstream input2(filename);
-std::string line2;
-while(getline(input2, line2)) {
-    if (!line2.length() || line2[0] == '#')
-       continue;
-    std::istringstream iss2(line2);
-  
-  
-  iss2>> A[n] >> B[n];
-    n=n+1;
- }
-input.close();
-input2.close();
-}
-
 
 
 
@@ -259,14 +223,14 @@ int main_function (int argc, char *argv[])
   model = argv[2];
   c_file_diagrams = "models/"+ model + "/diagrams.txt";
   }
-  cout << "using model = " << model << endl;
+  
   
   
   
   
   const char *file_diagrams = c_file_diagrams.c_str();
   
-  cout << file_diagrams << endl;
+  
   
   
   
@@ -274,7 +238,7 @@ int main_function (int argc, char *argv[])
   vector<std::string> particle_names;
   int nd; // number of diagrams, length of diagram_number vector
   
-  get_data_2_columns(particle_names,tags, nd,file_diagrams);
+  get_data(particle_names,tags, nd,file_diagrams);
   
   
   
@@ -306,12 +270,12 @@ int main_function (int argc, char *argv[])
   
   
   
-  cout << "diagram = " << tag << endl;
+  
   
   functions<< "TSIL_COMPLEXCPP  diagram"<<"_"<< particle_name << "_" << tag << "()" <<endl;
   functions<< "{" << endl;
   
-  cout << "coeff_integrals = " << coeff_integrals << endl;
+  
   
   ifstream infile(coeff_integrals);
   
@@ -327,7 +291,7 @@ int main_function (int argc, char *argv[])
   i--;
   content.erase(content.end()-1);     // erase last character
 
- // cout << i << " characters read...\n";
+ 
   infile.close();
 
   functions << content;                 // output
@@ -344,7 +308,7 @@ int main_function (int argc, char *argv[])
   i--;
   content2.erase(content2.end()-1);     // erase last character
 
- // cout << i << " characters read...\n";
+ 
   infile2.close();
 
   functions << content2;                 // output
@@ -360,7 +324,7 @@ int main_function (int argc, char *argv[])
   i--;
   content3.erase(content3.end()-1);     // erase last character
 
- // cout << i << " characters read...\n";
+ 
   infile3.close();
 
   functions << content3;                 // output
@@ -377,7 +341,7 @@ int main_function (int argc, char *argv[])
   
 
   functions.close();
-  cout << "done " << endl;
+  
 
 // -------------  now create the DoTSIL function, this should be done each time this is run to avoid duplicates -------------
 
@@ -413,7 +377,7 @@ int main_function (int argc, char *argv[])
   
   
   get_data(integrals_temp, ni,file_integrals);
-  cout << "done that " << endl;
+  
   integrals.resize(ni_total+ni);
   
   for (int i =0; i<ni ; i++)
@@ -536,7 +500,7 @@ int main_function (int argc, char *argv[])
   main_output<< "\n";
 
   
-  cout << "here 4 "<< endl;
+  
   //  DoTSIL function
   
   
@@ -599,7 +563,7 @@ else main_output << "m"<<masses[i] << " = data.m"<<masses[i]<<" , m" << masses[i
 main_output<<";"<<endl;
 main_output<< "\n";
 
-cout << "here 5 "<< endl;
+
 
 main_output<<"dcomp ii=-1;ii=sqrt(ii);i=ii;\n"
 <<"Pi=PI;\n"
@@ -624,7 +588,7 @@ main_output<<"dcomp ii=-1;ii=sqrt(ii);i=ii;\n"
   ii--;
   content2.erase(content2.end()-1);     // erase last character
 
-  cout << ii << " characters read...\n";
+  
   infile4.close();
 
   main_output << content2;                 // output
@@ -633,7 +597,7 @@ main_output<<"dcomp ii=-1;ii=sqrt(ii);i=ii;\n"
   
   
   
-  cout << "here 6 "<< endl;
+  
   
   
   // MAIN FUNCTION CALL
@@ -711,7 +675,7 @@ for (int i=0;i<particle_names_short.size();i++)
   // create header file with required masses and couplings which can be set via user input at runtime
   
   
-  cout << "here 7 "<< endl;
+  
   
   ofstream data_h;
   data_h.open ("include/data.hpp");

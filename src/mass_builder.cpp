@@ -73,7 +73,13 @@ if (option=="-f")
 {
   std::string particles [100];
   std::string diagrams [100]; int i=0;
-  std::ifstream input(argv[2]);
+  std::string model = argv[2];
+  const char *ext = ".txt";
+  const char* file_diagrams_tmp = "models/";
+  string c_file_diagrams = file_diagrams_tmp + model + "/diagrams" + ext;
+  const char *file_diagrams = c_file_diagrams.c_str();
+  cout << "reading file " << file_diagrams << endl;
+  std::ifstream input(file_diagrams);
   std::string line;
   while(getline(input, line))
   {
@@ -86,8 +92,7 @@ if (option=="-f")
 // run over all entries in the input file
   for (int k=0;k<i;k++)
   {
-  
-  ca.calc_diagram(diagrams[k],particles[k],argv[3]);
+  ca.calc_diagram(diagrams[k],particles[k],model);
   }
 
 }

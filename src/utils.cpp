@@ -43,6 +43,43 @@ while(getline(input2, line2)) {
 
 
 
+void get_data(vector<std::string> &A, vector<std::string> &B,int &n,const char *filename)
+{
+
+
+n=0;
+std::ifstream input(filename);
+std::string line;
+while(getline(input, line)) {
+      if (!line.length() || line[0] == '#')
+         continue;
+      std::istringstream iss(line);
+      n=n+1;
+   }
+  
+
+
+A.resize(n);
+B.resize(n);
+
+
+n=0;
+std::ifstream input2(filename);
+std::string line2;
+while(getline(input2, line2)) {
+    if (!line2.length() || line2[0] == '#')
+       continue;
+    std::istringstream iss2(line2);
+  
+  
+  iss2>> A[n] >> B[n];
+    n=n+1;
+ }
+input.close();
+input2.close();
+}
+
+
 
 void print_math_header(ofstream &file)
 {

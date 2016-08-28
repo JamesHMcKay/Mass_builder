@@ -27,6 +27,8 @@ namespace utils
 
 void get_data(vector<std::string> &A,int &n,const char *filename);
 
+void get_data(vector<std::string> &A, vector<std::string> &B,int &n,const char *filename);
+
 void print_math_header(ofstream &myfile);
 
 
