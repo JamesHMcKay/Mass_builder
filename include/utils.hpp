@@ -49,6 +49,8 @@ void print_F(ofstream &myfile, string elements,string SEn="SEn");
 
 bool check_done();
 
+std::string part_name_simple(std::string particle_name_full);
+
 
 }
 

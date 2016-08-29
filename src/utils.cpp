@@ -113,7 +113,7 @@ void print_math_body(ofstream &file,int loop_order,string particle_full,string d
   <<"alldiags = InsertFields[t12, {"<<particle_full<<"} -> {"<<particle_full<<"},InsertionLevel -> {Particles}, GenericModel -> Lorentz,Model -> \""<<cwd<<"/models/"<<model<<"/"<<model<<"\"];\n"
   <<"subdiags0 =   DiagramExtract[alldiags, "<<diagram<<"]\n"
   //<<"Export[\""<<s_cwd<<"/current_diagram.pdf\",Paint[subdiags0]];\n"  // print the FA diagram to pdf in local directory
-  <<"amp0 := FCFAConvert[CreateFeynAmp[subdiags0], IncomingMomenta -> {p}, OutgoingMomenta -> {p}, LoopMomenta -> {k1, k2} ,UndoChiralSplittings -> True,DropSumOver -> True, List -> False, ChangeDimension -> 4] // Contract\n"
+  <<"amp0 := FCFAConvert[CreateFeynAmp[subdiags0], IncomingMomenta -> {p}, OutgoingMomenta -> {p}, LoopMomenta -> {k1, k2} ,UndoChiralSplittings -> True,DropSumOver -> True, List -> False(*, ChangeDimension -> 4*)] // Contract\n" // TODO change dimension removed as done in 1 loop case below?
   <<"amp0 = amp0 /. MajoranaSpinor[p, mc] -> 1 /.Spinor[Momentum[p], mc, 1] -> 1;\n"
   <<"SetOptions[Eps, Dimension -> D];\n"
   <<"fullamp0 = (amp0) // DiracSimplify // FCMultiLoopTID[#, {k1, k2}] & //DiracSimplify;\n"
@@ -125,7 +125,7 @@ void print_math_body(ofstream &file,int loop_order,string particle_full,string d
   <<"alldiags = InsertFields[t12, {"<<particle_full<<"} -> {"<<particle_full<<"},InsertionLevel -> {Particles}, GenericModel -> Lorentz,Model -> \""<<cwd<<"/models/"<<model<<"/"<<model<<"\"];\n"
   <<"subdiags0 =   DiagramExtract[alldiags, "<<diagram<<"]\n"
  // <<"Export[\""<<s_cwd<<"/current_diagram.pdf\",Paint[subdiags0]];\n"  // print the FA diagram to pdf in local directory
-  <<"amp0 := FCFAConvert[CreateFeynAmp[subdiags0], IncomingMomenta -> {p}, OutgoingMomenta -> {p}, LoopMomenta -> {k1} ,UndoChiralSplittings -> True,DropSumOver -> True, List -> False, ChangeDimension -> 4] // Contract\n"
+  <<"amp0 := FCFAConvert[CreateFeynAmp[subdiags0], IncomingMomenta -> {p}, OutgoingMomenta -> {p}, LoopMomenta -> {k1} ,UndoChiralSplittings -> True,DropSumOver -> True, List -> False] // Contract\n"
   <<"amp0 = amp0 /. MajoranaSpinor[p, mc] -> 1 /.Spinor[Momentum[p], mc, 1] -> 1;\n"
   <<"SetOptions[Eps, Dimension -> D];\n"
   <<"fullamp0 = (amp0) // DiracSimplify // FCMultiLoopTID[#, {k1}] & //DiracSimplify;\n"
@@ -272,6 +272,19 @@ bool check_done()
 }
 
 
+std::string part_name_simple(std::string particle_name_full)
+{
+  stringstream _part_1,_part_2;
+  string part_1,part_2;
+  
+  _part_1 << particle_name_full[0];
+  _part_1 >> part_1;
+  _part_2 << particle_name_full[2];
+  _part_2 >> part_2;
+  
+  return part_1+part_2;
+
+}
 
 
 }

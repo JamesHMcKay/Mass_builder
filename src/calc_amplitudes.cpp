@@ -24,6 +24,7 @@ using namespace utils;
 // create a mathematica object that is the product of two basis integrals
 
 bool verbose=1;
+int loop_level = 2;
 
 
 
@@ -32,7 +33,7 @@ bool Calc_amplitudes::calc_diagram(string diagram,string particle,string model)
 {
   bool success=0;
   bool sum_integrals=1;
-  int loop_level = 2;
+  
 
   cout << "calculating diagram " << diagram << " for particle " << particle << " in model " << model << endl;
 
@@ -41,15 +42,9 @@ bool Calc_amplitudes::calc_diagram(string diagram,string particle,string model)
   string underscore = "_";
   string blank = "";
 
-  stringstream _part_1,_part_2;
-  string part_1,part_2;
-  _part_1 << particle[0];
-  _part_1 >> part_1;
-  _part_2 << particle[2];
-  _part_2 >> part_2;
+  string particle_full = particle;
  
- string particle_full=particle;
- particle = part_1+part_2;
+  particle =  part_name_simple(particle_full);
   
   
   
@@ -647,7 +642,7 @@ void draw_all_diagrams(std::string particle, string model)
 
 
   utils::print_math_header(myfile);
-  myfile<<"t12 = CreateTopologies[2, 1 -> 1, ExcludeTopologies -> Internal];\n"
+  myfile<<"t12 = CreateTopologies["<<loop_level<<", 1 -> 1, ExcludeTopologies -> Internal];\n"
   <<"alldiags = InsertFields[t12, {"<<particle<<"} -> {"<<particle<<"},InsertionLevel -> {Particles}, GenericModel -> Lorentz,Model -> \""<<s_cwd<<"/models/"<<model<<"/"<<model<<"\"];\n"
   <<"Export[\""<<s_cwd<<"/FA_diagrams/all_diagrams_"<<particle<<".pdf\",Paint[alldiags]];\n"  // print the FA diagram to pdf in local directory
   <<endl;

@@ -167,7 +167,6 @@ int main_function (int argc, char *argv[])
   
   string particle_name = ""; // hold this fixed, produce one cpp for each particle
   string particle_name_reduced = "";
-  //int diagram_number = 13; // make this into a vector of diagrams
   string tag = "empty";
   
   
@@ -208,10 +207,6 @@ int main_function (int argc, char *argv[])
   c_file_diagrams = "models/"+ model + "/diagrams.txt";
   }
   
-  
-  
-  
-  
   const char *file_diagrams = c_file_diagrams.c_str();
   
   
@@ -226,8 +221,7 @@ int main_function (int argc, char *argv[])
   
   
   
-  stringstream _part_1,_part_2;
-  string part_1,part_2;
+
   
   
   for (int d = 0; d<nd;d++)
@@ -237,12 +231,9 @@ int main_function (int argc, char *argv[])
   
   tag = tags[d];
   particle_name = particle_names[d];
-
-  _part_1 << particle_name[0];
-  _part_1 >> part_1;
-  _part_2 << particle_name[2];
-  _part_2 >> part_2;
-  particle_name = part_1+part_2;
+  cout << "particle name first = " << particle_name << endl;
+  
+  particle_name =  part_name_simple(particle_names[d]);
   
   string c_coeff_integrals = "models/" + model +coeff_integrals_tmp + underscore + particle_name + underscore + tag + ext;
   string c_coeff_products = "models/" + model + coeff_products_tmp + underscore + particle_name + underscore + tag + ext;
@@ -339,16 +330,8 @@ int main_function (int argc, char *argv[])
   {
   tag = tags[d];
   
-  particle_name = particle_names[d];
-
-  _part_1 << particle_name[0];
-  _part_1 >> part_1;
-  _part_2 << particle_name[2];
-  _part_2 >> part_2;
-  particle_name = part_1+part_2;
-  //if (particle_names[d] == particle_name_reduced)
- // {
- 
+  particle_name =  part_name_simple(particle_names[d]);
+  
  
   
   const char* file_integrals_tmp = "/output/basis_integrals"; // vector containing file names
@@ -614,14 +597,10 @@ vector<std::string> particle_names_short_reduced;
 
 for (unsigned int i=0;i<particle_names_short.size();i++)
 {
-  
   string particle_name_tmp = particle_names_short[i];
-  _part_1 << particle_name_tmp[0];
-  _part_1 >> part_1;
-  _part_2 << particle_name_tmp[2];
-  _part_2 >> part_2;
- string particle_name_tmp_short = part_1+part_2;
- particle_names_short_reduced.push_back(particle_name_tmp_short);
+  string particle_name_tmp_short = part_name_simple(particle_names_short[i]);
+ 
+  particle_names_short_reduced.push_back(particle_name_tmp_short);
   
   main_output<< "TSIL_COMPLEXCPP SE_"<<particle_name_tmp_short<<" = ";
   
