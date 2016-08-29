@@ -23,15 +23,13 @@ using namespace utils;
 
 // create a mathematica object that is the product of two basis integrals
 
-
+bool verbose=1;
 
 
 
 
 bool Calc_amplitudes::calc_diagram(string diagram,string particle,string model)
 {
-
-  bool verbose=0;
   bool success=0;
   bool sum_integrals=1;
   int loop_level = 2;
@@ -241,7 +239,7 @@ bool Calc_amplitudes::calc_diagram(string diagram,string particle,string model)
   
   
   //////////////////////////////////////////////////////////////////
-  //  Now determine create substatially more compact Mathematica routine
+  //  Now create substatially more compact Mathematica routine
   //  using only the required basis integrals and non-zero coefficients
   //  then determine what cross-terms we still need to account for
   
@@ -634,7 +632,7 @@ bool Calc_amplitudes::calc_diagram(string diagram,string particle,string model)
 void draw_all_diagrams(std::string particle, string model)
 {
 
-  bool verbose=0;
+  
 
 
 
@@ -651,7 +649,7 @@ void draw_all_diagrams(std::string particle, string model)
   utils::print_math_header(myfile);
   myfile<<"t12 = CreateTopologies[2, 1 -> 1, ExcludeTopologies -> Internal];\n"
   <<"alldiags = InsertFields[t12, {"<<particle<<"} -> {"<<particle<<"},InsertionLevel -> {Particles}, GenericModel -> Lorentz,Model -> \""<<s_cwd<<"/models/"<<model<<"/"<<model<<"\"];\n"
-  <<"Export[\""<<s_cwd<<"FA_diagrams/all_diagrams_"<<particle<<".pdf\",Paint[alldiags]];\n"  // print the FA diagram to pdf in local directory
+  <<"Export[\""<<s_cwd<<"/FA_diagrams/all_diagrams_"<<particle<<".pdf\",Paint[alldiags]];\n"  // print the FA diagram to pdf in local directory
   <<endl;
 
   #ifdef RUN_ALL
@@ -670,7 +668,7 @@ void draw_all_diagrams(std::string particle, string model)
 void draw_diagrams(vector<std::string> particles, vector<std::string> diagrams, int nd,string model)
 {
 
-  bool verbose=0;
+  
 
   
   string s_cwd(getcwd(NULL,0));
@@ -713,7 +711,7 @@ void draw_diagrams(vector<std::string> particles, vector<std::string> diagrams, 
   }
   myfile <<"]\n";
   //first = 1;
-  myfile <<"Export[\""<<s_cwd<<"FA_diagrams/subset_diagrams_"<<particle_name_tmp<<".pdf\",Paint[subdiags"<<particle_name_tmp<<"]];\n"  // print the FA diagram to pdf in local directory
+  myfile <<"Export[\""<<s_cwd<<"/FA_diagrams/subset_diagrams_"<<particle_name_tmp<<".pdf\",Paint[subdiags"<<particle_name_tmp<<"]];\n"  // print the FA diagram to pdf in local directory
   <<endl;
   }
 

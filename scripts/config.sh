@@ -8,7 +8,6 @@ echo "  "
 echo "osx    for OSX:/Applications/Mathematica.app/Contents/MacOS/MathematicaScript"
 echo "osx64  for OSX Intel 64-bit machine:/Applications/Mathematica.app/Contents/MacOS/MathematicaScript64"
 echo "math   for most other systems which already have kernal from /usr/local/bin/math"
-echo "  "
 read MATH_PATH
 if [ "$MATH_PATH" == "osx" ]; then
   MATH_PATH="/Applications/Mathematica.app/Contents/MacOS/MathematicaScript"
@@ -25,7 +24,7 @@ fi
 # add the Mathematica path into the required locations in the source files
 sed -i '' -e "s|.*MATH_PATH.*| /\*MATH_PATH \*/  file<< \"#!$MATH_PATH -script\"<<endl;|g" src/utils.cpp
 
-
+echo "  "
 echo "Please enter path to TSIL header tsil_cpp.h"
 echo "for example /Users/<user_name>/Programs/tsil-1.3/tsil_cpp.h"
 read TSIL_PATH
@@ -39,6 +38,11 @@ fi
 sed -i '' -e "s|.*TSIL_INCLUDE_PATH.*| /\*TSIL_INCLUDE_PATH \*/#include \"$TSIL_PATH\"  // Required TSIL header file|g" src/*.cpp
 
 sed -i '' -e "s|.*TSIL_PATH.*| /\* TSIL_PATH \*/ std::string TSIL = \"$TSIL_PATH\";  |g" src/*.cpp
+
+sed -i '' -e "s|.*set(TSIL_HEADER_FILE.*|set(TSIL_HEADER_FILE $TSIL_PATH ) |g" CMakeLists.txt
+
+
+
 
 
 # create bare self_energy.cpp so compile works before actual code generated

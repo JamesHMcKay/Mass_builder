@@ -3,7 +3,8 @@ project(mass_builder)
 message(status "${CMAKE_CURRENT_SOURCE_DIR}")
 
 include_directories(src include)
-set(HEADER_FILES /Users/jamesmckay/Documents/Programs/tsil-1.3/tsil_cpp.h  include/data.hpp include/self_energy.hpp include/supplements.hpp)
+set(TSIL_HEADER_FILE /Users/jamesmckay/Documents/Programs/tsil-1.3/tsil_cpp.h ) 
+set(HEADER_FILES include/data.hpp include/self_energy.hpp include/supplements.hpp)
 set(SRC_FILES src/self_energy.cpp src/supplements.cpp )
 
 
@@ -18,7 +19,7 @@ LINK_DIRECTORIES(/Users/jamesmckay/Documents/Programs/tsil-1.3)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 set(CMAKE_CXX_FLAGS -L.)
 
-add_executable(mass_builder ${SRC_FILES_GEN} ${HEADER_FILES_GEN} ${SRC_FILES} ${HEADER_FILES})
+add_executable(mass_builder ${SRC_FILES_GEN} ${HEADER_FILES_GEN} ${TSIL_HEADER_FILE} ${SRC_FILES} ${HEADER_FILES})
 
 TARGET_LINK_LIBRARIES(mass_builder libtsil.a)
 

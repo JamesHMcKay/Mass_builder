@@ -16,4 +16,4 @@
  
 
 
-void Self_energy::run_tsil(Data &data){};
+void Self_energy::run_tsil(Data &data){}
