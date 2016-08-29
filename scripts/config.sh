@@ -26,21 +26,22 @@ sed -i '' -e "s|.*MATH_PATH.*| /\*MATH_PATH \*/  file<< \"#!$MATH_PATH -script\"
 
 echo "  "
 echo "Please enter path to TSIL header tsil_cpp.h"
-echo "for example /Users/<user_name>/Programs/tsil-1.3/tsil_cpp.h"
+echo "for example /Users/<user_name>/Programs/tsil-1.3"
 read TSIL_PATH
 
 # following is default for my system, could use find / -name tsil_cpp.h to search but this is slow
 if [ "$TSIL_PATH" == d ]; then
-  TSIL_PATH=/Users/jamesmckay/Documents/Programs/tsil-1.3/tsil_cpp.h
+  TSIL_PATH=/Users/jamesmckay/Documents/Programs/tsil-1.3
 fi
 
 # add the TSIL path into the required places
-sed -i '' -e "s|.*TSIL_INCLUDE_PATH.*| /\*TSIL_INCLUDE_PATH \*/#include \"$TSIL_PATH\"  // Required TSIL header file|g" src/*.cpp
+sed -i '' -e "s|.*TSIL_INCLUDE_PATH.*| /\*TSIL_INCLUDE_PATH \*/#include \"$TSIL_PATH/tsil_cpp.h\"  // Required TSIL header file|g" src/*.cpp
 
-sed -i '' -e "s|.*TSIL_PATH.*| /\* TSIL_PATH \*/ std::string TSIL = \"$TSIL_PATH\";  |g" src/*.cpp
+sed -i '' -e "s|.*TSIL_PATH.*| /\* TSIL_PATH \*/ std::string TSIL = \"$TSIL_PATH/tsil_cpp.h\";  |g" src/*.cpp
 
-sed -i '' -e "s|.*set(TSIL_HEADER_FILE.*|set(TSIL_HEADER_FILE $TSIL_PATH ) |g" CMakeLists.txt
+sed -i '' -e "s|.*set(TSIL_HEADER_FILE.*|set(TSIL_HEADER_FILE $TSIL_PATH/tsil_cpp.h ) |g" CMakeLists.txt
 
+sed -i '' -e "s|.*LINK_DIRECTORIES().*|LINK_DIRECTORIES($TSIL_PATH) |g" CMakeLists.txt
 
 
 

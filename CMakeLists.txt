@@ -12,8 +12,6 @@ set(HEADER_FILES_GEN include/calc_amplitudes.hpp include/utils.hpp)
 set(SRC_FILES_GEN src/mass_builder.cpp src/calc_amplitudes.cpp src/generate_code.cpp src/utils.cpp)
 
 
-
-
 LINK_DIRECTORIES(/Users/jamesmckay/Documents/Programs/tsil-1.3)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})

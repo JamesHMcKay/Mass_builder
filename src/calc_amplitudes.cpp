@@ -45,6 +45,7 @@ bool Calc_amplitudes::calc_diagram(string diagram,string particle,string model)
   string particle_full = particle;
  
   particle =  part_name_simple(particle_full);
+  // edit particle name to a safe string
   
   
   
@@ -106,13 +107,56 @@ bool Calc_amplitudes::calc_diagram(string diagram,string particle,string model)
   <<"Print[\"-------------------- = \"]"<< endl;
 
 
-  // edit particle name to a safe string
   
   
   
   
 
 
+  //////////////////////////////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////////////////////////////
+  /*
+  
+  plan to make handling of basis integrals more abstract to deal with complicated mass names
+  
+  we create a struct for each basis integral that is given a simplifed name, this struct contains the mass
+  in each location of the integral, and the type of basis integral
+  
+  simplifed name: FMaMaMaMzMw is just stupid, it should be Faaazw, so we need to assign a unique single character
+  name to each mass, this can be set at runtime by the user in the second column of "masses", if it is not set
+  it will be set automatically from the alphabet.
+  
+  alternatively, we have a class for each type of basis integral which is initialised with the required masses
+  the class then determines all possible non degenerate basis integrals and creates these in vectors (or it could
+  make a set of structs like that described above)
+  
+  
+  tricky part is identifying the non-zero elements after a run through mathematica, what we get back is
+  at best a list of the non-zero class names, for example Faaazw.  It would be nicer if somehow the struct
+  for each basis integral held a string called "coeff", which was automatically updated after a run through
+  mathematica.  Then all those with zeros are deallocated.
+  
+  idea to solve above problem: open mathematica output, and directly read in the following
+  "Faaazw COEFFICIENT"
+  
+  so someting like
+  
+  open(math_out.txt)
+  
+  line by line:  string class_name << Faaazw
+  string COEFF << COEFFICIENT
+  
+  
+  util_func( class_name, COEFF) { writes COEFF into class given by class_name} // tricky -> use maps
+  so for each mass combination we create a class with a 
+  
+  
+  
+  
+  
+  */
+  //////////////////////////////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////////////////////////////
 
   ofstream myfile_names;
   myfile_names.open ("output/names.txt");
@@ -122,7 +166,6 @@ bool Calc_amplitudes::calc_diagram(string diagram,string particle,string model)
   
   int k=0;
   
-  // want to do for loop for each element, but we have arbitrary number of elements
   
   
   
@@ -198,6 +241,27 @@ bool Calc_amplitudes::calc_diagram(string diagram,string particle,string model)
   }
   }
   
+  myfile_names.close();
+  
+  
+  //////////////////////////////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////////////////////////////
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
   
   
   myfile << "Export[\""<<s_cwd<<"/output/output.txt\", {" << endl;
@@ -218,7 +282,7 @@ bool Calc_amplitudes::calc_diagram(string diagram,string particle,string model)
   
   myfile.close();
   
-  myfile_names.close();
+  
   
 
   #ifdef RUN_ALL
