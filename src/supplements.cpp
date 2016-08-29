@@ -72,7 +72,7 @@ dBca = i*TSIL_dBds_(mc,ma,s,Q2);
 
 }
 
-int init(/*Data data*/)
+int init(Data data)
 {
 /*mw= data.M_w, mz = data.M_z ,ma = data.M_a, mc = data.M_chi, g2=data.g1;
 tW = acos(mw/mz);
@@ -81,8 +81,8 @@ sw = sin(tW), cw = cos(tW);
 C = TSIL_POW(g2,2)/(16.0L*PI*PI);
 i=Power(-1,0.5);
 Pi=PI;
-TSIL_REAL p = data.M_chi, Q2 =data.Q;
-DoTSIL_2( TSIL_POW(p,2),Q2);*/
+TSIL_REAL p = data.M_chi, Q2 =data.Q;*/
+DoTSIL_2( TSIL_POW(data.P,2),data.Q);
 return 0;
 }
 
@@ -128,10 +128,10 @@ return -SigmaK_0(p,M)/(TSIL_POW(p,2))-(2.0*C/TSIL_POW(p,2))*(Bwc+(TSIL_POW(p,2)+
 }
 
 
-void Supplements::add_derivatives(/*Data &data*/)
+void Supplements::add_derivatives(Data &data)
 {
 TSIL_REAL p = 1.0,M=1.0;//data.M_chi, M = data.M_chi;
-init(/*data*/);
+init(data);
 TSIL_COMPLEXCPP SE_0 = (SigmaM_0(M) + M*SigmaK_0(M,p) )*( SigmaK_0(M,p) + 2.0L*TSIL_POW(M,2)*d_SigmaK_0(M,p)+2.0L*M*d_SigmaM_0(M));
 TSIL_COMPLEXCPP SE_1 =(SigmaM_1(M) + M*SigmaK_1(M,p) )*( SigmaK_1(M,p) + 2.0L*TSIL_POW(M,2)*d_SigmaK_1(M,p)+2.0L*M*d_SigmaM_1(M));
 //data.SE_1 = data.SE_1+real(SE_0);

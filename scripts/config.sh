@@ -47,7 +47,7 @@ sed -i '' -e "s|.*set(TSIL_HEADER_FILE.*|set(TSIL_HEADER_FILE $TSIL_PATH ) |g" C
 
 # create bare self_energy.cpp so compile works before actual code generated
 cp src/self_energy_bak.cpp src/self_energy.cpp
-#cp include/data_back src/self_energy.cpp # TODO add a bare data.hpp file
+cp include/data_bak.hpp include/data.hpp
 # create working directories and build directory
 mkdir build
 mkdir output
