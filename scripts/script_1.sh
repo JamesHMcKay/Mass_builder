@@ -5,12 +5,14 @@ rm output/names_updated_temp.txt
 
 sed -n '/= 0 ;/!p' output/output.txt > output/output_tidy.txt
 
+sed -n '/= 0 ;/!p' output/output2.txt > output/output_tidy_new.txt
+
 cut -d' ' -f3 output/output_tidy.txt >> output/names_updated_temp.txt
 
 cut -c2-20 output/names_updated_temp.txt >> output/names_updated.txt
 
 
-FAoutput="output/output_tidy.txt"
+FAoutput="output/output_tidy_new.txt"
 
 sed -i '' -e 's/TBI(4,Power(p,2),List(List(1,mc),List(1,ma)))/1.0L*Bac/g' $FAoutput
 

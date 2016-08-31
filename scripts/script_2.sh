@@ -8,7 +8,7 @@ if [ ! -e "models/"$model"/output/" ]; then
   mkdir models/"$model"/output
 fi
 
-cp output/output_tidy.txt models/"$model"/output/coeff_integrals_"$tag".txt
+cp output/output_tidy_new.txt models/"$model"/output/coeff_integrals_"$tag".txt
 
 
 

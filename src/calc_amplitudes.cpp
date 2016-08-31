@@ -147,7 +147,7 @@ bool Calc_amplitudes::calc_diagram(string diagram,string particle,string model)
 
             print_math_basis(base_map,myfile, "SEn");
 
-            myfile << "Export[\""<<s_cwd<<"/output/output_new.txt\", {" << endl;
+            myfile << "Export[\""<<s_cwd<<"/output/output.txt\", {" << endl;
 
 
 
@@ -158,6 +158,23 @@ bool Calc_amplitudes::calc_diagram(string diagram,string particle,string model)
 
             myfile << "{\" "<<bases_names[bases_names.size()-1]<<" \", CForm[C"<<bases_names[bases_names.size()-1]<<" /. Pair[Momentum[p], Momentum[p]] -> p^2 /. DiracGamma[Momentum[p]] -> p], \"\"}" << endl;
             myfile << " }, \"Table\", \"FieldSeparators\" -> \" \", \"TextDelimiters\" -> \"\"];" << endl;
+  
+  
+  
+            myfile << "Export[\""<<s_cwd<<"/output/output2.txt\", {" << endl;
+
+
+
+            for (unsigned int i = 0; i < bases_names.size();i++)
+            {
+              myfile << "{\"TSIL_COMPLEXCPP C"<<bases_names[i]<<" =\", CForm[C"<<bases_names[i]<<" /. Pair[Momentum[p], Momentum[p]] -> p^2 /. DiracGamma[Momentum[p]] -> p], \";\"}," << endl;
+            }
+
+            myfile << "{\"TSIL_COMPLEXCPP C"<<bases_names[bases_names.size()-1]<<" =\", CForm[C"<<bases_names[bases_names.size()-1]<<" /. Pair[Momentum[p], Momentum[p]] -> p^2 /. DiracGamma[Momentum[p]] -> p], \";\"}" << endl;
+            myfile << " }, \"Table\", \"FieldSeparators\" -> \" \", \"TextDelimiters\" -> \"\"];" << endl;
+
+  
+  
 
 
   ///   END NEW CONTENT ///
@@ -170,117 +187,6 @@ bool Calc_amplitudes::calc_diagram(string diagram,string particle,string model)
   //////////////////////////////////////////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-  A = id_input;
-  ofstream myfile_names;
-  myfile_names.open ("output/names.txt");
-  
-  vector<std::string> Bases_names;
-  int nb = 0;
-  
-  int k=0;
-  
-  
-  
-  for (int i1 = 0; i1 < n ; i1++)
-  {
-//  print_A(myfile,A[i1]);
-  myfile_names << "A"<< A[i1] << endl;
-  Bases_names.push_back("A"+A[i1]);nb = nb+1;
-  for (int i2 = 0; i2 < n ; i2++)
-  {
-  for (int i3 = 0; i3 < n ; i3++)
-  {
-  for (int i4 = 0; i4 < n ; i4++)
-  {
-  //print_V(myfile , A[i1]+A[i2]+A[i3]+A[i4]);
-  myfile_names << "V"<< A[i1]+A[i2]+A[i3]+A[i4] << endl;
-  Bases_names.push_back("V"+A[i1]+A[i2]+A[i3]+A[i4]);nb = nb+1;
-  
-  for (int i5 = 0; i5 < n ; i5++)
-  {
- // print_F(myfile, A[i1]+A[i2]+A[i3]+A[i4]+A[i5] );
-  myfile_names << "F"<< A[i1]+A[i2]+A[i3]+A[i4]+A[i5] << endl;
-  Bases_names.push_back("F"+A[i1]+A[i2]+A[i3]+A[i4]+A[i5]);nb = nb+1;
-  
-  k=k+1;
-  }}}}}
-  
-  
-  
-  // deal with symmetries appropriately
-  
-  
-  for (int i1 = 0; i1 < n ; i1++)
-  {
-  for (int i2 = i1; i2 < n ; i2++)
-  {
-  //print_B(myfile, A[i1]+A[i2]);
-  myfile_names << "B"<< A[i1]+A[i2] << endl;
-  Bases_names.push_back("B"+A[i1]+A[i2]);nb = nb+1;
-  
-  }}
-  
-  
-  for (int i1 = 0; i1 < n ; i1++)
-  {
-  for (int i2 = i1; i2 < n ; i2++)
-  {
-  for (int i3 = i2; i3 < n ; i3++)
-  {
-  //print_J(myfile, A[i1]+A[i2]+A[i3]);
-  myfile_names << "J"<< A[i1]+A[i2]+A[i3] << endl;
-  Bases_names.push_back("J"+A[i1]+A[i2]+A[i3]);nb = nb+1;
-  //print_K(myfile, A[i1]+A[i2]+A[i3]);
-  myfile_names << "K"<< A[i1]+A[i2]+A[i3] << endl;
-  Bases_names.push_back("K"+A[i1]+A[i2]+A[i3]);nb = nb+1;
-  
-  }}}
-  
-    
-  for (int i1 = 0; i1 < n ; i1++)
-  {
-  for (int i2 = 0; i2 < n ; i2++)
-  {
-  for (int i3 = i2; i3 < n ; i3++)
-  {
-  
- // print_T(myfile, A[i1]+A[i2]+A[i3]);
-  myfile_names << "T"<< A[i1]+A[i2]+A[i3] << endl;
-  Bases_names.push_back("T"+A[i1]+A[i2]+A[i3]);nb = nb+1;
-  
-  
-  }
-  }
-  }
-  
-  myfile_names.close();
-  
-  
-  
-  
-  myfile << "Export[\""<<s_cwd<<"/output/output.txt\", {" << endl;
-  
-  
-  
-  for (int i=0;i<nb-1;i++)
-  {
-    myfile << "{\" TSIL_COMPLEXCPP C"<<Bases_names[i]<<" =\", CForm[C"<<Bases_names[i]<<" /. Pair[Momentum[p], Momentum[p]] -> p^2 /. DiracGamma[Momentum[p]] -> p], \";\"}," << endl;
-  }
-  
-  myfile << "{\" TSIL_COMPLEXCPP C"<<Bases_names[nb-1]<<" =\", CForm[C"<<Bases_names[nb-1]<<" /. Pair[Momentum[p], Momentum[p]] -> p^2 /. DiracGamma[Momentum[p]] -> p], \";\"}" << endl;
-  myfile << " }, \"Table\", \"FieldSeparators\" -> \" \", \"TextDelimiters\" -> \"\"];" << endl;
-  
-  myfile << "Print[\"Completed\"]"<<endl;
-  
-  
-  
-  myfile.close();
-  
-  
-  
-  
   
   
   #ifdef RUN_ALL
@@ -303,7 +209,7 @@ bool Calc_amplitudes::calc_diagram(string diagram,string particle,string model)
   /*  new content below
   
   
-  Idea here is to take output_new.txt and read in the coefficients to the Base object, so now each object in the map will have
+  Idea here is to take output.txt and read in the coefficients to the Base object, so now each object in the map will have
   a coefficient associated with it.  We can then cull the map down to a much shorter map.  Then we will deal with products.
   
   In this section we reduce SEn trial to the cross terms
@@ -316,7 +222,7 @@ bool Calc_amplitudes::calc_diagram(string diagram,string particle,string model)
             vector<std::string> output_string, coeff_new;
             int temp_int = 0;
             
-            const char* file_integrals2_tmp = "output/output_new";
+            const char* file_integrals2_tmp = "output/output";
             string c_file_integrals2 = file_integrals2_tmp + blank + ext;
             const char *file_integrals2 = c_file_integrals2.c_str();
             
@@ -366,7 +272,7 @@ bool Calc_amplitudes::calc_diagram(string diagram,string particle,string model)
   
             print_math_basis(reduced_base_map,myfile_stage6b, "diff");
   
-            myfile_stage6b << "Export[\""<<s_cwd<<"/output/output_new.txt\", {" << endl;
+            myfile_stage6b << "Export[\""<<s_cwd<<"/output/output.txt\", {" << endl;
 
 
             if (reduced_bases_names.size()!=0)
@@ -409,135 +315,7 @@ bool Calc_amplitudes::calc_diagram(string diagram,string particle,string model)
   
   
   
-  n = 0;
-  vector<std::string> integrals;
-  
-  
-  const char* file_integrals_tmp = "output/names_updated";
-  string c_file_integrals = file_integrals_tmp + blank + ext;
-  const char *file_integrals = c_file_integrals.c_str();
-  
-  
-  get_data(integrals, n,file_integrals);
-  if (n==0) {integrals = Bases_names; n = Bases_names.size(); sum_integrals = 0;}
-  
-  
-  string prev = "stage_3.mx\"";
-  ofstream myfile_stage6;
-  myfile_stage6.open ("output/stage_6.m");
-  
-  utils::print_math_header(myfile_stage6);
-  myfile_stage6<<"Get[\"" << s_cwd <<"/output/"<< prev << "]\n"
-  <<"Print[SEn]"<< endl;
-  
-  
-  
-  
-  
-  // integrals is a vector of length n containing all the required integrals
-  // need to extract each element and catagorise them
-  
-  for (int i = 0; i<n;i++)
-  {
-  string name = integrals[i];
-  stringstream _e1,_e2,_e3,_e4,_e5, _type;
-  string e1,e2,e3,e4,e5, type;
-  _type << name[0];
-  _type >> type;
-  _e1 << name[1];_e1 >> e1;
-  _e2 << name[2];_e2 >> e2;
-  _e3 << name[3];_e3 >> e3;
-  _e4 << name[4];_e4 >> e4;
-  _e5 << name[5];_e5 >> e5;
-  
-  if (type == "A") print_A(myfile_stage6,e1);
-  if (type == "B") print_B(myfile_stage6, e1+e2);
-  if (type == "J") print_J(myfile_stage6, e1+e2+e3);
-  if (type == "T") print_T(myfile_stage6, e1+e2+e3);
-  if (type == "K") print_K(myfile_stage6, e1+e2+e3);
-  if (type == "V") print_V(myfile_stage6, e1+e2+e3+e4);
-  if (type == "F") print_F(myfile_stage6, e1+e2+e3+e4+e5);
-  }
-
-  
-  myfile_stage6 << "SEnTrial = 0 ";
-  
-  for (int i = 0; i<n;i++)
-  {
-  
-  myfile_stage6 << " + "<<integrals[i]<< " * C"<<integrals[i];
-    
-  }
-  myfile_stage6 << ";"<<endl;
-  
-  myfile_stage6 << "diff = FullSimplify[SEn-SEnTrial]"<<endl;
-  myfile_stage6 << "Print[\" --------------------------------------- \"]" <<endl;
-  myfile_stage6 << "Print[\" --------------------------------------- \"]" <<endl;
-  myfile_stage6 << "Print[\" The difference between trial and actual SE is:\"]" <<endl;
-  myfile_stage6 << "Print[\" --------------------------------------- \"]" <<endl;
-  myfile_stage6 << "Print[\" --------------------------------------- \"]" <<endl;
-  
-  myfile_stage6 << "Print[diff]"<<endl;
-  
-  myfile_stage6 << "Export[\""<<s_cwd<<"/output/result.txt\", diff]" << endl;
-
-  
-  
-
-    
-  for (int i = 0; i<n;i++)
-  {
-  string name = integrals[i];
-  stringstream _e1,_e2,_e3,_e4,_e5, _type;
-  string e1,e2,e3,e4,e5, type;
-  _type << name[0];
-  _type >> type;
-  _e1 << name[1];_e1 >> e1;
-  _e2 << name[2];_e2 >> e2;
-  _e3 << name[3];_e3 >> e3;
-  _e4 << name[4];_e4 >> e4;
-  _e5 << name[5];_e5 >> e5;
-  
-  if (type == "A") print_A(myfile_stage6,e1,"diff");
-  if (type == "B") print_B(myfile_stage6, e1+e2,"diff");
-  if (type == "J") print_J(myfile_stage6, e1+e2+e3,"diff");
-  if (type == "T") print_T(myfile_stage6, e1+e2+e3,"diff");
-  if (type == "K") print_K(myfile_stage6, e1+e2+e3,"diff");
-  if (type == "V") print_V(myfile_stage6, e1+e2+e3+e4,"diff");
-  if (type == "F") print_F(myfile_stage6, e1+e2+e3+e4+e5,"diff");
-  }
-  
-  
-  myfile_stage6 << "Export[\""<<s_cwd<<"/output/output.txt\", {" << endl;
-  if (n>0)
-  {
-    for (int i=0;i<n-1;i++)
-  {
-    myfile_stage6 << "{\" TSIL_COMPLEXCPP C"<<integrals[i]<<" =\", CForm[C"<<integrals[i]<<" /. Pair[Momentum[p], Momentum[p]] -> p^2 /. DiracGamma[Momentum[p]] -> p], \";\"}," << endl;
-  }
-  
-  myfile_stage6 << "{\" TSIL_COMPLEXCPP C"<<integrals[n-1]<<" =\", CForm[C"<<integrals[n-1]<<" /. Pair[Momentum[p], Momentum[p]] -> p^2 /. DiracGamma[Momentum[p]] -> p], \";\"}" << endl;
-  myfile_stage6 << " }, \"Table\", \"FieldSeparators\" -> \" \", \"TextDelimiters\" -> \"\"];" << endl;
-  }
-  
-  myfile_stage6 << "Print[\"Completed\"]"<<endl;
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  myfile_stage6.close();
-  
-  
   #ifdef RUN_ALL
-  system("chmod +x output/stage_6.m ");
-  if(verbose) system("./output/stage_6.m ");
-  else system("./output/stage_6.m  >/dev/null ");
       system("chmod +x output/stage_6b.m ");
       if(verbose) system("./output/stage_6b.m ");
       else system("./output/stage_6b.m  >/dev/null ");
@@ -545,7 +323,7 @@ bool Calc_amplitudes::calc_diagram(string diagram,string particle,string model)
   system("./scripts/script_2.sh ");
   #endif
   
-  int m = n;
+  
   n = 0;
   
 //  if (check_done()) {success = 1;}
@@ -689,157 +467,6 @@ bool Calc_amplitudes::calc_diagram(string diagram,string particle,string model)
   //////////////////////////////////////////////////////////////////
   
   
-  
-  
-  
-  
-  
-  
-  
-  
-
-  vector<std::string> products;
-  get_data(products, n,file_integrals);
-  
-  if (n == 0){
-  // just use Bases_names instead but remove all F terms!
-  
-  for (unsigned int i=0;i<Bases_names.size();i++)
-  {
-  
-  string nameB = Bases_names[i];
-  stringstream _Btype;
-  string Btype;
-  _Btype << nameB[0];
-  _Btype >> Btype;
-  
-  if (Btype != "F") { n=n+1; products.push_back(Bases_names[i]);}
-  
-  
-  }
-  }
-  
-  
-  // need to consider all permuations of each element of combos, for which rank < 5
-  // ranks are scored as ->  J,T,K = 3, A = 1, B = 2, V = 4, F = 5 (should not come up here)
-  // produce new objects, for example the object BacAc = TAI [ ... ] * TBI [ ... ] and the corresponding coefficient check
-  // and print out statement in CForm
-  
-  
-  
-  ofstream myfile_stage8;
-  myfile_stage8.open ("output/stage_8.m");
-  
-  
-  
-  prev = "stage_3.mx\"";
-  utils::print_math_header(myfile_stage8);
-  myfile_stage8<<"Get[\"" << s_cwd <<"/output/"<< prev << "]\n"
-  <<"Print[SEn]"<< endl;
-
-    
-  for (int i = 0; i<m;i++)
-  {
-  string name = integrals[i];
-  stringstream _e1,_e2,_e3,_e4,_e5, _type;
-  string e1,e2,e3,e4,e5, type;
-  _type << name[0];
-  _type >> type;
-  _e1 << name[1];_e1 >> e1;
-  _e2 << name[2];_e2 >> e2;
-  _e3 << name[3];_e3 >> e3;
-  _e4 << name[4];_e4 >> e4;
-  _e5 << name[5];_e5 >> e5;
-  
-  if (type == "A") print_A(myfile_stage8, e1);
-  if (type == "B") print_B(myfile_stage8, e1+e2);
-  if (type == "J") print_J(myfile_stage8, e1+e2+e3);
-  if (type == "T") print_T(myfile_stage8, e1+e2+e3);
-  if (type == "K") print_K(myfile_stage8, e1+e2+e3);
-  if (type == "V") print_V(myfile_stage8, e1+e2+e3+e4);
-  if (type == "F") print_F(myfile_stage8, e1+e2+e3+e4+e5);
-  }
-  
-  
-  
-  
-  for (int i = 0; i<n;i++)
-  {
-
-  
-  for (int j = 0; j<n;j++)
-  {
-  
-  
-  print_product(myfile_stage8,products[i],products[j]);
-  }
-  }
-  myfile_stage8 << "SEnTrial = ";
-  for (int i = 0; i<m;i++)
-  {
-  myfile_stage8 << " + "<<integrals[i]<< " * C"<<integrals[i];
-  }
-  
-  
-  
-  
-  for (int i = 0; i<n;i++)
-  {
-  for (int j = 0; j<n;j++)
-  {
-  myfile_stage8 << " + "<< products[i] << products[j] << " * C"<<products[i]<< products[j];
-  }
-  }
-  myfile_stage8 << ";"<<endl;
-
-  
-  myfile_stage8 << "diff = FullSimplify[SEn-SEnTrial]"<<endl;
-  myfile_stage8 << "Print[\" --------------------------------------- \"]" <<endl;
-  myfile_stage8 << "Print[\" --------------------------------------- \"]" <<endl;
-  myfile_stage8 << "Print[\" The difference between trial and actual SE is:\"]" <<endl;
-  myfile_stage8 << "Print[\" --------------------------------------- \"]" <<endl;
-  myfile_stage8 << "Print[\" --------------------------------------- \"]" <<endl;
-  
-  myfile_stage8 << "Print[diff]"<<endl;
-  myfile_stage8 << "Export[\""<<s_cwd<<"/output/result.txt\", diff]" << endl;
-  
-  // print out coefficients of products
-  
-  myfile_stage8 << "Export[\""<<s_cwd<<"/output/output_products.txt\", {" << endl;
-  
-  for (int i = 0; i<n;i++)
-  {
-  for (int j = 0; j<n;j++)
-  {
-    
-    if ((i==n-1) && (j==n-1)){ myfile_stage8 << "{\" TSIL_COMPLEXCPP C"<<products[i] << products[j] <<" =\", CForm[C"<<products[i] << products[j] <<" /. Pair[Momentum[p], Momentum[p]] -> p^2 /. DiracGamma[Momentum[p]] -> p], \";\"}" << endl;}
-    else {myfile_stage8 << "{\" TSIL_COMPLEXCPP C"<<products[i] << products[j] <<" =\", CForm[C"<<products[i] << products[j] <<" /. Pair[Momentum[p], Momentum[p]] -> p^2 /. DiracGamma[Momentum[p]] -> p], \";\"}," << endl;}
-    
-  }
-  }
-  
-  myfile_stage8 << " }, \"Table\", \"FieldSeparators\" -> \" \", \"TextDelimiters\" -> \"\"];" << endl;
-  
-  // print out in a form useful for determing products later on
-  
-  myfile_stage8 << "Export[\""<<s_cwd<<"/output/output_products_2.txt\", {" << endl;
-  
-  for (int i = 0; i<n;i++)
-  {
-  for (int j = 0; j<n;j++)
-  {
-    
-    if ((i==n-1) && (j==n-1)){ myfile_stage8 << "{\" "<<products[i] << "*" << products[j] << "*C"<<products[i] << products[j] <<"        =\", CForm[C"<<products[i] << products[j] <<" /. Pair[Momentum[p], Momentum[p]] -> p^2 /. DiracGamma[Momentum[p]] -> p], \";\"}" << endl;}
-    else {myfile_stage8 << "{\" "<<products[i] << "*" << products[j] << "*C"<<products[i] << products[j] <<"           =\", CForm[C"<<products[i] << products[j] <<" /. Pair[Momentum[p], Momentum[p]] -> p^2 /. DiracGamma[Momentum[p]] -> p], \";\"}," << endl;}
-    
-  }
-  }
-  
-  myfile_stage8 << " }, \"Table\", \"FieldSeparators\" -> \" \", \"TextDelimiters\" -> \"\"];" << endl;
-
-
-  myfile_stage8.close();
-  
   #ifdef RUN_ALL
   system("chmod +x output/stage_8b.m ");
   if(verbose) system("./output/stage_8b.m");
@@ -868,9 +495,9 @@ bool Calc_amplitudes::calc_diagram(string diagram,string particle,string model)
   ofstream output_1;
   output_1.open (basis_integrals);
 
-  for (int i = 0; i<m;i++)
+  for (unsigned int i = 0; i<reduced_bases_names.size();i++)
   {
-  output_1 << integrals[i] << endl;
+  output_1 << reduced_bases_names[i] << endl;
   }
 
   output_1.close();
@@ -900,12 +527,14 @@ bool Calc_amplitudes::calc_diagram(string diagram,string particle,string model)
   summation_out.open (summation);
 
   summation_out << "return ";
-  for (int i = 0; i<m;i++)
+  for (unsigned int i = 0; i<reduced_bases_names.size();i++)
   {
-  if (sum_integrals != 0 ) summation_out  << " + "<<integrals[i]<< " * C"<<integrals[i];
+  if (sum_integrals != 0 ) summation_out  << " + "<<reduced_bases_names[i]<< " * C"<<reduced_bases_names[i];
   }
   
-  
+  const char* file_integrals_tmp = "output/names_updated";
+  string c_file_integrals = file_integrals_tmp + blank + ext;
+  const char *file_integrals = c_file_integrals.c_str();
   int np = 0;
   vector<std::string> products_reduced;
   get_data(products_reduced, np,file_integrals);
