@@ -16,7 +16,7 @@ run ./mass_builder -g <model_name> after to generate code and ./mass_builder -e 
 
 #include "calc_amplitudes.hpp"
 
-//#define RUN_ALL
+#define RUN_ALL
 //#define DEBUG
 using namespace std;
 using namespace utils;
@@ -27,13 +27,7 @@ bool verbose=0;
 int loop_level = 2;
 
 
-std::vector<std::string> extract_keys(std::map<std::string, Bases> const& input_map) {
-std::vector<std::string> retval;
-for (auto const& element : input_map) {
-    retval.push_back(element.first);
-}
-return retval;
-}
+
 
 
 
@@ -116,77 +110,69 @@ bool Calc_amplitudes::calc_diagram(string diagram,string particle,string model)
 
 
   
-  
-  
-  
-
-
   //////////////////////////////////////////////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////////////////////////////////
-  /*
+    //////////////////////////////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ///   BEGIN NEW CONTENT ///
   
-  plan to make handling of basis integrals more abstract to deal with complicated mass names
-  
-  we create a struct for each basis integral that is given a simplifed name, this struct contains the mass
-  in each location of the integral, and the type of basis integral
-  
-  simplifed name: FMaMaMaMzMw is just stupid, it should be Faaazw, so we need to assign a unique single character
-  name to each mass, this can be set at runtime by the user in the second column of "masses", if it is not set
-  it will be set automatically from the alphabet.
-  
-  alternatively, we have a class for each type of basis integral which is initialised with the required masses
-  the class then determines all possible non degenerate basis integrals and creates these in vectors (or it could
-  make a set of structs like that described above)
-  
-  
-  tricky part is identifying the non-zero elements after a run through mathematica, what we get back is
-  at best a list of the non-zero class names, for example Faaazw.  It would be nicer if somehow the struct
-  for each basis integral held a string called "coeff", which was automatically updated after a run through
-  mathematica.  Then all those with zeros are deallocated.
-  
-  idea to solve above problem: open mathematica output, and directly read in the following
-  "Faaazw COEFFICIENT"
-  
-  so someting like
-  
-  open(math_out.txt)
-  
-  line by line:  string class_name << Faaazw
-  string COEFF << COEFFICIENT
-  
-  
-  util_func( class_name, COEFF) { writes COEFF into class given by class_name} // tricky -> use maps
-  so for each mass combination we create a class with a 
-  
-  
-  */
-  
-  vector<string> masses_input,id_input;
-  int na;
-  get_data(masses_input,id_input,na,file_masses);
-  cout << "size of id input " << id_input.size() << endl;
-  cout << "size of masses input " << masses_input.size() << endl;
-  std::map<std::string, Bases> base_map = set_bases(masses_input, id_input);
-  
+            vector<string> masses_input,id_input;
+            int na;
+            get_data(masses_input,id_input,na,file_masses);
+            cout << "size of id input " << id_input.size() << endl;
+            cout << "size of masses input " << masses_input.size() << endl;
+            std::map<std::string, Bases> base_map = set_bases(masses_input, id_input);
 
-  
-  vector<string> bases_names = extract_keys(base_map);
-  
-  #ifdef DEBUG
-  for (unsigned int i = 0; i < bases_names.size();i++)
-  {
-  Bases base_temp;
-  base_temp = base_map[bases_names[i]];
-  cout << bases_names[i] << endl;
-  cout << "masses values are " << base_temp.e1 << " " << base_temp.e2 << " " << base_temp.e3 << " " << base_temp.e4 << " " << base_temp.e5 << " " << endl;
-  }
-  #endif
+
+
+            vector<string> bases_names = extract_keys(base_map);
+
+            #ifdef DEBUG
+            for (unsigned int i = 0; i < bases_names.size();i++)
+            {
+            Bases base_temp;
+            base_temp = base_map[bases_names[i]];
+            cout << bases_names[i] << endl;
+            cout << "masses values are " << base_temp.e1 << " " << base_temp.e2 << " " << base_temp.e3 << " " << base_temp.e4 << " " << base_temp.e5 << " " << endl;
+            }
+            #endif
+
+            // now need to print id = integral to myfile
+
+
+
+
+
+            print_math_basis(base_map,myfile, "SEn");
+
+            myfile << "Export[\""<<s_cwd<<"/output/output_new.txt\", {" << endl;
+
+
+
+            for (unsigned int i = 0; i < bases_names.size();i++)
+            {
+              myfile << "{\" "<<bases_names[i]<<" \", CForm[C"<<bases_names[i]<<" /. Pair[Momentum[p], Momentum[p]] -> p^2 /. DiracGamma[Momentum[p]] -> p], \"\"}," << endl;
+            }
+
+            myfile << "{\" "<<bases_names[bases_names.size()-1]<<" \", CForm[C"<<bases_names[bases_names.size()-1]<<" /. Pair[Momentum[p], Momentum[p]] -> p^2 /. DiracGamma[Momentum[p]] -> p], \"\"}" << endl;
+            myfile << " }, \"Table\", \"FieldSeparators\" -> \" \", \"TextDelimiters\" -> \"\"];" << endl;
+
+
+  ///   END NEW CONTENT ///
+
   
   
   
   //////////////////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////////////////////////////////
 
+
+  A = id_input;
   ofstream myfile_names;
   myfile_names.open ("output/names.txt");
   
@@ -199,7 +185,7 @@ bool Calc_amplitudes::calc_diagram(string diagram,string particle,string model)
   
   for (int i1 = 0; i1 < n ; i1++)
   {
-  print_A(myfile,A[i1]);
+//  print_A(myfile,A[i1]);
   myfile_names << "A"<< A[i1] << endl;
   Bases_names.push_back("A"+A[i1]);nb = nb+1;
   for (int i2 = 0; i2 < n ; i2++)
@@ -208,13 +194,13 @@ bool Calc_amplitudes::calc_diagram(string diagram,string particle,string model)
   {
   for (int i4 = 0; i4 < n ; i4++)
   {
-  print_V(myfile , A[i1]+A[i2]+A[i3]+A[i4]);
+  //print_V(myfile , A[i1]+A[i2]+A[i3]+A[i4]);
   myfile_names << "V"<< A[i1]+A[i2]+A[i3]+A[i4] << endl;
   Bases_names.push_back("V"+A[i1]+A[i2]+A[i3]+A[i4]);nb = nb+1;
   
   for (int i5 = 0; i5 < n ; i5++)
   {
-  print_F(myfile, A[i1]+A[i2]+A[i3]+A[i4]+A[i5] );
+ // print_F(myfile, A[i1]+A[i2]+A[i3]+A[i4]+A[i5] );
   myfile_names << "F"<< A[i1]+A[i2]+A[i3]+A[i4]+A[i5] << endl;
   Bases_names.push_back("F"+A[i1]+A[i2]+A[i3]+A[i4]+A[i5]);nb = nb+1;
   
@@ -230,7 +216,7 @@ bool Calc_amplitudes::calc_diagram(string diagram,string particle,string model)
   {
   for (int i2 = i1; i2 < n ; i2++)
   {
-  print_B(myfile, A[i1]+A[i2]);
+  //print_B(myfile, A[i1]+A[i2]);
   myfile_names << "B"<< A[i1]+A[i2] << endl;
   Bases_names.push_back("B"+A[i1]+A[i2]);nb = nb+1;
   
@@ -243,10 +229,10 @@ bool Calc_amplitudes::calc_diagram(string diagram,string particle,string model)
   {
   for (int i3 = i2; i3 < n ; i3++)
   {
-  print_J(myfile, A[i1]+A[i2]+A[i3]);
+  //print_J(myfile, A[i1]+A[i2]+A[i3]);
   myfile_names << "J"<< A[i1]+A[i2]+A[i3] << endl;
   Bases_names.push_back("J"+A[i1]+A[i2]+A[i3]);nb = nb+1;
-  print_K(myfile, A[i1]+A[i2]+A[i3]);
+  //print_K(myfile, A[i1]+A[i2]+A[i3]);
   myfile_names << "K"<< A[i1]+A[i2]+A[i3] << endl;
   Bases_names.push_back("K"+A[i1]+A[i2]+A[i3]);nb = nb+1;
   
@@ -260,7 +246,7 @@ bool Calc_amplitudes::calc_diagram(string diagram,string particle,string model)
   for (int i3 = i2; i3 < n ; i3++)
   {
   
-  print_T(myfile, A[i1]+A[i2]+A[i3]);
+ // print_T(myfile, A[i1]+A[i2]+A[i3]);
   myfile_names << "T"<< A[i1]+A[i2]+A[i3] << endl;
   Bases_names.push_back("T"+A[i1]+A[i2]+A[i3]);nb = nb+1;
   
@@ -270,16 +256,6 @@ bool Calc_amplitudes::calc_diagram(string diagram,string particle,string model)
   }
   
   myfile_names.close();
-  
-  
-  //////////////////////////////////////////////////////////////////////////////////////////////////////
-  //////////////////////////////////////////////////////////////////////////////////////////////////////
-  //////////////////////////////////////////////////////////////////////////////////////////////////////
-  //////////////////////////////////////////////////////////////////////////////////////////////////////
-  //////////////////////////////////////////////////////////////////////////////////////////////////////
-  //////////////////////////////////////////////////////////////////////////////////////////////////////
-  
-  
   
   
   
@@ -303,6 +279,10 @@ bool Calc_amplitudes::calc_diagram(string diagram,string particle,string model)
   myfile.close();
   
   
+  
+  
+  
+  
   #ifdef RUN_ALL
   system("chmod +x output/stage_3.m ");
   if (verbose) system("./output/stage_3.m");
@@ -310,6 +290,116 @@ bool Calc_amplitudes::calc_diagram(string diagram,string particle,string model)
   system("chmod u+x scripts/script_1.sh");
   system("./scripts/script_1.sh");
   #endif
+  
+    //////////////////////////////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////////////////////////////  //////////////////////////////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////////////////////////////  //////////////////////////////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////////////////////////////  //////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+  ///   BEGIN NEW CONTENT ///
+  
+  
+  /*  new content below
+  
+  
+  Idea here is to take output_new.txt and read in the coefficients to the Base object, so now each object in the map will have
+  a coefficient associated with it.  We can then cull the map down to a much shorter map.  Then we will deal with products.
+  
+  In this section we reduce SEn trial to the cross terms
+  
+  */
+  
+  
+  
+  
+            vector<std::string> output_string, coeff_new;
+            int temp_int = 0;
+            
+            const char* file_integrals2_tmp = "output/output_new";
+            string c_file_integrals2 = file_integrals2_tmp + blank + ext;
+            const char *file_integrals2 = c_file_integrals2.c_str();
+            
+            get_data(output_string, coeff_new, temp_int,file_integrals2);
+            for (int i=0; i<temp_int; i++)
+            {
+            base_map[output_string[i]].coefficient = coeff_new[i];
+            }
+            
+            
+            std::map <std::string, Bases > reduced_base_map = remove_zeros(base_map, bases_names);
+            vector<string> reduced_bases_names = extract_keys(reduced_base_map);
+            
+            string prevb = "stage_3.mx\"";
+            ofstream myfile_stage6b;
+            myfile_stage6b.open ("output/stage_6b.m");
+            
+            utils::print_math_header(myfile_stage6b);
+            myfile_stage6b<<"Get[\"" << s_cwd <<"/output/"<< prevb << "]\n"
+            <<"Print[SEn]"<< endl;
+            
+
+            
+            print_math_basis(reduced_base_map,myfile_stage6b, "SEn");
+            
+            
+            myfile_stage6b << "SEnTrial = 0 ";
+            
+            for (unsigned int i = 0; i<reduced_bases_names.size();i++)
+            {
+            
+            myfile_stage6b << " + "<<reduced_bases_names[i]<< " * C"<<reduced_bases_names[i];
+              
+            }
+            myfile_stage6b << ";"<<endl;
+            
+            myfile_stage6b << "diff = FullSimplify[SEn-SEnTrial]"<<endl;
+            myfile_stage6b << "Print[\" --------------------------------------- \"]" <<endl;
+            myfile_stage6b << "Print[\" --------------------------------------- \"]" <<endl;
+            myfile_stage6b << "Print[\" The difference between trial and actual SE is:\"]" <<endl;
+            myfile_stage6b << "Print[\" --------------------------------------- \"]" <<endl;
+            myfile_stage6b << "Print[\" --------------------------------------- \"]" <<endl;
+            
+            myfile_stage6b << "Print[diff]"<<endl;
+            
+            myfile_stage6b << "Export[\""<<s_cwd<<"/output/result.txt\", diff]" << endl;
+  
+            print_math_basis(reduced_base_map,myfile_stage6b, "diff");
+  
+            myfile_stage6b << "Export[\""<<s_cwd<<"/output/output_new.txt\", {" << endl;
+
+
+            if (reduced_bases_names.size()!=0)
+            {
+            for (unsigned int i=0;i<reduced_bases_names.size()-1;i++)
+            {
+            myfile_stage6b << "{\" TSIL_COMPLEXCPP C"<<reduced_bases_names[i]<<" =\", CForm[C"<<reduced_bases_names[i]<<" /. Pair[Momentum[p], Momentum[p]] -> p^2 /. DiracGamma[Momentum[p]] -> p], \";\"}," << endl;
+            }
+
+            myfile_stage6b << "{\" TSIL_COMPLEXCPP C"<<reduced_bases_names[reduced_bases_names.size()-1]<<" =\", CForm[C"<<reduced_bases_names[reduced_bases_names.size()-1]<<" /. Pair[Momentum[p], Momentum[p]] -> p^2 /. DiracGamma[Momentum[p]] -> p], \";\"}" << endl;
+            myfile_stage6b << " }, \"Table\", \"FieldSeparators\" -> \" \", \"TextDelimiters\" -> \"\"];" << endl;
+            }
+
+            myfile_stage6b << "Print[\"Completed\"]"<<endl;
+  
+            myfile_stage6b.close();
+
+            
+            
+            
+  ///  END NEW CONTENT ///
+  
+  
+  
+    //////////////////////////////////////////////////////////////////////////////////////////////////////  //////////////////////////////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////////////////////////////  //////////////////////////////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////////////////////////////  //////////////////////////////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////////////////////////////  //////////////////////////////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////////////////////////////
+  
+  
+  
+  
   
   
   //////////////////////////////////////////////////////////////////
@@ -448,6 +538,9 @@ bool Calc_amplitudes::calc_diagram(string diagram,string particle,string model)
   system("chmod +x output/stage_6.m ");
   if(verbose) system("./output/stage_6.m ");
   else system("./output/stage_6.m  >/dev/null ");
+      system("chmod +x output/stage_6b.m ");
+      if(verbose) system("./output/stage_6b.m ");
+      else system("./output/stage_6b.m  >/dev/null ");
   system("chmod u+x scripts/script_2.sh");
   system("./scripts/script_2.sh ");
   #endif
@@ -463,6 +556,146 @@ bool Calc_amplitudes::calc_diagram(string diagram,string particle,string model)
   //////////////////////////////////////////////////////////////////
   // of the terms that are remaining we now deal with possible combinations, the updated file for objects of interest
   // is names_updated.txt, this should contain all integrals for which we need to consider combinations
+  
+  
+  ///  BEGIN NEW CONTENT ///
+  
+  
+  
+
+            vector<std::string> output_string_prod, coeff_new_prod;
+            std::map <std::string, Bases > base_map_prod;
+            vector<string> bases_names_prod;
+            temp_int = 0;
+  
+            get_data(output_string_prod, coeff_new_prod, temp_int,file_integrals2); // file_integrals2 defined earlier, same file name
+  
+  
+            if (temp_int == 0)
+            {
+            for (unsigned int i=0; i<bases_names.size(); i++)
+            {
+            if (base_map[bases_names[i]].type != "F")
+            {
+            base_map_prod[bases_names[i]] = base_map[bases_names[i]];
+            bases_names_prod.push_back(bases_names[i]);
+            }
+            }
+            }
+            else
+            {
+            for (int i=0; i<temp_int; i++)
+            {
+            reduced_base_map[output_string_prod[i]].coefficient = coeff_new_prod[i];
+            }
+            base_map_prod = remove_zeros(reduced_base_map, reduced_bases_names);
+            bases_names_prod = extract_keys(base_map_prod);
+            }
+
+            ofstream myfile_stage8b;
+            myfile_stage8b.open ("output/stage_8b.m");
+            
+            
+            
+            prevb = "stage_3.mx\"";
+            utils::print_math_header(myfile_stage8b);
+            myfile_stage8b<<"Get[\"" << s_cwd <<"/output/"<< prevb << "]\n"
+            <<"Print[SEn]"<< endl;
+  
+            print_math_basis(reduced_base_map,myfile_stage8b,"SEn");
+  
+            print_math_products(base_map_prod,myfile_stage8b,"SEn");
+  
+
+
+            myfile_stage8b << "SEnTrial = ";
+            for (unsigned int i = 0; i<reduced_bases_names.size();i++)
+            {
+            myfile_stage8b << " + "<<reduced_bases_names[i]<< " * C"<<reduced_bases_names[i];
+            }
+
+
+
+
+            for (unsigned int i = 0; i<bases_names_prod.size();i++)
+            {
+            for (unsigned int j = 0; j<bases_names_prod.size();j++)
+            {
+            myfile_stage8b << " + "<< bases_names_prod[i] << bases_names_prod[j] << " * C"<<bases_names_prod[i]<< bases_names_prod[j];
+            }
+            }
+            myfile_stage8b << ";"<<endl;
+
+
+
+  
+            myfile_stage8b << "diff = FullSimplify[SEn-SEnTrial]"<<endl;
+            myfile_stage8b << "Print[\" --------------------------------------- \"]" <<endl;
+            myfile_stage8b << "Print[\" --------------------------------------- \"]" <<endl;
+            myfile_stage8b << "Print[\" The difference between trial and actual SE is:\"]" <<endl;
+            myfile_stage8b << "Print[\" --------------------------------------- \"]" <<endl;
+            myfile_stage8b << "Print[\" --------------------------------------- \"]" <<endl;
+            
+            myfile_stage8b << "Print[diff]"<<endl;
+            myfile_stage8b << "Export[\""<<s_cwd<<"/output/result.txt\", diff]" << endl;
+  
+            // print out coefficients of products
+            int nn = bases_names_prod.size();
+            myfile_stage8b << "Export[\""<<s_cwd<<"/output/output_products.txt\", {" << endl;
+
+            for (int i = 0; i<nn;i++)
+            {
+            for (int j = 0; j<nn;j++)
+            {
+              
+              if ((i==nn-1) && (j==nn-1)){ myfile_stage8b << "{\" TSIL_COMPLEXCPP C"<<bases_names_prod[i] << bases_names_prod[j] <<" =\", CForm[C"<<bases_names_prod[i] << bases_names_prod[j] <<" /. Pair[Momentum[p], Momentum[p]] -> p^2 /. DiracGamma[Momentum[p]] -> p], \";\"}" << endl;}
+              else {myfile_stage8b << "{\" TSIL_COMPLEXCPP C"<<bases_names_prod[i] << bases_names_prod[j] <<" =\", CForm[C"<<bases_names_prod[i] << bases_names_prod[j] <<" /. Pair[Momentum[p], Momentum[p]] -> p^2 /. DiracGamma[Momentum[p]] -> p], \";\"}," << endl;}
+              
+            }
+            }
+
+            myfile_stage8b << " }, \"Table\", \"FieldSeparators\" -> \" \", \"TextDelimiters\" -> \"\"];" << endl;
+
+            // print out in a form useful for determing products later on
+
+            myfile_stage8b << "Export[\""<<s_cwd<<"/output/output_products_2.txt\", {" << endl;
+
+            for (int i = 0; i<nn;i++)
+            {
+            for (int j = 0; j<nn;j++)
+            {
+              
+              if ((i==nn-1) && (j==nn-1)){ myfile_stage8b << "{\" "<<bases_names_prod[i] << "*" << bases_names_prod[j] << "*C"<<bases_names_prod[i] << bases_names_prod[j] <<"        =\", CForm[C"<<bases_names_prod[i] << bases_names_prod[j] <<" /. Pair[Momentum[p], Momentum[p]] -> p^2 /. DiracGamma[Momentum[p]] -> p], \";\"}" << endl;}
+              else {myfile_stage8b << "{\" "<<bases_names_prod[i] << "*" << bases_names_prod[j] << "*C"<<bases_names_prod[i] << bases_names_prod[j] <<"           =\", CForm[C"<<bases_names_prod[i] << bases_names_prod[j] <<" /. Pair[Momentum[p], Momentum[p]] -> p^2 /. DiracGamma[Momentum[p]] -> p], \";\"}," << endl;}
+              
+            }
+            }
+
+            myfile_stage8b << " }, \"Table\", \"FieldSeparators\" -> \" \", \"TextDelimiters\" -> \"\"];" << endl;
+
+
+            myfile_stage8b.close();
+
+
+
+
+  
+  
+  
+  
+  ///  END NEW CONTENT ///
+  //////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////
+  
+  
+  
+  
+  
+  
+  
+  
+  
   
 
   vector<std::string> products;
@@ -608,9 +841,9 @@ bool Calc_amplitudes::calc_diagram(string diagram,string particle,string model)
   myfile_stage8.close();
   
   #ifdef RUN_ALL
-  system("chmod +x output/stage_8.m ");
-  if(verbose) system("./output/stage_8.m");
-  else system("./output/stage_8.m  >/dev/null ");
+  system("chmod +x output/stage_8b.m ");
+  if(verbose) system("./output/stage_8b.m");
+  else system("./output/stage_8b.m  >/dev/null ");
   system("chmod u+x scripts/script_3.sh");
   system("./scripts/script_3.sh");
   #endif

@@ -1,1 +1,1 @@
-return  + Ac * CAc + Aa * CAa + Aw * CAw + Bcw * CBcw + Ac*Aa*CAcAa + Aa*Ac*CAaAc + Aa*Aw*CAaAw + Aa*Bcw*CAaBcw + Aw*Aa*CAwAa + Bcw*Aa*CBcwAa;
+return  + Ac * CAc + Aa * CAa + Aw * CAw + Bcw * CBcw + Aa*Ac*CAaAc + Aa*Aw*CAaAw + Aa*Bcw*CAaBcw + Ac*Aa*CAcAa + Aw*Aa*CAwAa + Bcw*Aa*CBcwAa;

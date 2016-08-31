@@ -17,8 +17,13 @@
 
 #include <unistd.h>
 
+#include "bases.hpp" // to go in printer header later
+
 
 using namespace std;
+
+// need to divide utils up into actual utility like functions and printer functions
+
 
 namespace utils
 {
@@ -60,8 +65,15 @@ vector<char> remove_duplicates(vector<char> input);
 
 string char_to_string(char c);
 
+std::vector<std::string> extract_keys(std::map<std::string, Bases> const& input_map);
 
 vector<int> find_string_lengths(vector<string> input);
+
+void print_base(ofstream &myfile, Bases base, string id, string SEn);
+
+void print_math_basis(std::map<std::string, Bases> base_map, ofstream &myfile , string target);
+
+void print_math_products(std::map<std::string, Bases> base_map, ofstream &myfile, string target);
 
 }
 

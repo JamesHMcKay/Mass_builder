@@ -58,7 +58,7 @@ while(getline(input, line)) {
       std::string test;
       n=n+1;
   
-      cout << "test = " << line << endl;
+      //cout << "test = " << line << endl;
       if (std::count( line.begin(), line.end(), ' ' )>0)
       {
       na=na+1;
@@ -73,9 +73,10 @@ while(getline(input, line)) {
 
 A.resize(na);
 B.resize(nb);
-cout << "na , nb = " << na << " " << nb << endl;
-na=0,nb=0;
 n = na; // maybe set to maximum of the two
+//cout << "na , nb = " << na << " " << nb << endl;
+na=0,nb=0;
+
 std::ifstream input2(filename);
 std::string line2;
 while(getline(input2, line2)) {
@@ -369,6 +370,154 @@ lengths.push_back( input_temp.size() );
 return lengths;
 
 }
+
+
+
+std::vector<std::string> extract_keys(std::map<std::string, Bases> const& input_map) {
+std::vector<std::string> retval;
+for (auto const& element : input_map) {
+    retval.push_back(element.first);
+}
+return retval;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+void print_base(ofstream &myfile, Bases base, string id, string SEn)
+{
+string type = base.type;
+
+if (SEn == "SEn")
+{
+
+if (type == "F")
+{
+myfile << id << " = " << "TFI[4, Pair[Momentum[p],Momentum[p]], {{1, " << base.e1  << "}, {1, " << base.e2 << "}, {1, " << base.e3 << "}, {1, " << base.e4 << "}, {1, " << base.e5 << "}}];" << endl;
+}
+if (type == "A")
+{
+myfile << id << " = " << "TAI[4, 0, {1, " << base.e1 << "}];" << endl;
+}
+if (type == "B")
+{
+myfile << id << " = " << "TBI[4, Pair[Momentum[p],Momentum[p]], {{1, " << base.e1 << "}, {1, " << base.e2 << "}}];" << endl;
+}
+if (type == "V")
+{
+myfile << id << " = " << "TVI[4, Pair[Momentum[p],Momentum[p]], {{1, " << base.e1 << "}, {1, " << base.e2 << "}, {1, " << base.e3 << "}, {1, " << base.e4 << "}}];" << endl;
+}
+
+if (type == "T")
+{
+myfile << id << " = " << "TJI[4, Pair[Momentum[p],Momentum[p]], {{2, " << base.e1 << "}, {1, " << base.e2 << "}, {1, " << base.e3 << "}}];" << endl;
+}
+
+if (type == "J")
+{
+myfile << id << " = " << "TJI[4, Pair[Momentum[p],Momentum[p]], {{1, " << base.e1 << "}, {1, " << base.e2 << "}, {1, " << base.e3 << "}}];" << endl;
+}
+
+if (type == "K")
+{
+myfile << id << " = " << "TJI[4, 0, {{1, " << base.e1 << "}, {1, " << base.e2 << "}, {1, " << base.e3 << "}}];" << endl;
+}
+}
+
+myfile << "C"<< id << " = Coefficient["<<SEn<<", " << id << ", 1];" << endl;
+}
+
+
+
+
+
+
+// print the basis integrals out in Mathematica notation
+void print_math_basis(std::map<std::string, Bases> base_map, ofstream &myfile, string target)
+{
+  vector<string> bases_names = extract_keys(base_map);
+  for (unsigned int i = 0; i < bases_names.size();i++)
+  {
+  Bases base_temp;
+  base_temp = base_map[bases_names[i]];
+  print_base(myfile, base_temp, bases_names[i], target);
+  }
+}
+
+
+
+
+
+
+void print_base_product(ofstream &myfile,Bases base_1,Bases base_2,string SEn)
+{
+
+
+  string type1 = base_1.type;
+  string type2 = base_2.type;
+  
+  if (type1 =="F"){goto end;}
+  if (type2 =="F"){goto end;}
+
+
+
+  myfile << base_1.short_name << base_2.short_name << " = ";
+  if (type1=="A") myfile << "TAI[4, 0, {1, " << base_1.e1 << "}]";
+  if (type1=="B") myfile << "TBI[4, Pair[Momentum[p],Momentum[p]], {{1, " << base_1.e1 << "}, {1, " << base_1.e2 << "}}]";
+  if (type1=="J") myfile << "TJI[4, Pair[Momentum[p],Momentum[p]], {{1, " << base_1.e1 << "}, {1, " << base_1.e2 << "}, {1, " << base_1.e3 << "}}]";
+  if (type1=="T") myfile << "TJI[4, Pair[Momentum[p],Momentum[p]], {{2, " << base_1.e1 << "}, {1, " << base_1.e2 << "}, {1, " << base_1.e3 << "}}]";
+  if (type1=="K") myfile << "TJI[4, 0, {{1, " << base_1.e1 << "}, {1, " << base_1.e2 << "}, {1, " << base_1.e3 << "}}];";
+  if (type1=="V") myfile << "TVI[4, Pair[Momentum[p],Momentum[p]], {{1, " << base_1.e1 << "}, {1, " << base_1.e2 << "}, {1, " << base_1.e3 << "}, {1, " << base_1.e4 << "}}]";
+  myfile << " * ";
+  if (type2=="A") myfile << "TAI[4, 0, {1, " << base_2.e1 << "}];";
+  if (type2=="B") myfile << "TBI[4, Pair[Momentum[p],Momentum[p]], {{1, " << base_2.e1 << "}, {1, " << base_2.e2 << "}}];";
+  if (type2=="J") myfile << "TJI[4, Pair[Momentum[p],Momentum[p]], {{1, " << base_2.e1 << "}, {1, " << base_2.e2 << "}, {1, " << base_2.e3 << "}}];";
+  if (type2=="T") myfile << "TJI[4, Pair[Momentum[p],Momentum[p]], {{2, " << base_2.e1 << "}, {1, " << base_2.e2 << "}, {1, " << base_2.e3 << "}}];";
+  if (type2=="K") myfile << "TJI[4, 0, {{1, " << base_2.e1 << "}, {1, " << base_2.e2 << "}, {1, " << base_2.e3 << "}}];;";
+  if (type2=="V") myfile << "TVI[4, Pair[Momentum[p],Momentum[p]], {{1, " << base_2.e1 << "}, {1, " << base_2.e2 << "}, {1, " << base_2.e3 << "}, {1, " << base_2.e4 << "}}];";
+  myfile << endl;
+  if (base_1.short_name==base_2.short_name) myfile << "C"<< base_1.short_name << base_2.short_name << " = Coefficient["<<SEn<<","<< base_1.short_name << ", 2];" << endl;
+  else myfile << "C"<< base_1.short_name << base_2.short_name << " = - (1/2)* Coefficient["<<SEn<<","<< base_1.short_name << base_2.short_name << ", 1];" << endl;
+  end:;
+}
+
+
+
+
+// print the basis integrals out in Mathematica notation
+void print_math_products(std::map<std::string, Bases> base_map, ofstream &myfile, string target)
+{
+  vector<string> bases_names = extract_keys(base_map);
+  int n = bases_names.size();
+
+  for (int i = 0; i<n;i++)
+  {
+
+  
+  for (int j = 0; j<n;j++)
+  {
+  
+  Bases base_1;
+  base_1 = base_map[bases_names[i]];
+  base_1.short_name = bases_names[i];
+  Bases base_2;
+  base_2 = base_map[bases_names[j]];
+  base_2.short_name = bases_names[j];  // TODO make this an automatic get and set function perhaps, could do short_names nicer
+  
+  print_base_product(myfile,base_1,base_2,target);
+  
+  }
+  }
+}
+
 
 
 

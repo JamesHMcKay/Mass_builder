@@ -1,4 +1,4 @@
-Mc c
-Ma a
-Mw w
-Mz z
+mc c
+ma a
+mw w
+mz z

@@ -221,7 +221,7 @@ int main_function (int argc, char *argv[])
   
   
   
-
+  cout << "particle name 1 " << particle_names[0] << endl;
   
   
   for (int d = 0; d<nd;d++)
@@ -436,7 +436,8 @@ int main_function (int argc, char *argv[])
   string c_file_masses = "models/" + model+"/masses.txt";  // need to make this model independent
   const char *file_masses = c_file_masses.c_str();
   int nm; // number of diagrams, length of diagram_number vector
-  get_data(masses, nm,file_masses);
+  vector<std::string> temp_vec; // TODO remove!
+  get_data(temp_vec,masses, nm,file_masses);
   main_output << "TSIL_REAL ";
   for (int i=0;i<nm;i++)
   {

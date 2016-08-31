@@ -68,9 +68,7 @@ std::map <std::string, Bases > set_bases(std::vector<string> masses_input, std::
   else  // here we deal with case of identifiers being provided, check if list is correct size and no duplicates
   {
   
-  identifiers = remove_duplicates(identifiers_input,"duplicate identifiers found");
-  
-  
+  identifiers = identifiers_input;
   
   if (remove_duplicates(identifiers_input).size()!=masses_input.size())
   {
@@ -174,3 +172,29 @@ std::map <std::string, Bases > set_bases(std::vector<string> masses_input, std::
 
 
 }
+
+
+
+std::map <std::string, Bases > remove_zeros(std::map <std::string, Bases > base_map, std::vector<std::string> bases_names)
+{
+
+std::map <std::string, Bases > new_base_map;
+
+for (unsigned int i = 0; i < bases_names.size();i++)
+{
+if ( base_map[bases_names[i]].coefficient != "0")
+{
+new_base_map[bases_names[i]] = base_map[bases_names[i]];
+}
+}
+
+return new_base_map;
+}
+
+
+
+
+
+
+
+
