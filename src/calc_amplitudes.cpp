@@ -2,7 +2,7 @@
 Mass Builder - the missing link in automated two-loop self energy calculations
 Please refer to the documentation for details or the readme.txt for simple run instructions
 
-Last edited 28/09/16
+Last edited 29/09/16
 James McKay
 
 --- calc_amplitudes.cpp ---
@@ -16,16 +16,24 @@ run ./mass_builder -g <model_name> after to generate code and ./mass_builder -e 
 
 #include "calc_amplitudes.hpp"
 
-#define RUN_ALL
-
+//#define RUN_ALL
+//#define DEBUG
 using namespace std;
 using namespace utils;
 
 // create a mathematica object that is the product of two basis integrals
 
-bool verbose=1;
+bool verbose=0;
 int loop_level = 2;
 
+
+std::vector<std::string> extract_keys(std::map<std::string, Bases> const& input_map) {
+std::vector<std::string> retval;
+for (auto const& element : input_map) {
+    retval.push_back(element.first);
+}
+return retval;
+}
 
 
 
@@ -151,21 +159,41 @@ bool Calc_amplitudes::calc_diagram(string diagram,string particle,string model)
   so for each mass combination we create a class with a 
   
   
-  
-  
-  
   */
+  
+  vector<string> masses_input,id_input;
+  int na;
+  get_data(masses_input,id_input,na,file_masses);
+  cout << "size of id input " << id_input.size() << endl;
+  cout << "size of masses input " << masses_input.size() << endl;
+  std::map<std::string, Bases> base_map = set_bases(masses_input, id_input);
+  
+
+  
+  vector<string> bases_names = extract_keys(base_map);
+  
+  #ifdef DEBUG
+  for (unsigned int i = 0; i < bases_names.size();i++)
+  {
+  Bases base_temp;
+  base_temp = base_map[bases_names[i]];
+  cout << bases_names[i] << endl;
+  cout << "masses values are " << base_temp.e1 << " " << base_temp.e2 << " " << base_temp.e3 << " " << base_temp.e4 << " " << base_temp.e5 << " " << endl;
+  }
+  #endif
+  
+  
+  
   //////////////////////////////////////////////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////////////////////////////////
 
   ofstream myfile_names;
   myfile_names.open ("output/names.txt");
   
-  vector<std::string> Bases;
+  vector<std::string> Bases_names;
   int nb = 0;
   
   int k=0;
-  
   
   
   
@@ -173,7 +201,7 @@ bool Calc_amplitudes::calc_diagram(string diagram,string particle,string model)
   {
   print_A(myfile,A[i1]);
   myfile_names << "A"<< A[i1] << endl;
-  Bases.push_back("A"+A[i1]);nb = nb+1;
+  Bases_names.push_back("A"+A[i1]);nb = nb+1;
   for (int i2 = 0; i2 < n ; i2++)
   {
   for (int i3 = 0; i3 < n ; i3++)
@@ -182,13 +210,13 @@ bool Calc_amplitudes::calc_diagram(string diagram,string particle,string model)
   {
   print_V(myfile , A[i1]+A[i2]+A[i3]+A[i4]);
   myfile_names << "V"<< A[i1]+A[i2]+A[i3]+A[i4] << endl;
-  Bases.push_back("V"+A[i1]+A[i2]+A[i3]+A[i4]);nb = nb+1;
+  Bases_names.push_back("V"+A[i1]+A[i2]+A[i3]+A[i4]);nb = nb+1;
   
   for (int i5 = 0; i5 < n ; i5++)
   {
   print_F(myfile, A[i1]+A[i2]+A[i3]+A[i4]+A[i5] );
   myfile_names << "F"<< A[i1]+A[i2]+A[i3]+A[i4]+A[i5] << endl;
-  Bases.push_back("F"+A[i1]+A[i2]+A[i3]+A[i4]+A[i5]);nb = nb+1;
+  Bases_names.push_back("F"+A[i1]+A[i2]+A[i3]+A[i4]+A[i5]);nb = nb+1;
   
   k=k+1;
   }}}}}
@@ -204,7 +232,7 @@ bool Calc_amplitudes::calc_diagram(string diagram,string particle,string model)
   {
   print_B(myfile, A[i1]+A[i2]);
   myfile_names << "B"<< A[i1]+A[i2] << endl;
-  Bases.push_back("B"+A[i1]+A[i2]);nb = nb+1;
+  Bases_names.push_back("B"+A[i1]+A[i2]);nb = nb+1;
   
   }}
   
@@ -217,10 +245,10 @@ bool Calc_amplitudes::calc_diagram(string diagram,string particle,string model)
   {
   print_J(myfile, A[i1]+A[i2]+A[i3]);
   myfile_names << "J"<< A[i1]+A[i2]+A[i3] << endl;
-  Bases.push_back("J"+A[i1]+A[i2]+A[i3]);nb = nb+1;
+  Bases_names.push_back("J"+A[i1]+A[i2]+A[i3]);nb = nb+1;
   print_K(myfile, A[i1]+A[i2]+A[i3]);
   myfile_names << "K"<< A[i1]+A[i2]+A[i3] << endl;
-  Bases.push_back("K"+A[i1]+A[i2]+A[i3]);nb = nb+1;
+  Bases_names.push_back("K"+A[i1]+A[i2]+A[i3]);nb = nb+1;
   
   }}}
   
@@ -234,7 +262,7 @@ bool Calc_amplitudes::calc_diagram(string diagram,string particle,string model)
   
   print_T(myfile, A[i1]+A[i2]+A[i3]);
   myfile_names << "T"<< A[i1]+A[i2]+A[i3] << endl;
-  Bases.push_back("T"+A[i1]+A[i2]+A[i3]);nb = nb+1;
+  Bases_names.push_back("T"+A[i1]+A[i2]+A[i3]);nb = nb+1;
   
   
   }
@@ -256,24 +284,16 @@ bool Calc_amplitudes::calc_diagram(string diagram,string particle,string model)
   
   
   
-  
-  
-  
-  
-  
-  
-  
-  
   myfile << "Export[\""<<s_cwd<<"/output/output.txt\", {" << endl;
   
   
   
   for (int i=0;i<nb-1;i++)
   {
-    myfile << "{\" TSIL_COMPLEXCPP C"<<Bases[i]<<" =\", CForm[C"<<Bases[i]<<" /. Pair[Momentum[p], Momentum[p]] -> p^2 /. DiracGamma[Momentum[p]] -> p], \";\"}," << endl;
+    myfile << "{\" TSIL_COMPLEXCPP C"<<Bases_names[i]<<" =\", CForm[C"<<Bases_names[i]<<" /. Pair[Momentum[p], Momentum[p]] -> p^2 /. DiracGamma[Momentum[p]] -> p], \";\"}," << endl;
   }
   
-  myfile << "{\" TSIL_COMPLEXCPP C"<<Bases[nb-1]<<" =\", CForm[C"<<Bases[nb-1]<<" /. Pair[Momentum[p], Momentum[p]] -> p^2 /. DiracGamma[Momentum[p]] -> p], \";\"}" << endl;
+  myfile << "{\" TSIL_COMPLEXCPP C"<<Bases_names[nb-1]<<" =\", CForm[C"<<Bases_names[nb-1]<<" /. Pair[Momentum[p], Momentum[p]] -> p^2 /. DiracGamma[Momentum[p]] -> p], \";\"}" << endl;
   myfile << " }, \"Table\", \"FieldSeparators\" -> \" \", \"TextDelimiters\" -> \"\"];" << endl;
   
   myfile << "Print[\"Completed\"]"<<endl;
@@ -283,8 +303,6 @@ bool Calc_amplitudes::calc_diagram(string diagram,string particle,string model)
   myfile.close();
   
   
-  
-
   #ifdef RUN_ALL
   system("chmod +x output/stage_3.m ");
   if (verbose) system("./output/stage_3.m");
@@ -292,9 +310,6 @@ bool Calc_amplitudes::calc_diagram(string diagram,string particle,string model)
   system("chmod u+x scripts/script_1.sh");
   system("./scripts/script_1.sh");
   #endif
-  
-  
-  
   
   
   //////////////////////////////////////////////////////////////////
@@ -314,7 +329,7 @@ bool Calc_amplitudes::calc_diagram(string diagram,string particle,string model)
   
   
   get_data(integrals, n,file_integrals);
-  if (n==0) {integrals = Bases; n = Bases.size(); sum_integrals = 0;}
+  if (n==0) {integrals = Bases_names; n = Bases_names.size(); sum_integrals = 0;}
   
   
   string prev = "stage_3.mx\"";
@@ -454,18 +469,18 @@ bool Calc_amplitudes::calc_diagram(string diagram,string particle,string model)
   get_data(products, n,file_integrals);
   
   if (n == 0){
-  // just use Bases instead but remove all F terms!
+  // just use Bases_names instead but remove all F terms!
   
-  for (unsigned int i=0;i<Bases.size();i++)
+  for (unsigned int i=0;i<Bases_names.size();i++)
   {
   
-  string nameB = Bases[i];
+  string nameB = Bases_names[i];
   stringstream _Btype;
   string Btype;
   _Btype << nameB[0];
   _Btype >> Btype;
   
-  if (Btype != "F") { n=n+1; products.push_back(Bases[i]);}
+  if (Btype != "F") { n=n+1; products.push_back(Bases_names[i]);}
   
   
   }

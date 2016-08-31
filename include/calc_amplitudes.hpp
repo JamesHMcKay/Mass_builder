@@ -16,7 +16,7 @@
 
 #include <unistd.h>
 #include "utils.hpp"
-
+#include "bases.hpp"
 
 class Calc_amplitudes
 {

@@ -4,8 +4,8 @@ message(status "${CMAKE_CURRENT_SOURCE_DIR}")
 
 include_directories(src include)
 set(TSIL_HEADER_FILE /Users/jamesmckay/Documents/Programs/tsil-1.3/tsil_cpp.h ) 
-set(HEADER_FILES include/data.hpp include/self_energy.hpp include/supplements.hpp)
-set(SRC_FILES src/self_energy.cpp src/supplements.cpp )
+set(HEADER_FILES include/bases.hpp include/data.hpp include/self_energy.hpp include/supplements.hpp)
+set(SRC_FILES src/bases.cpp src/self_energy.cpp src/supplements.cpp )
 
 
 set(HEADER_FILES_GEN include/calc_amplitudes.hpp include/utils.hpp)

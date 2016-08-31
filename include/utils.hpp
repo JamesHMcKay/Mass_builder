@@ -49,8 +49,19 @@ void print_F(ofstream &myfile, string elements,string SEn="SEn");
 
 bool check_done();
 
-std::string part_name_simple(std::string particle_name_full);
+string part_name_simple(std::string particle_name_full);
 
+vector<string> remove_duplicates(vector<string> input,string name);
+vector<string> remove_duplicates(vector<string> input);
+
+vector<char> remove_duplicates(vector<char> input,string name);
+vector<char> remove_duplicates(vector<char> input);
+
+
+string char_to_string(char c);
+
+
+vector<int> find_string_lengths(vector<string> input);
 
 }
 

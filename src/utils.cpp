@@ -50,30 +50,50 @@ void get_data(vector<std::string> &A, vector<std::string> &B,int &n,const char *
 n=0;
 std::ifstream input(filename);
 std::string line;
+int na=0,nb=0;
 while(getline(input, line)) {
       if (!line.length() || line[0] == '#')
          continue;
       std::istringstream iss(line);
+      std::string test;
       n=n+1;
+  
+      cout << "test = " << line << endl;
+      if (std::count( line.begin(), line.end(), ' ' )>0)
+      {
+      na=na+1;
+      nb=nb+1;
+      }
+      else
+      {
+      na=na+1;
+      }
    }
   
 
-
-A.resize(n);
-B.resize(n);
-
-
-n=0;
+A.resize(na);
+B.resize(nb);
+cout << "na , nb = " << na << " " << nb << endl;
+na=0,nb=0;
+n = na; // maybe set to maximum of the two
 std::ifstream input2(filename);
 std::string line2;
 while(getline(input2, line2)) {
     if (!line2.length() || line2[0] == '#')
        continue;
     std::istringstream iss2(line2);
-  
-  
-  iss2>> A[n] >> B[n];
-    n=n+1;
+  if (std::count( line2.begin(), line2.end(), ' ' )>0)
+  {
+  iss2>> A[na] >> B[nb];
+  na=na+1;
+  nb=nb+1;
+  }
+  else
+  {
+  iss2>> A[na];
+  na=na+1;
+  }
+    
  }
 input.close();
 input2.close();
@@ -285,6 +305,71 @@ std::string part_name_simple(std::string particle_name_full)
   return part_1+part_2;
 
 }
+
+vector<string> remove_duplicates(vector<string> input,string warning)
+{
+vector<std::string> input_unique = input;
+sort(input_unique.begin(),input_unique.end());
+input_unique.erase( unique( input_unique.begin(), input_unique.end() ), input_unique.end() );
+if (input.size() != input_unique.size())
+{
+cout << warning <<endl;
+}
+return input_unique;
+}
+
+vector<string> remove_duplicates(vector<string> input)
+{
+vector<std::string> input_unique = input;
+sort(input_unique.begin(),input_unique.end());
+input_unique.erase( unique( input_unique.begin(), input_unique.end() ), input_unique.end() );
+return input_unique;
+}
+
+vector<char> remove_duplicates(vector<char> input,string warning)
+{
+vector<char> input_unique = input;
+sort(input_unique.begin(),input_unique.end());
+input_unique.erase( unique( input_unique.begin(), input_unique.end() ), input_unique.end() );
+if (input.size() != input_unique.size())
+{
+cout << warning <<endl;
+}
+return input_unique;
+}
+
+vector<char> remove_duplicates(vector<char> input)
+{
+vector<char> input_unique = input;
+sort(input_unique.begin(),input_unique.end());
+input_unique.erase( unique( input_unique.begin(), input_unique.end() ), input_unique.end() );
+return input_unique;
+}
+
+
+
+string char_to_string(char c)
+{
+stringstream ss;
+string s;
+ss << c;
+ss >> s;
+return s;
+}
+
+
+vector<int> find_string_lengths(vector<string> input)
+{
+vector<int> lengths;
+for (unsigned int i = 0; i < input.size(); i++)
+{
+string input_temp = input[i];
+lengths.push_back( input_temp.size() );
+}
+return lengths;
+
+}
+
 
 
 }
