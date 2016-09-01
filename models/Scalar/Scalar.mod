@@ -5,7 +5,7 @@ IndexRange[ Index[Generation] ] = Range[1]
 M$ClassesDescription = {
   S[1] == {
 	SelfConjugate -> True,
-	Mass -> ms,
+	Mass -> Ms,
   Indices -> {},
 	PropagatorLabel -> "s",
 	PropagatorType -> ScalarDash,

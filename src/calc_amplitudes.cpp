@@ -148,28 +148,11 @@ bool Calc_amplitudes::calc_diagram(string diagram,string particle,string model)
 
 
 
- /* myfile << "Export[\""<<s_cwd<<"/output/output2.txt\", {" << endl;
-
-
-
-  for (unsigned int i = 0; i < bases_names.size();i++)
-  {
-    myfile << "{\"TSIL_COMPLEXCPP C"<<bases_names[i]<<" =\", CForm[C"<<bases_names[i]<<" /. Pair[Momentum[p], Momentum[p]] -> p^2 /. DiracGamma[Momentum[p]] -> p], \";\"}," << endl;
-  }
-
-  myfile << "{\"TSIL_COMPLEXCPP C"<<bases_names[bases_names.size()-1]<<" =\", CForm[C"<<bases_names[bases_names.size()-1]<<" /. Pair[Momentum[p], Momentum[p]] -> p^2 /. DiracGamma[Momentum[p]] -> p], \";\"}" << endl;
-  myfile << " }, \"Table\", \"FieldSeparators\" -> \" \", \"TextDelimiters\" -> \"\"];" << endl;
-*/
-
-
-
 
   #ifdef RUN_ALL
   system("chmod +x output/stage_3.m ");
   if (verbose) system("./output/stage_3.m");
   else system("./output/stage_3.m  >/dev/null");
-  //system("chmod u+x scripts/script_1.sh");
-  //system("./scripts/script_1.sh");
   #endif
 
 
@@ -227,7 +210,7 @@ bool Calc_amplitudes::calc_diagram(string diagram,string particle,string model)
 
   print_math_basis(reduced_base_map,myfile_stage6b, "diff");
 
-  myfile_stage6b << "Export[\""<<s_cwd<<"/output/output.txt\", {" << endl;
+  myfile_stage6b << "Export[\""<<s_cwd<<"/output/output2.txt\", {" << endl;
 
 
   if (reduced_bases_names.size()!=0)
@@ -240,6 +223,7 @@ bool Calc_amplitudes::calc_diagram(string diagram,string particle,string model)
   myfile_stage6b << "{\" TSIL_COMPLEXCPP C"<<reduced_bases_names[reduced_bases_names.size()-1]<<" =\", CForm[C"<<reduced_bases_names[reduced_bases_names.size()-1]<<" /. Pair[Momentum[p], Momentum[p]] -> p^2 /. DiracGamma[Momentum[p]] -> p], \";\"}" << endl;
   myfile_stage6b << " }, \"Table\", \"FieldSeparators\" -> \" \", \"TextDelimiters\" -> \"\"];" << endl;
   }
+  myfile_stage6b << " }, \"Table\", \"FieldSeparators\" -> \" \", \"TextDelimiters\" -> \"\"];" << endl;
 
   myfile_stage6b << "Print[\"Completed\"]"<<endl;
 
@@ -255,8 +239,6 @@ bool Calc_amplitudes::calc_diagram(string diagram,string particle,string model)
   system("chmod +x output/stage_6b.m ");
   if(verbose) system("./output/stage_6b.m ");
   else system("./output/stage_6b.m  >/dev/null ");
-  //system("chmod u+x scripts/script_2.sh");
-  //system("./scripts/script_2.sh ");
   #endif
 
 
@@ -268,9 +250,14 @@ bool Calc_amplitudes::calc_diagram(string diagram,string particle,string model)
   std::map <std::string, Bases > base_map_prod;
   vector<string> bases_names_prod;
   temp_int = 0;
+  
+  const char* file_integrals4_tmp = "output/output2";
+  string c_file_integrals4 = file_integrals4_tmp + blank + ext;
+  const char *file_integrals4 = c_file_integrals4.c_str();
+  
 
-  get_data(output_string_prod, coeff_new_prod, temp_int,file_integrals2); // file_integrals2 defined earlier, same file name
-
+  get_data(output_string_prod, coeff_new_prod, temp_int,file_integrals4); // file_integrals2 defined earlier, same file name
+  cout << "temp int = " << temp_int << endl;
 
   if (temp_int == 0)
   {
@@ -357,23 +344,7 @@ bool Calc_amplitudes::calc_diagram(string diagram,string particle,string model)
 
   myfile_stage8b << " }, \"Table\", \"FieldSeparators\" -> \" \", \"TextDelimiters\" -> \"\"];" << endl;
 
-  // print out in a form useful for determing products later on
 
- /* myfile_stage8b << "Export[\""<<s_cwd<<"/output/output_products_2.txt\", {" << endl;
-
-  for (int i = 0; i<nn;i++)
-  {
-  for (int j = 0; j<nn;j++)
-  {
-    
-    if ((i==nn-1) && (j==nn-1)){ myfile_stage8b << "{\" "<<bases_names_prod[i] << "*" << bases_names_prod[j] << "*C"<<bases_names_prod[i] << bases_names_prod[j] <<"        =\", CForm[C"<<bases_names_prod[i] << bases_names_prod[j] <<" /. Pair[Momentum[p], Momentum[p]] -> p^2 /. DiracGamma[Momentum[p]] -> p], \";\"}" << endl;}
-    else {myfile_stage8b << "{\" "<<bases_names_prod[i] << "*" << bases_names_prod[j] << "*C"<<bases_names_prod[i] << bases_names_prod[j] <<"           =\", CForm[C"<<bases_names_prod[i] << bases_names_prod[j] <<" /. Pair[Momentum[p], Momentum[p]] -> p^2 /. DiracGamma[Momentum[p]] -> p], \";\"}," << endl;}
-    
-  }
-  }
-
-  myfile_stage8b << " }, \"Table\", \"FieldSeparators\" -> \" \", \"TextDelimiters\" -> \"\"];" << endl;
-*/
 
   myfile_stage8b.close();
 

@@ -181,8 +181,7 @@ bool check_done()
   
   bool success = 0;
   if (result == "0") {cout << "Successful!!!" << endl, success = 1;}
-  else { cout << "Something has gone terribly wrong, check the symmetries are being accounted for properly when writting the basis integrals \n" <<\
-  "(and thus no double up of terms) and that all cross terms are being considered." << endl; success = 0;}
+  else { cout << "Something has gone wrong.  Check that all mass terms match the masses in the model file and that there are no masses missing in your masses.txt input file." << endl; success = 0;}
   
   return success;
 

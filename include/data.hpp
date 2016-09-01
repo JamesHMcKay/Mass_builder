@@ -10,17 +10,10 @@ using namespace std;
 struct Data
 {
 public:
-double sw;
-double cw;
-double sw2;
-double cw2;
-double S2TW;
-double g2;
-double MChi;
-double ma;
-double mw;
-double mz;
-double SE_F6;
+double lambda;
+double g;
+double Ms;
+double SE_S1;
 double P, Q;
   Data (){};
 Data(int argc, char* argv[]) {
@@ -44,38 +37,16 @@ if (!line.length() || line[0] == '#')
   }
   for (int n=0;n<i+1;n++)
   {
-  if (name[n]=="sw")
+  if (name[n]=="lambda")
   {
-  sw=param[n];
+  lambda=param[n];
   }
-  if (name[n]=="cw")
+  if (name[n]=="g")
   {
-  cw=param[n];
+  g=param[n];
   }
-  if (name[n]=="sw2")
-  {
-  sw2=param[n];
-  }
-  if (name[n]=="cw2")
-  {
-  cw2=param[n];
-  }
-  if (name[n]=="S2TW")
-  {
-  S2TW=param[n];
-  }
-  if (name[n]=="g2")
-  {
-  g2=param[n];
-  }
-  if (name[n]=="MChi")
-  {  MChi=param[n];  }
-  if (name[n]=="ma")
-  {  ma=param[n];  }
-  if (name[n]=="mw")
-  {  mw=param[n];  }
-  if (name[n]=="mz")
-  {  mz=param[n];  }
+  if (name[n]=="Ms")
+  {  Ms=param[n];  }
   if (name[n]=="Q")
   {  Q =param[n];  }
   if (name[n]=="P")
