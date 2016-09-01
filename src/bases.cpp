@@ -13,26 +13,20 @@ using namespace utils;
 // simple helper function to search for duplicates and return vector of unique elements
 
 
-
-
-
-
-
-
-std::map <std::string, Bases > set_bases(std::vector<string> masses_input, std::vector<string> identifiers_input)
+void set_id(std::vector<string> &masses_input, std::vector<string> &identifiers_input)
 {
   vector<string> identifiers;
   vector<string> masses;
   
   // first need to make sure there are no duplicate masses, and assign a unique one character identifier to each
   // mass
-    
+  #ifdef DEBUG
   cout << "masses are " << endl;
   for (unsigned int i = 0; i < masses_input.size(); i++)
   {
   cout << masses_input[i] << endl;
   }
-  
+  #endif
   
   if (identifiers_input.size()==0)  // need to create unique identifiers
   {
@@ -94,13 +88,31 @@ std::map <std::string, Bases > set_bases(std::vector<string> masses_input, std::
 
   
   vector<string> id = identifiers;
-  
+  #ifdef DEBUG
   cout << "identifiers are " << endl;
   for (unsigned int i = 0; i < identifiers.size(); i++)
   {
   cout << identifiers[i] << endl;
   }
   cout << " --- " << endl;
+  #endif
+  
+  identifiers_input = identifiers;
+  masses_input = masses;
+
+}
+
+
+
+
+
+
+
+
+std::map <std::string, Bases > set_bases(std::vector<string> masses, std::vector<string> &identifiers_input)
+{
+  set_id( masses, identifiers_input);
+  vector<string> id = identifiers_input;
   
   
   std::map <std::string, Bases > bases_map;
@@ -182,15 +194,93 @@ std::map <std::string, Bases > new_base_map;
 
 for (unsigned int i = 0; i < bases_names.size();i++)
 {
-if ( base_map[bases_names[i]].coefficient != "0")
+
+string coeff = base_map[bases_names[i]].coefficient;
+
+if ( char_to_string(coeff[2]) != "0") // the character choosen depends on the amount of white space used
 {
 new_base_map[bases_names[i]] = base_map[bases_names[i]];
+
 }
 }
 
 return new_base_map;
 }
 
+
+// reformat the coefficient to change Mathematica expressions into readable C++ input
+void format_coeff(std::map <std::string, Bases > &base_map, std::vector<std::string> bases_names,std::vector<std::string> masses, std::vector<std::string> id)
+{
+int nb = bases_names.size();
+int nm = masses.size();
+
+// deal with TAI and TBI objects (should extend to deal with all possible)
+string from="",to="";
+
+for (int k = 0; k<nb ; k++)
+{
+string coefficient = base_map[bases_names[k]].coefficient;
+
+
+
+
+for (int i = 0; i<nm; i++)
+{
+for (int j = 0; j<nm; j++)
+{
+from = "TBI(4,Power(p,2),List(List(1,"+masses[i]+"),List(1," + masses[j] + ")))";  // TODO make short name for all bases object and for the B object include both permutations, then this solves this problem here
+to = "B"+id[j]+id[i]; // choice of i and j here is important TODO
+
+ReplaceAll(coefficient,from, to);
+}
+
+from = "TAI(4,0,List(List(1,"+masses[i]+")))";
+to = "A"+id[i];
+ReplaceAll(coefficient,from, to);
+
+from = "MajoranaSpinor(p,"+masses[i]+")";
+to = "1.0";
+ReplaceAll(coefficient,from, to);
+
+from = "Spinor(Momentum(p),"+masses[i]+",1)";
+to = "1.0";
+ReplaceAll(coefficient,from, to);
+
+
+
+
+
+}
+
+base_map[bases_names[k]].coefficient = coefficient;
+}
+
+}
+
+
+
+
+std::map <std::string, Bases > products_container(vector<string> bases_names)
+{
+std::map <std::string, Bases > prod_map;
+int n = bases_names.size();
+
+for (int i = 0; i < n ; i++)
+{
+for (int j = 0; j < n ; j++)
+{
+string name = bases_names[i]+bases_names[j];
+Bases base;
+base.short_name = name;
+base.e1 = bases_names[i];
+base.e2 = bases_names[j];
+
+prod_map[name] = base;
+}
+}
+
+return prod_map;
+}
 
 
 

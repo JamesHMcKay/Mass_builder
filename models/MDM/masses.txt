@@ -1,4 +1,4 @@
-mc c
+MChi c
 ma a
 mw w
 mz z

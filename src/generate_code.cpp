@@ -221,7 +221,7 @@ int main_function (int argc, char *argv[])
   
   
   
-  cout << "particle name 1 " << particle_names[0] << endl;
+  
   
   
   for (int d = 0; d<nd;d++)
@@ -231,7 +231,7 @@ int main_function (int argc, char *argv[])
   
   tag = tags[d];
   particle_name = particle_names[d];
-  cout << "particle name first = " << particle_name << endl;
+  
   
   particle_name =  part_name_simple(particle_names[d]);
   
@@ -437,12 +437,12 @@ int main_function (int argc, char *argv[])
   const char *file_masses = c_file_masses.c_str();
   int nm; // number of diagrams, length of diagram_number vector
   vector<std::string> temp_vec; // TODO remove!
-  get_data(temp_vec,masses, nm,file_masses);
+  get_data(masses,temp_vec, nm,file_masses);
   main_output << "TSIL_REAL ";
   for (int i=0;i<nm;i++)
   {
-  if (i!=(nm-1)) main_output << "m" <<masses[i] << ", " << "m" <<masses[i] << "2 , ";
-  else main_output << "m" <<masses[i] << ", m" <<masses[i] << "2 ";
+  if (i!=(nm-1)) main_output << " " <<masses[i] << ", " << " " <<masses[i] << "2 , ";
+  else main_output << " " <<masses[i] << ", " <<masses[i] << "2 ";
   }
   main_output<<";"<<endl;
   main_output<< "\n";
@@ -479,10 +479,30 @@ int main_function (int argc, char *argv[])
   //vector<std::string> V_A,V_B,V_C,V_D;
   //int nv = 0;
   
+  
+  //  we have here a list of integrals with the short name style
+  // need to recast these into basis object using the identifiers -> mass relationship
+  // will do this in the bases.cpp file
+
+  
+  vector<string> masses_input,id_input;
+  int na;
+  get_data(masses_input,id_input,na,file_masses);
+  std::map<std::string, Bases> base_map = set_bases(masses_input, id_input);
+  
+  
+  //set_id(masses_input, id_input)
+  
+  
   for (unsigned int i = 0; i<integrals.size();i++)
   {
   string name = integrals[i];
-  stringstream _e1,_e2,_e3,_e4,_e5, _type;
+  Bases base_temp = base_map[name];
+  base_temp.short_name = name;
+  print_doTSIL(main_output, base_temp);
+  
+  
+  /*stringstream _e1,_e2,_e3,_e4,_e5, _type;
   string e1,e2,e3,e4,e5, type;
   _type << name[0];
   _type >> type;
@@ -497,10 +517,14 @@ int main_function (int argc, char *argv[])
   if (type == "J") print_TSIL_J(main_output, e1+e2+e3);
   if (type == "T") print_TSIL_T(main_output, e1+e2+e3);
   if (type == "K") print_TSIL_K(main_output, e1+e2+e3);
-  if (type == "V") print_TSIL_V(main_output,e1+e2+e3+e4);//{V_A.push_back(e1);V_B.push_back(e2);V_C.push_back(e3);V_D.push_back(e4);}
-  if (type == "F") print_TSIL_F(main_output, e1+e2+e3+e4+e5);
+  if (type == "V") print_TSIL_V(main_output,e1+e2+e3+e4);
+  if (type == "F") print_TSIL_F(main_output, e1+e2+e3+e4+e5);*/
   
   main_output << "\n";
+  
+  
+  
+  
   
   }
   
@@ -525,8 +549,8 @@ main_output<< "\n";
 
 for (int i=0;i<nm;i++)
 {
-if (i!=(nm-1)) main_output <<"m"<< masses[i] << " = data.m"<<masses[i]<<", m" << masses[i]<<"2 = TSIL_POW(data.m"<<masses[i]<<", 2) , ";
-else main_output << "m"<<masses[i] << " = data.m"<<masses[i]<<" , m" << masses[i]<<"2 = TSIL_POW(data.m"<<masses[i]<<", 2) ";
+if (i!=(nm-1)) main_output <<" "<< masses[i] << " = data."<<masses[i]<<", " << masses[i]<<"2 = TSIL_POW(data."<<masses[i]<<", 2) , ";
+else main_output << " "<<masses[i] << " = data."<<masses[i]<<" , " << masses[i]<<"2 = TSIL_POW(data."<<masses[i]<<", 2) ";
 }
 main_output<<";"<<endl;
 main_output<< "\n";
@@ -669,7 +693,7 @@ data_h << "double "<< couplings[i]<<";"<<endl;
 
 for (int i=0;i<nm;i++)
 {
-data_h << "double m"<< masses[i]<<";"<<endl;
+data_h << "double "<< masses[i]<<";"<<endl;
 }
 
 // create a variable for the self energy of each particle we have
@@ -718,9 +742,9 @@ data_h<<"  if (name[n]==\""<<couplings[i] <<"\")\n"
 
 for (int i=0;i<nm;i++)
 {
-data_h<<"  if (name[n]==\"m"<<masses[i] <<"\")\n"
+data_h<<"  if (name[n]==\""<<masses[i] <<"\")\n"
 <<"  {"
-<<"  m" <<masses[i] << "=param[n];"
+<<"  " <<masses[i] << "=param[n];"
 <<"  }"<<endl;
 }
 

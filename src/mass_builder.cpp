@@ -80,7 +80,7 @@ if (option=="-f")
 else
 {
 model = argv[3];
-cout << "using model = " << model << endl;
+//cout << "using model = " << model << endl;
 diagram = argv[2];
 particle = argv[1];
 ca.calc_diagram(diagram,particle,model);

@@ -30,27 +30,13 @@ namespace utils
 
 void get_data(vector<std::string> &A,int &n,const char *filename);
 
-void get_data(vector<std::string> &A, vector<std::string> &B,int &n,const char *filename);
+void get_data(vector<std::string> &A, vector<std::string> &B,int &n,const char *filename, bool whole_line = false);
 
 void print_math_header(ofstream &myfile);
 
 void print_math_body(ofstream &file,int loop_order,string particle_full,string diagram,string model,string cwd);
 
-void print_product(ofstream &myfile,string name_1,string name_2,string SEn="SEn");
 
-void print_A(ofstream &myfile, string elements,string SEn="SEn");
-
-void print_B(ofstream &myfile, string elements,string SEn="SEn");
-
-void print_V(ofstream &myfile, string elements,string SEn="SEn");
-
-void print_T(ofstream &myfile, string elements,string SEn="SEn");
-
-void print_J(ofstream &myfile, string elements,string SEn="SEn");
-
-void print_K(ofstream &myfile, string elements,string SEn="SEn");
-
-void print_F(ofstream &myfile, string elements,string SEn="SEn");
 
 bool check_done();
 
@@ -74,6 +60,11 @@ void print_base(ofstream &myfile, Bases base, string id, string SEn);
 void print_math_basis(std::map<std::string, Bases> base_map, ofstream &myfile , string target);
 
 void print_math_products(std::map<std::string, Bases> base_map, ofstream &myfile, string target);
+
+
+void ReplaceAll(std::string &input, const std::string& from, const std::string& to);
+
+void print_doTSIL(ofstream &myfile,Bases base);
 
 }
 

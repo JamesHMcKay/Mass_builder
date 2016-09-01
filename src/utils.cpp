@@ -43,7 +43,7 @@ while(getline(input2, line2)) {
 
 
 
-void get_data(vector<std::string> &A, vector<std::string> &B,int &n,const char *filename)
+void get_data(vector<std::string> &A, vector<std::string> &B,int &n,const char *filename, bool whole_line)
 {
 
 
@@ -85,7 +85,15 @@ while(getline(input2, line2)) {
     std::istringstream iss2(line2);
   if (std::count( line2.begin(), line2.end(), ' ' )>0)
   {
+  
+  if (whole_line)
+  {
+  iss2>> A[na]; getline(iss2,B[nb]);
+  }
+  else {
   iss2>> A[na] >> B[nb];
+  }
+  
   na=na+1;
   nb=nb+1;
   }
@@ -155,118 +163,6 @@ void print_math_body(ofstream &file,int loop_order,string particle_full,string d
 
 
 }
-
-void print_product(ofstream &myfile,string name_1,string name_2,string SEn)
-{
-
-
-  string elements1,elements2;
-  stringstream _e1,_e2,_e3,_e4,_e5, _type1;
-  string e1,e2,e3,e4,e5, type1;
-  _type1 << name_1[0];
-  _type1 >> type1;
-  _e1 << name_1[1];_e1 >> e1;
-  _e2 << name_1[2];_e2 >> e2;
-  _e3 << name_1[3];_e3 >> e3;
-  _e4 << name_1[4];_e4 >> e4;
-  _e5 << name_1[5];_e5 >> e5;
-  
-  stringstream _f1,_f2,_f3,_f4,_f5, _type2;
-  string f1,f2,f3,f4,f5, type2;
-  _type2 << name_2[0];
-  _type2 >> type2;
-  
-  if (type1 =="F"){goto end;}
-  if (type2 =="F"){goto end;}
-    
-  _f1 << name_2[1];_f1 >> f1;
-  _f2 << name_2[2];_f2 >> f2;
-  _f3 << name_2[3];_f3 >> f3;
-  _f4 << name_2[4];_f4 >> f4;
-  _f5 << name_2[5];_f5 >> f5;
-
-
-  if (type1=="A") elements1 = e1;
-  if (type1=="B") elements1 = e1 + e2;
-  if (type1=="J") elements1 = e1 + e2 + e3;
-  if (type1=="T") elements1 = e1 + e2 + e3;
-  if (type1=="K") elements1 = e1 + e2 + e3;
-  if (type1=="V") elements1 = e1 + e2 + e3 + e4;
-
-  if (type2=="A") elements2 = f1;
-  if (type2=="B") elements2 = f1 + f2;
-  if (type2=="J") elements2 = f1 + f2 + f3;
-  if (type2=="T") elements2 = f1 + f2 + f3;
-  if (type2=="K") elements2 = f1 + f2 + f3;
-  if (type2=="V") elements2 = f1 + f2 + f3 + f4;
-
-
-
-  myfile << type1 << elements1 << type2 << elements2 << " = ";
-  if (type1=="A") myfile << "TAI[4, 0, {1, m" << elements1[0] << "}]";
-  if (type1=="B") myfile << "TBI[4, Pair[Momentum[p],Momentum[p]], {{1, m" << elements1[0] << "}, {1, m" << elements1[1] << "}}]";
-  if (type1=="J") myfile << "TJI[4, Pair[Momentum[p],Momentum[p]], {{1, m" << elements1[0] << "}, {1, m" << elements1[1] << "}, {1, m" << elements1[2] << "}}]";
-  if (type1=="T") myfile << "TJI[4, Pair[Momentum[p],Momentum[p]], {{2, m" << elements1[0] << "}, {1, m" << elements1[1] << "}, {1, m" << elements1[2] << "}}]";
-  if (type1=="K") myfile << "TJI[4, 0, {{1, m" << elements1[0] << "}, {1, m" << elements1[1] << "}, {1, m" << elements1[2] << "}}]";
-  if (type1=="V") myfile << "TVI[4, Pair[Momentum[p],Momentum[p]], {{1, m" << elements1[0] << "}, {1, m" << elements1[1] << "}, {1, m" << elements1[2] << "}, {1, m" << elements1[3] << "}}]";
-  myfile << " * ";
-  if (type2=="A") myfile << "TAI[4, 0, {1, m" << elements2[0] << "}];";
-  if (type2=="B") myfile << "TBI[4, Pair[Momentum[p],Momentum[p]], {{1, m" << elements2[0] << "}, {1, m" << elements2[1] << "}}];";
-  if (type2=="J") myfile << "TJI[4, Pair[Momentum[p],Momentum[p]], {{1, m" << elements2[0] << "}, {1, m" << elements2[1] << "}, {1, m" << elements2[2] << "}}];";
-  if (type2=="T") myfile << "TJI[4, Pair[Momentum[p],Momentum[p]], {{2, m" << elements2[0] << "}, {1, m" << elements2[1] << "}, {1, m" << elements2[2] << "}}];";
-  if (type2=="K") myfile << "TJI[4, 0, {{1, m" << elements2[0] << "}, {1, m" << elements2[1] << "}, {1, m" << elements2[2] << "}}];";
-  if (type2=="V") myfile << "TVI[4, Pair[Momentum[p],Momentum[p]], {{1, m" << elements2[0] << "}, {1, m" << elements2[1] << "}, {1, m" << elements2[2] << "}, {1, m" << elements2[3] << "}}];";
-  myfile << endl;
-  if ((type1 == type2) && (elements1==elements2)) myfile << "C"<< type1 << elements1 << type2 << elements2 << " = Coefficient["<<SEn<<","<< type1 << elements1 << ", 2];" << endl;
-  else myfile << "C"<< type1 << elements1 << type2 << elements2 << " = - (1/2)* Coefficient["<<SEn<<","<< type1 << elements1 << type2 << elements2 << ", 1];" << endl;
-  end:;
-}
-
-
-
-void print_A(ofstream &myfile, string elements,string SEn)
-{
-if (SEn == "SEn") myfile << "A"<< elements << " = " << "TAI[4, 0, {1, m" << elements[0] << "}];" << endl;
-myfile << "CA"<< elements << " = Coefficient["<<SEn<<", A" << elements << ", 1];" << endl;
-}
-
-void print_B(ofstream &myfile, string elements,string SEn)
-{
-if (SEn == "SEn") myfile << "B"<< elements << " = " << "TBI[4, Pair[Momentum[p],Momentum[p]], {{1, m" << elements[0] << "}, {1, m" << elements[1] << "}}];" << endl;
-myfile << "CB"<< elements << " = Coefficient["<<SEn<<", B" << elements << ", 1];" << endl;
-}
-
-void print_V(ofstream &myfile, string elements,string SEn)
-{
-if (SEn == "SEn") myfile << "V"<< elements << " = " << "TVI[4, Pair[Momentum[p],Momentum[p]], {{1, m" << elements[0] << "}, {1, m" << elements[1] << "}, {1, m" << elements[2] << "}, {1, m" << elements[3] << "}}];" << endl;
-myfile << "CV"<< elements << " = Coefficient["<<SEn<<", V" << elements << ", 1];" << endl;
-}
-
-void print_T(ofstream &myfile, string elements,string SEn)
-{
-if (SEn == "SEn") myfile << "T"<< elements << " = " << "TJI[4, Pair[Momentum[p],Momentum[p]], {{2, m" << elements[0] << "}, {1, m" << elements[1] << "}, {1, m" << elements[2] << "}}];" << endl;
-myfile << "CT"<< elements << " = Coefficient["<<SEn<<", T" << elements << ", 1];" << endl;
-}
-
-void print_J(ofstream &myfile, string elements,string SEn)
-{
-if (SEn == "SEn") myfile << "J"<< elements << " = " << "TJI[4, Pair[Momentum[p],Momentum[p]], {{1, m" << elements[0] << "}, {1, m" << elements[1] << "}, {1, m" << elements[2] << "}}];" << endl;
-myfile << "CJ"<< elements << " = Coefficient["<<SEn<<", J" << elements << ", 1];" << endl;
-}
-
-void print_K(ofstream &myfile, string elements,string SEn)
-{
-if (SEn == "SEn") myfile << "K"<< elements << " = " << "TJI[4, 0, {{1, m" << elements[0] << "}, {1, m" << elements[1] << "}, {1, m" << elements[2] << "}}];" << endl;
-myfile << "CK"<< elements << " = Coefficient["<<SEn<<", K" << elements << ", 1];" << endl;
-}
-
-
-void print_F(ofstream &myfile, string elements,string SEn)
-{
-if (SEn == "SEn") myfile << "F"<< elements << " = " << "TFI[4, Pair[Momentum[p],Momentum[p]], {{1, m" << elements[0] << "}, {1, m" << elements[1] << "}, {1, m" << elements[2] << "}, {1, m" << elements[3] << "}, {1, m" << elements[4] << "}}];" << endl;
-myfile << "CF"<< elements << " = Coefficient["<<SEn<<", F" << elements << ", 1];" << endl;
-}
-
 
 
 
@@ -520,5 +416,89 @@ void print_math_products(std::map<std::string, Bases> base_map, ofstream &myfile
 
 
 
+void ReplaceAll(std::string &input, const std::string& from, const std::string& to)
+{
+    size_t start_pos = 0;
+    while((start_pos = input.find(from, start_pos)) != std::string::npos)
+    {
+        input.replace(start_pos, from.length(), to);
+        start_pos += to.length();
+    }
+}
+
+
+void print_doTSIL(ofstream &myfile,Bases base)
+{
+string type = base.type;
+string name = base.short_name;
+
+
+if (type == "A")
+{
+myfile << name << " = -i*TSIL_A_ ("<<base.e1<<"2 , Q2);"<<endl;
+}
+
+if (type == "B")
+{
+
+myfile << name <<" = i*TSIL_B_ (" << base.e1 << "2, " << base.e2 << "2, s, Q2);"<< endl;
+}
+
+if (type == "K")
+{
+
+myfile << name <<" = TSIL_I2_(" << base.e1 << "2, " << base.e2 << "2, " << base.e3 << ", Q2);"<< endl;
+}
+
+
+if (type == "J")
+{
+  string A = base.e1,B=base.e2,C=base.e3;
+  
+  myfile << "TSIL_SetParametersST (&bar," << B << "2, " << A << "2, " << C <<"2, Q2);" << endl;  // write TSIL evaluate statement for this name sequence
+  myfile << "TSIL_Evaluate (&bar, s);" << endl;
+  myfile << name << "= TSIL_GetFunction (&bar,\"Suxv" <<"\");"<< endl;    // TSIL get function statement
+  
+}
+
+
+if (type == "T")
+{
+  string A = base.e1,B=base.e2,C=base.e3;
+  
+  myfile << "TSIL_SetParametersST (&bar," << A << "2, " << B << "2, " << C <<"2, Q2);" << endl;  // write TSIL evaluate statement for this name sequence
+  myfile << "TSIL_Evaluate (&bar, s);" << endl;
+  myfile << name << "= -TSIL_GetFunction (&bar,\"Txuv" <<"\");"<< endl;    // TSIL get function statement
+  
+}
+
+
+if (type == "F")
+{
+  string A = base.e1,B=base.e2,C=base.e3,D=base.e4,E=base.e5;
+
+  myfile << "TSIL_SetParameters (&bar," << A << "2, " << B << "2, " << C << "2 , " << D << "2 , " << E  << "2, Q2);" << endl;  // write TSIL evaluate statement for this name sequence
+  myfile << "TSIL_Evaluate (&bar, s);" << endl;
+  myfile << name << "= TSIL_GetFunction (&bar,\"M" <<"\");"<< endl;    // TSIL get function statement
 
 }
+
+
+}
+
+
+
+void print_TSIL_V(ofstream &myfile, string elements)
+{
+
+  char A = elements[0],B=elements[1],C=elements[2],D=elements[3];
+
+  myfile << "TSIL_SetParameters (&bar,m" << D << "2, m" << C << "2, m" << B << "2 , " << "1.0" << " , m" << A  << "2, Q2);" << endl;  // write TSIL evaluate statement for this name sequence
+  myfile << "TSIL_Evaluate (&bar, s);" << endl;
+  myfile << "V" << elements << "= -TSIL_GetFunction (&bar,\"Uzxyv" <<"\");"<< endl;    // TSIL get function statement
+
+}
+
+
+}
+

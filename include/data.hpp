@@ -16,7 +16,7 @@ double sw2;
 double cw2;
 double S2TW;
 double g2;
-double mc;
+double MChi;
 double ma;
 double mw;
 double mz;
@@ -68,8 +68,8 @@ if (!line.length() || line[0] == '#')
   {
   g2=param[n];
   }
-  if (name[n]=="mc")
-  {  mc=param[n];  }
+  if (name[n]=="MChi")
+  {  MChi=param[n];  }
   if (name[n]=="ma")
   {  ma=param[n];  }
   if (name[n]=="mw")

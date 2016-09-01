@@ -55,12 +55,15 @@ string get_coeff(){return coefficient;}
 
 vector<int> find_string_lengths(vector<string> input);
 
-std::map<std::string, Bases> set_bases(std::vector<string> masses, std::vector<string> identifiers);
+void set_id(std::vector<string> &masses_input, std::vector<string> &identifiers_input);
+
+std::map<std::string, Bases> set_bases(std::vector<string> masses, std::vector<string> &identifiers);
 
 std::map <std::string, Bases > remove_zeros(std::map <std::string, Bases > base_map, std::vector<std::string> base_names);
 
+void format_coeff(std::map <std::string, Bases > &base_map, std::vector<std::string> bases_names,std::vector<std::string> masses,std::vector<std::string> id);
 
-
+std::map <std::string, Bases > products_container(vector<string> bases_names);
 
 
 
