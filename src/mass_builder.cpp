@@ -33,114 +33,154 @@ then passes this onto the run_tsil function.
 
 using namespace std;
 using namespace supplementary_code;
+using namespace utils;
+
+Options options;
+
+
 
 // main routine to manage a diagram by diagram procedure
-void run_calc_diagram(int argc, char *argv[])
+void run_mass_builder_mode_1a(Options options)
 {
 Calc_amplitudes ca;
 
-string diagram = "";
-string particle = "";
-string model = "";
-if (argc==1)
-{
-cout << "Please enter diagram number to calcuate and particle name, options are \"chi0\" and \"chi1\"  " << endl;
-cout << "or alternatively enter the name to a list as \"-f list.txt\" " << endl;
+std::string particles [100];
+std::string diagrams [100]; int i=0;
+std::string model = options.model;
+const char *file_diagrams;
+if (options.input_list==""){
+const char *ext = ".txt";
+const char* file_diagrams_tmp = "models/";
+string c_file_diagrams = file_diagrams_tmp + model + "/diagrams" + ext;
+file_diagrams = c_file_diagrams.c_str();
 }
 else
 {
+file_diagrams = options.input_list.c_str();
+}
 
-string option = argv[1];
-if (option=="-f")
+
+std::ifstream input(file_diagrams);
+std::string line;
+while(getline(input, line))
 {
-  std::string particles [100];
-  std::string diagrams [100]; int i=0;
-  std::string model = argv[2];
-  const char *ext = ".txt";
-  const char* file_diagrams_tmp = "models/";
-  string c_file_diagrams = file_diagrams_tmp + model + "/diagrams" + ext;
-  const char *file_diagrams = c_file_diagrams.c_str();
-  std::ifstream input(file_diagrams);
-  std::string line;
-  while(getline(input, line))
-  {
-        if (!line.length() || line[0] == '#')
-           continue;
-        std::istringstream iss(line);
-        iss>> particles[i] >> diagrams[i];
-        i=i+1;
-  }
+  if (!line.length() || line[0] == '#')
+     continue;
+  std::istringstream iss(line);
+  iss>> particles[i] >> diagrams[i];
+  i=i+1;
+}
 // run over all entries in the input file
-  for (int k=0;k<i;k++)
-  {
-  ca.calc_diagram(diagrams[k],particles[k],model);
-  }
-
-}
-else
+for (int k=0;k<i;k++)
 {
-model = argv[3];
-//cout << "using model = " << model << endl;
-diagram = argv[2];
-particle = argv[1];
-ca.calc_diagram(diagram,particle,model);
-}
-
-
+options.particle = particles[k];
+options.diagram = diagrams[k];
+options.model = model;
+ca.calc_diagram(options);
 }
 }
 
-void evaluate(int argc, char *argv[])
+
+
+
+
+void run_mass_builder_mode_1b(Options options)
 {
-
-
-Data data(argc,argv);
-
-Self_energy se(data);
-
-se.run_tsil(data);
-
-/*
-
-//se.run_tsil(data);
-cout << "SE_1 - SE_2 = " << data.SE_1 - data.SE_2 << endl;
-
-// FeynArts assigns a loop factor of -1/(16.0L*PI^4)^2 for two loop amplitudes
-// but we should be using 1/(16.0L*PI^2)^2,
-// so we rescale by PI^4 where appropriate
-data.SE_1 = data.SE_1*pow(PI,4);
-data.SE_2 = data.SE_2*pow(PI,4);
-
-Supplements supp;
-supp.add_derivatives(data);
-
-cout << "SE_1 - SE_2 = " << data.SE_1 - data.SE_2 << endl;
-*/
+Calc_amplitudes ca;
+ca.calc_diagram(options);
 }
+
 
 
 
 int main(int argc, char *argv[])
 {
 
-string option = argv[1];
-if (option=="-g")
+User_input user(argc,argv);
+
+user.user_interface();
+
+Options options = user.options;
+
+// read options and work through possibilities for each run mode and check requirements are meant
+if (options.model==""){ cout << "no model specified" << endl;}
+
+
+if (options.run_mode == 1)
 {
-Generate_code::main_function(argc,argv);
-}
-else if (option == "-a")
+// going to calculate amplitudes
+if ((options.particle == "") || (options.diagram == ""))
 {
-Calc_amplitudes ca;
-ca.generate_figures(argc,argv);
-}
-else if (option == "-e")
-{
-// evaluate self energy
-evaluate(argc, argv);
+run_mass_builder_mode_1a(options);
 }
 else
 {
+if ((options.input_list==""))
+{
+if ((options.particle == "") || (options.diagram == "")) { cout << "no valid input selected" << endl;}
+else { run_mass_builder_mode_1b(options);}
+}
+}
+}
+
+
+
+
+
+
+
+
+
+
+/*
+if (argc == 1)
+{
+user_input_guide();
+}
+else
+{
+string option = argv[1];
+if (option=="-g")
+{
+Generate_code::main_function(argc,argv,options);
+}
+else if (option=="-gc")
+{
+options.counter_terms = true;
+Generate_code::main_function(argc,argv,options);
+}
+else if (option == "-d")
+{
+Calc_amplitudes ca;
+ca.generate_figures(argc,argv,options);
+}
+else if (option == "-dc")
+{
+options.counter_terms = true;
+Calc_amplitudes ca;
+ca.generate_figures(argc,argv,options);
+}
+else if (option == "-e")
+{
+evaluate(argc, argv);
+}
+else if (option == "-a")
+{
 run_calc_diagram(argc, argv);
 }
+else if (option == "-ac")
+{
+options.counter_terms = true;
+run_calc_diagram(argc, argv);
+}
+else
+{
+
+user_input_guide();
+
+
+}
+}*/
+
 
 }

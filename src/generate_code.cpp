@@ -14,48 +14,6 @@ make must be run in the build directory after this program has been run
 
 */
 
-
-
-
-/* goal: generate cpp code in the directory src/ that contains a function
-definition containing the coefficients and the total self energy SE = ...
-also create a DoTSIL function to evaluate the integrals
-
-function should have generic name with suffix given by particle name
-and diagram number
-
-need capacity to add multiple such functions to the file and update (removing
-any duplications) the DoTSIL function.
-
----------
-
---- the process ---
-
-need three files:
-
- - integrals.txt
- - functions.txt
- - diagrams.txt
-
-these will be stored in output/generator/
-should give option to start fresh (but in doing so previous versions
-should be backed up to output/generator/backup/)
-
-for a new diagram we do the following:
-
-1.) add the required integrals to integrals.txt -- sort and remove duplicates
-2.) add the new functions, containing all the coefficients to functions.txt
-3.) add the new diagram number to diagrams.txt
-
-4.) generate new .cpp code, create fresh DoTSIL function, straight copy of 
-functions.txt and then a fresh master call, which will call all diagrams
-listed in diagrams.txt
-
-
-*/
-
-
-
 #include "utils.hpp"
 #include "generate_code.hpp"
 
@@ -70,89 +28,7 @@ namespace Generate_code
 
 
 
-
-
-void print_TSIL_A(ofstream &myfile, string elements)
-{
-myfile << "A"<<elements << " = -i*TSIL_A_ (m"<<elements<<"2 , Q2);"<<endl;
-}
-
-void print_TSIL_B(ofstream &myfile, string elements)
-{
-
-myfile << "B"<< elements <<" = i*TSIL_B_ (m" << elements[0] << "2, m" << elements[1] << "2, s, Q2);"<< endl;
-}
-
-void print_TSIL_K(ofstream &myfile, string elements)
-{
-
-myfile << "K"<< elements <<" = TSIL_I2_(m" << elements[0] << "2, m" << elements[1] << "2, m" << elements[2] << "2, Q2);"<< endl;
-}
-
-
-void print_TSIL_J(ofstream &myfile, string elements)
-{
-  char A = elements[0],B=elements[1],C=elements[2];
-  //string output0 = A+B+C;
-  
-  
-  myfile << "TSIL_SetParametersST (&bar,m" << B << "2, m" << A << "2, m" << C <<"2, Q2);" << endl;  // write TSIL evaluate statement for this name sequence
-  myfile << "TSIL_Evaluate (&bar, s);" << endl;
-  myfile << "J" << elements << "= TSIL_GetFunction (&bar,\"Suxv" <<"\");"<< endl;    // TSIL get function statement
-  
-}
-
-
-void print_TSIL_T(ofstream &myfile, string elements)
-{
-  char A = elements[0],B=elements[1],C=elements[2];
-  //string output0 = A+B+C;
-  
-  
-  myfile << "TSIL_SetParametersST (&bar,m" << A << "2, m" << B << "2, m" << C <<"2, Q2);" << endl;  // write TSIL evaluate statement for this name sequence
-  myfile << "TSIL_Evaluate (&bar, s);" << endl;
-  myfile << "T" << elements << "= -TSIL_GetFunction (&bar,\"Txuv" <<"\");"<< endl;    // TSIL get function statement
-  
-}
-
-
-void print_TSIL_F(ofstream &myfile, string elements)
-{
-  char A = elements[0],B=elements[1],C=elements[2],D=elements[3],E=elements[4];
-  //string output0 = A+B+C+D+E;
-
-  myfile << "TSIL_SetParameters (&bar,m" << A << "2, m" << B << "2, m" << C << "2 , m" << D << "2 , m" << E  << "2, Q2);" << endl;  // write TSIL evaluate statement for this name sequence
-  myfile << "TSIL_Evaluate (&bar, s);" << endl;
-  myfile << "F" << elements << "= TSIL_GetFunction (&bar,\"M" <<"\");"<< endl;    // TSIL get function statement
-
-}
-
-
-
-
-
-void print_TSIL_V(ofstream &myfile, string elements)
-{
-
-  char A = elements[0],B=elements[1],C=elements[2],D=elements[3];
-
-  myfile << "TSIL_SetParameters (&bar,m" << D << "2, m" << C << "2, m" << B << "2 , " << "1.0" << " , m" << A  << "2, Q2);" << endl;  // write TSIL evaluate statement for this name sequence
-  myfile << "TSIL_Evaluate (&bar, s);" << endl;
-  myfile << "V" << elements << "= -TSIL_GetFunction (&bar,\"Uzxyv" <<"\");"<< endl;    // TSIL get function statement
-
-}
-
-
-
-
-
-
-
-
-
-
-
-int main_function (int argc, char *argv[])
+int main_function (int argc, char *argv[],Options options)
 {
   time_t t = time(0);   // get time now to print into generated files
   struct tm * now = localtime( & t );
@@ -214,11 +90,11 @@ int main_function (int argc, char *argv[])
   
   
   vector<std::string> tags;
-  vector<std::string> particle_names;
+  vector<std::string> particle_names,levels;
+  string level;
   int nd; // number of diagrams, length of diagram_number vector
   
-  get_data(particle_names,tags, nd,file_diagrams);
-  
+  get_data(particle_names,tags,levels, nd,file_diagrams);
   
   
   
@@ -228,16 +104,16 @@ int main_function (int argc, char *argv[])
   {
   //if (particle_names[d] == particle_name_reduced)
   //{
-  
+  level = levels[d];
   tag = tags[d];
   particle_name = particle_names[d];
   
   
   particle_name =  part_name_simple(particle_names[d]);
   
-  string c_coeff_integrals = "models/" + model +coeff_integrals_tmp + underscore + particle_name + underscore + tag + ext;
-  string c_coeff_products = "models/" + model + coeff_products_tmp + underscore + particle_name + underscore + tag + ext;
-  string c_summation = "models/" + model + summation_tmp + underscore + particle_name + underscore + tag + ext;
+  string c_coeff_integrals = "models/" + model +coeff_integrals_tmp + underscore + particle_name + underscore + tag + underscore + level + ext;
+  string c_coeff_products = "models/" + model + coeff_products_tmp + underscore + particle_name + underscore + tag +underscore + level  + ext;
+  string c_summation = "models/" + model + summation_tmp + underscore + particle_name + underscore + tag + underscore + level + ext;
   
   const char *coeff_integrals = c_coeff_integrals.c_str();
   const char *coeff_products = c_coeff_products.c_str();
@@ -247,7 +123,7 @@ int main_function (int argc, char *argv[])
   
   
   
-  functions<< "TSIL_COMPLEXCPP  diagram"<<"_"<< particle_name << "_" << tag << "()" <<endl;
+  functions<< "TSIL_COMPLEXCPP  diagram"<<"_"<< particle_name << "_" << tag << "_" << level << "()" <<endl;
   functions<< "{" << endl;
   
   
@@ -318,9 +194,9 @@ int main_function (int argc, char *argv[])
   functions.close();
   
 
-// -------------  now create the DoTSIL function, this should be done each time this is run to avoid duplicates -------------
+  // -------------  now create the DoTSIL function, this should be done each time this is run to avoid duplicates -------------
 
-// need to know what what basis integrals are required, these are contained in the lists "integrals_tag.txt"
+  // need to know what what basis integrals are required, these are contained in the lists "integrals_tag.txt"
 
 
   int ni_total = 0;
@@ -332,10 +208,12 @@ int main_function (int argc, char *argv[])
   
   particle_name =  part_name_simple(particle_names[d]);
   
+  level = levels[d];
+  
  
   
   const char* file_integrals_tmp = "/output/basis_integrals"; // vector containing file names
-  string c_file_integrals = "models/" + model + file_integrals_tmp + underscore + particle_name + underscore + tag + ext;
+  string c_file_integrals = "models/" + model + file_integrals_tmp + underscore + particle_name + underscore + tag + underscore + level + ext;
   const char *file_integrals = c_file_integrals.c_str();
   
   
@@ -350,15 +228,15 @@ int main_function (int argc, char *argv[])
   for (int i =0; i<ni ; i++)
   {
   integrals[ni_total+i] = integrals_temp[i];
+  cout << "integral = " << integrals_temp[i]<<endl;
   }
 
   ni_total = ni_total + ni;
-  //}
 
   }
   
   
-  // we have a list of integrals so now need to remove duplicates and pass to routines for determining the require TSIL functions
+  // we have a list of integrals so now need to remove duplicates and pass to routines for determining the required TSIL functions
   
   sort(integrals.begin(),integrals.end());
   integrals.erase( unique( integrals.begin(), integrals.end() ), integrals.end() );
@@ -474,58 +352,24 @@ int main_function (int argc, char *argv[])
   
   main_output <<"void DoTSIL(TSIL_REAL s,TSIL_REAL Q2)\n"<<"{\n";
   
-  // sort the integrals into types and pass each list of each type to a seperate sorting and printing routine
-  
-  //vector<std::string> V_A,V_B,V_C,V_D;
-  //int nv = 0;
-  
-  
-  //  we have here a list of integrals with the short name style
-  // need to recast these into basis object using the identifiers -> mass relationship
-  // will do this in the bases.cpp file
-
-  
   vector<string> masses_input,id_input;
   int na;
   get_data(masses_input,id_input,na,file_masses);
   std::map<std::string, Bases> base_map = set_bases(masses_input, id_input);
   
-  
-  //set_id(masses_input, id_input)
-  
+    
   
   for (unsigned int i = 0; i<integrals.size();i++)
   {
+  cout << "making do TSIL integrals " << endl;
+  
   string name = integrals[i];
+  cout << "doing for " << name << endl;
   Bases base_temp = base_map[name];
   base_temp.short_name = name;
+  cout << "base temp type is = " << base_temp.type << endl;
   print_doTSIL(main_output, base_temp);
-  
-  
-  /*stringstream _e1,_e2,_e3,_e4,_e5, _type;
-  string e1,e2,e3,e4,e5, type;
-  _type << name[0];
-  _type >> type;
-  _e1 << name[1];_e1 >> e1;
-  _e2 << name[2];_e2 >> e2;
-  _e3 << name[3];_e3 >> e3;
-  _e4 << name[4];_e4 >> e4;
-  _e5 << name[5];_e5 >> e5;
-  
-  if (type == "A") print_TSIL_A(main_output,e1);
-  if (type == "B") print_TSIL_B(main_output, e1+e2);
-  if (type == "J") print_TSIL_J(main_output, e1+e2+e3);
-  if (type == "T") print_TSIL_T(main_output, e1+e2+e3);
-  if (type == "K") print_TSIL_K(main_output, e1+e2+e3);
-  if (type == "V") print_TSIL_V(main_output,e1+e2+e3+e4);
-  if (type == "F") print_TSIL_F(main_output, e1+e2+e3+e4+e5);*/
-  
   main_output << "\n";
-  
-  
-  
-  
-  
   }
   
   
@@ -535,34 +379,34 @@ int main_function (int argc, char *argv[])
   main_output << "\n";
   // init function
   
-main_output << "  int init(Data data) \n"
-<<"{\n";
+  main_output << "  int init(Data data) \n"
+  <<"{\n";
 
-for (int i=0;i<nc;i++)
-{
-if (i!=(nc-1)) main_output << couplings[i] << " = data."<<couplings[i]<<", ";
-else main_output << couplings[i] << " = data."<<couplings[i]<< " ";
-}
-main_output<<";"<<endl;
-main_output<< "\n";
-
-
-for (int i=0;i<nm;i++)
-{
-if (i!=(nm-1)) main_output <<" "<< masses[i] << " = data."<<masses[i]<<", " << masses[i]<<"2 = TSIL_POW(data."<<masses[i]<<", 2) , ";
-else main_output << " "<<masses[i] << " = data."<<masses[i]<<" , " << masses[i]<<"2 = TSIL_POW(data."<<masses[i]<<", 2) ";
-}
-main_output<<";"<<endl;
-main_output<< "\n";
+  for (int i=0;i<nc;i++)
+  {
+  if (i!=(nc-1)) main_output << couplings[i] << " = data."<<couplings[i]<<", ";
+  else main_output << couplings[i] << " = data."<<couplings[i]<< " ";
+  }
+  main_output<<";"<<endl;
+  main_output<< "\n";
 
 
+  for (int i=0;i<nm;i++)
+  {
+  if (i!=(nm-1)) main_output <<" "<< masses[i] << " = data."<<masses[i]<<", " << masses[i]<<"2 = TSIL_POW(data."<<masses[i]<<", 2) , ";
+  else main_output << " "<<masses[i] << " = data."<<masses[i]<<" , " << masses[i]<<"2 = TSIL_POW(data."<<masses[i]<<", 2) ";
+  }
+  main_output<<";"<<endl;
+  main_output<< "\n";
 
-main_output<<"dcomp ii=-1;ii=sqrt(ii);i=ii;\n"
-<<"Pi=PI;\n"
-<<"return 0;\n"
-<<"}\n";
-  
-  
+
+
+  main_output<<"dcomp ii=-1;ii=sqrt(ii);i=ii;\n"
+  <<"Pi=PI;\n"
+  <<"return 0;\n"
+  <<"}\n";
+    
+    
   
   
   
@@ -593,26 +437,26 @@ main_output<<"dcomp ii=-1;ii=sqrt(ii);i=ii;\n"
   
   
   // MAIN FUNCTION CALL
-  
-  
-  
-main_output << "void Self_energy::init_tsil(Data data)\n"
-<< "{\n"
-<< "TSIL_REAL qq= data.Q;\n"
-<< "TSIL_REAL s=pow(data.P,2);\n"
-<< "init(data);\n"
-<< "DoTSIL(s,qq);\n"
-<< "}\n"
-<< "\n"
-<< "\n"
-<< "void Self_energy::run_tsil (Data &data) \n"
-<< "{\n"
-<< "p=data.P;\n"
-<< "init_tsil(data);\n"
-<< endl;
 
-vector<std::string> particle_names_short = particle_names;
-vector<std::string> particle_names_short_reduced;
+
+
+  main_output << "void Self_energy::init_tsil(Data data)\n"
+  << "{\n"
+  << "TSIL_REAL qq= data.Q;\n"
+  << "TSIL_REAL s=pow(data.P,2);\n"
+  << "init(data);\n"
+  << "DoTSIL(s,qq);\n"
+  << "}\n"
+  << "\n"
+  << "\n"
+  << "void Self_energy::run_tsil (Data &data) \n"
+  << "{\n"
+  << "p=data.P;\n"
+  << "init_tsil(data);\n"
+  << endl;
+
+  vector<std::string> particle_names_short = particle_names;
+  vector<std::string> particle_names_short_reduced;
 
   sort(particle_names_short.begin(),particle_names_short.end());
   particle_names_short.erase( unique( particle_names_short.begin(), particle_names_short.end() ), particle_names_short.end() );
@@ -620,37 +464,37 @@ vector<std::string> particle_names_short_reduced;
 
 
 
-for (unsigned int i=0;i<particle_names_short.size();i++)
-{
-  string particle_name_tmp = particle_names_short[i];
-  string particle_name_tmp_short = part_name_simple(particle_names_short[i]);
- 
-  particle_names_short_reduced.push_back(particle_name_tmp_short);
-  
-  main_output<< "TSIL_COMPLEXCPP SE_"<<particle_name_tmp_short<<" = ";
-  
-  for (int d = 0; d<nd;d++)
+  for (unsigned int i=0;i<particle_names_short.size();i++)
   {
-  if (particle_names[d] == particle_name_tmp)
-  {
-  
-  
-  
-  main_output<< " + diagram"<<"_"<< particle_name_tmp_short << "_" << tags[d] << "()";
-  tag = tags[d];
+    string particle_name_tmp = particle_names_short[i];
+    string particle_name_tmp_short = part_name_simple(particle_names_short[i]);
+   
+    particle_names_short_reduced.push_back(particle_name_tmp_short);
+    
+    main_output<< "TSIL_COMPLEXCPP SE_"<<particle_name_tmp_short<<" = ";
+    
+    for (int d = 0; d<nd;d++)
+    {
+    if (particle_names[d] == particle_name_tmp)
+    {
+    
+    
+    
+    main_output<< " + diagram"<<"_"<< particle_name_tmp_short << "_" << tags[d] << "_" << levels[d] << "()";
+    tag = tags[d];
+    }
+    
+    
+    }
+    main_output << ";" << endl;
+    
+    main_output << "SE_"<<particle_name_tmp_short << " = " << "SE_"<<particle_name_tmp_short<<"*TSIL_POW(PI,4);"<<endl;
+    
+    main_output << "cout << \"Self energy of particle "<< particle_name_tmp_short << " = \" << real(SE_"<<particle_name_tmp_short<<") << endl;"<<endl;
+    
+    main_output << "data.SE_"<< particle_name_tmp_short << " = " << "real(SE_"<<particle_name_tmp_short<<");"<<endl;
+    
   }
-  
-  
-  }
-  main_output << ";" << endl;
-  
-  main_output << "SE_"<<particle_name_tmp_short << " = " << "SE_"<<particle_name_tmp_short<<"*TSIL_POW(PI,4);"<<endl;
-  
-  main_output << "cout << \"Self energy of particle "<< particle_name_tmp_short << " = \" << real(SE_"<<particle_name_tmp_short<<") << endl;"<<endl;
-  
-  main_output << "data.SE_"<< particle_name_tmp_short << " = " << "real(SE_"<<particle_name_tmp_short<<");"<<endl;
-  
-}
 
   main_output << "}" << endl;
   
@@ -669,124 +513,103 @@ for (unsigned int i=0;i<particle_names_short.size();i++)
   data_h.open ("include/data.hpp");
 
   
-data_h << "#ifndef DATA_H\n"
-<<"#define DATA_H\n"
-<<"#include <vector>\n"
-<<"#include <cmath>\n"
-<<"#include <sstream>\n"
-<<"#include <string>\n"
-<<"#include <iostream>\n"
-<<"#include <fstream>\n"
-<<"using namespace std;\n"
-<<"struct Data\n"
-<<"{\n"
-<<"public:\n";
+  data_h << "#ifndef DATA_H\n"
+  <<"#define DATA_H\n"
+  <<"#include <vector>\n"
+  <<"#include <cmath>\n"
+  <<"#include <sstream>\n"
+  <<"#include <string>\n"
+  <<"#include <iostream>\n"
+  <<"#include <fstream>\n"
+  <<"using namespace std;\n"
+  <<"struct Data\n"
+  <<"{\n"
+  <<"public:\n";
 
-//  first define all masses and couplings required by the self energy functions as doubles (they will later be recast to TSIL_REAL)
-
-
-for (int i=0;i<nc;i++)
-{
-data_h << "double "<< couplings[i]<<";"<<endl;
-}
+  //  first define all masses and couplings required by the self energy functions as doubles (they will later be recast to TSIL_REAL)
 
 
-for (int i=0;i<nm;i++)
-{
-data_h << "double "<< masses[i]<<";"<<endl;
-}
-
-// create a variable for the self energy of each particle we have
-
-for (unsigned int i=0;i<particle_names_short_reduced.size();i++)
-{
-data_h << "double SE_" << particle_names_short_reduced[i]<<";"<<endl;
-}
-
-data_h << "double P, Q;" << endl;
-
-// now create constructor and user input reader
-
- 
-  // constructor
-data_h<<"  Data (){};\n"
-<<"Data(int argc, char* argv[]) {\n"
-<<"double param [99];\n"
-<<"std::string name [99]; int i=0;\n"
-<<"if (argc==2)\n"
-<<"{\n"
-<<"cout << \"Please enter a data file in the format ./main input.txt, using default values \" << endl;\n"
-<<"}\n"
-<<"else\n"
-<<"{\n"
-<<"std::ifstream input(argv[2]);\n"
-<<"std::string line;\n"
-<<"while(getline(input, line)) {\n"
-<<"if (!line.length() || line[0] == '#')\n"
-<<" continue;\n"
-<<" std::istringstream iss(line);\n"
-<<" iss>> name[i] >> param[i];\n"
-<<"     i=i+1;\n"
-<<"   }\n"
-<<"  }\n"
-<<"  for (int n=0;n<i+1;n++)\n"
-<<"  {\n";
-
-for (int i=0;i<nc;i++)
-{
-data_h<<"  if (name[n]==\""<<couplings[i] <<"\")\n"
-<<"  {\n"
-<<"  " <<couplings[i] << "=param[n];\n"
-<<"  }"<<endl;
-}
-
-for (int i=0;i<nm;i++)
-{
-data_h<<"  if (name[n]==\""<<masses[i] <<"\")\n"
-<<"  {"
-<<"  " <<masses[i] << "=param[n];"
-<<"  }"<<endl;
-}
-
-data_h<<"  if (name[n]==\"Q\")\n"
-<<"  {"
-<<"  Q =param[n];"
-<<"  }"<<endl;
+  for (int i=0;i<nc;i++)
+  {
+  data_h << "double "<< couplings[i]<<";"<<endl;
+  }
 
 
-data_h<<"  if (name[n]==\"P\")\n"
-<<"  {"
-<<"  P =param[n];"
-<<"  }"<<endl;
+  for (int i=0;i<nm;i++)
+  {
+  data_h << "double "<< masses[i]<<";"<<endl;
+  }
+
+  // create a variable for the self energy of each particle we have
+
+  for (unsigned int i=0;i<particle_names_short_reduced.size();i++)
+  {
+  data_h << "double SE_" << particle_names_short_reduced[i]<<";"<<endl;
+  }
+
+  data_h << "double P, Q;" << endl;
+
+  // now create constructor and user input reader
+
+  
+    // constructor
+  data_h<<"  Data (){};\n"
+  <<"Data(int argc, char* argv[]) {\n"
+  <<"double param [99];\n"
+  <<"std::string name [99]; int i=0;\n"
+  <<"if (argc==2)\n"
+  <<"{\n"
+  <<"cout << \"Please enter a data file in the format ./main input.txt, using default values \" << endl;\n"
+  <<"}\n"
+  <<"else\n"
+  <<"{\n"
+  <<"std::ifstream input(argv[2]);\n"
+  <<"std::string line;\n"
+  <<"while(getline(input, line)) {\n"
+  <<"if (!line.length() || line[0] == '#')\n"
+  <<" continue;\n"
+  <<" std::istringstream iss(line);\n"
+  <<" iss>> name[i] >> param[i];\n"
+  <<"     i=i+1;\n"
+  <<"   }\n"
+  <<"  }\n"
+  <<"  for (int n=0;n<i+1;n++)\n"
+  <<"  {\n";
+
+  for (int i=0;i<nc;i++)
+  {
+  data_h<<"  if (name[n]==\""<<couplings[i] <<"\")\n"
+  <<"  {\n"
+  <<"  " <<couplings[i] << "=param[n];\n"
+  <<"  }"<<endl;
+  }
+
+  for (int i=0;i<nm;i++)
+  {
+  data_h<<"  if (name[n]==\""<<masses[i] <<"\")\n"
+  <<"  {"
+  <<"  " <<masses[i] << "=param[n];"
+  <<"  }"<<endl;
+  }
+
+  data_h<<"  if (name[n]==\"Q\")\n"
+  <<"  {"
+  <<"  Q =param[n];"
+  <<"  }"<<endl;
 
 
-data_h<<"}\n"
-<<"}\n"
-<<"};\n"
-<<"#endif\n";
+  data_h<<"  if (name[n]==\"P\")\n"
+  <<"  {"
+  <<"  P =param[n];"
+  <<"  }"<<endl;
 
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+
+  data_h<<"}\n"
+  <<"}\n"
+  <<"};\n"
+  <<"#endif\n";
+
+    
   return 0;
 
   

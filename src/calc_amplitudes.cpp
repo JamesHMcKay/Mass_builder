@@ -21,23 +21,27 @@ run ./mass_builder -g <model_name> after to generate code and ./mass_builder -e 
 using namespace std;
 using namespace utils;
 
-// create a mathematica object that is the product of two basis integrals
 
-bool verbose=0;
-int loop_level = 2;
-
+//bool verbose=1;
+//int loop_level = 2;
 
 
 
 
 
-bool Calc_amplitudes::calc_diagram(string diagram,string particle,string model)
+
+bool Calc_amplitudes::calc_diagram(Options options)
 {
   bool success=0;
   bool sum_integrals=1;
-
+  
+  string diagram = options.diagram;
+  string particle = options.particle;
+  string model = options.model;
+  int loop_order = options.loop_order;
 
   cout << "calculating diagram " << diagram << " for particle " << particle << " in model " << model << endl;
+  if (options.counter_terms == true) { cout << "using counter terms"<< endl;}
 
 
   const char *ext = ".txt";
@@ -51,22 +55,10 @@ bool Calc_amplitudes::calc_diagram(string diagram,string particle,string model)
 
 
 
-
-  string tag = particle + "_" + diagram;//"chi0_13";
-
-  /*ofstream tag_out;
-  tag_out.open ("output/tag.txt"); // store current tag = particle name + diagram number
-
-  tag_out << tag << endl;
-
-  tag_out.close();
-
-  ofstream model_out;
-  model_out.open ("output/model.txt"); // store current tag = particle name + diagram number
-
-  model_out << model << endl;
-
-  model_out.close();*/
+  string tag="";
+  if (options.counter_terms) {tag = particle + "_" + diagram + "_" + to_string(loop_order)+"c";}
+  else {tag = particle + "_" + diagram + "_" + to_string(loop_order);}
+  
 
 
   int n = 0;
@@ -95,7 +87,7 @@ bool Calc_amplitudes::calc_diagram(string diagram,string particle,string model)
 
 
   utils::print_math_header(myfile);
-  utils::print_math_body(myfile,loop_level,particle_full,diagram, model,s_cwd);
+  utils::print_math_body(myfile,options,s_cwd);
 
   myfile<<"Print[tfiamp0]\n"
   <<"SEn = FullSimplify[TarcerRecurse[tfiamp0] /. D -> 4 /.MajoranaSpinor[p, mc] -> 1] /. Spinor[Momentum[p], mc, 1] -> 1;\n"
@@ -126,7 +118,7 @@ bool Calc_amplitudes::calc_diagram(string diagram,string particle,string model)
   }
   #endif
 
-  // now need to print id = integral to myfile
+
 
 
 
@@ -138,12 +130,12 @@ bool Calc_amplitudes::calc_diagram(string diagram,string particle,string model)
 
 
 
-  for (unsigned int i = 0; i < bases_names.size();i++)
+  for (unsigned int i = 0; i < bases_names.size()-1;i++)
   {
-    myfile << "{\" "<<bases_names[i]<<" \", CForm[C"<<bases_names[i]<<" /. Pair[Momentum[p], Momentum[p]] -> p^2 /. DiracGamma[Momentum[p]] -> p], \"\"}," << endl;
+    myfile << "{\""<<bases_names[i]<<" \", CForm[C"<<bases_names[i]<<" /. Pair[Momentum[p], Momentum[p]] -> p^2 /. DiracGamma[Momentum[p]] -> p], \"\"}," << endl;
   }
 
-  myfile << "{\" "<<bases_names[bases_names.size()-1]<<" \", CForm[C"<<bases_names[bases_names.size()-1]<<" /. Pair[Momentum[p], Momentum[p]] -> p^2 /. DiracGamma[Momentum[p]] -> p], \"\"}" << endl;
+  myfile << "{\""<<bases_names[bases_names.size()-1]<<" \", CForm[C"<<bases_names[bases_names.size()-1]<<" /. Pair[Momentum[p], Momentum[p]] -> p^2 /. DiracGamma[Momentum[p]] -> p], \"\"}" << endl;
   myfile << " }, \"Table\", \"FieldSeparators\" -> \" \", \"TextDelimiters\" -> \"\"];" << endl;
 
 
@@ -151,7 +143,7 @@ bool Calc_amplitudes::calc_diagram(string diagram,string particle,string model)
 
   #ifdef RUN_ALL
   system("chmod +x output/stage_3.m ");
-  if (verbose) system("./output/stage_3.m");
+  if (options.verbose) system("./output/stage_3.m");
   else system("./output/stage_3.m  >/dev/null");
   #endif
 
@@ -217,10 +209,10 @@ bool Calc_amplitudes::calc_diagram(string diagram,string particle,string model)
   {
   for (unsigned int i=0;i<reduced_bases_names.size()-1;i++)
   {
-  myfile_stage6b << "{\" TSIL_COMPLEXCPP C"<<reduced_bases_names[i]<<" =\", CForm[C"<<reduced_bases_names[i]<<" /. Pair[Momentum[p], Momentum[p]] -> p^2 /. DiracGamma[Momentum[p]] -> p], \";\"}," << endl;
+  myfile_stage6b << "{\""<<reduced_bases_names[i]<<" \", CForm[C"<<reduced_bases_names[i]<<" /. Pair[Momentum[p], Momentum[p]] -> p^2 /. DiracGamma[Momentum[p]] -> p], \"\"}," << endl;
   }
 
-  myfile_stage6b << "{\" TSIL_COMPLEXCPP C"<<reduced_bases_names[reduced_bases_names.size()-1]<<" =\", CForm[C"<<reduced_bases_names[reduced_bases_names.size()-1]<<" /. Pair[Momentum[p], Momentum[p]] -> p^2 /. DiracGamma[Momentum[p]] -> p], \";\"}" << endl;
+  myfile_stage6b << "{\""<<reduced_bases_names[reduced_bases_names.size()-1]<<" \", CForm[C"<<reduced_bases_names[reduced_bases_names.size()-1]<<" /. Pair[Momentum[p], Momentum[p]] -> p^2 /. DiracGamma[Momentum[p]] -> p], \"\"}" << endl;
   myfile_stage6b << " }, \"Table\", \"FieldSeparators\" -> \" \", \"TextDelimiters\" -> \"\"];" << endl;
   }
   myfile_stage6b << " }, \"Table\", \"FieldSeparators\" -> \" \", \"TextDelimiters\" -> \"\"];" << endl;
@@ -231,13 +223,13 @@ bool Calc_amplitudes::calc_diagram(string diagram,string particle,string model)
 
 
 
-
+  
 
 
 
   #ifdef RUN_ALL
   system("chmod +x output/stage_6b.m ");
-  if(verbose) system("./output/stage_6b.m ");
+  if(options.verbose) system("./output/stage_6b.m ");
   else system("./output/stage_6b.m  >/dev/null ");
   #endif
 
@@ -248,6 +240,7 @@ bool Calc_amplitudes::calc_diagram(string diagram,string particle,string model)
 
   vector<std::string> output_string_prod, coeff_new_prod;
   std::map <std::string, Bases > base_map_prod;
+  std::map <std::string, Bases > reduced_base_map_copy=reduced_base_map;
   vector<string> bases_names_prod;
   temp_int = 0;
   
@@ -256,11 +249,12 @@ bool Calc_amplitudes::calc_diagram(string diagram,string particle,string model)
   const char *file_integrals4 = c_file_integrals4.c_str();
   
 
-  get_data(output_string_prod, coeff_new_prod, temp_int,file_integrals4); // file_integrals2 defined earlier, same file name
-  cout << "temp int = " << temp_int << endl;
+  get_data(output_string_prod, coeff_new_prod, temp_int,file_integrals4,true); // file_integrals2 defined earlier, same file name
+  
 
   if (temp_int == 0)
   {
+  //cout << "no products showing up, so we will use all basis integrals" << endl;
   for (unsigned int i=0; i<bases_names.size(); i++)
   {
   if (base_map[bases_names[i]].type != "F")
@@ -272,13 +266,17 @@ bool Calc_amplitudes::calc_diagram(string diagram,string particle,string model)
   }
   else
   {
+  
   for (int i=0; i<temp_int; i++)
   {
-  reduced_base_map[output_string_prod[i]].coefficient = coeff_new_prod[i];
+  reduced_base_map_copy[output_string_prod[i]].coefficient = coeff_new_prod[i];
   }
-  base_map_prod = remove_zeros(reduced_base_map, reduced_bases_names);
+  base_map_prod = remove_zeros(reduced_base_map_copy, reduced_bases_names);
   bases_names_prod = extract_keys(base_map_prod);
+  
   }
+  
+  
 
   ofstream myfile_stage8b;
   myfile_stage8b.open ("output/stage_8b.m");
@@ -289,8 +287,10 @@ bool Calc_amplitudes::calc_diagram(string diagram,string particle,string model)
   utils::print_math_header(myfile_stage8b);
   myfile_stage8b<<"Get[\"" << s_cwd <<"/output/"<< prevb << "]\n"
   <<"Print[SEn]"<< endl;
-
-  print_math_basis(reduced_base_map,myfile_stage8b,"SEn");
+  
+  
+  if (temp_int !=0) {print_math_basis(reduced_base_map,myfile_stage8b,"SEn");}
+  else {print_math_basis(base_map,myfile_stage8b,"SEn");}
 
   print_math_products(base_map_prod,myfile_stage8b,"SEn");
 
@@ -301,9 +301,6 @@ bool Calc_amplitudes::calc_diagram(string diagram,string particle,string model)
   {
   myfile_stage8b << " + "<<reduced_bases_names[i]<< " * C"<<reduced_bases_names[i];
   }
-
-
-
 
   for (unsigned int i = 0; i<bases_names_prod.size();i++)
   {
@@ -350,13 +347,19 @@ bool Calc_amplitudes::calc_diagram(string diagram,string particle,string model)
 
   #ifdef RUN_ALL
   system("chmod +x output/stage_8b.m ");
-  if(verbose) system("./output/stage_8b.m");
+  if(options.verbose) system("./output/stage_8b.m");
   else system("./output/stage_8b.m  >/dev/null ");
-  //system("chmod u+x scripts/script_3.sh");
-  //system("./scripts/script_3.sh");
   #endif
 
   success = check_done();
+
+
+
+
+
+
+
+
 
 
 
@@ -380,6 +383,15 @@ bool Calc_amplitudes::calc_diagram(string diagram,string particle,string model)
 
 
 
+
+
+
+
+
+
+
+
+
   ofstream diagram_list;
   diagram_list.open( "output/diagrams.txt", ios::out | ios::app );
   diagram_list << particle << " " << diagram << endl;
@@ -389,9 +401,6 @@ bool Calc_amplitudes::calc_diagram(string diagram,string particle,string model)
 
 
   
-  // make output that is useful for generate_code.cpp, we can make a second generate_code.cpp to take this in an try and reproduce
-  
-  // list of coefficients in form "TSIL_COMPLEX name = coefficient"
   
   const char* coeff_integrals_tmp = "/output/coeff_integrals_"; // vector containing file names
   string c_coeff_integrals = "models/" + model +coeff_integrals_tmp + tag + ext;
@@ -496,32 +505,31 @@ bool Calc_amplitudes::calc_diagram(string diagram,string particle,string model)
 }
 
 
-void draw_all_diagrams(std::string particle, string model)
+void draw_all_diagrams(Options options)
 {
 
-  
-
-
-
-  
-  
   string s_cwd(getcwd(NULL,0));
   
   
+
+  string particle = options.particle;
+  string model = options.model;
+
   
   ofstream myfile;
   myfile.open ("output/make_figures.m");
 
 
   utils::print_math_header(myfile);
-  myfile<<"t12 = CreateTopologies["<<loop_level<<", 1 -> 1, ExcludeTopologies -> Internal];\n"
-  <<"alldiags = InsertFields[t12, {"<<particle<<"} -> {"<<particle<<"},InsertionLevel -> {Particles}, GenericModel -> Lorentz,Model -> \""<<s_cwd<<"/models/"<<model<<"/"<<model<<"\"];\n"
+  if (options.counter_terms){myfile<<"t12 = CreateCTTopologies["<<options.loop_order<<", 1 -> 1, ExcludeTopologies -> Internal];"<<endl;}
+  else {myfile<<"t12 = CreateTopologies["<<options.loop_order<<", 1 -> 1, ExcludeTopologies -> Internal];"<<endl;}
+  myfile<<"alldiags = InsertFields[t12, {"<<particle<<"} -> {"<<particle<<"},InsertionLevel -> {Particles}, GenericModel -> Lorentz,Model -> \""<<s_cwd<<"/models/"<<model<<"/"<<model<<"\"];\n"
   <<"Export[\""<<s_cwd<<"/FA_diagrams/all_diagrams_"<<particle<<".pdf\",Paint[alldiags]];\n"  // print the FA diagram to pdf in local directory
   <<endl;
 
   #ifdef RUN_ALL
   system("chmod +x output/make_figures.m ");
-  if (verbose) system("./output/make_figures.m");
+  if (options.verbose) system("./output/make_figures.m");
   else system("./output/make_figures.m  >/dev/null");
   #endif
   
@@ -535,18 +543,11 @@ void draw_all_diagrams(std::string particle, string model)
 void draw_diagrams(vector<std::string> particles, vector<std::string> diagrams, int nd,string model)
 {
 
-  
-
-  
   string s_cwd(getcwd(NULL,0));
-  
-  
-  
-  
-  
   ofstream myfile;
   myfile.open ("output/make_figures.m");
-
+  
+  Options options;
 
  utils::print_math_header(myfile);
  
@@ -571,20 +572,17 @@ void draw_diagrams(vector<std::string> particles, vector<std::string> diagrams, 
   {
   if (particles[d] == particle_name_tmp)
   {
-  
   myfile <<", "<<diagrams[d];
-  //first =0;
   }
   }
   myfile <<"]\n";
-  //first = 1;
   myfile <<"Export[\""<<s_cwd<<"/FA_diagrams/subset_diagrams_"<<particle_name_tmp<<".pdf\",Paint[subdiags"<<particle_name_tmp<<"]];\n"  // print the FA diagram to pdf in local directory
   <<endl;
   }
 
   #ifdef RUN_ALL
   system("chmod +x output/make_figures.m ");
-  if (verbose) system("./output/make_figures.m");
+  if (options.verbose) system("./output/make_figures.m");
   else system("./output/make_figures.m  >/dev/null");
   #endif
   
@@ -596,7 +594,7 @@ void draw_diagrams(vector<std::string> particles, vector<std::string> diagrams, 
 // main routine to manage a diagram by diagram procedure
 
 
-void Calc_amplitudes::generate_figures(int argc, char *argv[])
+void Calc_amplitudes::generate_figures(int argc, char *argv[],Options options)
 {
 
 vector<std::string> particles, diagrams;
@@ -604,8 +602,8 @@ string model;
 
 if (argc==1)
 {
-cout << "Please enter diagram number to calcuate and particle name, options are \"chi0\" and \"chi1\"  " << endl;
-cout << "or alternatively enter the name to a list as \"-f list.txt\" " << endl;
+cout << " user input guide here  " << endl;
+cout << "  " << endl;
 }
 else
 {
@@ -641,9 +639,15 @@ cout << "drawing all diagrams specified in the input list" << endl;
   
 
 }
-else if (option == "-a")
+else if (option == "-d")
 {
-if (argc==4) {cout <<"drawing all diagrams for particle "<<argv[2]<<endl;;draw_all_diagrams(argv[2],argv[3]);}
+if (argc==4) {
+cout <<"drawing all diagrams for particle "<<argv[2]<<endl;
+options.particle = argv[2];
+options.model = argv[3];
+
+draw_all_diagrams(options);
+}
 else {cout << "please specify a particle after -a to use this option"<< endl;}
 
 

@@ -200,7 +200,6 @@ string coeff = base_map[bases_names[i]].coefficient;
 if ( char_to_string(coeff[2]) != "0") // the character choosen depends on the amount of white space used
 {
 new_base_map[bases_names[i]] = base_map[bases_names[i]];
-
 }
 }
 

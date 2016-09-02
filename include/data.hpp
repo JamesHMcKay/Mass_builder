@@ -12,6 +12,8 @@ struct Data
 public:
 double lambda;
 double g;
+double dl;
+double dc;
 double Ms;
 double SE_S1;
 double P, Q;
@@ -44,6 +46,14 @@ if (!line.length() || line[0] == '#')
   if (name[n]=="g")
   {
   g=param[n];
+  }
+  if (name[n]=="dl")
+  {
+  dl=param[n];
+  }
+  if (name[n]=="dc")
+  {
+  dc=param[n];
   }
   if (name[n]=="Ms")
   {  Ms=param[n];  }

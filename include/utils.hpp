@@ -18,6 +18,7 @@
 #include <unistd.h>
 
 #include "bases.hpp" // to go in printer header later
+#include "options.hpp"
 
 
 using namespace std;
@@ -28,13 +29,17 @@ using namespace std;
 namespace utils
 {
 
+void user_input_guide();
+
 void get_data(vector<std::string> &A,int &n,const char *filename);
 
 void get_data(vector<std::string> &A, vector<std::string> &B,int &n,const char *filename, bool whole_line = false);
 
+void get_data(vector<std::string> &A,vector<std::string> &B,vector<std::string> &C,int &n,const char *filename);
+
 void print_math_header(ofstream &myfile);
 
-void print_math_body(ofstream &file,int loop_order,string particle_full,string diagram,string model,string cwd);
+void print_math_body(ofstream &file,Options options,string cwd);
 
 
 

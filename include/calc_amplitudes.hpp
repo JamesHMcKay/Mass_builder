@@ -17,6 +17,9 @@
 #include <unistd.h>
 #include "utils.hpp"
 #include "bases.hpp"
+#include "options.hpp"
+
+using namespace utils;
 
 class Calc_amplitudes
 {
@@ -24,8 +27,8 @@ public:
 
 Calc_amplitudes(){}
 
-bool calc_diagram(std::string diagram,std::string particle,std::string model);
-void generate_figures(int argc, char *argv[]);
+bool calc_diagram(Options options);
+void generate_figures(int argc, char *argv[],Options options);
 };
 
 #endif

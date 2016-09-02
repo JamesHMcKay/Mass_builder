@@ -18,12 +18,13 @@
 #include <ctime>
 
 #include <unistd.h>
+#include "options.hpp"
 
 
 using namespace std;
 
 
 namespace  Generate_code{
-  int main_function(int argc, char *argv[]);
+  int main_function(int argc, char *argv[],Options options);
 }
 #endif

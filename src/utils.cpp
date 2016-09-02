@@ -5,6 +5,23 @@ namespace utils
 time_t t = time(0);   // get time now to print into generated files
 struct tm * now = localtime( & t );
 
+
+void user_input_guide()
+{
+
+cout << " Welcome to Mass Builder \n"
+<< " ---------------------------------------------------------------------------------------------------- \n"
+<< " Brief input options are given below, please see documentation for more details\n"
+<< " To draw FeynArts diagrams into pdf file: ./mass_builder -d <particle> <model>\n"
+<< " To compute an amplitude:\n"
+<< "        ./mass_builder -a -f <model> to generate all diagrams in models/<model>/diagrams.txt\n"
+<< "        ./mass_builder -a <model> <particle> <diagram> to generate a specific diagram\n"
+<< " To generate code from computed diagram: ./mass_builder -g <model> using list in models/<model>/diagrams.txt\n"
+<< " To evaluate a self energy from generated code (after recompiling): ./mass_builder -e <input_parameters>\n"
+<< " ---------------------------------------------------------------------------------------------------- " <<endl;
+}
+
+
 void get_data(vector<std::string> &A,int &n,const char *filename)
 {
 
@@ -109,6 +126,44 @@ input2.close();
 }
 
 
+void get_data(vector<std::string> &A,vector<std::string> &B,vector<std::string> &C,int &n,const char *filename)
+{
+
+//cout << "reading file = " << filename << endl;
+n=0;
+std::ifstream input(filename);
+std::string line;
+while(getline(input, line)) {
+      if (!line.length() || line[0] == '#')
+         continue;
+      std::istringstream iss(line);
+      n=n+1;
+   }
+  
+A.resize(n);
+B.resize(n);
+C.resize(n);
+
+ input.close();
+
+n=0;
+std::ifstream input2(filename);
+std::string line2;
+while(getline(input2, line2)) {
+    if (!line2.length() || line2[0] == '#')
+       continue;
+    std::istringstream iss2(line2);
+  
+  
+  iss2>> A[n] >> B[n] >> C[n];
+    n=n+1;
+ }
+
+ input2.close();
+
+
+}
+
 
 void print_math_header(ofstream &file)
 {
@@ -133,13 +188,18 @@ void print_math_header(ofstream &file)
 }
 
 
-void print_math_body(ofstream &file,int loop_order,string particle_full,string diagram,string model,string cwd)
+void print_math_body(ofstream &file,Options options,string cwd)
 {
+  int loop_order = options.loop_order;
+  string particle_full = options.particle;
+  string diagram = options.diagram;
+  string model = options.model;
  
   if (loop_order == 2)
   {
-  file<<"t12 = CreateTopologies[2, 1 -> 1, ExcludeTopologies -> Internal];\n"
-  <<"alldiags = InsertFields[t12, {"<<particle_full<<"} -> {"<<particle_full<<"},InsertionLevel -> {Particles}, GenericModel -> Lorentz,Model -> \""<<cwd<<"/models/"<<model<<"/"<<model<<"\"];\n"
+  if (options.counter_terms) {file<<"t12 = CreateCTTopologies[2, 1 -> 1, ExcludeTopologies -> Internal];"<<endl;}
+  else{file<<"t12 = CreateTopologies[2, 1 -> 1, ExcludeTopologies -> Internal];"<<endl;}
+  file <<"alldiags = InsertFields[t12, {"<<particle_full<<"} -> {"<<particle_full<<"},InsertionLevel -> {Particles}, GenericModel -> Lorentz,Model -> \""<<cwd<<"/models/"<<model<<"/"<<model<<"\"];\n"
   <<"subdiags0 =   DiagramExtract[alldiags, "<<diagram<<"]\n"
   //<<"Export[\""<<s_cwd<<"/current_diagram.pdf\",Paint[subdiags0]];\n"  // print the FA diagram to pdf in local directory
   <<"amp0 := FCFAConvert[CreateFeynAmp[subdiags0], IncomingMomenta -> {p}, OutgoingMomenta -> {p}, LoopMomenta -> {k1, k2} ,UndoChiralSplittings -> True,DropSumOver -> True, List -> False(*, ChangeDimension -> 4*)] // Contract\n" // TODO change dimension removed as done in 1 loop case below?
@@ -150,8 +210,9 @@ void print_math_body(ofstream &file,int loop_order,string particle_full,string d
   }
   if (loop_order == 1)
   {
-  file<<"t12 = CreateTopologies[1, 1 -> 1, ExcludeTopologies -> Internal];\n"
-  <<"alldiags = InsertFields[t12, {"<<particle_full<<"} -> {"<<particle_full<<"},InsertionLevel -> {Particles}, GenericModel -> Lorentz,Model -> \""<<cwd<<"/models/"<<model<<"/"<<model<<"\"];\n"
+  if (options.counter_terms) {file<<"t12 = CreateCTTopologies[1, 1 -> 1, ExcludeTopologies -> Internal];"<<endl;}
+  else{file<<"t12 = CreateTopologies[1, 1 -> 1, ExcludeTopologies -> Internal];"<<endl;}
+  file <<"alldiags = InsertFields[t12, {"<<particle_full<<"} -> {"<<particle_full<<"},InsertionLevel -> {Particles}, GenericModel -> Lorentz,Model -> \""<<cwd<<"/models/"<<model<<"/"<<model<<"\"];\n"
   <<"subdiags0 =   DiagramExtract[alldiags, "<<diagram<<"]\n"
  // <<"Export[\""<<s_cwd<<"/current_diagram.pdf\",Paint[subdiags0]];\n"  // print the FA diagram to pdf in local directory
   <<"amp0 := FCFAConvert[CreateFeynAmp[subdiags0], IncomingMomenta -> {p}, OutgoingMomenta -> {p}, LoopMomenta -> {k1} ,UndoChiralSplittings -> True,DropSumOver -> True, List -> False] // Contract\n"
@@ -483,21 +544,17 @@ if (type == "F")
 }
 
 
-}
 
-
-
-void print_TSIL_V(ofstream &myfile, string elements)
+if (type == "V")
 {
 
-  char A = elements[0],B=elements[1],C=elements[2],D=elements[3];
+  string A = base.e1,B=base.e2,C=base.e3,D=base.e4;
 
-  myfile << "TSIL_SetParameters (&bar,m" << D << "2, m" << C << "2, m" << B << "2 , " << "1.0" << " , m" << A  << "2, Q2);" << endl;  // write TSIL evaluate statement for this name sequence
+  myfile << "TSIL_SetParameters (&bar," << D << "2, " << C << "2, " << B << "2 , " << "1.0" << " , " << A  << "2, Q2);" << endl;  // write TSIL evaluate statement for this name sequence
   myfile << "TSIL_Evaluate (&bar, s);" << endl;
-  myfile << "V" << elements << "= -TSIL_GetFunction (&bar,\"Uzxyv" <<"\");"<< endl;    // TSIL get function statement
-
+  myfile << name << "= -TSIL_GetFunction (&bar,\"Uzxyv" <<"\");"<< endl;    // TSIL get function statement
 }
 
 
 }
-
+}
