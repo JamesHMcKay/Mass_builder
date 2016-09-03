@@ -1,0 +1,220 @@
+\input{R1_template}
+
+\begin{document}
+
+\def\A{\mathcal{A}}
+\def\B{\mathcal{B}}
+\def\C{\mathcal{C}}
+
+
+
+\title{Mass builder -- an interface tool for automated self energy calculation}
+%
+\author
+{
+  James McKay\thanksref{e1,addr1}
+}
+%
+\thankstext{e1}{e-mail: j.mckay14@imperial.ac.uk}
+%
+\institute
+{
+  Imperial College London\label{addr1}
+}
+%
+\date{\today}
+
+\maketitle
+
+\begin{abstract}
+
+This program is designed to organise and simplify the calculation of two loop self energy amplitudes by creating a user friendly interface between the existing available programs.  Using the C++ language we generate the appropriate Mathematica scripts to run FeynArts, FeynCalc and TARCER to determine and evaluate the necessary two loop amplitudes.  We automatically determine the required basis integrals and generate C++ code to evaluate these using TSIL.  In this way the user may go from a FeynArts model file to an evaluated self energy with the ability to select amplitudes on a diagram by diagram basis.
+
+The computation of $\mathcal{O}(10)$ amplitudes simultaneously using tools such as FeynCalc results in extremely long run times as simplifications are being attempted at the symbolic level.  On the other hand, keeping track of all terms on a diagram by diagram basis is a serious task by any manual or even semi automated method.  We offer an alternative; by completely automating this process we are able to keep track of all terms and evaluate them numerically, which on a modest computing set up is the only way to achieve this task without additional user intervention.
+
+\end{abstract}
+
+\tableofcontents
+
+\section{Introduction}
+
+The calculation of radiative corrections at the two-loop level is a computationally challenging task which has been significantly simplified with the introduction of modern tools.  Even at the most rudimentary level, determining all possible topologies is a non-trivial task, let alone the simplification of the resulting integral expressions, and finally the evaluation of these integrals.  Fortunately, FeynArts, FeynCalc, TARCER and TSIL have made each step of this process far more achievable for the average user.
+
+
+\section{Quick start guide}
+
+\subsection{Generate FeynArts diagrams}\label{generate_diagrams}
+
+\subsection{Compute amplitudes}
+
+\subsection{Generate code and evaluate}
+
+
+\section{User guide}
+
+The user interface to Mass Builder is via the command line, where all modes of functionality are available depending on the chosen input flags.
+
+The three main modes of operation are determined by the flags \lstinline{-a} for computing the amplitudes symbolic expressions, \lstinline{-g} for generating the TSIL interface code, and \lstinline{-e} for the numerical evaluation of the self energy.  Finally \lstinline{-d} is used to request FeynArts to draw the Feynman diagrams.  At least one of these flags is required and if more than one of these flags is given the program will not run.
+
+In addition to the run mode flag there are several additional flags, some optional and some required depending on the mode of operation.  These flags are
+\begin{table}
+\caption{The required flags for each run mode behaviour.}
+\begin{tabular}{l c c c c l} 
+\hline
+-a & -m & & & &compute all in diagrams.txt \\
+-a & -m &  && -i&compute  all specified input list\\
+-a & -m & -p & -d && compute specific diagram\\
+-g & -m & & &  &generate all in diagrams.txt \\
+-g & -m &  & & -i &generate all in input list\\
+-f & -m & -p & & &draw all possible diagrams\\
+-e &  & & & -i&evaluate self energy\\
+\hline\end{tabular}
+\end{table}
+
+
+\begin{lstterm}
+Run modes:
+-a 		compute amplitudes
+-g		generate TSIL interface code
+-e		evaluate self energy
+-f		generate figures from FeynArts
+Additional flags requiring input
+-m <model> 
+-p <particle>
+-i  <list>
+-l <loop_order>
+Optional switches
+-c		evaluate counter terms
+-v		display Mathematica output during computation
+\end{lstterm}
+
+
+\subsection{Model input}
+
+All model specific input and output is stored in the directory \lstinline{models/<model_name>/}.  For a model with name \lstinline{model} the required are
+\begin{itemize}
+\item model.mod  -- FeynArts model file
+\item masses.txt -- list of masses and identifiers
+\item couplings.txt -- list of couplings
+\item diagrams.txt -- list of diagrams to compute
+\end{itemize}
+which are all stored in the directory \lstinline{models/models/}.  The output for each computed diagram will be stored in \lstinline{models/models/output/}, see section output for the details of these files.  For typical useage the contents of the \lstinline{output} directory is not necessary as this is an intermediate step between computation of the amplitudes and the generated C++ interface to TSIL.
+
+The file \lstinline{masses.txt} can contain either one or two columns.  The first, and required, column must contain a list (in no particular order) of the masses exactly as they appear in the FeynArts model file.  The second column, which is highly recommended, should contain a, preferably single character, identifier for each mass in the corresponding row.  For example a typical masses file would be
+\begin{lstterm}
+# masses.txt
+MWp          wp
+MWm          wm
+MZ           z
+MA           a
+MChi	       c
+\end{lstterm}
+where for even more readable output code one could choose unique one character identifiers for \lstinline{wm} and \lstinline{wp} instead.
+
+The file \lstinline{masses.txt} is simply a one column list of couplings and constants exactly as they appear in the FeynArts model file.  This is essential for the generated code to compile and for the user input header to contain options for setting these couplings at runtime via an input file \footnote{Constants such as \lstinline{sw2} which regularly appear in couplings must be set, although the final release version will include an option to enter analytical expressions at this stage so they can be set via more sensible inputs at runtime, we will also include many standard expressions by default.}.  For example a typical couplings file would be
+\begin{lstterm}
+# couplings.txt
+lambda
+g
+\end{lstterm}
+
+Finally \lstinline{diagrams.txt} is a list of diagrams to compute.  This is identical to the file entered along with the \lstinline{-i} option at runtime.  This file contains at least two columns, the first specifies the particle name in FeynArts format (such as \lstinline{S[1]}) and the second the corresponding diagram number (to obtain a list of diagrams for each particle in pdf output see section \ref{generate_diagrams}.  An optional column may be added to specify the loop order and if this is to be a counter term diagram (if these options are not set globally with the appropriate flags at runtime), including all columns this file would look like
+\begin{lstterm}
+# diagrams.txt
+F[5]   1   2
+F[5]   1   1
+F[6]   2   2c
+\end{lstterm}
+which will tell Mass Builder to compute the first diagram for the particle \lstinline{F[5]} at one and two loop level, and the second two loop counter term diagram for particle \lstinline{F[6]}.  All numbers are in reference to the diagrams as listed in the output from \lstinline{./mass_builder -f <particle> <model>}.
+
+
+
+
+
+\section{Algorithm details and code structure}
+
+
+\subsection{Computing the amplitudes}
+
+The amplitudes are calculated one diagram at a time using FeynArts, FeynCalc and TARCER which is run externally to C++ using the Mathematica kernel with automatically generated scripts.  The goal in this part of the process is to determine the basis integrals which have non-zero coefficients, and what these coefficients are.  This separation into \textit{basis integrals} and \textit{coefficients} is the best way to determine which integrals are required in the final numerical calculation and to produce readable and tidy code.
+
+The algorithm begins by evaluating the amplitude $\A$, we then compute the coefficient of every possible basis integral $\{\B_1,\B_2,.\ .\ .\ \}$.  For the non-zero coefficients, $\{\C_1,\C_2, .\ .\ .\  \}$ we then construct a trail amplitude of the form $\A_{trial} = \C_1 * \B_1 + \C_2 * \B_2 + .\ .\ .\ $ .  We then take the difference $\A - \A_{trial}$ and check for basis integrals with non-zero coefficients, this will find cross terms that have been double counted in the first step.  From within the set of basis integrals with a non-zero coefficient at this stage, $\{\B_i,\B_j,.\ .\ .\ \}$ , we create new ``basis integrals" $\B_{ij}  B_i*B_j$ which appears to Mathematica as one object.  We then construct our final trial amplitude as
+\begin{align*}
+ \A_{trial}\ = \ & \ \ \C_1 * \B_1 + \C_2 * \B_2 + .\ .\ .\ \\ 
+  &-\frac{1}{2} \C_{12} * B_1*B_2  -\frac{1}{2} \C_{21} * B_2*B_1 - .\ .\ .\ \\
+  & + C_{11} B_1*B_1 + C_{22}*B_2*B_2 + .\ .\ .\ 
+\end{align*}
+where $ \C_{ij}$ is the coefficient of  $\B_i*\B_j$ in the original amplitude $\A$.  If this does not equal the original amplitude then the program will throw and error and inform the user, see section \ref{errors} for details on possible causes of this scenario.  All calculations up to this point are symbolic within the generated Mathematica scripts
+
+\subsubsection{Basis integral labelling}
+
+A priori we have no information on the basis integrals required for a particular problem.  For an amplitude involving multiple particles there are on order hundreds of possible non-degenerate permutations of basis integrals.  Thus, when an amplitude is evaluated in Mathematica we have no generic way of identifying the integrals we need to use to reconstruct the result in the form integral times coefficient.  So we begin with all possible non-degenerate basis integrals, and quickly determine which ones have a non-zero coefficient in the resulting amplitude.  This process is computationally fast using the \lstinline{Coefficient[ Amplitude, Integral ] } Mathematica routine.  Therefore we use this ``brute force" method to reliably determine the basis integrals we require.
+
+During this procedure, and in the resultant generated C++ code, we want to a unique identifier for each basis integral.  However, if the input masses are long strings, for example \lstinline{mHp}, \lstinline{mA0}, and \lstinline{mW}, then the obvious way to name the basis integral, $F($\lstinline{mHp},\lstinline{mHp},\lstinline{mA0},\lstinline{mA0},\lstinline{mW}$)$ would be \lstinline{F_mHpmHpmA0mA0mW} which along with being difficult to read can led to ambiguous labelling of integrals.  For example if one choose the mass labelling to be $(H^-, H^0, \chi ) = ($\lstinline{mHm},\lstinline{mH},\lstinline{m}$)$ then we easily have the degeneracy $J($\lstinline{mH},\lstinline{m},\lstinline{mHm}$) =  $\lstinline{J_mHmmHm}$ = J($\lstinline{mHm},\lstinline{mH},\lstinline{m}$)$.  When dealing with hundreds of possible permutations it is important to avoid such possibilities.
+
+To overcome this we assign a unique single character identifier to each mass in the routine \lstinline{set_id}.  This will check for user input, which is the recommend action, or in it's absence will attempt to assign a unique identifier to each mass.  However, this alone is not sufficient as the original FeynArts model file, and subsequent expressions will contain the original masses, so we must retain this information along with the unique identifier for each basis integral.  Therefore we create a C++ map to map the short name, using the identifiers, to a simple class of type \lstinline{Bases} which holds the following information
+\begin{lstcpp}
+class Bases
+{
+public:
+string type = "";
+string e1 = " ", e2 = " ", e3 = " ", e4 = " ", e5 = " ";
+string coefficient = "";
+string short_name = "";
+Bases() {}
+<constructors>
+};
+\end{lstcpp}
+where we also include a constructor for each type of basis integral, at which point the necessary elements (masses) are set.  This set up significantly simplifies the entire algorithm, as we no longer need to pull apart basis integral identiiers, such as \lstinline{F_abcde} character by character to reconstruct and print out the integral in a useful form for either FeynCalc or TSIL.  This also enables a huge flexibility in the mass labelling, in practice one may use whatever name they want for the masses without sacrificing final code readability.
+
+
+
+\subsection{The TSIL interface}
+
+The generated C++ interface to TSIL is organised on a diagram by diagram basis.  However, during the generation of this code the basis integrals required for all diagrams in the chosen set are amalgamated and reduced to a minimalistic set.  This set is evaluated in one function and made globally available \footnote{Taking account of symmetries can reduce the number of basis integral evaluations required, we already have a routine available to automatically determine the optimum set of integrals for one family of these integrals, and this will be included with the final version of Mass Builder.}
+
+The generated code, located in \lstinline{src/self_energy.cpp} takes the following structure
+\begin{lstcpp}
+TSIL_COMPLEXCPP  <basis integral declarations> ;
+TSIL_REAL  <mass declarations>;
+TSIL_REAL  <coupling declarations> ;
+
+void DoTSIL(TSIL_REAL s,TSIL_REAL Q2)
+{
+< TSIL basis integral evaluations >
+}
+
+void init(Data data) 
+{
+< set couplings & masses from data >
+}
+
+TSIL_COMPLEXCPP  diagram_1()
+{
+TSIL_COMPLEXCPP C =  <Coefficient>;
+return  + C * <basis_integral>;
+}
+
+TSIL_COMPLEXCPP  diagram_2()
+{
+TSIL_COMPLEXCPP C =  <Coefficient>;
+return  + C * <basis_integral>;
+}
+
+void Self_energy::run_tsil (Data &data) 
+{
+TSIL_COMPLEXCPP data.SE = diagram_1() + diagram_2();
+}
+\end{lstcpp}
+\section{The plotting routines}
+
+
+
+\section{error}\label{errors}
+
+
+
+\bibliography{../../../Papers/library}{}
+
+
+\end{document}  
