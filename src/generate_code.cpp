@@ -28,7 +28,7 @@ namespace Generate_code
 
 
 
-int main_function (int argc, char *argv[],Options options)
+void generate_code (Options options)
 {
   time_t t = time(0);   // get time now to print into generated files
   struct tm * now = localtime( & t );
@@ -61,7 +61,8 @@ int main_function (int argc, char *argv[],Options options)
 
   
   
-  string model = "";
+  string model = options.model;
+  
   
   
   
@@ -72,16 +73,14 @@ int main_function (int argc, char *argv[],Options options)
   
   // need to get list of diagrams from a data file
   
+  
+  
+  
+  
+  
   string c_file_diagrams = "";
-  if (argc==2)
-  {
-  cout << "please enter ./generate_code <model_name>"<< endl;
-  return 0;
-  }
-  else {
-  model = argv[2];
-  c_file_diagrams = "models/"+ model + "/diagrams.txt";
-  }
+  
+  c_file_diagrams = options.input_list;
   
   const char *file_diagrams = c_file_diagrams.c_str();
   
@@ -228,7 +227,6 @@ int main_function (int argc, char *argv[],Options options)
   for (int i =0; i<ni ; i++)
   {
   integrals[ni_total+i] = integrals_temp[i];
-  cout << "integral = " << integrals_temp[i]<<endl;
   }
 
   ni_total = ni_total + ni;
@@ -361,13 +359,11 @@ int main_function (int argc, char *argv[],Options options)
   
   for (unsigned int i = 0; i<integrals.size();i++)
   {
-  cout << "making do TSIL integrals " << endl;
-  
   string name = integrals[i];
-  cout << "doing for " << name << endl;
+  
   Bases base_temp = base_map[name];
   base_temp.short_name = name;
-  cout << "base temp type is = " << base_temp.type << endl;
+  
   print_doTSIL(main_output, base_temp);
   main_output << "\n";
   }
@@ -609,9 +605,7 @@ int main_function (int argc, char *argv[],Options options)
   <<"};\n"
   <<"#endif\n";
 
-    
-  return 0;
-
+  
   
   
 }

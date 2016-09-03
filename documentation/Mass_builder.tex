@@ -165,7 +165,12 @@ Bases() {}
 <constructors>
 };
 \end{lstcpp}
-where we also include a constructor for each type of basis integral, at which point the necessary elements (masses) are set.  This set up significantly simplifies the entire algorithm, as we no longer need to pull apart basis integral identiiers, such as \lstinline{F_abcde} character by character to reconstruct and print out the integral in a useful form for either FeynCalc or TSIL.  This also enables a huge flexibility in the mass labelling, in practice one may use whatever name they want for the masses without sacrificing final code readability.
+where we also we provide a constructor for each number of elements (masses).  For example the basis integral $V($\lstinline{mHp},\lstinline{mA0},\lstinline{mA0},\lstinline{mW}$)$ is initialised as\begin{lstcpp}
+Bases base("V",mA0,mA0,mW);
+\end{lstcpp}
+which we then save in \lstinline{std::map<std::string, Bases>} to the integrals short name.
+
+This set up significantly simplifies the entire algorithm, as we no longer need to pull apart basis integral identiiers, such as \lstinline{F_abcde} character by character to reconstruct and print out the integral in a useful form for either FeynCalc or TSIL.  This also enables a huge flexibility in the mass labelling, in practice one may use whatever name they want for the masses without sacrificing final code readability.
 
 
 
@@ -206,11 +211,16 @@ void Self_energy::run_tsil (Data &data)
 TSIL_COMPLEXCPP data.SE = diagram_1() + diagram_2();
 }
 \end{lstcpp}
-\section{The plotting routines}
+
+Before code is generated \lstinline{self_energy.cpp} is a skeleton code necessary for the rest of Mass Builder to compile successfully.  If \lstinline{self_energy.cpp} or \lstinline{data.hpp} becomes corrupted and the rest of the code no longer compiles, which is likely if \lstinline{couplings.txt} is missing a variable name, then the skeleton code can be restored by simply running scripts/config.sh again.
 
 
+\section{Warning and error resolution}\label{errors}
 
-\section{error}\label{errors}
+\section{Applications}
+
+\subsection{Scalar field theory}
+
 
 
 

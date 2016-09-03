@@ -5,6 +5,59 @@ namespace utils
 time_t t = time(0);   // get time now to print into generated files
 struct tm * now = localtime( & t );
 
+const char * output_file_name(std::string model, std::string tag, std::string file)
+{
+  const char *ext = ".txt";
+  string underscore = "_";
+  const char* str_tmp = "/output/";
+  string c_str = "models/" + model +str_tmp + file + underscore + tag + ext;
+  const char *str = c_str.c_str();
+  return str;
+}
+
+
+
+
+
+
+void update_avail_diagrams(Options options)
+{
+  const char *file_name = output_file_name(options.model,"","avail_diagrams");
+  vector<string> particle, diagram, type;
+  int n;
+  get_data(particle,diagram,type,n,file_name);
+
+
+
+  system ("rm models/Scalar/output/avail_diagrams_.txt");
+  
+  ofstream file;
+
+  file.open(file_name,  std::ios::out | std::ios::trunc);
+  
+  particle.push_back(options.particle);
+  diagram.push_back(options.diagram);
+  
+  if (options.counter_terms){type.push_back( to_string(options.loop_order)+"c" ) ;}
+  else {type.push_back( to_string(options.loop_order) ) ;}
+  
+  // need to remove duplicates here
+  
+  
+  
+  for (int i = 0; i < n+1; i++)
+  {
+  file << particle[i] << " " << diagram[i] << " " << type[i] << endl;
+  cout << particle[i] << " " << diagram[i] << " " << type[i] << endl;
+  }
+  file.close();
+}
+
+
+
+
+
+
 
 void user_input_guide()
 {
@@ -38,7 +91,7 @@ while(getline(input, line)) {
   
 A.resize(n);
 
- input.close();
+input.close();
 
 n=0;
 std::ifstream input2(filename);
@@ -53,7 +106,7 @@ while(getline(input2, line2)) {
     n=n+1;
  }
 
- input2.close();
+input2.close();
 
 
 }
@@ -144,7 +197,7 @@ A.resize(n);
 B.resize(n);
 C.resize(n);
 
- input.close();
+input.close();
 
 n=0;
 std::ifstream input2(filename);
@@ -159,7 +212,7 @@ while(getline(input2, line2)) {
     n=n+1;
  }
 
- input2.close();
+input2.close();
 
 
 }

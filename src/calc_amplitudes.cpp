@@ -498,6 +498,10 @@ bool Calc_amplitudes::calc_diagram(Options options)
   summation_out.close();
   
   
+  // update available diagrams list
+  update_avail_diagrams(options);
+  
+  
   
   
   

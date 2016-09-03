@@ -103,7 +103,7 @@ user.user_interface();
 Options options = user.options;
 
 // read options and work through possibilities for each run mode and check requirements are meant
-if (options.model==""){ cout << "no model specified" << endl;}
+if (options.model==""){ cout << "no model specified" << endl; return 0;}
 
 
 if (options.run_mode == 1)
@@ -121,6 +121,18 @@ if ((options.particle == "") || (options.diagram == "")) { cout << "no valid inp
 else { run_mass_builder_mode_1b(options);}
 }
 }
+}
+
+
+if (options.run_mode == 4 )
+{
+if (options.input_list == "")
+{
+options.input_list = "models/"+ options.model + "/diagrams.txt";
+}
+Generate_code::generate_code(options);
+
+
 }
 
 

@@ -31,6 +31,10 @@ namespace utils
 
 void user_input_guide();
 
+void update_avail_diagrams(Options options);
+
+const char * output_file_name(std::string model, std::string tag, std::string file);
+
 void get_data(vector<std::string> &A,int &n,const char *filename);
 
 void get_data(vector<std::string> &A, vector<std::string> &B,int &n,const char *filename, bool whole_line = false);

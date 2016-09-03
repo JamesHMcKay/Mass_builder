@@ -32,7 +32,6 @@ int run_mode = 0;
 
 choose between 1 and 1b depending on the input available
 
-3 generate code for specific diagram
 4 generate code for list of diagrams, if no list (-i list.txt) provided use models/<model>/diagrams_avail.txt
 5 generate diagrams for all diagrams in list, if no list given generate all
 6 generate diagram for specific 

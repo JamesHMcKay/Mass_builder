@@ -25,6 +25,6 @@ using namespace std;
 
 
 namespace  Generate_code{
-  int main_function(int argc, char *argv[],Options options);
+  void generate_code(Options options);
 }
 #endif
