@@ -93,6 +93,8 @@ void generate_code (Options options)
   string level;
   int nd; // number of diagrams, length of diagram_number vector
   
+  cout << "input list = " << file_diagrams << endl;
+  
   get_data(particle_names,tags,levels, nd,file_diagrams);
   
   
@@ -517,6 +519,7 @@ void generate_code (Options options)
   <<"#include <string>\n"
   <<"#include <iostream>\n"
   <<"#include <fstream>\n"
+  <<"#include \"options.hpp\"\n"
   <<"using namespace std;\n"
   <<"struct Data\n"
   <<"{\n"
@@ -550,16 +553,10 @@ void generate_code (Options options)
   
     // constructor
   data_h<<"  Data (){};\n"
-  <<"Data(int argc, char* argv[]) {\n"
+  <<"Data(Options options) {\n"
   <<"double param [99];\n"
   <<"std::string name [99]; int i=0;\n"
-  <<"if (argc==2)\n"
-  <<"{\n"
-  <<"cout << \"Please enter a data file in the format ./main input.txt, using default values \" << endl;\n"
-  <<"}\n"
-  <<"else\n"
-  <<"{\n"
-  <<"std::ifstream input(argv[2]);\n"
+  <<"std::ifstream input(options.input_list);\n"
   <<"std::string line;\n"
   <<"while(getline(input, line)) {\n"
   <<"if (!line.length() || line[0] == '#')\n"
@@ -568,7 +565,7 @@ void generate_code (Options options)
   <<" iss>> name[i] >> param[i];\n"
   <<"     i=i+1;\n"
   <<"   }\n"
-  <<"  }\n"
+  //<<"  }\n"
   <<"  for (int n=0;n<i+1;n++)\n"
   <<"  {\n";
 
@@ -603,6 +600,7 @@ void generate_code (Options options)
   data_h<<"}\n"
   <<"}\n"
   <<"};\n"
+  
   <<"#endif\n";
 
   

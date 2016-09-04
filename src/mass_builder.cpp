@@ -44,8 +44,9 @@ void run_mass_builder_mode_1a(Options options)
 {
 Calc_amplitudes ca;
 
-std::string particles [100];
-std::string diagrams [100]; int i=0;
+std::string particles [1000];
+std::string types [1000];
+std::string diagrams [1000]; int i=0;
 std::string model = options.model;
 const char *file_diagrams;
 if (options.input_list==""){
@@ -67,7 +68,7 @@ while(getline(input, line))
   if (!line.length() || line[0] == '#')
      continue;
   std::istringstream iss(line);
-  iss>> particles[i] >> diagrams[i];
+  iss>> particles[i] >> diagrams[i] >> types[i];
   i=i+1;
 }
 // run over all entries in the input file
@@ -75,6 +76,7 @@ for (int k=0;k<i;k++)
 {
 options.particle = particles[k];
 options.diagram = diagrams[k];
+options.set_type(types[k]);
 options.model = model;
 ca.calc_diagram(options);
 }
@@ -92,6 +94,17 @@ ca.calc_diagram(options);
 
 
 
+void evaluate(Options options)
+{
+
+Self_energy se;
+Data data(options);
+se.run_tsil(data);
+
+
+}
+
+
 
 int main(int argc, char *argv[])
 {
@@ -103,7 +116,7 @@ user.user_interface();
 Options options = user.options;
 
 // read options and work through possibilities for each run mode and check requirements are meant
-if (options.model==""){ cout << "no model specified" << endl; return 0;}
+if (options.model=="" && (options.run_mode != 6)){ cout << "no model specified" << endl; return 0;}
 
 
 if (options.run_mode == 1)
@@ -128,10 +141,28 @@ if (options.run_mode == 4 )
 {
 if (options.input_list == "")
 {
-options.input_list = "models/"+ options.model + "/diagrams.txt";
+options.input_list = "models/"+ options.model + "/output/avail_diagrams_.txt";
 }
+if (options.model == "") { cout << "please specify a model" << endl; return 0;}
 Generate_code::generate_code(options);
 
+}
+
+
+if (options.run_mode == 5 )
+{
+if (options.model == "" || options.particle == "") { cout << "please specify a model and particle, at least one is missing" << endl; return 0;}
+Calc_amplitudes ca;
+ca.generate_figures(options);
+
+}
+
+
+if (options.run_mode == 6 )
+{
+if (options.input_list == "" ) { cout << "missing input data" << endl; return 0;}
+
+evaluate(options);
 
 }
 

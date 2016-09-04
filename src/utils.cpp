@@ -16,46 +16,54 @@ const char * output_file_name(std::string model, std::string tag, std::string fi
 }
 
 
-
-
-
-
 void update_avail_diagrams(Options options)
 {
   const char *file_name = output_file_name(options.model,"","avail_diagrams");
   vector<string> particle, diagram, type;
+  vector<string> particle_new, diagram_new, type_new;
   int n;
   get_data(particle,diagram,type,n,file_name);
-
-
-
-  system ("rm models/Scalar/output/avail_diagrams_.txt");
   
   ofstream file;
-
-  file.open(file_name,  std::ios::out | std::ios::trunc);
+  file_name = output_file_name(options.model,"","avail_diagrams");
+  file.open(file_name);
   
   particle.push_back(options.particle);
   diagram.push_back(options.diagram);
   
   if (options.counter_terms){type.push_back( to_string(options.loop_order)+"c" ) ;}
   else {type.push_back( to_string(options.loop_order) ) ;}
-  
-  // need to remove duplicates here
-  
-  
-  
-  for (int i = 0; i < n+1; i++)
+  n = n+1; // total number of elements in the list
+  // now need to remove duplicates, a duplicate must be the same in all three elements
+  // work through list, setting duplicate elements to null
+  for (int i = 0; i < n; i++)
   {
-  file << particle[i] << " " << diagram[i] << " " << type[i] << endl;
-  cout << particle[i] << " " << diagram[i] << " " << type[i] << endl;
+  for (int j = 0; j < n; j++)
+  {
+  if ((particle[j] == particle[i]) && (diagram[j]==diagram[i]) && (type[i]==type[j]) && (i!=j))
+  { // duplicate exists
+  particle[i] = "";diagram[i]="";type[i]="";
+  }
+  }
+  #ifdef DEBUG
+  cout << "list is " << endl;
+  for (int k = 0; k < n; k++)
+  {
+  cout << particle[k] << " " << diagram[k] << " " << type[k] << endl;
+  }
+  #endif
+  }
+  int m = 0;
+  for (int i = 0; i < n; i++)
+  {
+  if (particle[i]!="") { particle_new.push_back(particle[i]);diagram_new.push_back(diagram[i]);type_new.push_back(type[i]); m=m+1;}
+  }
+  for (int i = 0; i < m; i++)
+  {
+  file << particle_new[i] << " " << diagram_new[i] << " " << type_new[i] << endl;
   }
   file.close();
 }
-
-
-
-
 
 
 

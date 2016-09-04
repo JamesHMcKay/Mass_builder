@@ -7,10 +7,9 @@
 #include <iostream>
 #include <fstream>
 
-#include "utils.hpp"
+
 
 using namespace std;
-
 
 struct Options
 {
@@ -33,10 +32,10 @@ int run_mode = 0;
 choose between 1 and 1b depending on the input available
 
 4 generate code for list of diagrams, if no list (-i list.txt) provided use models/<model>/diagrams_avail.txt
-5 generate diagrams for all diagrams in list, if no list given generate all
-6 generate diagram for specific 
-*/
+5 draw diagrams for all diagrams in list, if no list given generate all
 
+6 evaluate self energy using input in model folder
+*/
 
 
 Options (){};
@@ -52,6 +51,11 @@ cout << "model = " << model << endl;
 cout << "run mode = " << run_mode << endl;
 cout << "input list = " << input_list << endl;
 }
+
+
+void set_type(std::string type);
+
+
 };
 
 class User_input
@@ -169,19 +173,14 @@ string input = "generate code";
 if (find_and_read_string("-g",input))
 {
 options.run_mode = 4;
-options.model = input;
+//options.model = input;
 }
 }
 
-if (find_string("-gs"))
-{
-string input = "generate code";
-if (find_and_read_string("-gs",input))
-{
-options.run_mode = 3;
-options.model = input;
-}
-}
+
+if (find_string("-f")){ options.run_mode = 5;}
+if (find_string("-e")){ options.run_mode = 6;}
+
 
 options.print_options();
 }

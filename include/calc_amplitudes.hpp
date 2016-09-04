@@ -28,7 +28,7 @@ public:
 Calc_amplitudes(){}
 
 bool calc_diagram(Options options);
-void generate_figures(int argc, char *argv[],Options options);
+void generate_figures(Options options);
 };
 
 #endif

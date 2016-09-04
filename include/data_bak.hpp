@@ -6,6 +6,7 @@
 #include <string>
 #include <iostream>
 #include <fstream>
+#include "options.hpp"
 using namespace std;
 struct Data
 {
@@ -13,16 +14,11 @@ public:
 
 double P, Q;
   Data (){};
-Data(int argc, char* argv[]) {
+Data(Options options) {
 double param [99];
 std::string name [99]; int i=0;
-if (argc==2)
-{
-cout << "Please enter a data file in the format ./main input.txt, using default values " << endl;
-}
-else
-{
-std::ifstream input(argv[2]);
+
+std::ifstream input(options.input_list);
 std::string line;
 while(getline(input, line)) {
 if (!line.length() || line[0] == '#')
@@ -31,7 +27,6 @@ if (!line.length() || line[0] == '#')
  iss>> name[i] >> param[i];
      i=i+1;
    }
-  }
   for (int n=0;n<i+1;n++)
   {
   if (name[n]=="Q")
@@ -40,5 +35,7 @@ if (!line.length() || line[0] == '#')
   {  P =param[n];  }
 }
 }
+
+
 };
 #endif

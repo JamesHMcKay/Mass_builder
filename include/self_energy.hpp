@@ -27,15 +27,9 @@ class Self_energy
   public:
   Data data;
   Self_energy (){}  // defualt constructor
-  Self_energy(Data _data)
-  {
-      data=_data;
-   } //constructor
+  void run_tsil(Data &data);
   
-  
-   void run_tsil(Data &data);
-  
-   void init_tsil(Data data);
+  void init_tsil(Data data);
   
   
    

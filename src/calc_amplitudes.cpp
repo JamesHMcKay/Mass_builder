@@ -22,12 +22,6 @@ using namespace std;
 using namespace utils;
 
 
-//bool verbose=1;
-//int loop_level = 2;
-
-
-
-
 
 
 bool Calc_amplitudes::calc_diagram(Options options)
@@ -523,12 +517,14 @@ void draw_all_diagrams(Options options)
   ofstream myfile;
   myfile.open ("output/make_figures.m");
 
-
+  string type="";
   utils::print_math_header(myfile);
-  if (options.counter_terms){myfile<<"t12 = CreateCTTopologies["<<options.loop_order<<", 1 -> 1, ExcludeTopologies -> Internal];"<<endl;}
-  else {myfile<<"t12 = CreateTopologies["<<options.loop_order<<", 1 -> 1, ExcludeTopologies -> Internal];"<<endl;}
+  if (options.counter_terms){myfile<<"t12 = CreateCTTopologies["<<options.loop_order<<", 1 -> 1, ExcludeTopologies -> Internal];"<<endl;
+  type = to_string(options.loop_order) +"c";}
+  else {myfile<<"t12 = CreateTopologies["<<options.loop_order<<", 1 -> 1, ExcludeTopologies -> Internal];"<<endl;
+  type = to_string(options.loop_order);}
   myfile<<"alldiags = InsertFields[t12, {"<<particle<<"} -> {"<<particle<<"},InsertionLevel -> {Particles}, GenericModel -> Lorentz,Model -> \""<<s_cwd<<"/models/"<<model<<"/"<<model<<"\"];\n"
-  <<"Export[\""<<s_cwd<<"/FA_diagrams/all_diagrams_"<<particle<<".pdf\",Paint[alldiags]];\n"  // print the FA diagram to pdf in local directory
+  <<"Export[\""<<s_cwd<<"/models/"<<options.model<<"/FA_diagrams/diagrams_"<<particle<< "_" << type <<".pdf\",Paint[alldiags]];\n"  // print the FA diagram to pdf in local directory
   <<endl;
 
   #ifdef RUN_ALL
@@ -598,26 +594,18 @@ void draw_diagrams(vector<std::string> particles, vector<std::string> diagrams, 
 // main routine to manage a diagram by diagram procedure
 
 
-void Calc_amplitudes::generate_figures(int argc, char *argv[],Options options)
+void Calc_amplitudes::generate_figures(Options options)
 {
 
 vector<std::string> particles, diagrams;
 string model;
 
-if (argc==1)
-{
-cout << " user input guide here  " << endl;
-cout << "  " << endl;
-}
-else
-{
 
-string option = argv[1];
-if (option=="-f")
+if (options.input_list!="")
 {
   std::string particles_in [1000];
   std::string diagrams_in [1000]; int i=0;
-  std::ifstream input(argv[2]);
+  std::ifstream input(options.input_list);
   std::string line;
   while(getline(input, line))
   {
@@ -628,6 +616,7 @@ if (option=="-f")
         else iss>> particles_in[i] >> diagrams_in[i];
         i=i+1;
   }
+  
 // run over all entries in the input file
 cout << "drawing all diagrams specified in the input list" << endl;
 
@@ -643,21 +632,9 @@ cout << "drawing all diagrams specified in the input list" << endl;
   
 
 }
-else if (option == "-d")
+else
 {
-if (argc==4) {
-cout <<"drawing all diagrams for particle "<<argv[2]<<endl;
-options.particle = argv[2];
-options.model = argv[3];
-
 draw_all_diagrams(options);
-}
-else {cout << "please specify a particle after -a to use this option"<< endl;}
-
-
-}
-
-
 }
 
 
