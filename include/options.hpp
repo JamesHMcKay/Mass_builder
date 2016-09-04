@@ -119,82 +119,9 @@ return result;
 }
 
 
-void user_interface()
-{
-
-string io;
-
-if (find_string("-c")){ options.counter_terms = true;}
-if (find_string("-v")){ options.verbose = true;}
-if (find_string("-a")){ options.run_mode = 1;}
-
-if (find_string("-l"))
-{
-string input = "loop order";
-if (find_and_read_string("-l",input))
-{
-if (input == "2"){ options.loop_order = 2;}
-if (input == "1"){ options.loop_order = 1;}
-else {cout <<"This loop order is not supported please enter 1 or 2"<<endl;}
-}
-}
-
-if (find_string("-m"))
-{
-string input = "model name";
-if (find_and_read_string("-m",input)){options.model = input;}
-}
-
-if (find_string("-p"))
-{
-string input = "particle name";
-if (find_and_read_string("-p",input)){options.particle = input;}
-}
-
-
-if (find_string("-d"))
-{
-string input = "diagram number";
-if (find_and_read_string("-d",input)){options.diagram = input;}
-}
-
-
-if (find_string("-i"))
-{
-string input = "a diagram list";
-if (find_and_read_string("-i",input)){options.input_list = input;}
-}
-
-
-
-if (find_string("-g"))
-{
-string input = "generate code";
-if (find_and_read_string("-g",input))
-{
-options.run_mode = 4;
-//options.model = input;
-}
-}
-
-
-if (find_string("-f")){ options.run_mode = 5;}
-if (find_string("-e")){ options.run_mode = 6;}
-
-
-options.print_options();
-}
-
-
+void user_interface();
 
 };
-
-
-
-
-
-
-
 
 
 

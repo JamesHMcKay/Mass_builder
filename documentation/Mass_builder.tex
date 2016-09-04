@@ -38,7 +38,7 @@ The computation of $\mathcal{O}(10)$ amplitudes simultaneously using tools such 
 
 \section{Introduction}
 
-The calculation of radiative corrections at the two-loop level is a computationally challenging task which has been significantly simplified with the introduction of modern tools.  Even at the most rudimentary level, determining all possible topologies is a non-trivial task, let alone the simplification of the resulting integral expressions, and finally the evaluation of these integrals.  Fortunately, FeynArts, FeynCalc, TARCER and TSIL have made each step of this process far more achievable for the average user.
+The calculation of radiative corrections at the two-loop level is a computationally challenging task which has been significantly simplified with the introduction of modern tools.  Even at the most rudimentary level, determining all possible topologies is a non-trivial task, let alone the simplification of the resulting integral expressions, and finally the evaluation of these integrals.  Fortunately, FeynArts, FeynCalc, TARCER and TSIL have made each step of this process far more achievable for a wide range of users.
 
 
 \section{Quick start guide}
@@ -47,7 +47,7 @@ In this section we give a minimalistic example to demonstrate the core features 
 
 \subsection{Generate FeynArts diagrams}\label{generate_diagrams}
 
-When first approaching a problem involving radiative loop corrections having a visual list of the involved corrections is helpful.  In Mass Builder the number assigned to each correction is important 
+When first approaching a problem involving radiative loop corrections having a visual list of the involved corrections is helpful.  In Mass Builder the number assigned to each radiative process, which we refer to as a \textit{diagram}, is useful information for the user to select which process to include in the calculation.  FeynArts has the capability to produce a Feynman diagram for each possible process given a model file, thus for a chosen model we call FeynArts and conveniently save this output into uniquely named Portable Document Format (\lstinline{.pdf}) in the folder \lstinline{models/<model>/FA_diagrams/} (if this empty directory does not exist in your own model directory it must be created first).
 
 
 \subsection{Compute amplitudes}

@@ -1,5 +1,7 @@
 #include "utils.hpp"
 
+#define DEBUG
+
 namespace utils
 {
 time_t t = time(0);   // get time now to print into generated files
@@ -18,15 +20,33 @@ const char * output_file_name(std::string model, std::string tag, std::string fi
 
 void update_avail_diagrams(Options options)
 {
-  const char *file_name = output_file_name(options.model,"","avail_diagrams");
+  //string file_name = output_file_name(options.model,"","avail_diagrams");
+  const char *ext = ".txt";
+  string underscore = "_";
+  const char* str_tmp = "/output/";
+  string c_str = "models/" + options.model +str_tmp + "avail_diagrams" + underscore + ext;
+  const char *str = c_str.c_str();
+  string file_name = str;
+  
+  
+  cout << "generated file name = " << file_name << endl;
   vector<string> particle, diagram, type;
   vector<string> particle_new, diagram_new, type_new;
   int n;
   get_data(particle,diagram,type,n,file_name);
   
+  #ifdef DEBUG
+  cout << "original list is " << endl;
+  cout << "has n = " << n << endl;
+  for (int k = 0; k < n; k++)
+  {
+  cout << particle[k] << " " << diagram[k] << " " << type[k] << endl;
+  }
+  #endif
+  
   ofstream file;
   file_name = output_file_name(options.model,"","avail_diagrams");
-  file.open(file_name);
+  file.open(file_name.c_str());
   
   particle.push_back(options.particle);
   diagram.push_back(options.diagram);
@@ -187,12 +207,12 @@ input2.close();
 }
 
 
-void get_data(vector<std::string> &A,vector<std::string> &B,vector<std::string> &C,int &n,const char *filename)
+void get_data(vector<std::string> &A,vector<std::string> &B,vector<std::string> &C,int &n, string file_name_temp)
 {
 
-//cout << "reading file = " << filename << endl;
+cout << "reading file = " << file_name_temp.c_str() << endl;
 n=0;
-std::ifstream input(filename);
+std::ifstream input(file_name_temp.c_str());
 std::string line;
 while(getline(input, line)) {
       if (!line.length() || line[0] == '#')
@@ -200,7 +220,7 @@ while(getline(input, line)) {
       std::istringstream iss(line);
       n=n+1;
    }
-  
+cout << "n = " << n << endl;
 A.resize(n);
 B.resize(n);
 C.resize(n);
@@ -208,7 +228,8 @@ C.resize(n);
 input.close();
 
 n=0;
-std::ifstream input2(filename);
+cout << "reading file = " << file_name_temp.c_str() << endl;
+std::ifstream input2(file_name_temp.c_str());
 std::string line2;
 while(getline(input2, line2)) {
     if (!line2.length() || line2[0] == '#')
@@ -219,7 +240,7 @@ while(getline(input2, line2)) {
   iss2>> A[n] >> B[n] >> C[n];
     n=n+1;
  }
-
+cout << "n = " << n << endl;
 input2.close();
 
 

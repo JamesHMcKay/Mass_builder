@@ -7,8 +7,7 @@ James McKay
 
 --- generate_code.cpp ---
 
-Creates the C++ interface to TSIL using the data in Mass_builder/Generator/output/,
-the resultant file is put in Mass_builder/src/self_energy.cpp.
+Creates the C++ interface to TSIL
 
 make must be run in the build directory after this program has been run
 
@@ -17,16 +16,11 @@ make must be run in the build directory after this program has been run
 #include "utils.hpp"
 #include "generate_code.hpp"
 
-#define RUN_ALL
-
 using namespace std;
-
 using namespace utils;
 
 namespace Generate_code
 {
-
-
 
 void generate_code (Options options)
 {
@@ -513,12 +507,6 @@ void generate_code (Options options)
   
   data_h << "#ifndef DATA_H\n"
   <<"#define DATA_H\n"
-  <<"#include <vector>\n"
-  <<"#include <cmath>\n"
-  <<"#include <sstream>\n"
-  <<"#include <string>\n"
-  <<"#include <iostream>\n"
-  <<"#include <fstream>\n"
   <<"#include \"options.hpp\"\n"
   <<"using namespace std;\n"
   <<"struct Data\n"

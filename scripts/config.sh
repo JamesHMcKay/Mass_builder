@@ -52,5 +52,4 @@ cp include/data_bak.hpp include/data.hpp
 # create working directories and build directory
 mkdir build
 mkdir output
-mkdir FA_diagrams
 

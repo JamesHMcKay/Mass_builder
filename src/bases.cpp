@@ -1,17 +1,8 @@
 #include "bases.hpp"
 #include "utils.hpp"
-#include <exception>
-#include <sstream>
-#include <cstdlib>
-#include <string>
 
-// compute all possible bases integral permutations given a list of masses return as a map
-// consisting of short name and bases object
 using namespace std;
 using namespace utils;
-
-// simple helper function to search for duplicates and return vector of unique elements
-
 
 void set_id(std::vector<string> &masses_input, std::vector<string> &identifiers_input)
 {
@@ -101,13 +92,6 @@ void set_id(std::vector<string> &masses_input, std::vector<string> &identifiers_
   masses_input = masses;
 
 }
-
-
-
-
-
-
-
 
 std::map <std::string, Bases > set_bases(std::vector<string> masses, std::vector<string> &identifiers_input)
 {
@@ -257,8 +241,6 @@ base_map[bases_names[k]].coefficient = coefficient;
 }
 
 
-
-
 std::map <std::string, Bases > products_container(vector<string> bases_names)
 {
 std::map <std::string, Bases > prod_map;
@@ -280,10 +262,3 @@ prod_map[name] = base;
 
 return prod_map;
 }
-
-
-
-
-
-
-

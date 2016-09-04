@@ -1,11 +1,5 @@
 #ifndef DATA_H
 #define DATA_H
-#include <vector>
-#include <cmath>
-#include <sstream>
-#include <string>
-#include <iostream>
-#include <fstream>
 #include "options.hpp"
 using namespace std;
 struct Data

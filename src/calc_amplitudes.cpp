@@ -16,7 +16,7 @@ run ./mass_builder -g <model_name> after to generate code and ./mass_builder -e 
 
 #include "calc_amplitudes.hpp"
 
-#define RUN_ALL
+//#define RUN_ALL
 //#define DEBUG
 using namespace std;
 using namespace utils;
