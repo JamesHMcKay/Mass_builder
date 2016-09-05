@@ -22,6 +22,16 @@ using namespace utils;
 namespace Generate_code
 {
 
+
+int get_loop_order(string type)
+{
+int loop_order;
+string loop_order_str = utils::char_to_string(type[0]);
+stringstream convert(loop_order_str);
+convert >> loop_order;
+return loop_order;
+}
+
 void generate_code (Options options)
 {
   time_t t = time(0);   // get time now to print into generated files
@@ -235,6 +245,18 @@ void generate_code (Options options)
   sort(integrals.begin(),integrals.end());
   integrals.erase( unique( integrals.begin(), integrals.end() ), integrals.end() );
   
+  string c_file_masses = "models/" + model+"/masses.txt";  // need to make this model independent
+  const char *file_masses = c_file_masses.c_str();
+  
+  
+  vector<string> masses_input,id_input;
+  int na;
+  get_data(masses_input,id_input,na,file_masses);
+  std::map<std::string, Bases> base_map = set_bases(masses_input, id_input);
+  
+  
+  
+  
   
   
   
@@ -303,10 +325,36 @@ void generate_code (Options options)
   if (count != 0){main_output<< ";"<<endl;}
   else {main_output<<endl;}
   
+  
+  // deal with Bxy = Byx case
+  for (unsigned int i = 0; i<integrals.size();i++)
+  {
+  string name = integrals[i];
+  
+  Bases base_temp = base_map[name];
+  base_temp.short_name = name;
+  
+  if (base_temp.type == "B")
+  {
+  Bases base_temp_B;
+  base_temp_B.type = "B";
+  base_temp_B.e1 = base_temp.e2;
+  base_temp_B.e2 = base_temp.e1;
+  string name_B = get_short_name(base_temp_B,masses_input, id_input);
+  //integrals.push_back(name_B);
+  main_output <<"TSIL_COMPLEXCPP " << name_B << ";" << endl;
+  }
+  }
+  
+  
+  
+
+  
+  
+  
+  
   main_output << "TSIL_COMPLEXCPP  i;\n";
   vector<std::string> masses;
-  string c_file_masses = "models/" + model+"/masses.txt";  // need to make this model independent
-  const char *file_masses = c_file_masses.c_str();
   int nm; // number of diagrams, length of diagram_number vector
   vector<std::string> temp_vec; // TODO remove!
   get_data(masses,temp_vec, nm,file_masses);
@@ -346,12 +394,7 @@ void generate_code (Options options)
   
   main_output <<"void DoTSIL(TSIL_REAL s,TSIL_REAL Q2)\n"<<"{\n";
   
-  vector<string> masses_input,id_input;
-  int na;
-  get_data(masses_input,id_input,na,file_masses);
-  std::map<std::string, Bases> base_map = set_bases(masses_input, id_input);
-  
-    
+
   
   for (unsigned int i = 0; i<integrals.size();i++)
   {
@@ -361,6 +404,21 @@ void generate_code (Options options)
   base_temp.short_name = name;
   
   print_doTSIL(main_output, base_temp);
+  
+  // deal with the Bxy = Byx case
+  // this will be replaced by a more sophisticated algorithm which takes advantage of symmetries
+  if (base_temp.type == "B")
+  {
+  Bases base_temp_B;
+  base_temp_B.type = "B";
+  base_temp_B.e1 = base_temp.e2;
+  base_temp_B.e2 = base_temp.e1;
+  string name_B = get_short_name(base_temp_B,masses_input, id_input);
+  integrals.push_back(name_B);
+  main_output << name_B << " = " << name << ";" << endl;
+  
+  }
+  
   main_output << "\n";
   }
   
@@ -460,31 +518,50 @@ void generate_code (Options options)
   {
     string particle_name_tmp = particle_names_short[i];
     string particle_name_tmp_short = part_name_simple(particle_names_short[i]);
-   
     particle_names_short_reduced.push_back(particle_name_tmp_short);
+    /* One loop */
     
-    main_output<< "TSIL_COMPLEXCPP SE_"<<particle_name_tmp_short<<" = ";
-    
+    main_output<< "TSIL_COMPLEXCPP SE_1_"<<particle_name_tmp_short<<" = 0.L  ";
     for (int d = 0; d<nd;d++)
     {
     if (particle_names[d] == particle_name_tmp)
     {
-    
-    
+    if (get_loop_order(levels[d]) == 1 )
+    {
     
     main_output<< " + diagram"<<"_"<< particle_name_tmp_short << "_" << tags[d] << "_" << levels[d] << "()";
+    
     tag = tags[d];
     }
     
-    
+    }
     }
     main_output << ";" << endl;
+    main_output << "SE_1_"<<particle_name_tmp_short << " = " << "SE_1_"<<particle_name_tmp_short<<"*TSIL_POW(PI,2);"<<endl;
+    main_output << "cout << \"One-loop self energy of particle "<< particle_name_tmp_short << " = \" << real(SE_1_"<<particle_name_tmp_short<<") << endl;"<<endl;
     
-    main_output << "SE_"<<particle_name_tmp_short << " = " << "SE_"<<particle_name_tmp_short<<"*TSIL_POW(PI,4);"<<endl;
+    /* Two loop */
+    main_output<< "TSIL_COMPLEXCPP SE_2_"<<particle_name_tmp_short<<" = 0.L ";
+    for (int d = 0; d<nd;d++)
+    {
+    if (particle_names[d] == particle_name_tmp)
+    {
+    if (get_loop_order(levels[d]) == 2 )
+    {
     
-    main_output << "cout << \"Self energy of particle "<< particle_name_tmp_short << " = \" << real(SE_"<<particle_name_tmp_short<<") << endl;"<<endl;
+    main_output<< " + diagram"<<"_"<< particle_name_tmp_short << "_" << tags[d] << "_" << levels[d] << "()";
     
-    main_output << "data.SE_"<< particle_name_tmp_short << " = " << "real(SE_"<<particle_name_tmp_short<<");"<<endl;
+    tag = tags[d];
+    }
+    
+    }
+    }
+    main_output << ";" << endl;
+    main_output << "SE_2_"<<particle_name_tmp_short << " = " << "SE_2_"<<particle_name_tmp_short<<"*TSIL_POW(PI,4);"<<endl;
+    main_output << "cout << \"Two-loop self energy of particle "<< particle_name_tmp_short << " = \" << real(SE_2_"<<particle_name_tmp_short<<") << endl;"<<endl;
+    
+    
+    main_output << "data.SE_"<< particle_name_tmp_short << " = " << "real(SE_1_"<<particle_name_tmp_short<<" + " <<  "SE_2_"<<particle_name_tmp_short <<  ");"<<endl;
     
   }
 

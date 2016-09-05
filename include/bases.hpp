@@ -46,7 +46,11 @@ string get_coeff(){return coefficient;}
 
 vector<int> find_string_lengths(vector<string> input);
 
+string get_id(std::vector<string> &masses, std::vector<string> &identifiers, string mass);
+
 void set_id(std::vector<string> &masses_input, std::vector<string> &identifiers_input);
+
+string get_short_name(Bases basis, std::vector<string> &masses, std::vector<string> &identifiers);
 
 std::map<std::string, Bases> set_bases(std::vector<string> masses, std::vector<string> &identifiers);
 

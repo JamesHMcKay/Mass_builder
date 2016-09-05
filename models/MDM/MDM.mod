@@ -82,33 +82,9 @@ PropagatorType -> Straight,
 PropagatorArrow -> None},
 
  
-F[4] == {SelfConjugate -> False,
-Indices -> {Index[I3Gen], Index[Colour]},
-Mass -> MassFd,
-PropagatorLabel->ComposedChar["d",Index[I3Gen],Index[Colour]],
-PropagatorType -> Straight,
-PropagatorArrow -> Forward},
-
- 
-F[3] == {SelfConjugate -> False,
-Indices -> {Index[I3Gen], Index[Colour]},
-Mass -> MassFu,
-PropagatorLabel->ComposedChar["u",Index[I3Gen],Index[Colour]],
-PropagatorType -> Straight,
-PropagatorArrow -> Forward},
-
- 
-F[2] == {SelfConjugate -> False,
-Indices -> {Index[I3Gen]},
-Mass -> MassFe,
-PropagatorLabel->ComposedChar["e",Index[I3Gen]],
-PropagatorType -> Straight,
-PropagatorArrow -> Forward},
-
- 
 V[5] == {SelfConjugate -> True,
 Indices -> {Index[Gluon]},
-Mass -> 0,
+Mass -> mg,
 PropagatorLabel->ComposedChar["g",Index[Gluon]],
 PropagatorType -> Sine,
 PropagatorArrow -> None},
@@ -140,7 +116,7 @@ PropagatorArrow -> Forward},
  
 U[5] == {SelfConjugate -> False,
 Indices -> {Index[Gluon]},
-Mass -> 0,
+Mass -> mg,
 PropagatorLabel->ComposedChar["\\eta",Index[Gluon],"G"],
 PropagatorType -> GhostDash,
 PropagatorArrow -> Forward},
@@ -148,7 +124,7 @@ PropagatorArrow -> Forward},
  
 U[1] == {SelfConjugate -> False,
 Indices -> {},
-Mass -> 0,
+Mass -> ma,
 PropagatorLabel->ComposedChar["\\eta","\\gamma"],
 PropagatorType -> GhostDash,
 PropagatorArrow -> Forward},
@@ -178,10 +154,6 @@ PropagatorType -> GhostDash,
 PropagatorArrow -> Forward}
  
 }
-
- 
-MassFd[gen_, y_] = MassFd[gen]
-MassFu[gen_, y_] = MassFu[gen]
 
 
 GaugeXi[S[3,{a_Integer}]] = 1 /; a > 1 
@@ -219,33 +191,10 @@ C[V[5, {ct1}], V[5, {ct2}], V[5, {ct3}], V[5, {ct4}]] == {{I*g3^2*(-(fSU3[1, ct1
  C[S[3], -S[3], V[1], V[2]] == {{(I/2)*C2TW*g1*g2 - (I/4)*g1^2*S2TW + (I/4)*g2^2*S2TW}},
  C[S[3], -S[3], -V[3], V[3]] == {{(I/2)*g2^2}},
  C[S[3], -S[3], V[2], V[2]] == {{(I/2)*cw2*g2^2 - I*cw*g1*g2*sw + (I/2)*g1^2*sw2}},
- C[-F[4, {gt1, ct1}], F[4, {gt2, ct2}], S[2]] == {{-((IndexDelta[ct1, ct2]*(Conjugate[ZDL[gt2, 1]]*(Conjugate[ZDR[gt1, 1]]*Yd[1, 1] + Conjugate[ZDR[gt1, 2]]*Yd[2, 1] + Conjugate[ZDR[gt1, 3]]*Yd[3, 1]) + Conjugate[ZDL[gt2, 2]]*(Conjugate[ZDR[gt1, 1]]*Yd[1, 2] + Conjugate[ZDR[gt1, 2]]*Yd[2, 2] + Conjugate[ZDR[gt1, 3]]*Yd[3, 2]) + Conjugate[ZDL[gt2, 3]]*(Conjugate[ZDR[gt1, 1]]*Yd[1, 3] + Conjugate[ZDR[gt1, 2]]*Yd[2, 3] + Conjugate[ZDR[gt1, 3]]*Yd[3, 3])))/Sqrt[2])}, {(IndexDelta[ct1, ct2]*(ZDL[gt1, 1]*(Conjugate[Yd[1, 1]]*ZDR[gt2, 1] + Conjugate[Yd[2, 1]]*ZDR[gt2, 2] + Conjugate[Yd[3, 1]]*ZDR[gt2, 3]) + ZDL[gt1, 2]*(Conjugate[Yd[1, 2]]*ZDR[gt2, 1] + Conjugate[Yd[2, 2]]*ZDR[gt2, 2] + Conjugate[Yd[3, 2]]*ZDR[gt2, 3]) + ZDL[gt1, 3]*(Conjugate[Yd[1, 3]]*ZDR[gt2, 1] + Conjugate[Yd[2, 3]]*ZDR[gt2, 2] + Conjugate[Yd[3, 3]]*ZDR[gt2, 3])))/Sqrt[2]}},
- C[-F[2, {gt1}], F[2, {gt2}], S[2]] == {{-((Conjugate[ZEL[gt2, 1]]*(Conjugate[ZER[gt1, 1]]*Ye[1, 1] + Conjugate[ZER[gt1, 2]]*Ye[2, 1] + Conjugate[ZER[gt1, 3]]*Ye[3, 1]) + Conjugate[ZEL[gt2, 2]]*(Conjugate[ZER[gt1, 1]]*Ye[1, 2] + Conjugate[ZER[gt1, 2]]*Ye[2, 2] + Conjugate[ZER[gt1, 3]]*Ye[3, 2]) + Conjugate[ZEL[gt2, 3]]*(Conjugate[ZER[gt1, 1]]*Ye[1, 3] + Conjugate[ZER[gt1, 2]]*Ye[2, 3] + Conjugate[ZER[gt1, 3]]*Ye[3, 3]))/Sqrt[2])}, {(ZEL[gt1, 1]*(Conjugate[Ye[1, 1]]*ZER[gt2, 1] + Conjugate[Ye[2, 1]]*ZER[gt2, 2] + Conjugate[Ye[3, 1]]*ZER[gt2, 3]) + ZEL[gt1, 2]*(Conjugate[Ye[1, 2]]*ZER[gt2, 1] + Conjugate[Ye[2, 2]]*ZER[gt2, 2] + Conjugate[Ye[3, 2]]*ZER[gt2, 3]) + ZEL[gt1, 3]*(Conjugate[Ye[1, 3]]*ZER[gt2, 1] + Conjugate[Ye[2, 3]]*ZER[gt2, 2] + Conjugate[Ye[3, 3]]*ZER[gt2, 3]))/Sqrt[2]}},
- C[-F[3, {gt1, ct1}], F[3, {gt2, ct2}], S[2]] == {{-((IndexDelta[ct1, ct2]*(Conjugate[ZUL[gt2, 1]]*(Conjugate[ZUR[gt1, 1]]*Yu[1, 1] + Conjugate[ZUR[gt1, 2]]*Yu[2, 1] + Conjugate[ZUR[gt1, 3]]*Yu[3, 1]) + Conjugate[ZUL[gt2, 2]]*(Conjugate[ZUR[gt1, 1]]*Yu[1, 2] + Conjugate[ZUR[gt1, 2]]*Yu[2, 2] + Conjugate[ZUR[gt1, 3]]*Yu[3, 2]) + Conjugate[ZUL[gt2, 3]]*(Conjugate[ZUR[gt1, 1]]*Yu[1, 3] + Conjugate[ZUR[gt1, 2]]*Yu[2, 3] + Conjugate[ZUR[gt1, 3]]*Yu[3, 3])))/Sqrt[2])}, {(IndexDelta[ct1, ct2]*(ZUL[gt1, 1]*(Conjugate[Yu[1, 1]]*ZUR[gt2, 1] + Conjugate[Yu[2, 1]]*ZUR[gt2, 2] + Conjugate[Yu[3, 1]]*ZUR[gt2, 3]) + ZUL[gt1, 2]*(Conjugate[Yu[1, 2]]*ZUR[gt2, 1] + Conjugate[Yu[2, 2]]*ZUR[gt2, 2] + Conjugate[Yu[3, 2]]*ZUR[gt2, 3]) + ZUL[gt1, 3]*(Conjugate[Yu[1, 3]]*ZUR[gt2, 1] + Conjugate[Yu[2, 3]]*ZUR[gt2, 2] + Conjugate[Yu[3, 3]]*ZUR[gt2, 3])))/Sqrt[2]}},
- C[-F[4, {gt1, ct1}], F[4, {gt2, ct2}], S[1]] == {{((-I)*IndexDelta[ct1, ct2]*(Conjugate[ZDL[gt2, 1]]*(Conjugate[ZDR[gt1, 1]]*Yd[1, 1] + Conjugate[ZDR[gt1, 2]]*Yd[2, 1] + Conjugate[ZDR[gt1, 3]]*Yd[3, 1]) + Conjugate[ZDL[gt2, 2]]*(Conjugate[ZDR[gt1, 1]]*Yd[1, 2] + Conjugate[ZDR[gt1, 2]]*Yd[2, 2] + Conjugate[ZDR[gt1, 3]]*Yd[3, 2]) + Conjugate[ZDL[gt2, 3]]*(Conjugate[ZDR[gt1, 1]]*Yd[1, 3] + Conjugate[ZDR[gt1, 2]]*Yd[2, 3] + Conjugate[ZDR[gt1, 3]]*Yd[3, 3])))/Sqrt[2]}, {((-I)*IndexDelta[ct1, ct2]*(ZDL[gt1, 1]*(Conjugate[Yd[1, 1]]*ZDR[gt2, 1] + Conjugate[Yd[2, 1]]*ZDR[gt2, 2] + Conjugate[Yd[3, 1]]*ZDR[gt2, 3]) + ZDL[gt1, 2]*(Conjugate[Yd[1, 2]]*ZDR[gt2, 1] + Conjugate[Yd[2, 2]]*ZDR[gt2, 2] + Conjugate[Yd[3, 2]]*ZDR[gt2, 3]) + ZDL[gt1, 3]*(Conjugate[Yd[1, 3]]*ZDR[gt2, 1] + Conjugate[Yd[2, 3]]*ZDR[gt2, 2] + Conjugate[Yd[3, 3]]*ZDR[gt2, 3])))/Sqrt[2]}},
- C[-F[3, {gt1, ct1}], F[4, {gt2, ct2}], S[3]] == {{(-I)*IndexDelta[ct1, ct2]*(Conjugate[ZDL[gt2, 1]]*(Conjugate[ZUR[gt1, 1]]*Yu[1, 1] + Conjugate[ZUR[gt1, 2]]*Yu[2, 1] + Conjugate[ZUR[gt1, 3]]*Yu[3, 1]) + Conjugate[ZDL[gt2, 2]]*(Conjugate[ZUR[gt1, 1]]*Yu[1, 2] + Conjugate[ZUR[gt1, 2]]*Yu[2, 2] + Conjugate[ZUR[gt1, 3]]*Yu[3, 2]) + Conjugate[ZDL[gt2, 3]]*(Conjugate[ZUR[gt1, 1]]*Yu[1, 3] + Conjugate[ZUR[gt1, 2]]*Yu[2, 3] + Conjugate[ZUR[gt1, 3]]*Yu[3, 3]))}, {(-I)*IndexDelta[ct1, ct2]*((Conjugate[Yd[1, 1]]*ZDR[gt2, 1] + Conjugate[Yd[2, 1]]*ZDR[gt2, 2] + Conjugate[Yd[3, 1]]*ZDR[gt2, 3])*ZUL[gt1, 1] + (Conjugate[Yd[1, 2]]*ZDR[gt2, 1] + Conjugate[Yd[2, 2]]*ZDR[gt2, 2] + Conjugate[Yd[3, 2]]*ZDR[gt2, 3])*ZUL[gt1, 2] + (Conjugate[Yd[1, 3]]*ZDR[gt2, 1] + Conjugate[Yd[2, 3]]*ZDR[gt2, 2] + Conjugate[Yd[3, 3]]*ZDR[gt2, 3])*ZUL[gt1, 3])}},
- C[-F[2, {gt1}], F[2, {gt2}], S[1]] == {{((-I)*(Conjugate[ZEL[gt2, 1]]*(Conjugate[ZER[gt1, 1]]*Ye[1, 1] + Conjugate[ZER[gt1, 2]]*Ye[2, 1] + Conjugate[ZER[gt1, 3]]*Ye[3, 1]) + Conjugate[ZEL[gt2, 2]]*(Conjugate[ZER[gt1, 1]]*Ye[1, 2] + Conjugate[ZER[gt1, 2]]*Ye[2, 2] + Conjugate[ZER[gt1, 3]]*Ye[3, 2]) + Conjugate[ZEL[gt2, 3]]*(Conjugate[ZER[gt1, 1]]*Ye[1, 3] + Conjugate[ZER[gt1, 2]]*Ye[2, 3] + Conjugate[ZER[gt1, 3]]*Ye[3, 3])))/Sqrt[2]}, {((-I)*(ZEL[gt1, 1]*(Conjugate[Ye[1, 1]]*ZER[gt2, 1] + Conjugate[Ye[2, 1]]*ZER[gt2, 2] + Conjugate[Ye[3, 1]]*ZER[gt2, 3]) + ZEL[gt1, 2]*(Conjugate[Ye[1, 2]]*ZER[gt2, 1] + Conjugate[Ye[2, 2]]*ZER[gt2, 2] + Conjugate[Ye[3, 2]]*ZER[gt2, 3]) + ZEL[gt1, 3]*(Conjugate[Ye[1, 3]]*ZER[gt2, 1] + Conjugate[Ye[2, 3]]*ZER[gt2, 2] + Conjugate[Ye[3, 3]]*ZER[gt2, 3])))/Sqrt[2]}},
- C[-F[1, {gt1}], F[2, {gt2}], S[3]] == {{0}, {(-I)*(Conjugate[Ye[1, gt1]]*ZER[gt2, 1] + Conjugate[Ye[2, gt1]]*ZER[gt2, 2] + Conjugate[Ye[3, gt1]]*ZER[gt2, 3])}},
- C[-F[3, {gt1, ct1}], F[3, {gt2, ct2}], S[1]] == {{(I*IndexDelta[ct1, ct2]*(Conjugate[ZUL[gt2, 1]]*(Conjugate[ZUR[gt1, 1]]*Yu[1, 1] + Conjugate[ZUR[gt1, 2]]*Yu[2, 1] + Conjugate[ZUR[gt1, 3]]*Yu[3, 1]) + Conjugate[ZUL[gt2, 2]]*(Conjugate[ZUR[gt1, 1]]*Yu[1, 2] + Conjugate[ZUR[gt1, 2]]*Yu[2, 2] + Conjugate[ZUR[gt1, 3]]*Yu[3, 2]) + Conjugate[ZUL[gt2, 3]]*(Conjugate[ZUR[gt1, 1]]*Yu[1, 3] + Conjugate[ZUR[gt1, 2]]*Yu[2, 3] + Conjugate[ZUR[gt1, 3]]*Yu[3, 3])))/Sqrt[2]}, {(I*IndexDelta[ct1, ct2]*(ZUL[gt1, 1]*(Conjugate[Yu[1, 1]]*ZUR[gt2, 1] + Conjugate[Yu[2, 1]]*ZUR[gt2, 2] + Conjugate[Yu[3, 1]]*ZUR[gt2, 3]) + ZUL[gt1, 2]*(Conjugate[Yu[1, 2]]*ZUR[gt2, 1] + Conjugate[Yu[2, 2]]*ZUR[gt2, 2] + Conjugate[Yu[3, 2]]*ZUR[gt2, 3]) + ZUL[gt1, 3]*(Conjugate[Yu[1, 3]]*ZUR[gt2, 1] + Conjugate[Yu[2, 3]]*ZUR[gt2, 2] + Conjugate[Yu[3, 3]]*ZUR[gt2, 3])))/Sqrt[2]}},
- C[-F[4, {gt1, ct1}], F[3, {gt2, ct2}], -S[3]] == {{(-I)*IndexDelta[ct1, ct2]*(Conjugate[ZUL[gt2, 1]]*(Conjugate[ZDR[gt1, 1]]*Yd[1, 1] + Conjugate[ZDR[gt1, 2]]*Yd[2, 1] + Conjugate[ZDR[gt1, 3]]*Yd[3, 1]) + Conjugate[ZUL[gt2, 2]]*(Conjugate[ZDR[gt1, 1]]*Yd[1, 2] + Conjugate[ZDR[gt1, 2]]*Yd[2, 2] + Conjugate[ZDR[gt1, 3]]*Yd[3, 2]) + Conjugate[ZUL[gt2, 3]]*(Conjugate[ZDR[gt1, 1]]*Yd[1, 3] + Conjugate[ZDR[gt1, 2]]*Yd[2, 3] + Conjugate[ZDR[gt1, 3]]*Yd[3, 3]))}, {(-I)*IndexDelta[ct1, ct2]*(ZDL[gt1, 1]*(Conjugate[Yu[1, 1]]*ZUR[gt2, 1] + Conjugate[Yu[2, 1]]*ZUR[gt2, 2] + Conjugate[Yu[3, 1]]*ZUR[gt2, 3]) + ZDL[gt1, 2]*(Conjugate[Yu[1, 2]]*ZUR[gt2, 1] + Conjugate[Yu[2, 2]]*ZUR[gt2, 2] + Conjugate[Yu[3, 2]]*ZUR[gt2, 3]) + ZDL[gt1, 3]*(Conjugate[Yu[1, 3]]*ZUR[gt2, 1] + Conjugate[Yu[2, 3]]*ZUR[gt2, 2] + Conjugate[Yu[3, 3]]*ZUR[gt2, 3]))}},
- C[-F[2, {gt1}], F[1, {gt2}], -S[3]] == {{(-I)*(Conjugate[ZER[gt1, 1]]*Ye[1, gt2] + Conjugate[ZER[gt1, 2]]*Ye[2, gt2] + Conjugate[ZER[gt1, 3]]*Ye[3, gt2])}, {0}},
  C[F[6], F[5], -V[3]] == {{I*g2}, {I*g2}},
  C[-F[5], F[5], V[1]] == {{(-I)*g2*sw}, {(-I)*g2*sw}},
  C[-F[5], F[5], V[2]] == {{(-I)*cw*g2}, {(-I)*cw*g2}},
- C[-F[4, {gt1, ct1}], F[4, {gt2, ct2}], V[5, {ct3}]] == {{(-I/2)*g3*IndexDelta[gt1, gt2]*Lam[ct3, ct1, ct2]}, {(-I/2)*g3*IndexDelta[gt1, gt2]*Lam[ct3, ct1, ct2]}},
- C[-F[4, {gt1, ct1}], F[4, {gt2, ct2}], V[1]] == {{(-I/6)*(cw*g1 - 3*g2*sw)*IndexDelta[ct1, ct2]*IndexDelta[gt1, gt2]}, {(I/3)*cw*g1*IndexDelta[ct1, ct2]*IndexDelta[gt1, gt2]}},
- C[-F[3, {gt1, ct1}], F[4, {gt2, ct2}], V[3]] == {{((-I)*g2*IndexDelta[ct1, ct2]*(Conjugate[ZDL[gt2, 1]]*ZUL[gt1, 1] + Conjugate[ZDL[gt2, 2]]*ZUL[gt1, 2] + Conjugate[ZDL[gt2, 3]]*ZUL[gt1, 3]))/Sqrt[2]}, {0}},
- C[-F[4, {gt1, ct1}], F[4, {gt2, ct2}], V[2]] == {{(I/6)*(3*cw*g2 + g1*sw)*IndexDelta[ct1, ct2]*IndexDelta[gt1, gt2]}, {(-I/3)*g1*sw*IndexDelta[ct1, ct2]*IndexDelta[gt1, gt2]}},
- C[-F[2, {gt1}], F[2, {gt2}], V[1]] == {{(I/2)*(cw*g1 + g2*sw)*IndexDelta[gt1, gt2]}, {I*cw*g1*IndexDelta[gt1, gt2]}},
- C[-F[1, {gt1}], F[2, {gt2}], V[3]] == {{((-I)*g2*Conjugate[ZEL[gt2, gt1]])/Sqrt[2]}, {0}},
- C[-F[2, {gt1}], F[2, {gt2}], V[2]] == {{(I/2)*(cw*g2 - g1*sw)*IndexDelta[gt1, gt2]}, {(-I)*g1*sw*IndexDelta[gt1, gt2]}},
  C[-F[5], F[6], V[3]] == {{I*g2}, {I*g2}},
- C[-F[3, {gt1, ct1}], F[3, {gt2, ct2}], V[5, {ct3}]] == {{(-I/2)*g3*IndexDelta[gt1, gt2]*Lam[ct3, ct1, ct2]}, {(-I/2)*g3*IndexDelta[gt1, gt2]*Lam[ct3, ct1, ct2]}},
- C[-F[3, {gt1, ct1}], F[3, {gt2, ct2}], V[1]] == {{(-I/6)*(cw*g1 + 3*g2*sw)*IndexDelta[ct1, ct2]*IndexDelta[gt1, gt2]}, {((-2*I)/3)*cw*g1*IndexDelta[ct1, ct2]*IndexDelta[gt1, gt2]}},
- C[-F[3, {gt1, ct1}], F[3, {gt2, ct2}], V[2]] == {{(-I/6)*(3*cw*g2 - g1*sw)*IndexDelta[ct1, ct2]*IndexDelta[gt1, gt2]}, {((2*I)/3)*g1*sw*IndexDelta[ct1, ct2]*IndexDelta[gt1, gt2]}},
- C[-F[4, {gt1, ct1}], F[3, {gt2, ct2}], -V[3]] == {{((-I)*g2*IndexDelta[ct1, ct2]*(Conjugate[ZUL[gt2, 1]]*ZDL[gt1, 1] + Conjugate[ZUL[gt2, 2]]*ZDL[gt1, 2] + Conjugate[ZUL[gt2, 3]]*ZDL[gt1, 3]))/Sqrt[2]}, {0}},
- C[-F[1, {gt1}], F[1, {gt2}], V[2]] == {{(-I/2)*(cw*g2 + g1*sw)*IndexDelta[gt1, gt2]}, {0}},
- C[-F[2, {gt1}], F[1, {gt2}], -V[3]] == {{((-I)*g2*ZEL[gt1, gt2])/Sqrt[2]}, {0}},
  C[S[2], S[2], S[1]] == {{(-2*I)*Lam*v}},
  C[S[1], S[1], S[1]] == {{(-6*I)*Lam*v}},
  C[S[1], S[3], -S[3]] == {{(-2*I)*Lam*v}},

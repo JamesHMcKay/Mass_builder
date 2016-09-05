@@ -1,6 +1,6 @@
 #include "utils.hpp"
 
-#define DEBUG
+//#define DEBUG
 
 namespace utils
 {
@@ -29,7 +29,7 @@ void update_avail_diagrams(Options options)
   string file_name = str;
   
   
-  cout << "generated file name = " << file_name << endl;
+  
   vector<string> particle, diagram, type;
   vector<string> particle_new, diagram_new, type_new;
   int n;
@@ -210,7 +210,7 @@ input2.close();
 void get_data(vector<std::string> &A,vector<std::string> &B,vector<std::string> &C,int &n, string file_name_temp)
 {
 
-cout << "reading file = " << file_name_temp.c_str() << endl;
+
 n=0;
 std::ifstream input(file_name_temp.c_str());
 std::string line;
@@ -220,7 +220,7 @@ while(getline(input, line)) {
       std::istringstream iss(line);
       n=n+1;
    }
-cout << "n = " << n << endl;
+
 A.resize(n);
 B.resize(n);
 C.resize(n);
@@ -228,7 +228,7 @@ C.resize(n);
 input.close();
 
 n=0;
-cout << "reading file = " << file_name_temp.c_str() << endl;
+
 std::ifstream input2(file_name_temp.c_str());
 std::string line2;
 while(getline(input2, line2)) {
@@ -240,7 +240,6 @@ while(getline(input2, line2)) {
   iss2>> A[n] >> B[n] >> C[n];
     n=n+1;
  }
-cout << "n = " << n << endl;
 input2.close();
 
 

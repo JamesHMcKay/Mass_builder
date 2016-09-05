@@ -4,6 +4,35 @@
 using namespace std;
 using namespace utils;
 
+
+string get_id(std::vector<string> &masses, std::vector<string> &identifiers, string mass)
+{
+for (unsigned int i = 0; i<masses.size();i++)
+{
+if (masses[i] == mass ){ return identifiers[i];}
+cout << masses[i] << " " << identifiers[i] << " " << mass << endl;
+}
+cout << "warning searched for an identifier but did not find one" << endl;
+return "";
+}
+
+
+string get_short_name(Bases basis, std::vector<string> &masses, std::vector<string> &identifiers)
+{
+string s1,s2,s3,s4,s5;
+cout << "trying to find the short name for " << basis.type << " " << basis.e1 << " " << basis.e2 << " " << basis.e3 << " " << basis.e4 << endl;
+if (basis.e1 != ""){s1 = get_id( masses,identifiers,basis.e1 ) ;}
+if (basis.e2 != ""){s2 = get_id( masses,identifiers,basis.e2 ) ;}
+if (basis.e3 != ""){s3 = get_id( masses,identifiers,basis.e3 ) ;}
+if (basis.e4 != ""){s4 = get_id( masses,identifiers,basis.e4 ) ;}
+if (basis.e5 != ""){s5 = get_id( masses,identifiers,basis.e5 ) ;}
+
+return basis.type + s1 + s2 + s3 + s4 + s5;
+
+}
+
+
+
 void set_id(std::vector<string> &masses_input, std::vector<string> &identifiers_input)
 {
   vector<string> identifiers;
@@ -215,6 +244,8 @@ from = "TBI(4,Power(p,2),List(List(1,"+masses[i]+"),List(1," + masses[j] + ")))"
 to = "B"+id[j]+id[i]; // choice of i and j here is important TODO
 
 ReplaceAll(coefficient,from, to);
+
+
 }
 
 from = "TAI(4,0,List(List(1,"+masses[i]+")))";
@@ -222,16 +253,19 @@ to = "A"+id[i];
 ReplaceAll(coefficient,from, to);
 
 from = "MajoranaSpinor(p,"+masses[i]+")";
-to = "1.0";
+to = "1.0L";
 ReplaceAll(coefficient,from, to);
 
 from = "Spinor(Momentum(p),"+masses[i]+",1)";
-to = "1.0";
+to = "1.0L";
 ReplaceAll(coefficient,from, to);
 
-
-
-
+from = "Dot(1.0,1.0)";
+to = "1.0L";
+ReplaceAll(coefficient,from, to);
+from = "Dot(1.0L,1.0L)";
+to = "1.0L";
+ReplaceAll(coefficient,from, to);
 
 }
 
