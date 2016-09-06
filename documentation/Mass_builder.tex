@@ -76,6 +76,7 @@ When first approaching a problem involving radiative loop corrections having a v
 
 For this example we will produce all one and two loop radiative corrections and counter term diagrams.  For this run mode we need to use the \lstinline{-f} flag (figures) and specify both the model and particle we are interested in.  This particle name must be as it appears in the FeynArts model file.  First we generate all two loop diagrams
 \begin{lstterm}
+mkdir models/Scalar/FA_diagrams
 ./mass_builder -f -m Scalar -p S[1]
 \end{lstterm}
 next we need to specify additional flags,
@@ -109,7 +110,7 @@ Mass Builder keeps track of all diagrams which have been computed so we can easi
 \end{lstterm}
 alternatively one may use their own custom list by adding the additional flag \lstinline{-i} followed by the path to the list file.  The generated C++ code must be compiled using the same commands used to make Mass Builder
 \begin{lstterm}
-cd buid
+cd build
 make
 \end{lstterm}
 
@@ -233,9 +234,9 @@ where $ \C_{ij}$ is the coefficient of  $\B_i*\B_j$ in the original amplitude $\
 
 A priori we have no information on the basis integrals required for a particular problem.  For an amplitude involving multiple particles there are on order hundreds of possible non-degenerate permutations of basis integrals.  Thus, when an amplitude is evaluated in Mathematica we have no generic way of identifying the integrals we need to use to reconstruct the result in the form integral times coefficient.  So we begin with all possible non-degenerate basis integrals, and quickly determine which ones have a non-zero coefficient in the resulting amplitude.  The computational time required for this process is negligible and is achieved through the use of the \lstinline{Coefficient[ Amplitude, Integral ] } Mathematica routine.  Therefore we use this ``brute force" method to reliably determine the basis integrals we require without any notable computational penalty.
 
-During this procedure, and in the resultant generated C++ code, we want to a unique identifier for each basis integral.  However, if the input masses are long strings, for example \lstinline{mHp}, \lstinline{mA0}, and \lstinline{mW}, then the obvious way to name the basis integral, $F($\lstinline{mHp},\lstinline{mHp},\lstinline{mA0},\lstinline{mA0},\lstinline{mW}$)$ would be \lstinline{F_mHpmHpmA0mA0mW} which along with being difficult to read can led to ambiguous labelling of integrals.  For example if one choose the mass labelling to be $(H^-, H^0, \chi ) = ($\lstinline{mHm},\lstinline{mH},\lstinline{m}$)$ then we easily have the degeneracy $J($\lstinline{mH},\lstinline{m},\lstinline{mHm}$) =  $\lstinline{J_mHmmHm}$ = J($\lstinline{mHm},\lstinline{mH},\lstinline{m}$)$.  When dealing with hundreds of possible permutations it is important to avoid such possibilities, despite the large number of possible coefficients that are checked.
+During this procedure, and in the resultant generated C++ code, we need a unique identifier for each basis integral.  However, if the input masses are strings of more than one character, for example \lstinline{mHp}, \lstinline{mA0}, and \lstinline{mW}, then the obvious way to name the basis integral, $F($\lstinline{mHp},\lstinline{mHp},\lstinline{mA0},\lstinline{mA0},\lstinline{mW}$)$ would be \lstinline{F_mHpmHpmA0mA0mW} which along with being difficult to read can led to ambiguous labelling of integrals.  For example if one choose the mass labelling to be $(H^-, H^0, \chi ) = ($\lstinline{mHm},\lstinline{mH},\lstinline{m}$)$ then we easily have the degeneracy $J($\lstinline{mH},\lstinline{m},\lstinline{mHm}$) =  $\lstinline{J_mHmmHm}$ = J($\lstinline{mHm},\lstinline{mH},\lstinline{m}$)$.  When dealing with hundreds of possible permutations it is important to avoid such possibilities, however unlikely they may seem.
 
-To overcome this we assign a unique single character identifier to each mass in the routine \lstinline{set_id}.  This will check for user input, which is the recommend action, or in it's absence will attempt to assign a unique identifier to each mass.  However, this alone is not sufficient as the original FeynArts model file, and subsequent expressions will contain the original masses, so we must retain this information along with the unique identifier for each basis integral.  Therefore we create a C++ map to map the short name, using the identifiers, to a simple class of type \lstinline{Bases} which holds the following information
+To overcome this we assign a unique single character identifier to each mass in the routine \lstinline{set_id}.  This will check for user input, which is the recommend action, or in the absence of this input it will attempt to assign a unique identifier to each mass.  However, this alone is not sufficient as the original FeynArts model file, and subsequent expressions will contain the original masses, so we must retain this information along with the unique identifier for each basis integral.  Therefore we create a C++ map to map the short name, using the identifiers, to a simple class of type \lstinline{Bases} which holds the following information
 \begin{lstcpp}
 class Bases
 {
@@ -303,6 +304,7 @@ The diagrams available to be included in the generated TSIL interface are regist
 
 \section{Applications}
 
+Mass splitting example, write a second executable to perform the output and a simple routine to plot it.
 
 
 
