@@ -16,8 +16,10 @@
  
 
 
-void Self_energy::run_tsil(Data &data){cout << data.P << endl;}
-// TODO instead of printing out P, this will print out a default string
-// from the data structure saying that there is no model loaded
-// when code has been generated this message can be replaced with a
-// statement saying the model name, particles and diagrams involved
+void Self_energy::run_tsil(Data &data){
+cout << " You have attempted to evaluate the self energy yet no code has been generated yet\n";
+cout << " Make sure to compute digrams, generate the code and finally you must recompile \n";
+cout << " by using make in the build directory" << endl;
+cout << data.null << endl; // put this here to avoid compile time warnings
+
+}

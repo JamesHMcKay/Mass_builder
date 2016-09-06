@@ -70,7 +70,7 @@ User_input(int argc, char* argv[])
 {
 if (argc==1)
 {
-cout << "NO INPUT -- user input guide here" << endl;
+call_user_guide();
 }
 else
 {
@@ -118,6 +118,7 @@ else
 return result;
 }
 
+void call_user_guide();
 
 void user_interface();
 

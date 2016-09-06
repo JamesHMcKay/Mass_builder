@@ -7,6 +7,7 @@ struct Data
 public:
 
 double P, Q;
+string null="";
   Data (){};
 Data(Options options) {
 double param [99];
