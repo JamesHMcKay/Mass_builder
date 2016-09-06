@@ -10,9 +10,9 @@ string get_id(std::vector<string> &masses, std::vector<string> &identifiers, str
 for (unsigned int i = 0; i<masses.size();i++)
 {
 if (masses[i] == mass ){ return identifiers[i];}
-cout << masses[i] << " " << identifiers[i] << " " << mass << endl;
+//cout << masses[i] << " " << identifiers[i] << " " << mass << endl;
 }
-cout << "warning searched for an identifier but did not find one" << endl;
+//cout << "warning searched for an identifier but did not find one" << endl;
 return "";
 }
 
@@ -20,7 +20,7 @@ return "";
 string get_short_name(Bases basis, std::vector<string> &masses, std::vector<string> &identifiers)
 {
 string s1,s2,s3,s4,s5;
-cout << "trying to find the short name for " << basis.type << " " << basis.e1 << " " << basis.e2 << " " << basis.e3 << " " << basis.e4 << endl;
+//cout << "trying to find the short name for " << basis.type << " " << basis.e1 << " " << basis.e2 << " " << basis.e3 << " " << basis.e4 << endl;
 if (basis.e1 != ""){s1 = get_id( masses,identifiers,basis.e1 ) ;}
 if (basis.e2 != ""){s2 = get_id( masses,identifiers,basis.e2 ) ;}
 if (basis.e3 != ""){s3 = get_id( masses,identifiers,basis.e3 ) ;}
