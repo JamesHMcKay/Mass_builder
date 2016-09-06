@@ -92,13 +92,15 @@ void user_input_guide()
 
 cout << " Welcome to Mass Builder \n"
 << " ---------------------------------------------------------------------------------------------------- \n"
-<< " Brief input options are given below, please see documentation for more details\n"
-<< " To draw FeynArts diagrams into pdf file: ./mass_builder -d <particle> <model>\n"
-<< " To compute an amplitude:\n"
-<< "        ./mass_builder -a -f <model> to generate all diagrams in models/<model>/diagrams.txt\n"
-<< "        ./mass_builder -a <model> <particle> <diagram> to generate a specific diagram\n"
-<< " To generate code from computed diagram: ./mass_builder -g <model> using list in models/<model>/diagrams.txt\n"
-<< " To evaluate a self energy from generated code (after recompiling): ./mass_builder -e <input_parameters>\n"
+<< " to use call ./mass_builder <flags> where required flags for each mode are given below:\n"
+<< "                                                                                                      \n"
+<< " -a -m <model>                                           -  compute all diagrams in models/<model>/diagrams.txt\n"
+<< " -a -m <model>                               -i <file>   -  compute all diagrams in listed in file\n"
+<< " -a -m <model>  -p <particle>  -d <diagram>              -  compute specific diagram\n"
+<< " -g -m <model>                                           -  generate code for available diagrams\n"
+<< " -g -m <model>                               -i <file>   -  generate code for diagrams listed in file\n"
+<< " -f -m <model>  -p <particle>                            -  draw all FeynArts diagrams for particle\n"
+<< " -e                                          -i <file>   -  evaluate self energy with values for masses and couplings in file\n"
 << " ---------------------------------------------------------------------------------------------------- " <<endl;
 }
 

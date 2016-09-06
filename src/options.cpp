@@ -12,6 +12,12 @@ if (c_str == "c"){ counter_terms = true;}
 
 
 
+
+void User_input::call_user_guide()
+{
+utils::user_input_guide();
+}
+
 void User_input::user_interface()
 {
 
@@ -74,7 +80,10 @@ options.run_mode = 4;
 if (find_string("-f")){ options.run_mode = 5;}
 if (find_string("-e")){ options.run_mode = 6;}
 
-options.print_options();
+
+
+//options.print_options();
+
 }
 
 
