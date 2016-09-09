@@ -7,9 +7,13 @@ set(TSIL_HEADER_FILE /Users/jamesmckay/Documents/Programs/tsil-1.3/tsil_cpp.h )
 set(HEADER_FILES include/options.hpp include/bases.hpp include/data.hpp include/self_energy.hpp include/supplements.hpp)
 set(SRC_FILES src/options.cpp src/bases.cpp src/self_energy.cpp src/supplements.cpp )
 
+set(SRC_example src/example_mass_splitting.cpp)
+set(SRC_MB src/mass_builder.cpp)
+
+
 
 set(HEADER_FILES_GEN include/calc_amplitudes.hpp include/utils.hpp)
-set(SRC_FILES_GEN src/mass_builder.cpp src/calc_amplitudes.cpp src/generate_code.cpp src/utils.cpp)
+set(SRC_FILES_GEN src/calc_amplitudes.cpp src/generate_code.cpp src/utils.cpp)
 
 
 LINK_DIRECTORIES(/Users/jamesmckay/Documents/Programs/tsil-1.3)
@@ -17,9 +21,13 @@ LINK_DIRECTORIES(/Users/jamesmckay/Documents/Programs/tsil-1.3)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 set(CMAKE_CXX_FLAGS -L.)
 
-add_executable(mass_builder ${SRC_FILES_GEN} ${HEADER_FILES_GEN} ${TSIL_HEADER_FILE} ${SRC_FILES} ${HEADER_FILES})
+add_executable(mass_builder ${SRC_MB} ${SRC_FILES_GEN} ${HEADER_FILES_GEN} ${TSIL_HEADER_FILE} ${SRC_FILES} ${HEADER_FILES})
+
+add_executable(example EXCLUDE_FROM_ALL ${SRC_example} ${SRC_FILES_GEN} ${HEADER_FILES_GEN} ${TSIL_HEADER_FILE} ${SRC_FILES} ${HEADER_FILES})
 
 TARGET_LINK_LIBRARIES(mass_builder libtsil.a)
+
+TARGET_LINK_LIBRARIES(example libtsil.a)
 
 if (CMAKE_COMPILER_IS_GNUCXX)
     message(status "Setting GCC flags")

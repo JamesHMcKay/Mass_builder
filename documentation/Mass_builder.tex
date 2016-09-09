@@ -48,13 +48,35 @@ Before beginning the following programs are required
 \item FeynCalc 9.0 including a distribution of FeynArts and TARCER
 \item TSIL 1.3
 \end{itemize}
+
+\subsection{FeynCalc}
+
+The easiest way to install FeynCalc, FeynArts and TARCER is via the automated installation method.  Open a Mathematica notebook or kernel session and enter
+\begin{lstterm}
+Import["https://raw.githubusercontent.com/FeynCalc/feyncalc/master/install.m"]
+InstallFeynCalc[]
+\end{lstterm}
+
+when requested to install the latest version of FeynArts say yes, as this will automatically patch the FeynArts installation.  If you do not follow this method then it is not possible to run FeynArts and FeynCalc in the same session (as we need to do) as many function names are identical between the packages, so to avoid name shadowing follow the recommend method.  For more information see the FeynCalc wiki \lstinline{https://github.com/FeynCalc/feyncalc/wiki}.
+
+
+\subsection{TSIL}
+The Two-loop Self-energy Integral Library can be downloaded from \lstinline{http://www.niu.edu/spmartin/TSIL/}.  It may installed anywhere (as Mass Builder will request the path at configuration).
+
+\subsection{Mass Builder}
 Mass Builder can be obtained from
 
 \begin{lstterm}
 https://github.com/JamesHMcKay/Mass_builder.git
 \end{lstterm}
 
-The first step is to run the configuration script to tell the program where your Mathematica kernel and TSIL installations are located.  Then 
+The first step is to run the configuration script to tell the program where your Mathematica kernel and TSIL installations are located.
+\begin{lstterm}
+./scripts/config.sh
+\end{lstterm}
+this will ask for the location of the Mathematica Kernal.  If using OSX the best option to try first is \lstinline{osx} (or in some rarer instances \lstinline{osx64}).  On a Linux system this is typically located in the path by default (not tested yet!), so try the \lstinline{math} shorted cut at this prompt.  If this path is incorrect, Mass Builder will compile but will not run as it can't access Mathematica.  The next prompt will ask for the folder in which the TSIL library and \lstinline{tsil_cpp.h} are located, this should be entered as the path to the folder without the \lstinline{/} at the end.  For example \lstinline{/Users/<user_name>/Programs/tsil-1.3}.
+
+After configuration, build as normal using
 \begin{lstterm}
 cd build
 cmake ..
@@ -102,18 +124,19 @@ to compute diagram 1, for example.  Additional flags may also be entered here, s
 
 \subsection{Generate code and evaluate}
 
-Once the amplitudes have been computed and written into Mass Builder readable format the next step is to generate the TSIL interface.  This is conveniently separate from the previous step because computing the amplitudes is time consuming, so this iis only done once.  However, one may wish to switch on and off different radiative corrections without having to rerun Mathematica.
+Once the amplitudes have been computed and written into Mass Builder readable format the next step is to generate the TSIL interface.  This is conveniently separate from the previous step because computing the amplitudes is time consuming, so this is only done once.  However, one may wish to switch on and off different radiative corrections without having to rerun Mathematica.
 
 Mass Builder keeps track of all diagrams which have been computed so we can easily generate the code for every available diagram using the command
 \begin{lstterm}
 ./mass_builder -g -m Scalar
 \end{lstterm}
-alternatively one may use their own custom list by adding the additional flag \lstinline{-i} followed by the path to the list file.  The generated C++ code must be compiled using the same commands used to make Mass Builder
+alternatively one may use their own custom list by adding the additional flag \lstinline{-i} followed by the path to the list file.  
+
+Next the generated C++ code must be compiled using the same commands used to make Mass Builder
 \begin{lstterm}
 cd build
 make
 \end{lstterm}
-
 Now we are finally able to compute the total amplitude using the command
 \begin{lstterm}
 ./mass_builder -e -i models/Scalar/input.txt
@@ -304,8 +327,17 @@ The diagrams available to be included in the generated TSIL interface are regist
 
 \section{Applications}
 
-Mass splitting example, write a second executable to perform the output and a simple routine to plot it.
+With Mass Builder we provide an option executable to demonstrate more advanced use of the program.  This example calculates mass splitting in an electroweak triplet using one or two loop self energies.  Before making this executable the appropriate TSIL interface code must generated, as it relies on the \lstinline{Data} class containing particular masses and particle names.
 
+To build this example the following commands are required 
+\begin{lstterm}
+./mass_builder -a -m MDM -i models/MDM/example_list.txt
+./mass_builder -g -m MDM -i models/MDM/example_list.txt
+cd build
+make
+make example
+\end{lstterm}
+where we use a short list of diagrams to include, this is easily modified to include more.
 
 
 
