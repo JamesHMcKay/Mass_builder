@@ -308,6 +308,7 @@ void generate_code (Options options)
   << "TSIL_REAL Power(TSIL_REAL a, int b){return TSIL_POW(a,b);}\n"
   << "TSIL_REAL Sin(TSIL_REAL a){return sin(a);}\n"
   << "TSIL_REAL Cos(TSIL_REAL a){return cos(a);}\n"
+  << "TSIL_REAL Dot(TSIL_REAL a, TSIL_REAL b){return a*b;}\n"
   << "int          init(Data data);\n"
   << "TSIL_COMPLEXCPP operator*(int a, TSIL_COMPLEXCPP b){TSIL_COMPLEXCPP c=a;return c*b;}\n"
   << "TSIL_COMPLEXCPP Complex(double a,double b){dcomp i;i=-1;i=sqrt(i);TSIL_COMPLEXCPP result = a + i*b; return result ;}\n"

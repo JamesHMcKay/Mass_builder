@@ -29,7 +29,7 @@ double diff = 1;
 double precision = 0.00001;
 int iteration =0;
 
-cout << "calculating iterative pole mass F5 " << endl;
+//cout << "calculating iterative pole mass F5 " << endl;
 do{
 p=old_MFn;
 
@@ -43,13 +43,13 @@ new_MFn=MFn;
 diff=abs(new_MFn-old_MFn);
 old_MFn=new_MFn;
 iteration++;
-cout << "diff = " << diff << endl;
+//cout << "diff = " << diff << endl;
 
 } while (diff > precision);
 
 Mp = new_MFn;
 
-cout << "----- done ----- " << endl;
+//cout << "----- done ----- " << endl;
 return Mp;
 }
 
@@ -66,7 +66,7 @@ double diff = 1;
 double precision = 0.00001;
 int iteration =0;
 
-cout << "calculating iterative pole mass F6 " << endl;
+//cout << "calculating iterative pole mass F6 " << endl;
 do{
 p=old_MFn;
 
@@ -80,11 +80,11 @@ new_MFn=MFn;
 diff=abs(new_MFn-old_MFn);
 old_MFn=new_MFn;
 iteration++;
-cout << "diff = " << diff << endl;
+//cout << "diff = " << diff << endl;
 
 } while (diff > precision);
 
-cout << "----- done ----- " << endl;
+//cout << "----- done ----- " << endl;
 
 Mp = new_MFn;
 return Mp;

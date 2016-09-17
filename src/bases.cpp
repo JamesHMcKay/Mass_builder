@@ -253,11 +253,14 @@ to = "A"+id[i];
 ReplaceAll(coefficient,from, to);
 
 from = "MajoranaSpinor(p,"+masses[i]+")";
-to = "1.0L";
+//to = "1.0L";
+to = "(p/" + masses[i] + ")";
+
 ReplaceAll(coefficient,from, to);
 
 from = "Spinor(Momentum(p),"+masses[i]+",1)";
-to = "1.0L";
+//to = "1.0L";
+to = "(p/" + masses[i] + ")";
 ReplaceAll(coefficient,from, to);
 
 from = "Dot(1.0,1.0)";
