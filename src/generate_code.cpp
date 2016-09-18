@@ -335,7 +335,7 @@ void generate_code (Options options)
   Bases base_temp = base_map[name];
   base_temp.short_name = name;
   
-  if (base_temp.type == "B")
+  if (base_temp.type == "B" && base_temp.e1!=base_temp.e2)
   {
   Bases base_temp_B;
   base_temp_B.type = "B";
@@ -396,8 +396,9 @@ void generate_code (Options options)
   main_output <<"void DoTSIL(TSIL_REAL s,TSIL_REAL Q2)\n"<<"{\n";
   
 
-  
-  for (unsigned int i = 0; i<integrals.size();i++)
+  cout << "size of integrals = " << integrals.size() << endl;
+  int ni = integrals.size();
+  for (int i = 0; i<ni;i++)
   {
   string name = integrals[i];
   
@@ -408,7 +409,7 @@ void generate_code (Options options)
   
   // deal with the Bxy = Byx case
   // this will be replaced by a more sophisticated algorithm which takes advantage of symmetries
-  if (base_temp.type == "B")
+  if (base_temp.type == "B" && base_temp.e1!=base_temp.e2)
   {
   Bases base_temp_B;
   base_temp_B.type = "B";
