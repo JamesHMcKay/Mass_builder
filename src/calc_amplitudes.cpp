@@ -75,20 +75,6 @@ bool Calc_amplitudes::calc_diagram(Options options)
   output0.resize(pow(n,5));
 
 
-  ofstream myfile;
-  myfile.open ("output/stage_3.m");
-
-
-
-  utils::print_math_header(myfile);
-  utils::print_math_body(myfile,options,s_cwd);
-
-  myfile<<"Print[tfiamp0]\n"
-  <<"SEn = FullSimplify[TarcerRecurse[tfiamp0] /. D -> 4 /.MajoranaSpinor[p, mc] -> 1] /. Spinor[Momentum[p], mc, 1] -> 1;\n"
-  <<"DumpSave[\""<<s_cwd<<"/output/stage_3.mx\", SEn];\n"
-  <<"Print[\"----------- The self energy is ---------- = \"]\n"
-  <<"Print[SEn]\n"
-  <<"Print[\"-------------------- = \"]"<< endl;
 
 
 
@@ -113,6 +99,20 @@ bool Calc_amplitudes::calc_diagram(Options options)
   #endif
 
 
+
+  ofstream myfile;
+  myfile.open ("output/stage_3.m");
+
+
+  utils::print_math_header(myfile);
+  utils::print_math_body(myfile,options,s_cwd,masses_input);
+
+  myfile<<"Print[tfiamp0]\n"
+  <<"SEn = FullSimplify[TarcerRecurse[tfiamp0] /. D -> 4 /.MajoranaSpinor[p, mc] -> 1] /. Spinor[Momentum[p], mc, 1] -> 1;\n"
+  <<"DumpSave[\""<<s_cwd<<"/output/stage_3.mx\", SEn];\n"
+  <<"Print[\"----------- The self energy is ---------- = \"]\n"
+  <<"Print[SEn]\n"
+  <<"Print[\"-------------------- = \"]"<< endl;
 
 
 

@@ -122,7 +122,7 @@ Data data(options);
 
 ofstream myfile;
 myfile.open ("models/MDM/output/mass_splittings.txt");
-int pts = 10;
+int pts = 1000;
 double n = 0;
 double M=0;
 for (int i = 0; i < pts ; i++)

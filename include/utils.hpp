@@ -53,7 +53,7 @@ void get_data(vector<string> &A,vector<string> &B,vector<string> &C,int &n,strin
 
 void print_math_header(ofstream &myfile);
 
-void print_math_body(ofstream &file,Options options,string cwd);
+void print_math_body(ofstream &file,Options options,string cwd,std::vector<std::string> masses);
 
 void print_base(ofstream &myfile, Bases base, string id, string SEn);
 

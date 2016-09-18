@@ -271,7 +271,7 @@ void print_math_header(ofstream &file)
 }
 
 
-void print_math_body(ofstream &file,Options options,string cwd)
+void print_math_body(ofstream &file,Options options,string cwd,std::vector<std::string> masses)
 {
   int loop_order = options.loop_order;
   string particle_full = options.particle;
@@ -285,9 +285,12 @@ void print_math_body(ofstream &file,Options options,string cwd)
   file <<"alldiags = InsertFields[t12, {"<<particle_full<<"} -> {"<<particle_full<<"},InsertionLevel -> {Particles}, GenericModel -> Lorentz,Model -> \""<<cwd<<"/models/"<<model<<"/"<<model<<"\"];\n"
   <<"subdiags0 =   DiagramExtract[alldiags, "<<diagram<<"]\n"
   //<<"Export[\""<<s_cwd<<"/current_diagram.pdf\",Paint[subdiags0]];\n"  // print the FA diagram to pdf in local directory
-  <<"amp0 := FCFAConvert[CreateFeynAmp[subdiags0], IncomingMomenta -> {p}, OutgoingMomenta -> {p}, LoopMomenta -> {k1, k2} ,UndoChiralSplittings -> True,DropSumOver -> True, List -> False(*, ChangeDimension -> 4*)] // Contract\n" // TODO change dimension removed as done in 1 loop case below?
-  <<"amp0 = amp0 /. MajoranaSpinor[p, mc] -> 1 /.Spinor[Momentum[p], mc, 1] -> 1;\n"
-  <<"SetOptions[Eps, Dimension -> D];\n"
+  <<"amp0 := FCFAConvert[CreateFeynAmp[subdiags0], IncomingMomenta -> {p}, OutgoingMomenta -> {p}, LoopMomenta -> {k1, k2} ,UndoChiralSplittings -> True,DropSumOver -> True, List -> False(*, ChangeDimension -> 4*)] // Contract\n"; // TODO change dimension removed as done in 1 loop case below?
+  for (unsigned int i=0; i < masses.size();i++)
+  {
+  file<<"amp0 = amp0 /. MajoranaSpinor[p, "<<masses[i]<<"] -> 1 /.Spinor[Momentum[p], "<<masses[i]<<", 1] -> 1;"<<endl;
+  }
+  file<<"SetOptions[Eps, Dimension -> D];\n"
   <<"fullamp0 = (amp0) // DiracSimplify // FCMultiLoopTID[#, {k1, k2}] & //DiracSimplify;\n"
   <<"tfiamp0 = fullamp0 // ToTFI[#, k1, k2, p] & // ChangeDimension[#, 4] &;\n";
   }
@@ -298,9 +301,13 @@ void print_math_body(ofstream &file,Options options,string cwd)
   file <<"alldiags = InsertFields[t12, {"<<particle_full<<"} -> {"<<particle_full<<"},InsertionLevel -> {Particles}, GenericModel -> Lorentz,Model -> \""<<cwd<<"/models/"<<model<<"/"<<model<<"\"];\n"
   <<"subdiags0 =   DiagramExtract[alldiags, "<<diagram<<"]\n"
  // <<"Export[\""<<s_cwd<<"/current_diagram.pdf\",Paint[subdiags0]];\n"  // print the FA diagram to pdf in local directory
-  <<"amp0 := FCFAConvert[CreateFeynAmp[subdiags0], IncomingMomenta -> {p}, OutgoingMomenta -> {p}, LoopMomenta -> {k1} ,UndoChiralSplittings -> True,DropSumOver -> True, List -> False] // Contract\n"
-  <<"amp0 = amp0 /. MajoranaSpinor[p, mc] -> 1 /.Spinor[Momentum[p], mc, 1] -> 1;\n"
-  <<"SetOptions[Eps, Dimension -> D];\n"
+  <<"amp0 := FCFAConvert[CreateFeynAmp[subdiags0], IncomingMomenta -> {p}, OutgoingMomenta -> {p}, LoopMomenta -> {k1} ,UndoChiralSplittings -> True,DropSumOver -> True, List -> False] // Contract\n";
+  for (unsigned int i=0; i < masses.size();i++)
+  {
+  file<<"amp0 = amp0 /. MajoranaSpinor[p, "<<masses[i]<<"] -> 1 /.Spinor[Momentum[p], "<<masses[i]<<", 1] -> 1;"<<endl;
+  }
+  //file<<"amp0 = amp0 /. Spinor[Momentum[p], MChi, 1] -> 1;\n"
+  file<<"SetOptions[Eps, Dimension -> D];\n"
   <<"fullamp0 = (amp0) // DiracSimplify // FCMultiLoopTID[#, {k1}] & //DiracSimplify;\n"
   <<"tfiamp0 = fullamp0 // ToTFI[#, k1, p] & // ChangeDimension[#, 4] &;\n";
   }

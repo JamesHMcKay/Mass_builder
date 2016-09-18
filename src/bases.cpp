@@ -252,15 +252,14 @@ from = "TAI(4,0,List(List(1,"+masses[i]+")))";
 to = "A"+id[i];
 ReplaceAll(coefficient,from, to);
 
+
 from = "MajoranaSpinor(p,"+masses[i]+")";
-//to = "1.0L";
-to = "(p/" + masses[i] + ")";
+to = "1.0L";
 
 ReplaceAll(coefficient,from, to);
 
 from = "Spinor(Momentum(p),"+masses[i]+",1)";
-//to = "1.0L";
-to = "(p/" + masses[i] + ")";
+to = "1.0L";
 ReplaceAll(coefficient,from, to);
 
 from = "Dot(1.0,1.0)";
@@ -269,6 +268,7 @@ ReplaceAll(coefficient,from, to);
 from = "Dot(1.0L,1.0L)";
 to = "1.0L";
 ReplaceAll(coefficient,from, to);
+
 
 }
 
