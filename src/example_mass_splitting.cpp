@@ -25,7 +25,7 @@ double Mp = data.MChi;
 double MFn=M,M_tree=M,new_MFn,old_MFn=M,p;
 
 double diff = 1;
-double precision = 0.00001;
+double precision = 0.0001;
 int iteration =0;
 
 //cout << "calculating iterative pole mass F5 " << endl;
@@ -43,8 +43,14 @@ diff=abs(new_MFn-old_MFn);
 old_MFn=new_MFn;
 iteration++;
 //cout << "diff = " << diff << endl;
+cout << "M = " << new_MFn << endl;
 
-} while (diff > precision);
+} while (diff > precision  && iteration < 500);
+
+if (iteration == 500)
+{
+cout << "pole mass did not converge" << endl;
+}
 
 Mp = new_MFn;
 
@@ -61,7 +67,7 @@ double Mp = data.MChi;
 double MFn=M,M_tree=M,new_MFn,old_MFn=M,p;
 
 double diff = 1;
-double precision = 0.00001;
+double precision = 0.0001;
 int iteration =0;
 
 //cout << "calculating iterative pole mass F6 " << endl;
@@ -78,10 +84,15 @@ new_MFn=MFn;
 diff=abs(new_MFn-old_MFn);
 old_MFn=new_MFn;
 iteration++;
+cout << "M = " << new_MFn << endl;
 //cout << "diff = " << diff << endl;
 
-} while (diff > precision);
+} while (diff > precision && iteration < 500);
 
+if (iteration == 500)
+{
+cout << "pole mass did not converge" << endl;
+}
 //cout << "----- done ----- " << endl;
 
 Mp = new_MFn;
@@ -120,7 +131,7 @@ Data data(options);
 
 ofstream myfile;
 myfile.open ("models/MDM/output/mass_splittings.txt");
-int pts = 1000;
+int pts = 20;
 double n = 0;
 double M=0;
 for (int i = 0; i < pts ; i++)
@@ -130,7 +141,7 @@ M= pow(10,n);
 data.MChi=M;
 data.P = M;
 
-double delta_m_it=iterative_mass_F5(data) - iterative_mass_F6(data);
+double delta_m_it=0;//iterative_mass_F5(data) - iterative_mass_F6(data);
 data.MChi=M;
 data.P = M;
 M= pow(10,n);
