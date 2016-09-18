@@ -539,7 +539,7 @@ void generate_code (Options options)
     }
     main_output << ";" << endl;
     main_output << "SE_1_"<<particle_name_tmp_short << " = " << "SE_1_"<<particle_name_tmp_short<<"*TSIL_POW(PI,2);"<<endl;
-    main_output << "cout << \"One-loop self energy of particle "<< particle_name_tmp_short << " = \" << real(SE_1_"<<particle_name_tmp_short<<") << endl;"<<endl;
+    //main_output << "cout << \"One-loop self energy of particle "<< particle_name_tmp_short << " = \" << real(SE_1_"<<particle_name_tmp_short<<") << endl;"<<endl;
     
     /* Two loop */
     main_output<< "TSIL_COMPLEXCPP SE_2_"<<particle_name_tmp_short<<" = 0.L ";
@@ -559,11 +559,12 @@ void generate_code (Options options)
     }
     main_output << ";" << endl;
     main_output << "SE_2_"<<particle_name_tmp_short << " = " << "SE_2_"<<particle_name_tmp_short<<"*TSIL_POW(PI,4);"<<endl;
-    main_output << "cout << \"Two-loop self energy of particle "<< particle_name_tmp_short << " = \" << real(SE_2_"<<particle_name_tmp_short<<") << endl;"<<endl;
+    //main_output << "cout << \"Two-loop self energy of particle "<< particle_name_tmp_short << " = \" << real(SE_2_"<<particle_name_tmp_short<<") << endl;"<<endl;
     
     
-    main_output << "data.SE_"<< particle_name_tmp_short << " = " << "real(SE_1_"<<particle_name_tmp_short<<" + " <<  "SE_2_"<<particle_name_tmp_short <<  ");"<<endl;
-    
+    //main_output << "data.SE_"<< particle_name_tmp_short << " = " << "real(SE_1_"<<particle_name_tmp_short<<" + " <<  "SE_2_"<<particle_name_tmp_short <<  ");"<<endl;
+    main_output << "data.SE_1[\""<< particle_name_tmp_short << "\"] = " << "real(SE_1_"<<particle_name_tmp_short<< ");"<<endl;
+    main_output << "data.SE_2[\""<< particle_name_tmp_short << "\"] = " << "real(SE_2_"<<particle_name_tmp_short << ");"<<endl;
   }
 
   main_output << "}" << endl;
@@ -586,6 +587,7 @@ void generate_code (Options options)
   data_h << "#ifndef DATA_H\n"
   <<"#define DATA_H\n"
   <<"#include \"options.hpp\"\n"
+  <<"#include <map>\n"
   <<"using namespace std;\n"
   <<"struct Data\n"
   <<"{\n"
@@ -607,12 +609,27 @@ void generate_code (Options options)
 
   // create a variable for the self energy of each particle we have
 
-  for (unsigned int i=0;i<particle_names_short_reduced.size();i++)
-  {
-  data_h << "double SE_" << particle_names_short_reduced[i]<<";"<<endl;
-  }
+ // for (unsigned int i=0;i<particle_names_short_reduced.size();i++)
+ // {
+ // data_h << "double SE_" << particle_names_short_reduced[i]<<";"<<endl;
+ // }
+
+  // create a map for self energies
+  data_h << "std::map<std::string, double> SE_1;"<< endl;
+  data_h << "std::map<std::string, double> SE_2;"<< endl;
+
 
   data_h << "double P, Q;" << endl;
+  
+  data_h << "std::vector<std::string> avail_part = {\"";
+  for (unsigned int i=0;i<particle_names_short_reduced.size()-1;i++)
+  {
+  data_h << particle_names_short_reduced[i]<<"\",\"";
+  }
+  data_h << particle_names_short_reduced[particle_names_short_reduced.size()-1]<<"\"};"<<endl;
+
+  
+  
 
   // now create constructor and user input reader
 

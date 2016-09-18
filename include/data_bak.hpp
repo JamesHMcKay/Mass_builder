@@ -1,12 +1,18 @@
 #ifndef DATA_H
 #define DATA_H
 #include "options.hpp"
+#include <map>
 using namespace std;
 struct Data
 {
 public:
 
 double P, Q;
+std::map<std::string, double> SE_1;
+std::map<std::string, double> SE_2;
+
+std::vector<std::string> avail_part;
+
 string null="";
   Data (){};
 Data(Options options) {

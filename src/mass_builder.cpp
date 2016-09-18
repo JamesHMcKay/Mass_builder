@@ -72,6 +72,14 @@ void run_mass_builder_mode_6(Options options)
 Self_energy se;
 Data data(options);
 se.run_tsil(data);
+
+for (unsigned int i = 0;i < data.avail_part.size();i++)
+{
+cout << "One loop self energy of particle " << data.avail_part[i] << " = " << data.SE_1[data.avail_part[i]] << endl;
+cout << "Two loop self energy of particle " << data.avail_part[i] << " = " << data.SE_2[data.avail_part[i]] << endl;
+}
+
+
 }
 
 

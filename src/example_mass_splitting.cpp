@@ -19,7 +19,6 @@ using namespace utils;
 double iterative_mass_F5(Data data)
 {
 
-double Mp_prev = 0;
 double M = data.MChi;
 double Mp = data.MChi;
 
@@ -37,7 +36,7 @@ data.P = p;
 Self_energy se;
 se.run_tsil(data);
 
-double M_1loop=M_tree -data.SE_F5;
+double M_1loop=M_tree - (data.SE_1["F5"]+data.SE_2["F5"]);
 MFn=M_1loop;
 new_MFn=MFn;
 diff=abs(new_MFn-old_MFn);
@@ -56,7 +55,6 @@ return Mp;
 double iterative_mass_F6(Data data)
 {
 
-double Mp_prev = 0;
 double M = data.MChi;
 double Mp = data.MChi;
 
@@ -74,7 +72,7 @@ data.P = p;
 Self_energy se;
 se.run_tsil(data);
 
-double M_1loop=M_tree -data.SE_F6;
+double M_1loop=M_tree -(data.SE_1["F6"]+data.SE_2["F6"]);
 MFn=M_1loop;
 new_MFn=MFn;
 diff=abs(new_MFn-old_MFn);
@@ -95,7 +93,7 @@ double pole_mass_F5(Data data)
 {
 Self_energy se;
 se.run_tsil(data);
-double Mp = data.MChi - data.SE_F5;
+double Mp = data.MChi - (data.SE_1["F5"]+data.SE_2["F5"]);
 return Mp;
 }
 
@@ -103,7 +101,7 @@ double pole_mass_F6(Data data)
 {
 Self_energy se;
 se.run_tsil(data);
-double Mp = data.MChi - data.SE_F6;
+double Mp = data.MChi - (data.SE_1["F6"]+data.SE_2["F6"]);
 return Mp;
 }
 
@@ -140,6 +138,12 @@ double delta_m=pole_mass_F5(data) - pole_mass_F6(data);
 
 myfile << M << " " << delta_m_it << " " << delta_m << endl;
 }
+
+cout << "example mass splitting routine complete" << endl;
+cout << "now run: "<< endl;
+cout << "          python src/plot_example.py "<< endl;
+cout << "to make plot in this directory "<< endl;
+
 
 myfile.close();
 

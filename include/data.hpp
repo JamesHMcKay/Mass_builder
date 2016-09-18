@@ -1,6 +1,7 @@
 #ifndef DATA_H
 #define DATA_H
 #include "options.hpp"
+#include <map>
 using namespace std;
 struct Data
 {
@@ -24,9 +25,10 @@ double MassVZ;
 double MassVWp;
 double MassAh;
 double MassHp;
-double SE_F5;
-double SE_F6;
+std::map<std::string, double> SE_1;
+std::map<std::string, double> SE_2;
 double P, Q;
+std::vector<std::string> avail_part = {"F5","F6"};
   Data (){};
 Data(Options options) {
 double param [99];
