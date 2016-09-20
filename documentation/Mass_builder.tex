@@ -6,7 +6,7 @@
 \def\B{\mathcal{B}}
 \def\C{\mathcal{C}}
 
-
+\graphicspath{ {Figures/}}
 
 \title{Mass builder -- an interface tool for automated self energy calculation}
 %
@@ -316,9 +316,14 @@ return  + C * <basis_integral>;
 
 void Self_energy::run_tsil (Data &data) 
 {
-TSIL_COMPLEXCPP data.SE = diagram_1() + diagram_2();
+TSIL_COMPLEXCPP SE_particle = diagram_1() + diagram_2();
+data.SE["particle"] = real(SE_particle);
 }
 \end{lstcpp}
+
+where we have one subroutine to call TSIL and compute the basis integrals, and a subroutine for each diagram, where the subroutine names will encode the particle name, diagram number and loop order (and if it is a counter term diagram or not).  The routine \lstinline{run_tsil} will fill the self energy map for each available particle (in practice we have a map for both the one and two loop self energies separately).
+
+Along with the above source code a header file, \lstinline{data.hpp}, is also generated in the \lstinline{include/} directory to hold the model data.  This header contains a class definition of type \lstinline{Data} which is designed to manage the input and output of information from the self energy calculator.   This class contains declarations for each coupling defined in \lstinline{couplings.txt}, and for each mass in \lstinline{masses.txt}.  It also holds a vector of strings with the name \lstinline{avail_part} containing the short names of all particles for which amplitudes are available, along with two maps of type \cpp{map<std::string,double>} \lstinline{SE_1} and \lstinline{SE_2} which hold the names of the particles and the one-loop and two-loop self energies respectively .  Finally, it includes the functions which read the runtime input of values for the couplings and masses relevant for this model.  By dynamically updating this class when generating the self energy interface we enable user input of these quantities and a dynamic mapping interface to other functions in the code.
 
 Before code is generated \lstinline{self_energy.cpp} is a skeleton code necessary for the rest of Mass Builder to compile successfully.  If \lstinline{self_energy.cpp} or \lstinline{data.hpp} becomes corrupted and the rest of the code no longer compiles, which is likely if \lstinline{couplings.txt} is missing a variable name, then the skeleton code can be restored by simply running scripts/config.sh again.
 
@@ -328,9 +333,11 @@ The diagrams available to be included in the generated TSIL interface are regist
 
 \section{Applications}
 
-With Mass Builder we provide an option executable to demonstrate more advanced use of the program.  This example calculates mass splitting in an electroweak triplet using one or two loop self energies.  Before making this executable the appropriate TSIL interface code must generated, as it relies on the \lstinline{Data} class containing particular masses and particle names.
+\subsection{Electroweak mass splittings}
 
-To build this example the following commands are required 
+With Mass Builder we provide an optional executable to demonstrate more advanced use of the program.  This example calculates mass splitting in an electroweak triplet using one or two loop self energies.  Before making this executable the appropriate TSIL interface code must generated, as it relies on the \lstinline{Data} class containing particular masses and particle names.
+
+To build this example with 1-loop self energies run the following commands
 \begin{lstterm}
 ./mass_builder -a -m MDM -i models/MDM/example_list.txt
 ./mass_builder -g -m MDM -i models/MDM/example_list.txt
@@ -338,7 +345,27 @@ cd build
 make
 make example
 \end{lstterm}
-where we use a short list of diagrams to include, this is easily modified to include more.
+where this list contains all one-loop diagrams.  After building the example executable with the above commands now return the root directory and run
+\begin{lstterm}
+./example -i models/MDM/input.txt
+\end{lstterm}
+where the input list here contains the required standard model couplings and masses.  This will produce a data file in the model output directory called \lstinline{mass_splittings.txt}.  If you have Python installed this can be plotted simply by running
+\begin{lstterm}
+python src/plot_example.py
+\end{lstterm}
+
+\begin{figure}
+\centering
+\includegraphics[width=0.5\textwidth]{mass_splittings.eps}
+\caption{.}\label{fig:1_loop}
+\end{figure}
+
+
+
+
+\subsection{Two Higgs doublet model}
+
+
 
 
 
