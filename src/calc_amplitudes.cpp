@@ -108,7 +108,7 @@ bool Calc_amplitudes::calc_diagram(Options options)
   utils::print_math_body(myfile,options,s_cwd,masses_input);
 
   myfile<<"Print[tfiamp0]\n"
-  <<"SEn = FullSimplify[TarcerRecurse[tfiamp0] /. D -> 4 /.MajoranaSpinor[p, mc] -> 1] /. Spinor[Momentum[p], mc, 1] -> 1;\n"
+  <<"SEn = Simplify[TarcerRecurse[tfiamp0] /. D -> 4 ];\n"
   <<"DumpSave[\""<<s_cwd<<"/output/stage_3.mx\", SEn];\n"
   <<"Print[\"----------- The self energy is ---------- = \"]\n"
   <<"Print[SEn]\n"
@@ -183,7 +183,7 @@ bool Calc_amplitudes::calc_diagram(Options options)
   }
   myfile_stage6b << ";"<<endl;
 
-  myfile_stage6b << "diff = FullSimplify[SEn-SEnTrial]"<<endl;
+  myfile_stage6b << "diff = Simplify[SEn-SEnTrial]"<<endl;
   myfile_stage6b << "Print[\" --------------------------------------- \"]" <<endl;
   myfile_stage6b << "Print[\" --------------------------------------- \"]" <<endl;
   myfile_stage6b << "Print[\" The difference between trial and actual SE is:\"]" <<endl;
@@ -308,7 +308,7 @@ bool Calc_amplitudes::calc_diagram(Options options)
 
 
 
-  myfile_stage8b << "diff = FullSimplify[SEn-SEnTrial]"<<endl;
+  myfile_stage8b << "diff = Simplify[SEn-SEnTrial]"<<endl;
   myfile_stage8b << "Print[\" --------------------------------------- \"]" <<endl;
   myfile_stage8b << "Print[\" --------------------------------------- \"]" <<endl;
   myfile_stage8b << "Print[\" The difference between trial and actual SE is:\"]" <<endl;
