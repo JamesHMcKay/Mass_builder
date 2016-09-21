@@ -41,7 +41,7 @@ sed -i '' -e "s|.*TSIL_PATH.*|    /\* TSIL_PATH \*/ std::string TSIL = \"$TSIL_P
 
 sed -i '' -e "s|.*set(TSIL_HEADER_FILE.*|set(TSIL_HEADER_FILE $TSIL_PATH/tsil_cpp.h ) |g" CMakeLists.txt
 
-sed -i '' -e "s|.*LINK_DIRECTORIES().*|LINK_DIRECTORIES($TSIL_PATH) |g" CMakeLists.txt
+sed -i '' -e "s|.*LINK_DIRECTORIES(.*|LINK_DIRECTORIES($TSIL_PATH) |g" CMakeLists.txt
 
 
 

@@ -392,11 +392,23 @@ namespace Generate_code
     //  DoTSIL function
     
     
-    main_output <<"void DoTSIL(TSIL_REAL s,TSIL_REAL Q2)\n"<<"{\n";
+   
     
     
     cout << "size of integrals = " << integrals.size() << endl;
+    
+    
+    
+    // new doTSIL function takes as argument integrals and base_map
+    // requirements: print out all function calls and basis integral definitions
+    // must print out Bxy = Byx for all instances of B integral
+    
+    
+    
+    
+    
     int ni = integrals.size();
+    main_output <<"void DoTSIL(TSIL_REAL s,TSIL_REAL Q2)\n"<<"{\n";
     for (int i = 0; i<ni;i++)
     {
       string name = integrals[i];
@@ -422,10 +434,12 @@ namespace Generate_code
       
       main_output << "\n";
     }
-    
-    
-    
     main_output << "}"  << endl;
+    
+    
+    
+    
+    
     main_output << "\n";
     main_output << "\n";
     // init function
