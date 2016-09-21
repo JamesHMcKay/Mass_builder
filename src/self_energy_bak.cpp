@@ -16,10 +16,10 @@
  
 
 
-void Self_energy::run_tsil(Data &data){
-cout << " You have attempted to evaluate the self energy yet no code has been generated yet\n";
-cout << " Make sure to compute digrams, generate the code and finally you must recompile \n";
-cout << " by using make in the build directory" << endl;
-cout << data.null << endl; // put this here to avoid compile time warnings
-
+void Self_energy::run_tsil(Data &data)
+{
+  cout << " You have attempted to evaluate the self energy yet no code has been generated yet\n";
+  cout << " Make sure to compute digrams, generate the code and finally you must recompile \n";
+  cout << " by using make in the build directory" << endl;
+  cout << data.null << endl; // put this here to avoid compile time warnings
 }
