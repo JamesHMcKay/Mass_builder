@@ -22,7 +22,7 @@ if [ "$MATH_PATH" == "math" ]; then
 fi
 
 # add the Mathematica path into the required locations in the source files
-sed -i '' -e "s|.*MATH_PATH.*| /\*MATH_PATH \*/  file<< \"#!$MATH_PATH -script\"<<endl;|g" src/utils.cpp
+sed -i '' -e "s|.*MATH_PATH.*|    /\*MATH_PATH \*/  file<< \"#!$MATH_PATH -script\"<<endl;|g" src/utils.cpp
 
 echo "  "
 echo "Please enter path to TSIL header tsil_cpp.h"
@@ -35,9 +35,9 @@ if [ "$TSIL_PATH" == d ]; then
 fi
 
 # add the TSIL path into the required places
-sed -i '' -e "s|.*TSIL_INCLUDE_PATH.*| /\*TSIL_INCLUDE_PATH \*/#include \"$TSIL_PATH/tsil_cpp.h\"  // Required TSIL header file|g" src/*.cpp
+sed -i '' -e "s|.*TSIL_INCLUDE_PATH.*|  /\*TSIL_INCLUDE_PATH \*/#include \"$TSIL_PATH/tsil_cpp.h\"  // Required TSIL header file|g" src/*.cpp
 
-sed -i '' -e "s|.*TSIL_PATH.*| /\* TSIL_PATH \*/ std::string TSIL = \"$TSIL_PATH/tsil_cpp.h\";  |g" src/*.cpp
+sed -i '' -e "s|.*TSIL_PATH.*|    /\* TSIL_PATH \*/ std::string TSIL = \"$TSIL_PATH/tsil_cpp.h\";  |g" src/*.cpp
 
 sed -i '' -e "s|.*set(TSIL_HEADER_FILE.*|set(TSIL_HEADER_FILE $TSIL_PATH/tsil_cpp.h ) |g" CMakeLists.txt
 

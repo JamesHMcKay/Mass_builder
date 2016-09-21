@@ -469,7 +469,7 @@ namespace utils
     myfile << endl;
     if (base_1.short_name==base_2.short_name) myfile << "C"<< base_1.short_name << base_2.short_name << " = Coefficient["<<SEn<<","<< base_1.short_name << ", 2];" << endl;
     else myfile << "C"<< base_1.short_name << base_2.short_name << " = - (1/2)* Coefficient["<<SEn<<","<< base_1.short_name << base_2.short_name << ", 1];" << endl;
-    //end:;
+    end:;
   }
 
 
