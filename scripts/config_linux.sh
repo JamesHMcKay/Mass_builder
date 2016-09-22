@@ -4,7 +4,7 @@
 #cd <system_dependent>/Mass_builder/
 
 echo "Please enter path to the file mathematica script or the default option below by entering the corresponding shortcut"
-echo "  "
+echo "path must include the script file, for example /PATH/MathematicaScript "
 echo "math :for default Mathematica instalation this use /usr/local/bin/math"
 read MATH_PATH
 

@@ -48,8 +48,9 @@ Before beginning the following programs are required
 \item FeynCalc 9.0 including a distribution of FeynArts and TARCER
 \item TSIL 1.3
 \end{itemize}
+the Mass Builder C++ code has been tested using gcc version 4.8.4.
 
-\subsection{FeynCalc}
+\subsection{FeynCalc, FeynArts and TARCER}
 
 The easiest way to install FeynCalc, FeynArts and TARCER is via the automated installation method.  Open a Mathematica notebook or kernel session and enter
 \begin{lstterm}
@@ -59,7 +60,7 @@ InstallFeynCalc[]
 
 when requested to install the latest version of FeynArts say yes, as this will automatically patch the FeynArts installation.  If you do not follow this method then it is not possible to run FeynArts and FeynCalc in the same session (as we need to do) as many function names are identical between the packages, so to avoid name shadowing follow the recommend method.  For more information see the FeynCalc wiki \lstinline{https://github.com/FeynCalc/feyncalc/wiki}.
 
-Load Tarcer by running the math kernal:
+Check if TARCER has been loaded with the following input
 \begin{lstterm}
 ./MathKernal
 $LoadPhi = True;
@@ -71,10 +72,10 @@ if TARCER has not been loaded this will give an error and advise the user to run
 \begin{lstterm}
 GenerateTarcerMX
 \end{lstterm}
-
+which will generate the required files.  All packages within Mathematica are now set up.
 
 \subsection{TSIL}
-The Two-loop Self-energy Integral Library can be downloaded from \lstinline{http://www.niu.edu/spmartin/TSIL/}.  It may installed anywhere (as Mass Builder will request the path at configuration).
+The Two-loop Self-energy Integral Library can be downloaded from \lstinline{http://www.niu.edu/spmartin/TSIL/}.  Mass Builder has been tested with version 1.3. It may installed anywhere (as Mass Builder will request the path at configuration).
 
 \subsection{Mass Builder}
 Mass Builder can be obtained from
