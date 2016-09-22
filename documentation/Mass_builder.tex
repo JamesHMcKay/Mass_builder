@@ -59,6 +59,19 @@ InstallFeynCalc[]
 
 when requested to install the latest version of FeynArts say yes, as this will automatically patch the FeynArts installation.  If you do not follow this method then it is not possible to run FeynArts and FeynCalc in the same session (as we need to do) as many function names are identical between the packages, so to avoid name shadowing follow the recommend method.  For more information see the FeynCalc wiki \lstinline{https://github.com/FeynCalc/feyncalc/wiki}.
 
+Load Tarcer by running the math kernal:
+\begin{lstterm}
+./MathKernal
+$LoadPhi = True;
+$LoadTARCER = True;
+$LoadFeynArts = True;
+<< FeynCalc/FeynCalc.m
+\end{lstterm}
+if TARCER has not been loaded this will give an error and advise the user to run
+\begin{lstterm}
+GenerateTarcerMX
+\end{lstterm}
+
 
 \subsection{TSIL}
 The Two-loop Self-energy Integral Library can be downloaded from \lstinline{http://www.niu.edu/spmartin/TSIL/}.  It may installed anywhere (as Mass Builder will request the path at configuration).

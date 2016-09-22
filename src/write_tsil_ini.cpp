@@ -22,7 +22,28 @@ void Print_dotsil::sort_integrals()
 {
 // start with
 
+// find all the TSIL_EVALUATE calls that will satisfy a particular basis integral
 
+
+
+
+}
+
+
+
+void Print_dotsil::get_poss_eval(Bases base)
+{
+
+// for each type of integral find all the evaluate_tsil statements that would provide it
+
+if (base.type == "V")
+{
+// for V(u,x,z,y) the corresponding TSIL type is -U(x,y,z,u)
+
+
+
+
+}
 
 
 

@@ -31,6 +31,8 @@ public:
   void print_to_file(ofstream &myfile);
   void sort_integrals();
   
+  void Print_dotsil::get_poss_eval(Bases base);
+  
   
 };
 

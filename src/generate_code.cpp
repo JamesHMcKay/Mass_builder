@@ -302,7 +302,7 @@ namespace Generate_code
     << "#ifndef PI\n"
     << "#define PI 4.0L*atan(1.0L)\n"
     << "#endif\n"
-    << "long double strtold(const char *, char **);\n"
+    //<< "long double strtold(const char *, char **);\n"
     << "// define subroutines here\n"
     << "TSIL_REAL Power(TSIL_REAL a, int b){return TSIL_POW(a,b);}\n"
     << "TSIL_REAL Sin(TSIL_REAL a){return sin(a);}\n"
