@@ -405,8 +405,8 @@ namespace Generate_code
     // must print out Bxy = Byx for all instances of B integral
     
     
-    //Print_dotsil print_tsil(integrals, base_map);
-    //print_tsil.sort_integrals();
+    Print_dotsil print_tsil(integrals, base_map);
+    print_tsil.sort_integrals();
     
     
     int ni = integrals.size();

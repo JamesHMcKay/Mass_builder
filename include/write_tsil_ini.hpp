@@ -20,42 +20,32 @@ using namespace utils;
 
 class eval_obj
 {
+  // this object encodes a TSIL_EVALUATE call
 
-// this encodes a TSIL_EVALUATE call, so must have a definition of each mass
-
-std::vector<Bases> integrals;
-std::vector<string> masses;
+  std::vector<Bases> integrals;
+  std::vector<string> masses;
 
 public:
 
-string x = "";
-string y = "";
-string z = "";
-string u = "";
-string v = "";
+  string x = "";
+  string y = "";
+  string z = "";
+  string u = "";
+  string v = "";
 
-vector<bool> check_vec;
-vector<int> location;
+  vector<bool> check_vec; // what required basis integrals does this statement fufill
+  vector<int> location;   // what is the location of this integral within this object (will be required to hold the string passed to TSIL_EVALUATE)
 
-eval_obj() {}
-  
-eval_obj(string x, string y, string z, string u, string v) : x(x), y(y), z(z), u(u), v(v) {}
+  eval_obj() {}
+    
+  eval_obj(string x, string y, string z, string u, string v) : x(x), y(y), z(z), u(u), v(v) {}
 
-// create function which outputs all possible integrals this object is capable of evaluating
+  std::vector<Bases> get_integrals(std::vector<string> masses_input);
+  void add_integral(string type, string x, string y = "", string z = "", string u = "", string v = "");
 
-// since one of the above strings can be left blank, in that case the above function needs a list of possible masses
-
-
-std::vector<Bases> get_integrals(std::vector<string> masses_input);
-void add_integral(string type, string x, string y = "", string z = "", string u = "", string v = "");
-
-std::vector<bool> get_check_vec(vector<string> names, std::map<std::string, Bases> base_map,std::vector<string> masses_input);
-
+  std::vector<bool> get_check_vec(vector<string> names, std::map<std::string, Bases> base_map,std::vector<string> masses_input);
 
 };
-
-
-
 
 
 

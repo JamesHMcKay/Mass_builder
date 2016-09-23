@@ -16,95 +16,22 @@ void Print_dotsil::print_to_file(ofstream &myfile)
   sort_integrals();
 }
 
-double iter_factorial(int n)
-{
-    double result = 1;
-    for(int i = 1; i <= n; i++)
-    {
-        result = result * i;
-      
-    }
-    return result;
-}
-
-void Print_dotsil::make_sets()
-{
-    vector<eval_obj> subset;
-    vector< vector<eval_obj> > all_sets;
-    int n,len_in;// n is the number of objects in each set, len is the number of eval_objects
-    len_in = eval_vec.size()-1;
-    cout << "len_in = " << len_in << endl;
-    cin>>n;
-    std::vector<int> a, len,i;
-    a.resize(n);
-    len.resize(n);
-    //cin>>len_in;
-    int j = 999;
-    for(int i = 0 ; i < n ; i++)
-    {
-        len[i]=len_in;
-        a[i]=0;
-    }
-  
-    while(1)
-    {
-        subset = {};
-        vector<int> b = a;
-        sort(b.begin(),b.end());
-        b.erase( unique( b.begin(), b.end() ), b.end() );
-        if (b.size()==n)
-        {
-          for(unsigned int j = 0 ; j<b.size();j++)
-          {
-            subset.push_back( eval_vec[b[j]] );
-            cout<<b[j]<<" ";
-          }
-          all_sets.push_back(subset);
-          cout<<endl;
-        }
-        for(j = n-1 ; j>=0 ; j--)
-        {
-            if(++a[j]<=len[j])
-            {
-                for (int k=j;k<n;k++)
-                {
-                  a[k] = a[j];
-                }
-                break;
-
-            }
-            else
-            {
-                a[j]=0;
-             }
-        }
-        if(j<0)
-        {
-            break;
-        }
-    }
-  cout << "length of unique elements = " << all_sets.size() << endl;
-  cout << "from set of " << len_in + 1 << " elements we choose " << n << endl;
-  cout << "this should be equal to = " << iter_factorial(len_in + 1) / ( iter_factorial(n) * iter_factorial(len_in + 1-n)) << endl;
-}
-
 
 vector<int> Print_dotsil::get_duplicates()
 {
   cout  << "evaluating duplicates " << endl;
   vector<int> duplicates;
   duplicates.resize(names.size());
-  for (unsigned int i=0;i<names.size();i++)
+  
+  for (unsigned int j=0;j<eval_vec.size();j++)
   {
-    duplicates[i]=0;
-    for (unsigned int j=0;j<eval_vec.size();j++)
+    vector<bool> tmp = V_check_vec[j];
+    for (unsigned int i=0;i<names.size();i++)
     {
-      vector<bool> tmp = V_check_vec[j];
       if (tmp[i]){ duplicates[i] = duplicates[i] + 1;}
-      
     }
-   
   }
+  cout << "done evaluating duplicates " << endl;
   return duplicates;
 }
 
@@ -138,15 +65,17 @@ void Print_dotsil::sort_integrals()
   vector<int>  sum;
   sum.resize(names.size());
   int sum_min=0;
-  
-  start:;
-  
+  cout << "evaluating check vectors"<< endl;
   for (unsigned int i = 0; i<eval_vec.size();i++)
   {
     eval_obj eo_tmp = eval_vec[i];
     vector<bool> check_vec = eo_tmp.get_check_vec(names, base_map,masses);
     V_check_vec[i]=check_vec;
   }
+  cout << "done evaluating check vectors"<< endl;
+  
+  start:;
+  
   vector<int> duplicates = get_duplicates();
   for (unsigned int j=0;j<eval_vec.size();j++)
   {
@@ -200,6 +129,7 @@ void Print_dotsil::sort_integrals()
     }
     
   }
+  cout << "number of call statements required = " <<eval_vec.size() << endl;
 
   
 
