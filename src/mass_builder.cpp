@@ -15,6 +15,7 @@
 #include "generate_code.hpp"
 #include "self_energy.hpp"
 #include "supplements.hpp"
+//#include "write_tsil_ini.hpp"
 
 using namespace std;
 using namespace supplementary_code;
@@ -86,6 +87,15 @@ void run_mass_builder_mode_6(Options options)
 
 int main(int argc, char *argv[])
 {
+
+// testing
+
+  //Print_dotsil dotsil;
+  //dotsil.sort_integrals();
+
+
+
+
   User_input user(argc,argv);
   
   user.user_interface();

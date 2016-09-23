@@ -14,6 +14,7 @@
 
 #include "utils.hpp"
 #include "generate_code.hpp"
+#include "write_tsil_ini.hpp"
 
 using namespace std;
 using namespace utils;
@@ -404,7 +405,8 @@ namespace Generate_code
     // must print out Bxy = Byx for all instances of B integral
     
     
-    
+    //Print_dotsil print_tsil(integrals, base_map);
+    //print_tsil.sort_integrals();
     
     
     int ni = integrals.size();
