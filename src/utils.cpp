@@ -595,7 +595,8 @@ namespace utils
     if (type == "V")
     {
       string A = base.e1,B=base.e2,C=base.e3,D=base.e4;
-      cout << "TSIL_SetParameters (&bar," << D << "2, " << C << "2, " << B << "2 , " << "1.0" << " , " << A  << "2, Q2);" << endl;
+      //cout << "TSIL_SetParameters (&bar," << D << "2, " << C << "2, " << B << "2 , " << "1.0" << " , " << A  << "2, Q2);" << endl;
+      cout << "TSIL_SetParameters (&bar," << A << "2, " << C << "2, " << D << "2 , " << "1.0" << " , " << B << "2, Q2);" << endl;
       cout << "TSIL_Evaluate (&bar, s);" << endl;
       cout << name << "= -TSIL_GetFunction (&bar,\"Uzxyv" <<"\");"<< endl;
     }

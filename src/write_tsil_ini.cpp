@@ -74,6 +74,8 @@ void Print_dotsil::print_to_file(ofstream &myfile)
     cout<< "\r" << "sorting integrals . . . " << status << "% complete ";
     std::cout << std::flush;
   }
+  status=100;
+  cout<< "\r" << "sorting integrals . . . " << status << "% complete ";
   cout << "\n";
  
  
@@ -133,7 +135,6 @@ void Print_dotsil::print_to_file(ofstream &myfile)
   vector<bool> check_vec_tmp_test = eo_tmp_test.get_check_vec(names, base_map,masses);
   
   #ifdef DEBUG
-  cout << "Size of check_vec = " << check_vec_tmp_test.size() << endl;
   cout << "Size of names = " << names.size() << endl;
   cout << " -----------  check vectors are -----------  " << endl;
   for (unsigned int j = 0; j<names.size();j++)
@@ -289,14 +290,14 @@ void Print_dotsil::get_poss_eval(Bases base)
     for (unsigned int i = 0; i<masses.size();i++)
     {
       o = masses[i];
-      add_eval_obj( o, a, d, b, c);
-      add_eval_obj( a, o, b, c, d);
-      add_eval_obj( a, o, b, c, d);
-      add_eval_obj( o, a, c, b, d);
-      add_eval_obj( b, d, a, o, c);
-      add_eval_obj( d, b, o, a, c);
-      add_eval_obj( b, c, a, o, d);
-      add_eval_obj( a, o, b, d, c);
+      add_eval_obj( a , c , d , o , b );
+      add_eval_obj( c , a , o , d , b );
+      add_eval_obj( d , o , a , c , b );
+      add_eval_obj( o , d , c , a , b );
+      add_eval_obj( a , b , d , o , c );
+      add_eval_obj( b , a , o , d , c );
+      add_eval_obj( d , o , a , b , c );
+      add_eval_obj( o , d , b , a , c );
       
     }
   }
@@ -313,14 +314,30 @@ void Print_dotsil::get_poss_eval(Bases base)
 }
 
 
+void swap_tsil_to_tarcer_V(string &a,string &b,string &c, string &d)
+{
+string a_tmp = a, b_tmp = b, c_tmp = c, d_tmp = d;
+a = d_tmp;
+b = a_tmp;
+d= b_tmp;
+c = c_tmp;
+}
+
+
+
 void eval_obj::add_integral(string type,string tsil_id, string x, string y, string z, string u, string v)
 {
+  if (type == "V")
+  {
+   swap_tsil_to_tarcer_V(x,y,z,u);
+  }
+
   Bases base(type, x, y, z, u ,v);
+  
   
   base.short_name = tsil_id;
   integrals.push_back(base);
 }
-
 
 
 std::vector<Bases> eval_obj::get_integrals(std::vector<string> masses_input)
@@ -332,15 +349,17 @@ std::vector<Bases> eval_obj::get_integrals(std::vector<string> masses_input)
   
   add_integral("F","M", x, y, z, u ,v);  // Master integral -- M in TSIL
   
-  add_integral("V","Uzxyv", z, x, y, v, ""); // using TARCER definition of V -- U in TSIL
-  add_integral("V","Uuyxv", u, y ,x, v, "");
-  add_integral("V","Uxzuv", x, z ,u, v, "");
-  add_integral("V","Uyuzv", y, u, z, v, "");
+  add_integral("V","Uzxyv", z, x, y, v); // using TARCER definition of V -- U in TSIL
+  // this is a TSIL type not a FA type, need to convert
+  
+  /*add_integral("V","Uuyxv", u, y ,x, v);
+  add_integral("V","Uxzuv", x, z ,u, v);
+  add_integral("V","Uyuzv", y, u, z, v);
   // switch last two arguments due to symmetry
   add_integral("V","Uzxvy", z, x, v, y);
   add_integral("V","Uuyvx", u, y ,v, x);
   add_integral("V","Uxzvu", x, z ,v, u);
-  add_integral("V","Uyuvz", y, u, v, z);
+  add_integral("V","Uyuvz", y, u, v, z);*/
   
   // T integrals
   
