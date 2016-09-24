@@ -405,12 +405,15 @@ namespace Generate_code
     // must print out Bxy = Byx for all instances of B integral
     
     
-    Print_dotsil print_tsil(integrals, base_map);
-    print_tsil.sort_integrals();
+    
     
     
     int ni = integrals.size();
     main_output <<"void DoTSIL(TSIL_REAL s,TSIL_REAL Q2)\n"<<"{\n";
+    Print_dotsil print_tsil(integrals, base_map);
+    print_tsil.print_to_file(main_output);
+    
+    /*
     for (int i = 0; i<ni;i++)
     {
       string name = integrals[i];
@@ -436,6 +439,11 @@ namespace Generate_code
       
       main_output << "\n";
     }
+    
+    */
+    
+    
+    
     main_output << "}"  << endl;
     
     

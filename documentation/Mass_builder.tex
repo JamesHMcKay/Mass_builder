@@ -377,7 +377,17 @@ python src/plot_example.py
 
 
 
+
+
+
 \subsection{Two Higgs doublet model}
+
+
+
+
+\subsection{Comments}
+
+It is possible, although not recommend and tedious, to construct a TSIL interface without using Mathematica at all.  The input may be directly written into \lstinline{models/output/} in the required form.  However caution must be taken to ensure all basis integrals are considered.  When the amplitude calculation algorithm is run, only a certain set of basis integrals are considered due to symmetries.  When the code is generated, only these basis integrals are searched for in the input files, using the same procedure to construct a comparison set and thus correctly read the short name formats.  For example, \lstinline{Jxyz} may be expected by the code generation routine but \lstinline{Jxzy} may not be and thus would not be identified and handled correctly.
 
 
 

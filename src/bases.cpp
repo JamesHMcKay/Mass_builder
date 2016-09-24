@@ -146,8 +146,11 @@ void set_id(std::vector<string> &masses_input, std::vector<string> &identifiers_
   {
   for (int i2 = i1; i2 < n ; i2++)
   {
-    Bases b("B",masses[i1],masses[i2]);
+    Bases b("B",masses[i1],masses[i2]/*,id[i1],id[i2]*/); // B integrals also carry the identifiers in arguments 3 & 4 for later use
+    b.id1=id[i1];
+    b.id2=id[i2];
     bases_map["B"+id[i1]+id[i2]]= b;
+
   }
   }
 
@@ -178,6 +181,14 @@ void set_id(std::vector<string> &masses_input, std::vector<string> &identifiers_
       }
     }
   }
+  
+  
+  vector<string> bases_names = extract_keys(bases_map);
+  for (unsigned int i =0;i<bases_names.size();i++)
+  {
+    bases_map[bases_names[i]].short_name = bases_names[i];
+  }
+  
   return bases_map;
 }
 

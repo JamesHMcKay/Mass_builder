@@ -62,6 +62,7 @@ void print_math_basis(map<string, Bases> base_map, ofstream &myfile , string tar
 void print_math_products(map<string, Bases> base_map, ofstream &myfile, string target);
 
 void print_doTSIL(ofstream &myfile,Bases base);
+void print_doTSIL_cout(Bases base);
 
 }
 

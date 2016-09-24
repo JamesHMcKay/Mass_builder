@@ -554,4 +554,52 @@ namespace utils
     }
 
   }
+  
+  void print_doTSIL_cout(Bases base)
+  {
+    string type = base.type;
+    string name = base.short_name;
+    if (type == "A")
+    {
+      cout << name << " = -i*TSIL_A_ ("<<base.e1<<"2 , Q2);"<<endl;
+    }
+    if (type == "B")
+    {
+      cout << name <<" = i*TSIL_B_ (" << base.e1 << "2, " << base.e2 << "2, s, Q2);"<< endl;
+    }
+    if (type == "K")
+    {
+      cout << name <<" = TSIL_I2_(" << base.e1 << "2, " << base.e2 << "2, " << base.e3 << ", Q2);"<< endl;
+    }
+    if (type == "J")
+    {
+      string A = base.e1,B=base.e2,C=base.e3;
+      cout << "TSIL_SetParametersST (&bar," << B << "2, " << A << "2, " << C <<"2, Q2);" << endl;
+      cout << "TSIL_Evaluate (&bar, s);" << endl;
+      cout << name << "= TSIL_GetFunction (&bar,\"Suxv" <<"\");"<< endl;
+    }
+    if (type == "T")
+    {
+      string A = base.e1,B=base.e2,C=base.e3;
+      cout << "TSIL_SetParametersST (&bar," << A << "2, " << B << "2, " << C <<"2, Q2);" << endl;
+      cout << "TSIL_Evaluate (&bar, s);" << endl;
+      cout << name << "= -TSIL_GetFunction (&bar,\"Txuv" <<"\");"<< endl;
+    }
+    if (type == "F")
+    {
+      string A = base.e1,B=base.e2,C=base.e3,D=base.e4,E=base.e5;
+      cout << "TSIL_SetParameters (&bar," << A << "2, " << B << "2, " << C << "2 , " << D << "2 , " << E  << "2, Q2);" << endl;
+      cout << "TSIL_Evaluate (&bar, s);" << endl;
+      cout << name << "= TSIL_GetFunction (&bar,\"M" <<"\");"<< endl;
+    }
+    if (type == "V")
+    {
+      string A = base.e1,B=base.e2,C=base.e3,D=base.e4;
+      cout << "TSIL_SetParameters (&bar," << D << "2, " << C << "2, " << B << "2 , " << "1.0" << " , " << A  << "2, Q2);" << endl;
+      cout << "TSIL_Evaluate (&bar, s);" << endl;
+      cout << name << "= -TSIL_GetFunction (&bar,\"Uzxyv" <<"\");"<< endl;
+    }
+
+  }
+  
 }

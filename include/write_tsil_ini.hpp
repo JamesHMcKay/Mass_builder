@@ -24,6 +24,8 @@ class eval_obj
 
   std::vector<Bases> integrals;
   std::vector<string> masses;
+  vector<bool> check_vec; // what required basis integrals does this statement fufill
+  bool check_vec_evaluated = false;
 
 public:
 
@@ -33,15 +35,20 @@ public:
   string u = "";
   string v = "";
 
-  vector<bool> check_vec; // what required basis integrals does this statement fufill
+  
+  
+  
   vector<int> location;   // what is the location of this integral within this object (will be required to hold the string passed to TSIL_EVALUATE)
+  std::vector<string> eval_string;
+
+
 
   eval_obj() {}
     
   eval_obj(string x, string y, string z, string u, string v) : x(x), y(y), z(z), u(u), v(v) {}
 
   std::vector<Bases> get_integrals(std::vector<string> masses_input);
-  void add_integral(string type, string x, string y = "", string z = "", string u = "", string v = "");
+  void add_integral(string type, string short_name, string x, string y = " ", string z = " ", string u = " ", string v = " ");
 
   std::vector<bool> get_check_vec(vector<string> names, std::map<std::string, Bases> base_map,std::vector<string> masses_input);
 
@@ -57,6 +64,7 @@ class Print_dotsil
   vector<string> masses;
   vector<vector<bool>> V_check_vec;
   std::vector<eval_obj> eval_vec;
+  int eval_count = 0;
 
 public:
   
@@ -69,6 +77,10 @@ public:
   void get_poss_eval(Bases base);
   void add_eval_obj( string x, string y, string z, string u, string v);
   void make_sets();
+  void print_total(std::vector<int>);
+  string coeff(string type);
+  
+  void print_eval_obj(ofstream &myfile,eval_obj &eo, vector<int> &total);
   
   vector<int> get_duplicates();
   

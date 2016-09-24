@@ -21,6 +21,8 @@ public:
   
   string e1 = " ", e2 = " ", e3 = " ", e4 = " ", e5 = " ";
   
+  string id1="",id2="";
+  
   string coefficient = "";
   
   string short_name = "";
