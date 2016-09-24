@@ -16,6 +16,7 @@ struct Options
 public:
 bool counter_terms = false;
 bool verbose = false;
+bool optimise = false;
 int loop_order = 2;
 string particle;
 string model;

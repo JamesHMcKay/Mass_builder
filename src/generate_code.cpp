@@ -393,54 +393,43 @@ namespace Generate_code
     //  DoTSIL function
     
     
-   
     
-    
-    cout << "size of integrals = " << integrals.size() << endl;
-    
-    
-    
-    // new doTSIL function takes as argument integrals and base_map
-    // requirements: print out all function calls and basis integral definitions
-    // must print out Bxy = Byx for all instances of B integral
-    
-    
-    
-    
-    
-    int ni = integrals.size();
     main_output <<"void DoTSIL(TSIL_REAL s,TSIL_REAL Q2)\n"<<"{\n";
-    Print_dotsil print_tsil(integrals, base_map);
-    print_tsil.print_to_file(main_output);
-    
-    /*
-    for (int i = 0; i<ni;i++)
+
+    if (options.optimise)
     {
-      string name = integrals[i];
-      
-      Bases base_temp = base_map[name];
-      base_temp.short_name = name;
-      
-      print_doTSIL(main_output, base_temp);
-      
-      // deal with the Bxy = Byx case
-      // this will be replaced by a more sophisticated algorithm which takes advantage of symmetries
-      if (base_temp.type == "B" && base_temp.e1!=base_temp.e2)
-      {
-        Bases base_temp_B;
-        base_temp_B.type = "B";
-        base_temp_B.e1 = base_temp.e2;
-        base_temp_B.e2 = base_temp.e1;
-        string name_B = get_short_name(base_temp_B,masses_input, id_input);
-        integrals.push_back(name_B);
-        main_output << name_B << " = " << name << ";" << endl;
-        
-      }
-      
-      main_output << "\n";
+      Print_dotsil print_tsil(integrals, base_map);
+      print_tsil.print_to_file(main_output);
     }
+    else
+    {
+      int ni = integrals.size();
+      for (int i = 0; i<ni;i++)
+      {
+        string name = integrals[i];
+        
+        Bases base_temp = base_map[name];
+        base_temp.short_name = name;
+        
+        print_doTSIL(main_output, base_temp);
+        
+        // deal with the Bxy = Byx case
+        if (base_temp.type == "B" && base_temp.e1!=base_temp.e2)
+        {
+          Bases base_temp_B;
+          base_temp_B.type = "B";
+          base_temp_B.e1 = base_temp.e2;
+          base_temp_B.e2 = base_temp.e1;
+          string name_B = get_short_name(base_temp_B,masses_input, id_input);
+          integrals.push_back(name_B);
+          main_output << name_B << " = " << name << ";" << endl;
+          
+        }
+        
+        main_output << "\n";
+      }
     
-    */
+    }
     
     
     

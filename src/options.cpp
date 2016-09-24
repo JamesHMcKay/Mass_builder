@@ -27,6 +27,7 @@ void User_input::user_interface()
   string io;
   if (find_string("-c")){ options.counter_terms = true;}
   if (find_string("-v")){ options.verbose = true;}
+  if (find_string("-o")){ options.optimise = true;}
   if (find_string("-a")){ options.run_mode = 1;}
   if (find_string("-l"))
   {

@@ -10,7 +10,7 @@ Sep 2016
 
 #include "write_tsil_ini.hpp"
 
-
+#define DEBUG
 
 vector<int> Print_dotsil::get_duplicates()
 {
@@ -75,6 +75,25 @@ void Print_dotsil::print_to_file(ofstream &myfile)
     std::cout << std::flush;
   }
   cout << "\n";
+ 
+ 
+ // remove objects that have check_vec = 0 for all values
+  prestart:;
+  for (unsigned int j=0;j<eval_vec.size();j++)
+  {
+    vector<bool> tmp = V_check_vec[j];
+    bool zero = true;
+    for (unsigned int i=0;i<names.size();i++)
+    {
+      if (tmp[i]){ zero=false;}
+    }
+    if (zero)
+    {
+      eval_vec.erase(eval_vec.begin()+j);
+      V_check_vec.erase(V_check_vec.begin()+j);
+      goto prestart;
+    }
+  }
  
   
   start:;
@@ -294,10 +313,11 @@ void Print_dotsil::get_poss_eval(Bases base)
 }
 
 
-void eval_obj::add_integral(string type,string short_name, string x, string y, string z, string u, string v)
+void eval_obj::add_integral(string type,string tsil_id, string x, string y, string z, string u, string v)
 {
   Bases base(type, x, y, z, u ,v);
-  base.short_name = short_name;
+  
+  base.short_name = tsil_id;
   integrals.push_back(base);
 }
 
@@ -311,6 +331,7 @@ std::vector<Bases> eval_obj::get_integrals(std::vector<string> masses_input)
   integrals.clear();
   
   add_integral("F","M", x, y, z, u ,v);  // Master integral -- M in TSIL
+  
   add_integral("V","Uzxyv", z, x, y, v, ""); // using TARCER definition of V -- U in TSIL
   add_integral("V","Uuyxv", u, y ,x, v, "");
   add_integral("V","Uxzuv", x, z ,u, v, "");
@@ -382,7 +403,7 @@ std::vector<bool> eval_obj::get_check_vec(vector<string> names, std::map<std::st
       for (unsigned int j = 0; j<names.size();j++)
       {
         Bases basis = base_map[names[j]];
-        if ( (b_tmp.type == basis.type) && (b_tmp.e1 == basis.e1) && (b_tmp.e2 == basis.e2) && (b_tmp.e3 == basis.e3) && (b_tmp.e4 == basis.e4))
+        if ( (b_tmp.type == basis.type) && (b_tmp.e1 == basis.e1) && (b_tmp.e2 == basis.e2) && (b_tmp.e3 == basis.e3) && (b_tmp.e4 == basis.e4)  && (b_tmp.e5 == basis.e5))
         {
           check_vec[j] = true;
           location[j] = i;
