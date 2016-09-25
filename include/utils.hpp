@@ -41,6 +41,8 @@ vector<char> remove_duplicates(vector<char> input);
 
 void update_avail_diagrams(Options options);
 
+void sort_avail_diagrams(Options options);
+
 void ReplaceAll(string &input, const string& from, const string& to);
 
 const char * output_file_name(string model, string tag, string file);

@@ -127,6 +127,7 @@ int main(int argc, char *argv[])
     if (options.input_list == "")
     {
       options.input_list = "models/"+ options.model + "/output/avail_diagrams_.txt";
+      sort_avail_diagrams(options);
     }
     if (options.model == "") { cout << "please specify a model" << endl; return 0;}
     Generate_code::generate_code(options);

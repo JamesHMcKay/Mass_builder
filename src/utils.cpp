@@ -67,6 +67,49 @@ namespace utils
     }
     file.close();
   }
+  
+  
+  void sort_avail_diagrams(Options options)
+  {
+    const char *ext = ".txt";
+    string underscore = "_";
+    const char* str_tmp = "/output/";
+    string c_str = "models/" + options.model +str_tmp + "avail_diagrams" + underscore + ext;
+    const char *str = c_str.c_str();
+    string file_name = str;
+
+    vector<string> particle, diagram, type;
+    vector<string> particle_new, diagram_new, type_new;
+    int n;
+    get_data(particle,diagram,type,n,file_name);
+
+    ofstream file;
+    file_name = output_file_name(options.model,"","avail_diagrams");
+    file.open(file_name.c_str());
+
+
+    for (int i = 0; i < n; i++)
+    {
+      for (int j = 0; j < n; j++)
+      {
+        if ((particle[j] == particle[i]) && (diagram[j]==diagram[i]) && (type[i]==type[j]) && (i!=j))
+        {
+          particle[i] = "";diagram[i]="";type[i]="";
+        }
+      }
+    }
+    int m = 0;
+    for (int i = 0; i < n; i++)
+    {
+      if (particle[i]!="") { particle_new.push_back(particle[i]);diagram_new.push_back(diagram[i]);type_new.push_back(type[i]); m=m+1;}
+    }
+    for (int i = 0; i < m; i++)
+    {
+      file << particle_new[i] << " " << diagram_new[i] << " " << type_new[i] << endl;
+    }
+    file.close();
+  }
+
 
 
 
