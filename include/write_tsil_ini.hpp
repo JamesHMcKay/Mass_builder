@@ -51,7 +51,7 @@ public:
   void add_integral(string type, string short_name, string x, string y = " ", string z = " ", string u = " ", string v = " ");
 
   std::vector<bool> get_check_vec(vector<string> names, std::map<std::string, Bases> base_map,std::vector<string> masses_input);
-
+  void swap_tsil_to_tarcer_V(string &a,string &b,string &c, string &d);
 };
 
 
