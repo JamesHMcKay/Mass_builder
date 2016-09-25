@@ -47,7 +47,6 @@ namespace supplementary_code
   
   void DoTSIL_2(TSIL_REAL s,TSIL_REAL Q2)
   {
-    cout << "mass of photon is = " << ma << endl;
     Aa = -i*TSIL_A_ (ma , Q2);
     
     Ac = -i*TSIL_A_ (mc , Q2);
@@ -74,14 +73,15 @@ namespace supplementary_code
   
   int init(Data data)
   {
-    /*mw= data.M_w, mz = data.M_z ,ma = data.M_a, mc = data.M_chi, g2=data.g1;
+   /* mw= data.mw, mz = data.mz ,ma = data.ma, mc = data.MChi, g2=data.g1;
      tW = acos(mw/mz);
-     sw2 = TSIL_POW(sin(tW),2),S2TW=TSIL_POW(sin(tW),2), cw2 = TSIL_POW(cos(tW),2);
-     sw = sin(tW), cw = cos(tW);
+     sw2 = data.sw2,S2TW=data.S2TW, cw2 = data.cw2;
+     sw = data.sw, cw = data.cw;
      C = TSIL_POW(g2,2)/(16.0L*PI*PI);
      i=Power(-1,0.5);
      Pi=PI;
-     TSIL_REAL p = data.M_chi, Q2 =data.Q;*/
+     TSIL_REAL p = data.MChi, Q2 =data.Q;
+     */
     DoTSIL_2( TSIL_POW(data.P,2),data.Q);
     return 0;
   }
@@ -134,12 +134,12 @@ namespace supplementary_code
     init(data);
     TSIL_COMPLEXCPP SE_0 = (SigmaM_0(M) + M*SigmaK_0(M,p) )*( SigmaK_0(M,p) + 2.0L*TSIL_POW(M,2)*d_SigmaK_0(M,p)+2.0L*M*d_SigmaM_0(M));
     TSIL_COMPLEXCPP SE_1 =(SigmaM_1(M) + M*SigmaK_1(M,p) )*( SigmaK_1(M,p) + 2.0L*TSIL_POW(M,2)*d_SigmaK_1(M,p)+2.0L*M*d_SigmaM_1(M));
-    //data.SE_1 = data.SE_1+real(SE_0);
-    //data.SE_2 = data.SE_2+real(SE_1);
+    data.SE_2["F6"] = data.SE_2["F6"]+real(SE_0);
+    data.SE_2["F5"] = data.SE_2["F5"]+real(SE_1);
     
     
-    cout << "SE derivative 0 = " << SE_0<<endl;;
-    cout << "SE derivative 1 = " << SE_1<<endl;;
+    //cout << "SE derivative 0 = " << SE_0<<endl;;
+    //cout << "SE derivative 1 = " << SE_1<<endl;;
     
   }
 }

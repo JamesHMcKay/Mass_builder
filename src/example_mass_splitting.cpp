@@ -104,6 +104,8 @@ double pole_mass_F5(Data data)
 {
 Self_energy se;
 se.run_tsil(data);
+Supplements supp(data);
+supp.add_derivatives(data);
 double Mp = data.MChi - (data.SE_1["F5"]+data.SE_2["F5"]);
 return Mp;
 }
@@ -112,6 +114,8 @@ double pole_mass_F6(Data data)
 {
 Self_energy se;
 se.run_tsil(data);
+Supplements supp(data);
+supp.add_derivatives(data);
 double Mp = data.MChi - (data.SE_1["F6"]+data.SE_2["F6"]);
 return Mp;
 }
@@ -128,6 +132,11 @@ if (options.input_list == "") {cout << "please enter an input list" << endl; ret
 
 Self_energy se;
 Data data(options);
+
+double delta_m=pole_mass_F5(data) - pole_mass_F6(data);
+cout << "mass splitting is = " << delta_m << endl;
+/*
+
 
 ofstream myfile;
 myfile.open ("models/MDM/output/mass_splittings.txt");
@@ -147,6 +156,13 @@ data.P = M;
 M= pow(10,n);
 double delta_m=pole_mass_F5(data) - pole_mass_F6(data);
 
+
+// get contribution from supplementry code (derivates done by hand)
+
+
+
+
+
 myfile << M << " " << delta_m_it << " " << delta_m << endl;
 }
 
@@ -157,6 +173,6 @@ cout << "to make plot in this directory "<< endl;
 
 
 myfile.close();
-
+*/
 return 0;
 }

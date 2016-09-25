@@ -297,14 +297,15 @@ void Print_dotsil::get_poss_eval(Bases base)
     for (unsigned int i = 0; i<masses.size();i++)
     {
       o = masses[i];
-      add_eval_obj( a , c , d , o , b );
-      /*add_eval_obj( c , a , o , d , b );
-      add_eval_obj( d , o , a , c , b );
-      add_eval_obj( o , d , c , a , b );
-      add_eval_obj( a , b , d , o , c );
-      add_eval_obj( b , a , o , d , c );
-      add_eval_obj( d , o , a , b , c );
-      add_eval_obj( o , d , b , a , c );*/
+      add_eval_obj( d , c , b , o , a );
+      add_eval_obj( d , c , b , o , a );
+      add_eval_obj( c , d , o , b , a );
+      add_eval_obj( b , o , d , c , a );
+      add_eval_obj( o , b , c , d , a );
+      add_eval_obj( d , a , b , o , c );
+      add_eval_obj( a , d , o , b , c );
+      add_eval_obj( b , o , d , a , c );
+      add_eval_obj( o , b , a , d , c );
     }
   }
   
@@ -323,26 +324,26 @@ void Print_dotsil::get_poss_eval(Bases base)
 void eval_obj::swap_tsil_to_tarcer_V(string &a,string &b,string &c, string &d)
 {
   string a_tmp = a, b_tmp = b, c_tmp = c, d_tmp = d;
-  d = a_tmp;
-  a = b_tmp;
+  a = d_tmp;
+  b = a_tmp;
   c = c_tmp;
-  b = d_tmp;
+  d = b_tmp;
 }
 
 
 
-void eval_obj::add_integral(string type,string tsil_id, string x, string y, string z, string u, string v)
+void eval_obj::add_integral(string type,string tsil_id, string a, string b, string c, string d, string e)
 {
   if (type == "V")
   {
    //cout << "--------------" << endl;
    //cout << "adding the integral (original) " << type << "  " << x << " "<< y << " "  << z << " " << u << " " << v << endl;
-   swap_tsil_to_tarcer_V(x,y,z,u);
+   swap_tsil_to_tarcer_V(a,b,c,d);
    //cout << "adding the integral (TARCER) " << type << "  " << x << " "<< y << " "  << z << " " << u << " " << v << endl;
   //cout << "--------------" << endl;
   }
 
-  Bases base(type, x, y, z, u ,v);
+  Bases base(type, a, b, c, d, e);
   
   base.short_name = tsil_id;
   integrals.push_back(base);
@@ -358,17 +359,19 @@ std::vector<Bases> eval_obj::get_integrals(std::vector<string> masses_input)
   
   add_integral("F","M", x, y, z, u ,v);  // Master integral -- M in TSIL
   
+  
+  
   add_integral("V","Uzxyv", z, x, y, v); // using TARCER definition of V -- U in TSIL
   // this is a TSIL type not a FA type, need to convert //  in TARCER notation this is V x  v  y  z
   
   add_integral("V","Uuyxv", u, y ,x, v);
-  /*add_integral("V","Uxzuv", x, z ,u, v);
+  add_integral("V","Uxzuv", x, z ,u, v);
   add_integral("V","Uyuzv", y, u, z, v);
   // switch last two arguments due to symmetry
   add_integral("V","Uzxvy", z, x, v, y);
   add_integral("V","Uuyvx", u, y ,v, x);
   add_integral("V","Uxzvu", x, z ,v, u);
-  add_integral("V","Uyuvz", y, u, v, z);*/
+  add_integral("V","Uyuvz", y, u, v, z);
   
   // T integrals
   
