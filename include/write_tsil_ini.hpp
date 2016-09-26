@@ -23,7 +23,6 @@ class eval_obj
   // this object encodes a TSIL_EVALUATE call
 
   std::vector<Bases> integrals;
-  std::vector<string> masses;
   vector<bool> check_vec; // what required basis integrals does this statement fufill
   bool check_vec_evaluated = false;
 
@@ -47,10 +46,10 @@ public:
     
   eval_obj(string x, string y, string z, string u, string v) : x(x), y(y), z(z), u(u), v(v) {}
 
-  std::vector<Bases> get_integrals(std::vector<string> masses_input);
+  std::vector<Bases> get_integrals();
   void add_integral(string type, string short_name, string x, string y = " ", string z = " ", string u = " ", string v = " ");
 
-  std::vector<bool> get_check_vec(vector<string> names, std::map<std::string, Bases> base_map,std::vector<string> masses_input);
+  std::vector<bool> get_check_vec(vector<string> names, std::map<std::string, Bases> base_map);
   void swap_tsil_to_tarcer_V(string &a,string &b,string &c, string &d);
 };
 

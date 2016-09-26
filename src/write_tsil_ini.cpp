@@ -58,8 +58,7 @@ void Print_dotsil::print_to_file(ofstream &myfile)
     get_poss_eval(base_map[names[i]]);
   }
   
-  
-  cout << "number of TSIL evaluate calls required before optimisation = " << eval_count << endl;
+  cout << "number of full TSIL evaluate calls required before optimisation = " << eval_count << endl;
   V_check_vec.resize(eval_vec.size());
   // remove all integrals for which duplicates is less than 1
   vector<int>  sum;
@@ -69,7 +68,7 @@ void Print_dotsil::print_to_file(ofstream &myfile)
   int status=0;
   for (unsigned int i = 0; i<eval_vec.size();i++)
   {
-    vector<bool> check_vec = eval_vec[i].get_check_vec(names, base_map,masses);
+    vector<bool> check_vec = eval_vec[i].get_check_vec(names, base_map);
     V_check_vec[i]=check_vec;
     status=(float(i)/eval_vec.size())*100;
     cout<< "\r" << "sorting integrals . . . " << status << "% complete ";
@@ -114,12 +113,12 @@ start:;
   }
   
   
-  cout << "number of TSIL evaluate calls required after optimisation = " << eval_vec.size() << endl;
+  cout << "number of full TSIL evaluate calls required after optimisation = " << eval_vec.size() << endl;
   
   // print out matrix of check vecs that are remaining
   
   eval_obj eo_tmp_test = eval_vec[0];
-  vector<bool> check_vec_tmp_test = eo_tmp_test.get_check_vec(names, base_map,masses);
+  vector<bool> check_vec_tmp_test = eo_tmp_test.get_check_vec(names, base_map);
   
 #ifdef DEBUG
   cout << "Size of names = " << names.size() << endl;
@@ -137,7 +136,7 @@ start:;
   for (unsigned int i = 0; i<eval_vec.size();i++)
   {
     eval_obj eo_tmp = eval_vec[i];
-    vector<bool> check_vec_tmp = eo_tmp.get_check_vec(names, base_map,masses);
+    vector<bool> check_vec_tmp = eo_tmp.get_check_vec(names, base_map);
     
     for (unsigned int j = 0; j<check_vec_tmp.size();j++)
     {
@@ -216,7 +215,7 @@ void Print_dotsil::print_eval_obj(ofstream &myfile,eval_obj &eo, vector<int> &to
   myfile << "TSIL_SetParameters (&bar," << eo.x << "2, " << eo.y << "2, " << eo.z << "2 , " << eo.u << "2 , " << eo.v  << "2, Q2);" << endl;
   myfile << "TSIL_Evaluate (&bar, s);" << endl;
   
-  vector<bool> check_vec = eo.get_check_vec(names, base_map,masses);
+  vector<bool> check_vec = eo.get_check_vec(names, base_map);
   
   for (unsigned int i=0;i<names.size();i++)
   {
@@ -297,10 +296,8 @@ void eval_obj::add_integral(string type,string tsil_id, string a, string b, stri
 }
 
 
-std::vector<Bases> eval_obj::get_integrals(std::vector<string> masses_input)
+std::vector<Bases> eval_obj::get_integrals()
 {
-  masses.clear();
-  masses = masses_input;
   integrals.clear();
   
   // F (TARCER) / M (TSIL) integral
@@ -361,12 +358,12 @@ std::vector<Bases> eval_obj::get_integrals(std::vector<string> masses_input)
 }
 
 
-std::vector<bool> eval_obj::get_check_vec(vector<string> names, std::map<std::string, Bases> base_map,std::vector<string> masses_input)
+std::vector<bool> eval_obj::get_check_vec(vector<string> names, std::map<std::string, Bases> base_map)
 {
   if (check_vec_evaluated){return check_vec;}
   else
   {
-    vector<Bases> basis_objects = get_integrals(masses_input);
+    vector<Bases> basis_objects = get_integrals();
     check_vec.clear();
     check_vec.resize(names.size());
     location.resize(names.size());

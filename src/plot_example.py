@@ -1,5 +1,15 @@
 #!/usr/bin/python
 
+# Mass Builder
+ 
+# James McKay
+# Sep 2016
+ 
+#--- plot_example.py ---
+ 
+# Simple routine to plot output from mass splittings example
+
+
 import numpy as np
 from numpy import *
 from matplotlib.pyplot import *

@@ -1,3 +1,17 @@
+/*
+ Mass Builder
+ 
+ James McKay
+ Sep 2016
+ 
+--- bases.cpp ---
+ 
+ The functions defined in this file deal with function related to the Bases object
+ which holds all the required information for a basis integral and the corresponding
+ coefficient
+*/
+
+
 #include "bases.hpp"
 #include "utils.hpp"
 
@@ -215,7 +229,7 @@ void format_coeff(std::map <std::string, Bases > &base_map, std::vector<std::str
   int nb = bases_names.size();
   int nm = masses.size();
 
-  // deal with TAI and TBI objects (should extend to deal with all possible)
+  // deal with TAI and TBI objects that frequently appear in the coefficients
   string from="",to="";
 
   for (int k = 0; k<nb ; k++)

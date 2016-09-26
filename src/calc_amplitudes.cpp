@@ -1,17 +1,16 @@
 /*
- Mass Builder - the missing link in automated two-loop self energy calculations
- Please refer to the documentation for details or the readme.txt for simple run instructions
+ Mass Builder 
  
- Last edited 31/09/16
  James McKay
+ Aug - Sep 2016
  
  --- calc_amplitudes.cpp ---
  
- generate mathematica scripts to compute all coefficients and find required basis integrals
- also includes functions for sending FeynArts diagrams directory to pdf in the folder FAdiagrams
+ This file contains the main routine for calling FeynArts, FeynCalc and TARCER via
+ generated Mathematica scripts, followed by sorting this output and forming further output
+ in the form of coefficient * basis_integral.
  
- run ./mass_builder -g <model_name> after to generate code and ./mass_builder -e input.txt to evaluate
- 
+  This file also includes functions for sending FeynArts diagrams directory to pdf in the folder FAdiagrams
  */
 
 #include "calc_amplitudes.hpp"
@@ -20,8 +19,6 @@
 //#define DEBUG
 using namespace std;
 using namespace utils;
-
-
 
 
 bool Calc_amplitudes::calc_diagram(Options options)
@@ -37,7 +34,6 @@ bool Calc_amplitudes::calc_diagram(Options options)
   cout << "calculating diagram " << diagram << " for particle " << particle << " in model " << model << endl;
   if (options.counter_terms == true) { cout << "using counter terms"<< endl;}
   
-  
   const char *ext = ".txt";
   string underscore = "_";
   string blank = "";
@@ -47,13 +43,9 @@ bool Calc_amplitudes::calc_diagram(Options options)
   particle =  part_name_simple(particle_full);
   // edit particle name to a safe string
   
-  
-  
   string tag="";
   if (options.counter_terms) {tag = particle + "_" + diagram + "_" + to_string(loop_order)+"c";}
   else {tag = particle + "_" + diagram + "_" + to_string(loop_order);}
-  
-  
   
   int n = 0;
   vector<std::string> output0, output1,output2;
@@ -65,26 +57,16 @@ bool Calc_amplitudes::calc_diagram(Options options)
   const char *file_masses = c_file_masses.c_str();
   
   
-  get_data(A, n,file_masses);
-  
+  get_data(A, n, file_masses);
   
   string s_cwd(getcwd(NULL,0));
   
-  
-  
   output0.resize(pow(n,5));
-  
-  
-  
-  
-  
   
   vector<string> masses_input,id_input;
   int na;
   get_data(masses_input,id_input,na,file_masses);
   std::map<std::string, Bases> base_map = set_bases(masses_input, id_input);
-  
-  
   
   vector<string> bases_names = extract_keys(base_map);
   
@@ -97,8 +79,6 @@ bool Calc_amplitudes::calc_diagram(Options options)
     cout << "masses values are " << base_temp.e1 << " " << base_temp.e2 << " " << base_temp.e3 << " " << base_temp.e4 << " " << base_temp.e5 << " " << endl;
   }
 #endif
-  
-  
   
   ofstream myfile;
   myfile.open ("output/stage_3.m");
@@ -113,9 +93,6 @@ bool Calc_amplitudes::calc_diagram(Options options)
   <<"Print[\"----------- The self energy is ---------- = \"]\n"
   <<"Print[SEn]\n"
   <<"Print[\"-------------------- = \"]"<< endl;
-  
-  
-  
   
   
   print_math_basis(base_map,myfile, "SEn");
@@ -141,8 +118,6 @@ bool Calc_amplitudes::calc_diagram(Options options)
   else system("./output/stage_3.m  >/dev/null");
 #endif
   
-  
-  
   vector<std::string> output_string, coeff_new;
   int temp_int = 0;
   
@@ -167,8 +142,6 @@ bool Calc_amplitudes::calc_diagram(Options options)
   utils::print_math_header(myfile_stage6b);
   myfile_stage6b<<"Get[\"" << s_cwd <<"/output/"<< prevb << "]\n"
   <<"Print[SEn]"<< endl;
-  
-  
   
   print_math_basis(reduced_base_map,myfile_stage6b, "SEn");
   
@@ -220,21 +193,13 @@ bool Calc_amplitudes::calc_diagram(Options options)
   
   
   
-  
-  
-  
-  
 #ifdef RUN_ALL
   system("chmod +x output/stage_6b.m ");
   if(options.verbose) system("./output/stage_6b.m ");
   else system("./output/stage_6b.m  >/dev/null ");
 #endif
   
-  
   n = 0;
-  
-  
-  
   vector<std::string> output_string_prod, coeff_new_prod;
   std::map <std::string, Bases > base_map_prod;
   std::map <std::string, Bases > reduced_base_map_copy=reduced_base_map;
@@ -245,9 +210,7 @@ bool Calc_amplitudes::calc_diagram(Options options)
   string c_file_integrals4 = file_integrals4_tmp + blank + ext;
   const char *file_integrals4 = c_file_integrals4.c_str();
   
-  
   get_data(output_string_prod, coeff_new_prod, temp_int,file_integrals4,true); // file_integrals2 defined earlier, same file name
-  
   
   if (temp_int == 0)
   {
@@ -273,12 +236,8 @@ bool Calc_amplitudes::calc_diagram(Options options)
     
   }
   
-  
-  
   ofstream myfile_stage8b;
   myfile_stage8b.open ("output/stage_8b.m");
-  
-  
   
   prevb = "stage_3.mx\"";
   utils::print_math_header(myfile_stage8b);
@@ -307,9 +266,6 @@ bool Calc_amplitudes::calc_diagram(Options options)
     }
   }
   myfile_stage8b << ";"<<endl;
-  
-  
-  
   
   myfile_stage8b << "diff = Simplify[SEn-SEnTrial]"<<endl;
   myfile_stage8b << "Print[\" --------------------------------------- \"]" <<endl;
@@ -350,16 +306,6 @@ bool Calc_amplitudes::calc_diagram(Options options)
   
   success = check_done();
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
   const char* basis_integrals_tmp = "/output/basis_integrals_"; // vector containing file names
   string c_basis_integrals = "models/" + model + basis_integrals_tmp + tag + ext;
   const char *basis_integrals = c_basis_integrals.c_str();
@@ -375,29 +321,10 @@ bool Calc_amplitudes::calc_diagram(Options options)
   
   output_1.close();
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
   ofstream diagram_list;
   diagram_list.open( "output/diagrams.txt", ios::out | ios::app );
   diagram_list << particle << " " << diagram << endl;
   diagram_list.close();
-  
-  
-  
-  
-  
   
   const char* coeff_integrals_tmp = "/output/coeff_integrals_"; // vector containing file names
   string c_coeff_integrals = "models/" + model +coeff_integrals_tmp + tag + ext;
@@ -415,7 +342,6 @@ bool Calc_amplitudes::calc_diagram(Options options)
   }
   
   // list of product coefficients in form "TSIL_COMPLEX name = coefficient"
-  
   // create simple containers for products
   
   std::map <std::string, Bases > prod_map = products_container(bases_names_prod);
@@ -453,10 +379,6 @@ bool Calc_amplitudes::calc_diagram(Options options)
   }
   
   
-  
-  
-  
-  
   //  SUMMATION
   
   
@@ -473,11 +395,6 @@ bool Calc_amplitudes::calc_diagram(Options options)
   {
     if (sum_integrals != 0 ) summation_out  << " + "<<reduced_bases_names[i]<< " * C"<<reduced_bases_names[i];
   }
-  
-  
-  
-  
-  
   for (unsigned int i = 0; i<reduced_prod_names.size();i++)
   {
     
@@ -487,35 +404,19 @@ bool Calc_amplitudes::calc_diagram(Options options)
     
   }
   
-  
-  
-  
-  
   summation_out << ";"<<endl;
   summation_out.close();
   
-  
-  // update available diagrams list
   update_avail_diagrams(options);
-  
-  
-  
-  
-  
   return success;
 }
 
 
 void draw_all_diagrams(Options options)
 {
-  
   string s_cwd(getcwd(NULL,0));
-  
-  
-  
   string particle = options.particle;
   string model = options.model;
-  
   
   ofstream myfile;
   myfile.open ("output/make_figures.m");
@@ -535,9 +436,6 @@ void draw_all_diagrams(Options options)
   if (options.verbose) system("./output/make_figures.m");
   else system("./output/make_figures.m  >/dev/null");
 #endif
-  
-  
-  
 }
 
 
@@ -555,8 +453,6 @@ void draw_diagrams(vector<std::string> particles, vector<std::string> diagrams, 
   utils::print_math_header(myfile);
   
   myfile <<"t12 = CreateTopologies[2, 1 -> 1, ExcludeTopologies -> Internal];\n"
-  //<<"chi0 = InsertFields[t12, {F[6]} -> {F[6]},InsertionLevel -> {Particles}, GenericModel -> Lorentz,Model -> \"MDM_tripletEWSB\"];\n"
-  //<<"chi1 = InsertFields[t12, {F[5]} -> {F[5]},InsertionLevel -> {Particles}, GenericModel -> Lorentz,Model -> \"MDM_tripletEWSB\"];\n"
   <<endl;
   
   
@@ -592,9 +488,6 @@ void draw_diagrams(vector<std::string> particles, vector<std::string> diagrams, 
   
   
 }
-
-
-// main routine to manage a diagram by diagram procedure
 
 
 void Calc_amplitudes::generate_figures(Options options)

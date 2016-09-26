@@ -1,3 +1,18 @@
+/*
+ Mass Builder
+ 
+ James McKay
+ Sep 2016
+ 
+--- utils.cpp ---
+
+This file contains functions used throughout the code to perform a range of
+tasks including reading from and writing to input/output streams, sorting
+lists of data and code generation
+
+*/
+
+
 #include "utils.hpp"
 
 namespace utils
