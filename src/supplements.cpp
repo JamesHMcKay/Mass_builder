@@ -37,6 +37,7 @@ namespace supplementary_code
   TSIL_COMPLEXCPP Bcw, Bcz ;
   TSIL_COMPLEXCPP  i=Power(-1,0.5);
   TSIL_REAL ma, mc, mw, mz ;
+  TSIL_REAL ma2,mc2,mw2,mz2;
   
   TSIL_REAL Pi,g2, tW, sw2, cw2, sw, cw , C,p,S2TW;
   
@@ -45,43 +46,58 @@ namespace supplementary_code
   
   TSIL_COMPLEXCPP dBwc,dBzc,dBca;
   
+    
+  TSIL_REAL dBds(double m, double ma, double p)
+  {
+    m = p;
+    return (1.0/m)+ (1.0/(2.0*m))*log( ma/m );
+  }
+  
+  
+  
+  
+  
   void DoTSIL_2(TSIL_REAL s,TSIL_REAL Q2)
   {
-    Aa = -i*TSIL_A_ (ma , Q2);
+    Aa = -i*TSIL_A_ (ma2 , Q2);
     
-    Ac = -i*TSIL_A_ (mc , Q2);
+    Ac = -i*TSIL_A_ (mc2 , Q2);
     
-    Aw = -i*TSIL_A_ (mw , Q2);
+    Aw = -i*TSIL_A_ (mw2 , Q2);
     
-    Az = -i*TSIL_A_ (mz , Q2);
+    Az = -i*TSIL_A_ (mz2 , Q2);
     
-    Bac = i*TSIL_B_ (ma, mc, s, Q2);
+    Bac = i*TSIL_B_ (ma2, mc2, s, Q2);
     
-    Bcw = i*TSIL_B_ (mc, mw, s, Q2);
+    Bcw = i*TSIL_B_ (mc2, mw2, s, Q2);
     
-    Bcz = i*TSIL_B_ (mc, mz, s, Q2);
+    Bcz = i*TSIL_B_ (mc2, mz2, s, Q2);
     
     Bwc = Bcw;
     Bzc = Bcz;
     Bca = Bac;
     
-    dBwc = i*TSIL_dBds_(mw,mc,s,Q2);
-    dBzc = i*TSIL_dBds_(mz,mc,s,Q2);
-    dBca = i*TSIL_dBds_(mc,ma,s,Q2);
+    dBwc = i*TSIL_dBds_(mw2,mc2,s,Q2);
+    dBzc = i*TSIL_dBds_(mz2,mc2,s,Q2);
+    dBca = i*dBds(mc2,ma2,s);
     
   }
   
   int init(Data data)
   {
-   /* mw= data.mw, mz = data.mz ,ma = data.ma, mc = data.MChi, g2=data.g1;
+  /*   mw= data.mw, mz = data.mz ,ma = data.ma, mc = data.MChi, g2=data.g1;
+     mw2 = pow(mw,2);
+     mz2 = pow(mz,2);
+     ma2 = pow(ma,2);
+     mc2 = pow(mc,2);
      tW = acos(mw/mz);
      sw2 = data.sw2,S2TW=data.S2TW, cw2 = data.cw2;
      sw = data.sw, cw = data.cw;
      C = TSIL_POW(g2,2)/(16.0L*PI*PI);
      i=Power(-1,0.5);
      Pi=PI;
-     TSIL_REAL p = data.MChi, Q2 =data.Q;
-     */
+     TSIL_REAL p = data.MChi, Q2 =data.Q;*/
+    
     DoTSIL_2( TSIL_POW(data.P,2),data.Q);
     return 0;
   }
@@ -130,7 +146,7 @@ namespace supplementary_code
   
   void Supplements::add_derivatives(Data &data)
   {
-    TSIL_REAL p = 1.0,M=1.0;//data.M_chi, M = data.M_chi;
+    TSIL_REAL p = data.P, M = data.P;
     init(data);
     TSIL_COMPLEXCPP SE_0 = (SigmaM_0(M) + M*SigmaK_0(M,p) )*( SigmaK_0(M,p) + 2.0L*TSIL_POW(M,2)*d_SigmaK_0(M,p)+2.0L*M*d_SigmaM_0(M));
     TSIL_COMPLEXCPP SE_1 =(SigmaM_1(M) + M*SigmaK_1(M,p) )*( SigmaK_1(M,p) + 2.0L*TSIL_POW(M,2)*d_SigmaK_1(M,p)+2.0L*M*d_SigmaM_1(M));
@@ -138,8 +154,8 @@ namespace supplementary_code
     data.SE_2["F5"] = data.SE_2["F5"]+real(SE_1);
     
     
-    //cout << "SE derivative 0 = " << SE_0<<endl;;
-    //cout << "SE derivative 1 = " << SE_1<<endl;;
+    cout << "SE derivative 0 = " << SE_0<<endl;;
+    cout << "SE derivative 1 = " << SE_1<<endl;;
     
   }
 }

@@ -1,12 +1,15 @@
-/* 
-
-The functions defined in this file add the ability to significantly reduce the number TSIL_Evaluate calls required during
-a self energy calculation by taking advantage of the symmetries between basis integrals in an entirely
-generic way
-
-Sep 2016
-
-*/
+/*
+ Mass Builder
+ 
+ James McKay
+ Sep 2016
+ 
+ --- write_tsil_ini.cpp ---
+ 
+ The functions defined in this file add the ability to significantly reduce the number TSIL_Evaluate calls required during
+ a self energy calculation by taking advantage of the symmetries between basis integrals in an entirely
+ generic way
+ */
 
 #include "write_tsil_ini.hpp"
 
@@ -45,12 +48,10 @@ void Print_dotsil::print_total(std::vector<int> total)
   cout << endl;
 }
 
-
-
 void Print_dotsil::print_to_file(ofstream &myfile)
 {
   cout << "basis integral sorting started" << endl;
-
+  
   get_masses();
   for (unsigned int i = 0; i<names.size();i++)
   {
@@ -77,29 +78,8 @@ void Print_dotsil::print_to_file(ofstream &myfile)
   status=100;
   cout<< "\r" << "sorting integrals . . . " << status << "% complete ";
   cout << "\n";
- 
- 
- // remove objects that have check_vec = 0 for all values // is this possible?
-  /*prestart:;
-  for (unsigned int j=0;j<eval_vec.size();j++)
-  {
-    vector<bool> tmp = V_check_vec[j];
-    bool zero = true;
-    for (unsigned int i=0;i<names.size();i++)
-    {
-      if (tmp[i]){ zero=false;}
-    }
-    if (zero)
-    {
-      eval_vec.erase(eval_vec.begin()+j);
-      V_check_vec.erase(V_check_vec.begin()+j);
-      goto prestart;
-    }
-  }
-  */
- 
   
-  start:;
+start:;
   
   vector<int> duplicates = get_duplicates();
   for (unsigned int j=0;j<eval_vec.size();j++)
@@ -135,13 +115,13 @@ void Print_dotsil::print_to_file(ofstream &myfile)
   
   
   cout << "number of TSIL evaluate calls required after optimisation = " << eval_vec.size() << endl;
-
+  
   // print out matrix of check vecs that are remaining
   
   eval_obj eo_tmp_test = eval_vec[0];
   vector<bool> check_vec_tmp_test = eo_tmp_test.get_check_vec(names, base_map,masses);
   
-  #ifdef DEBUG
+#ifdef DEBUG
   cout << "Size of names = " << names.size() << endl;
   cout << " -----------  check vectors are -----------  " << endl;
   for (unsigned int j = 0; j<names.size();j++)
@@ -149,7 +129,7 @@ void Print_dotsil::print_to_file(ofstream &myfile)
     cout << names[j] << " ";
   }
   cout << endl;
-  #endif
+#endif
   
   vector<int> total;
   total.resize(names.size());
@@ -162,32 +142,23 @@ void Print_dotsil::print_to_file(ofstream &myfile)
     for (unsigned int j = 0; j<check_vec_tmp.size();j++)
     {
       Bases base_tmp = base_map[names[j]];
-      #ifdef DEBUG
+#ifdef DEBUG
       if (base_tmp.type == "A"){cout << check_vec_tmp[j] << "  ";}
       else if (base_tmp.type == "B"){cout << check_vec_tmp[j] << "   ";}
       else if (base_tmp.type == "F"){cout << check_vec_tmp[j] << "      ";}
       else if (base_tmp.type == "V"){cout << check_vec_tmp[j] << "     ";}
       else if (base_tmp.type == "J" || base_tmp.type == "K"|| base_tmp.type == "T"){cout << check_vec_tmp[j] << "    ";}
       else {cout << check_vec_tmp[j] << " - ";}
-      #endif
+#endif
       if (check_vec_tmp[j]){ total[j] = 1; };
       
     }
-    #ifdef DEBUG
+#ifdef DEBUG
     cout << endl;
-    #endif
+#endif
   }
-  // print total line at bottom
-  #ifdef DEBUG
-  print_total(total);
-  #endif
-  
-  
-  
-  
   
   // print out TSIL evaluate statements
-  
   
   // do the lower dimensional functions first and set total[i]=2.
   for (unsigned int i = 0;i< names.size();i++)
@@ -208,24 +179,13 @@ void Print_dotsil::print_to_file(ofstream &myfile)
         string name_B = get_short_name(base_temp_B,mass_in,id_in);
         myfile << name_B << " = " << base_map[names[i]].short_name << ";" << endl;
       }
-      
-      
     }
   }
-  #ifdef DEBUG
-  print_total(total);
-  #endif
   for (unsigned int i = 0; i<eval_vec.size();i++)
   {
     eval_obj eo_tmp = eval_vec[i];
     print_eval_obj(myfile,eo_tmp,total);
   }
-  
-  #ifdef DEBUG
-  print_total(total);
-  #endif
-  
-    // do the lower dimensional functions first and set total[i]=2.
   for (unsigned int i = 0;i< names.size();i++)
   {
     string type = base_map[names[i]].type;
@@ -236,11 +196,9 @@ void Print_dotsil::print_to_file(ofstream &myfile)
     }
   }
   
-  #ifdef DEBUG
+#ifdef DEBUG
   print_total(total);
-  #endif
-  
-
+#endif
 }
 
 string Print_dotsil::coeff(string type)
@@ -288,9 +246,7 @@ void Print_dotsil::get_poss_eval(Bases base)
   string d = base.e4;
   string e = base.e5;
   string o = "blank";
-
   // the following are all the possible objects that could evaluate this basis integral
-  
   if (base.type == "V")
   {
     eval_count = eval_count +1;
@@ -308,16 +264,11 @@ void Print_dotsil::get_poss_eval(Bases base)
       add_eval_obj( o , b , a , d , c );
     }
   }
-  
   if (base.type == "F")
   {
     add_eval_obj( a, b, c, d, e);
     eval_count = eval_count +1;
   }
-  
-  
-
-
 }
 
 
@@ -336,13 +287,9 @@ void eval_obj::add_integral(string type,string tsil_id, string a, string b, stri
 {
   if (type == "V")
   {
-   //cout << "--------------" << endl;
-   //cout << "adding the integral (original) " << type << "  " << x << " "<< y << " "  << z << " " << u << " " << v << endl;
-   swap_tsil_to_tarcer_V(a,b,c,d);
-   //cout << "adding the integral (TARCER) " << type << "  " << x << " "<< y << " "  << z << " " << u << " " << v << endl;
-  //cout << "--------------" << endl;
+    swap_tsil_to_tarcer_V(a,b,c,d);
   }
-
+  
   Bases base(type, a, b, c, d, e);
   
   base.short_name = tsil_id;
@@ -354,16 +301,13 @@ std::vector<Bases> eval_obj::get_integrals(std::vector<string> masses_input)
 {
   masses.clear();
   masses = masses_input;
-  //reset integrals to a null vector
   integrals.clear();
   
-  add_integral("F","M", x, y, z, u ,v);  // Master integral -- M in TSIL
+  // F (TARCER) / M (TSIL) integral
+  add_integral("F","M", x, y, z, u ,v);
   
-  
-  
-  add_integral("V","Uzxyv", z, x, y, v); // using TARCER definition of V -- U in TSIL
-  // this is a TSIL type not a FA type, need to convert //  in TARCER notation this is V x  v  y  z
-  
+  // V (TARCER) / U (TSIL) integrals
+  add_integral("V","Uzxyv", z, x, y, v);
   add_integral("V","Uuyxv", u, y ,x, v);
   add_integral("V","Uxzuv", x, z ,u, v);
   add_integral("V","Uyuzv", y, u, z, v);
@@ -394,10 +338,11 @@ std::vector<Bases> eval_obj::get_integrals(std::vector<string> masses_input)
   add_integral("B","Byu",y,u);
   add_integral("B","Buy",u,y);
   
-  // "S" integrals are what we refer to as "J" integrals
-  
+  // TSIL "S" integrals are what we refer to as "J" integrals from TARCER
   add_integral("J","Svyz",v,y,z);
+  
   add_integral("J","Suxv",u,x,v);
+  
   // symmetries give:
   add_integral("J","Sxuv",x, u, v);
   add_integral("J","Suvx",u, v, x);

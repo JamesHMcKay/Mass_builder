@@ -84,11 +84,15 @@ Mass Builder can be obtained from
 https://github.com/JamesHMcKay/Mass_builder.git
 \end{lstterm}
 
-The first step is to run the configuration script to tell the program where your Mathematica kernel and TSIL installations are located.
+The first step is to run the configuration script to tell the program where your Mathematica kernel and TSIL installations are located, if using Linux this is
+\begin{lstterm}
+./scripts/config_linux.sh
+\end{lstterm}
+or
 \begin{lstterm}
 ./scripts/config.sh
 \end{lstterm}
-this will ask for the location of the Mathematica Kernal.  If using OSX the best option to try first is \lstinline{osx} (or in some rarer instances \lstinline{osx64}).  On a Linux system this is typically located in the path by default (not tested yet!), so try the \lstinline{math} shorted cut at this prompt.  If this path is incorrect, Mass Builder will compile but will not run as it can't access Mathematica.  The next prompt will ask for the folder in which the TSIL library and \lstinline{tsil_cpp.h} are located, this should be entered as the path to the folder without the \lstinline{/} at the end.  For example \lstinline{/Users/<user_name>/Programs/tsil-1.3}.
+for OS X users.  The configuration script will ask for the location of the Mathematica Kernal.  If using OSX the best option to try first is \lstinline{osx} (or in some rarer instances \lstinline{osx64}).  On a Linux system this is typically located in the path by default, so try the \lstinline{math} shorted cut at this prompt.  If this path is incorrect, Mass Builder will compile but will not run as it can't access Mathematica.  The next prompt will ask for the folder in which the TSIL library and \lstinline{tsil_cpp.h} are located, this should be entered as the path to the folder without the \lstinline{/} at the end.  For example \lstinline{/Users/<user_name>/Programs/tsil-1.3}.
 
 After configuration, build as normal using
 \begin{lstterm}
@@ -100,17 +104,17 @@ to compile the program.  The Mass Builder executable is now located in the root 
 
 \section{Quick start guide}
 
-In this section we give a minimalistic example to demonstrate the core features of this program and test the installation has been successful.  The example uses a simple scalar field theory with Lagrangian,
+This section provides a minimalistic example to demonstrate the core features of this program and test the installation has been successful.  The example uses a simple scalar field theory with Lagrangian,
 \begin{align}
 \mathcal{L} = -\frac{1}{2}m^2\phi^2 - \frac{g}{3!}\phi^3-\frac{\lambda}{4!}\phi^4
 \end{align}
-for which we provide a FeynArts model file and the necessary Mass Builder input files in the \lstinline{models/Scalar/} directory.  For using new models it is recommended to read through the full user guide in Section \ref{sec:user_guide} to understand all available features.
+for which I provide a FeynArts model file and the necessary Mass Builder input files in the \lstinline{models/Scalar/} directory.  For using new models it is recommended to read through the full user guide in Section \ref{sec:user_guide} to understand all available features.
 
 \subsection{Generate FeynArts diagrams}\label{generate_diagrams}
 
-When first approaching a problem involving radiative loop corrections having a visual list of the involved corrections is helpful.  In Mass Builder the number assigned to each radiative process, which we refer to as a \textit{diagram}, is useful information for the user to select which process to include in the calculation.  FeynArts has the capability to produce a Feynman diagram for each possible process given a model file, thus for a chosen model we call FeynArts and conveniently save this output into uniquely named Portable Document Format (\lstinline{.pdf}) files in the folder \lstinline{models/<model>/FA_diagrams/} (if this empty directory does not exist in your own model directory it must be created first).
+When first approaching a problem involving radiative loop corrections having a visual list of the involved corrections is helpful.  In Mass Builder the number assigned to each radiative process, or \textit{diagram}, is useful information for the user to select which process to include in the calculation.  FeynArts has the capability to produce a Feynman diagram for each possible process given a model file, thus for a chosen model we call FeynArts and conveniently save this output into uniquely named Portable Document Format (\lstinline{.pdf}) files in the folder \lstinline{models/<model>/FA_diagrams/} (if this empty directory does not exist in your own model directory it must be created first).
 
-For this example we will produce all one and two loop radiative corrections and counter term diagrams.  For this run mode we need to use the \lstinline{-f} flag (figures) and specify both the model and particle we are interested in.  This particle name must be as it appears in the FeynArts model file.  First we generate all two loop diagrams
+For this example I will produce all one and two loop radiative corrections and counter term diagrams.  For this run mode we need to use the \lstinline{-f} flag (figures) and specify both the model and particle we are interested in.  This particle name must be as it appears in the FeynArts model file.  First we generate all two loop diagrams
 \begin{lstterm}
 mkdir models/Scalar/FA_diagrams
 ./mass_builder -f -m Scalar -p S[1]
@@ -197,6 +201,7 @@ Additional flags requiring input
 -i  <list>
 -l <loop_order>
 Optional switches
+-o		optimise TSIL interface
 -c		evaluate counter terms
 -v		display Mathematica output during computation
 \end{lstterm}
@@ -211,7 +216,7 @@ All model specific input and output is stored in the directory \lstinline{models
 \item couplings.txt -- list of couplings
 \item diagrams.txt -- list of diagrams to compute
 \end{itemize}
-which are all stored in the directory \lstinline{models/models/}.  The output for each computed diagram will be stored in \lstinline{models/models/output/}, see section output for the details of these files.  For typical useage the contents of the \lstinline{output} directory is not necessary as this is an intermediate step between computation of the amplitudes and the generated C++ interface to TSIL.
+which are all stored in the directory \lstinline{models/models/}.  The output for each computed diagram will be stored in \lstinline{models/models/output/}, see section output for the details of these files.  For typical usage the contents of the \lstinline{output} directory is not necessary as this is an intermediate step between computation of the amplitudes and the generated C++ interface to TSIL.
 
 The file \lstinline{masses.txt} can contain either one or two columns.  The first, and required, column must contain a list (in no particular order) of the masses exactly as they appear in the FeynArts model file.  The second column, which is highly recommended, should contain a, preferably single character, identifier for each mass in the corresponding row.  For example a typical masses file would be
 \begin{lstterm}
@@ -260,7 +265,7 @@ where \lstinline{tag} encodes the particle name, diagram and loop order (and if 
 
 The amplitudes are calculated one diagram at a time using FeynArts, FeynCalc and TARCER which is run externally to C++ using the Mathematica kernel with automatically generated scripts.  The goal in this part of the process is to determine the basis integrals which have non-zero coefficients, and what these coefficients are.  This separation into \textit{basis integrals} and \textit{coefficients} is the best way to determine which integrals are required in the final numerical calculation and to produce readable and tidy code.
 
-The algorithm begins by evaluating the amplitude $\A$, we then compute the coefficient of every possible basis integral $\{\B_1,\B_2,.\ .\ .\ \}$.  For the non-zero coefficients, $\{\C_1,\C_2, .\ .\ .\  \}$ we then construct a trail amplitude of the form $\A_{trial} = \C_1 * \B_1 + \C_2 * \B_2 + .\ .\ .\ $ .  We then take the difference $\A - \A_{trial}$ and check for basis integrals with non-zero coefficients, this will find cross terms that have been double counted in the first step.  From within the set of basis integrals with a non-zero coefficient at this stage, $\{\B_i,\B_j,.\ .\ .\ \}$ , we create new ``basis integrals" $\B_{ij}  B_i*B_j$ which appears to Mathematica as one object.  We then construct our final trial amplitude as
+The algorithm begins by evaluating the amplitude $\A$, I then compute the coefficient of every possible basis integral $\{\B_1,\B_2,.\ .\ .\ \}$.  For the non-zero coefficients, $\{\C_1,\C_2, .\ .\ .\  \}$ I then construct a trail amplitude of the form $\A_{trial} = \C_1 * \B_1 + \C_2 * \B_2 + .\ .\ .\ $ .  I then take the difference $\A - \A_{trial}$ and check for basis integrals with non-zero coefficients, this will find cross terms that have been double counted in the first step.  From within the set of basis integrals with a non-zero coefficient at this stage, $\{\B_i,\B_j,.\ .\ .\ \}$ , I create new ``basis integrals" $\B_{ij}  B_i*B_j$ which appears to Mathematica as one object.  The final amplitude is constructed as
 \begin{align*}
  \A_{trial}\ = \ & \ \ \C_1 * \B_1 + \C_2 * \B_2 + .\ .\ .\ \\ 
   &-\frac{1}{2} \C_{12} * B_1*B_2  -\frac{1}{2} \C_{21} * B_2*B_1 - .\ .\ .\ \\
@@ -270,7 +275,7 @@ where $ \C_{ij}$ is the coefficient of  $\B_i*\B_j$ in the original amplitude $\
 
 \subsubsection{Basis integral labelling}
 
-A priori we have no information on the basis integrals required for a particular problem.  For an amplitude involving multiple particles there are on order hundreds of possible non-degenerate permutations of basis integrals.  Thus, when an amplitude is evaluated in Mathematica we have no generic way of identifying the integrals we need to use to reconstruct the result in the form integral times coefficient.  So we begin with all possible non-degenerate basis integrals, and quickly determine which ones have a non-zero coefficient in the resulting amplitude.  The computational time required for this process is negligible and is achieved through the use of the \lstinline{Coefficient[ Amplitude, Integral ] } Mathematica routine.  Therefore we use this ``brute force" method to reliably determine the basis integrals we require without any notable computational penalty.
+A priori we have no information on the basis integrals required for a particular problem.  For an amplitude involving multiple particles there are on order hundreds of possible non-degenerate permutations of basis integrals.  Thus, when an amplitude is evaluated in Mathematica we have no generic way of identifying the integrals we need to use to reconstruct the result in the form integral times coefficient.  So I begin with all possible non-degenerate basis integrals, and quickly determine which ones have a non-zero coefficient in the resulting amplitude.  The computational time required for this process is negligible and is achieved through the use of the \lstinline{Coefficient[ Amplitude, Integral ] } Mathematica routine.  Therefore we use this ``brute force" method to reliably determine the basis integrals we require without any notable computational penalty.
 
 During this procedure, and in the resultant generated C++ code, we need a unique identifier for each basis integral.  However, if the input masses are strings of more than one character, for example \lstinline{mHp}, \lstinline{mA0}, and \lstinline{mW}, then the obvious way to name the basis integral, $F($\lstinline{mHp},\lstinline{mHp},\lstinline{mA0},\lstinline{mA0},\lstinline{mW}$)$ would be \lstinline{F_mHpmHpmA0mA0mW} which along with being difficult to read can led to ambiguous labelling of integrals.  For example if one choose the mass labelling to be $(H^-, H^0, \chi ) = ($\lstinline{mHm},\lstinline{mH},\lstinline{m}$)$ then we easily have the degeneracy $J($\lstinline{mH},\lstinline{m},\lstinline{mHm}$) =  $\lstinline{J_mHmmHm}$ = J($\lstinline{mHm},\lstinline{mH},\lstinline{m}$)$.  When dealing with hundreds of possible permutations it is important to avoid such possibilities, however unlikely they may seem.
 
@@ -298,7 +303,33 @@ This set up significantly simplifies the entire algorithm, as we no longer need 
 
 \subsection{The TSIL interface}
 
-The generated C++ interface to TSIL is organised on a diagram by diagram basis.  However, during the generation of this code the basis integrals required for all diagrams in the chosen set are amalgamated and reduced to a minimalistic set.  This set is evaluated in one function and made globally available \footnote{Taking account of symmetries can reduce the number of basis integral evaluations required, we already have a routine available to automatically determine the optimum set of integrals for one family of these integrals, and this will be included with the final version of Mass Builder.}
+The generated C++ interface to TSIL is organised on a diagram by diagram basis.  However, during the generation of this code the basis integrals required for all diagrams in the chosen set are amalgamated and reduced to a minimalistic set.  This set is evaluated in one function and made globally available to the rest of the functions in the script.
+
+The basis integrals are evaluated using the TSIL libraries.  The function used, and the corresponding computation time required, depends on the integral required.  In the most general case the \lstinline{TSIL_Evaluate} function is called with 5 mass parameters which will evaluate most of the possible basis integrals.  This is also the most time consuming method, however it is required for any of the $M$ or $V$ integrals.  Therefore, when we need to call this function we should make sure to also extract any other basis integrals we require to minimise the number of calls required.
+
+In general the possible basis integrals available from each \lstinline{TSIL_Evaluate} call forms a set of over 30 elements, owing largely to the symmetries between integrals, each of which is extracted using a unique identifying string.  As there is no additional computation overhead for extracting these integrals once they are already calculated, if we \textit{must} use \lstinline{TSIL_Evaluate} for a $M$ or $V$ integral, then we should simultaneously extract all other required integrals that are useful for our problem.
+
+While each call to \lstinline{TSIL_Evaluate} can compute over 30 integrals, conversely for each basis integral there are multiple arguments that can be passed to the evaluate routine to get the same integral out.  Thus we want to find the optimal parameters to pass to  \lstinline{TSIL_Evaluate} to get the maximum number of useful integrals out of it.
+
+We provide a class capable of taking an input list of basis integrals, and providing a correctly formatted set of calls to the TSIL libraries which minimises the computational time required.  This significantly increases the time required to generate the code (up to a couple of minutes), due to the huge sorting problem involved, yet will save time if many evaluate calls are going to be required.  To invoke this option the flag \lstinline{-o} must be passed along with the generate call.  An example of generated output is
+
+\begin{lstcpp}
+TSIL_SetParameters (&bar,mc2, ma2, ma2 , mc2 , mc2, Q2);
+TSIL_Evaluate (&bar, s);
+Fcaacc =   TSIL_GetFunction (&bar,"M");
+Jcaa   =   TSIL_GetFunction (&bar,"Svzy");
+Jccc   =   TSIL_GetFunction (&bar,"Svxu");
+Taca   = - TSIL_GetFunction (&bar,"Tzvy");
+Tcaa   = - TSIL_GetFunction (&bar,"Tvzy");
+Tccc   = - TSIL_GetFunction (&bar,"Tvux");
+Vaacc  = - TSIL_GetFunction (&bar,"Uyuvz");
+Vcaac  = - TSIL_GetFunction (&bar,"Uyuzv");
+Vccca  = - TSIL_GetFunction (&bar,"Uxzvu");
+\end{lstcpp}
+where all integrals evaluated here have been explicitly requested by the user input.
+compared to the naive case where each integral is evaluated one at a time using the full 5 parameter input when necessary or alternative faster functions when possible, which is computationally less effecient in any case but quicker to generate.
+
+The numerical evaluation of these integrals via the \lstinline{TSIL_Evaluate} function is the most time consuming part of the self energy calculation,
 
 The generated code, located in \lstinline{src/self_energy.cpp} takes the following structure
 \begin{lstcpp}
@@ -342,6 +373,9 @@ Along with the above source code a header file, \lstinline{data.hpp}, is also ge
 Before code is generated \lstinline{self_energy.cpp} is a skeleton code necessary for the rest of Mass Builder to compile successfully.  If \lstinline{self_energy.cpp} or \lstinline{data.hpp} becomes corrupted and the rest of the code no longer compiles, which is likely if \lstinline{couplings.txt} is missing a variable name, then the skeleton code can be restored by simply running scripts/config.sh again.
 
 The diagrams available to be included in the generated TSIL interface are registered in \lstinline{models/<model>/output/avail_diagrams.txt} which is updated each time a new diagram is computed (it is also checked for duplicate entries, so no diagram, particle, and type combination appears twice).  However, if using the \lstinline{-i} option with the generate code mode, then it is possible for duplicate diagrams to appear (we choose not to override this possibility to avoid unnecessary interference with user input).
+
+
+
 
 
 
@@ -390,7 +424,11 @@ python src/plot_example.py
 It is possible, although not recommend and tedious, to construct a TSIL interface without using Mathematica at all.  The input may be directly written into \lstinline{models/output/} in the required form.  However caution must be taken to ensure all basis integrals are considered.  When the amplitude calculation algorithm is run, only a certain set of basis integrals are considered due to symmetries.  When the code is generated, only these basis integrals are searched for in the input files, using the same procedure to construct a comparison set and thus correctly read the short name formats.  For example, \lstinline{Jxyz} may be expected by the code generation routine but \lstinline{Jxzy} may not be and thus would not be identified and handled correctly.
 
 
+\section{Conclusion}
 
+I introduce a program designed to organise and simplify the use of two-loop tools for the calculation of self energies.  Although entirely an interface tool providing no new calculations, this program makes the calculation of multiple two-loop diagrams an accessible task even on modest computing set ups.
+
+The TSIL interface provides an automated method of organising basis integrals into sets which can be evaluated using a single TSIL call, a task near impossible by hand, thus taking advantage of the power of the TSIL libraries to speed up the calculation of the amplitude.  Even as a standalone feature, this is useful to those who have already obtained a list of required basis integrals from elsewhere and intend to write their own TSIL interface.
 
 
 \bibliography{../../../Papers/library}{}

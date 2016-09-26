@@ -13,9 +13,6 @@ void Options::set_type(std::string type)
   }
 }
 
-
-
-
 void User_input::call_user_guide()
 {
   utils::user_input_guide();
@@ -28,6 +25,7 @@ void User_input::user_interface()
   if (find_string("-c")){ options.counter_terms = true;}
   if (find_string("-v")){ options.verbose = true;}
   if (find_string("-o")){ options.optimise = true;}
+  if (find_string("-detail")){ options.detailed_output = true;}
   if (find_string("-a")){ options.run_mode = 1;}
   if (find_string("-l"))
   {
@@ -52,21 +50,17 @@ void User_input::user_interface()
     if (find_and_read_string("-p",input)){options.particle = input;}
   }
 
-
   if (find_string("-d"))
   {
     string input = "diagram number";
     if (find_and_read_string("-d",input)){options.diagram = input;}
   }
 
-
   if (find_string("-i"))
   {
     string input = "a diagram list";
     if (find_and_read_string("-i",input)){options.input_list = input;}
   }
-
-
 
   if (find_string("-g"))
   {
@@ -77,14 +71,13 @@ void User_input::user_interface()
     }
   }
 
-
   if (find_string("-f")){ options.run_mode = 5;}
   if (find_string("-e")){ options.run_mode = 6;}
 
-
-
-  //options.print_options();
-
+  #ifdef DEBUG
+  options.print_options();
+  #endif
+  
 }
 
 

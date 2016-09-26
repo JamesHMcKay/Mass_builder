@@ -17,6 +17,7 @@ public:
 bool counter_terms = false;
 bool verbose = false;
 bool optimise = false;
+bool detailed_output = false;
 int loop_order = 2;
 string particle;
 string model;

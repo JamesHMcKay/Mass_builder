@@ -1,6 +1,5 @@
 /*
- Mass Builder - the missing link in automated two-loop self energy calculations
- Please refer to the documentation for details or the readme.txt for simple run instructions
+ Mass Builder
  
  James McKay
  
@@ -8,9 +7,8 @@
  
  Creates the C++ interface to TSIL
  
- make must be run in the build directory after this program has been run
- 
- */
+ make must be run in the build directory after this program has been run 
+*/
 
 #include "utils.hpp"
 #include "generate_code.hpp"
@@ -37,50 +35,21 @@ namespace Generate_code
     time_t t = time(0);   // get time now to print into generated files
     struct tm * now = localtime( & t );
     
-    
-    // run a shell script to check if generator files exists, backup or create
-    
-    // we will take data from output/
-    
-    //  to start with we will create the functions.txt file
-    
-    
-    string particle_name = ""; // hold this fixed, produce one cpp for each particle
+    string particle_name = "";
     string particle_name_reduced = "";
     string tag = "empty";
-    
     
     string coeff_integrals_tmp = "/output/coeff_integrals"; // vector containing file names
     const char* coeff_products_tmp = "/output/coeff_products"; // vector containing file names
     const char* summation_tmp = "/output/summation"; // vector containing file names
     
-    
-    
-    //const char* coeff_integrals = coeff_integrals_tmp + tag + extn;
-    
-    
     const char *ext = ".txt";
     string underscore = "_";
     
-    
-    
-    
     string model = options.model;
-    
-    
-    
     
     ofstream functions;
     functions.open ("output/functions.txt");
-    
-    
-    
-    // need to get list of diagrams from a data file
-    
-    
-    
-    
-    
     
     string c_file_diagrams = "";
     
@@ -89,30 +58,20 @@ namespace Generate_code
     const char *file_diagrams = c_file_diagrams.c_str();
     
     
-    
-    
-    
     vector<std::string> tags;
     vector<std::string> particle_names,levels;
     string level;
-    int nd; // number of diagrams, length of diagram_number vector
+    int nd; // number of diagrams
     
     cout << "input list = " << file_diagrams << endl;
     
     get_data(particle_names,tags,levels, nd,file_diagrams);
     
-    
-    
-    
-    
     for (int d = 0; d<nd;d++)
     {
-      //if (particle_names[d] == particle_name_reduced)
-      //{
       level = levels[d];
       tag = tags[d];
       particle_name = particle_names[d];
-      
       
       particle_name =  part_name_simple(particle_names[d]);
       
@@ -124,84 +83,62 @@ namespace Generate_code
       const char *coeff_products = c_coeff_products.c_str();
       const char *summation = c_summation.c_str();
       
-      
-      
-      
-      
       functions<< "TSIL_COMPLEXCPP  diagram"<<"_"<< particle_name << "_" << tag << "_" << level << "()" <<endl;
       functions<< "{" << endl;
       
-      
-      
       ifstream infile(coeff_integrals);
-      
       
       string content = "";
       int i;
       
-      
-      for(i=0 ; infile.eof()!=true ; i++) // get content of infile
+      for(i=0 ; infile.eof()!=true ; i++)
       {
         content += infile.get();
       }
       i--;
-      content.erase(content.end()-1);     // erase last character
-      
+      content.erase(content.end()-1);
       
       infile.close();
       
-      functions << content;                 // output
-      
+      functions << content;
       
       string content2 = "";
       
       ifstream infile2(coeff_products);
       
-      for(i=0 ; infile2.eof()!=true ; i++) // get content of infile
+      for(i=0 ; infile2.eof()!=true ; i++)
       {
         content2 += infile2.get();
       }
       i--;
-      content2.erase(content2.end()-1);     // erase last character
-      
+      content2.erase(content2.end()-1);
       
       infile2.close();
       
-      functions << content2;                 // output
+      functions << content2;
       
       string content3 = "";
       
       ifstream infile3(summation);
       
-      for(i=0 ; infile3.eof()!=true ; i++) // get content of infile
+      for(i=0 ; infile3.eof()!=true ; i++)
       {
         content3 += infile3.get();
       }
       i--;
-      content3.erase(content3.end()-1);     // erase last character
+      content3.erase(content3.end()-1);
       
       
       infile3.close();
       
-      functions << content3;                 // output
+      functions << content3;
       functions << "}" << endl;
       functions << "     " << endl;
       functions << "     " << endl;
       functions << "     " << endl;
-      
-      
-      /// end for loop over diagrams
-      //}
     }
     
-    
-    
     functions.close();
-    
-    
-    // -------------  now create the DoTSIL function, this should be done each time this is run to avoid duplicates -------------
-    
-    // need to know what what basis integrals are required, these are contained in the lists "integrals_tag.txt"
     
     
     int ni_total = 0;
@@ -215,17 +152,13 @@ namespace Generate_code
       
       level = levels[d];
       
-      
-      
       const char* file_integrals_tmp = "/output/basis_integrals"; // vector containing file names
       string c_file_integrals = "models/" + model + file_integrals_tmp + underscore + particle_name + underscore + tag + underscore + level + ext;
       const char *file_integrals = c_file_integrals.c_str();
       
       
       vector<std::string> integrals_temp;
-      int ni; // number of diagrams, length of diagram_number vector
-      
-      
+      int ni; // number of diagrams
       get_data(integrals_temp, ni,file_integrals);
       
       integrals.resize(ni_total+ni);
@@ -245,7 +178,7 @@ namespace Generate_code
     sort(integrals.begin(),integrals.end());
     integrals.erase( unique( integrals.begin(), integrals.end() ), integrals.end() );
     
-    string c_file_masses = "models/" + model+"/masses.txt";  // need to make this model independent
+    string c_file_masses = "models/" + model+"/masses.txt";
     const char *file_masses = c_file_masses.c_str();
     
     
@@ -253,12 +186,6 @@ namespace Generate_code
     int na;
     get_data(masses_input,id_input,na,file_masses);
     std::map<std::string, Bases> base_map = set_bases(masses_input, id_input);
-    
-    
-    
-    
-    
-    
     
     
     // MAIN HEADER OF FILE
@@ -271,8 +198,6 @@ namespace Generate_code
     
     ofstream main_output;
     main_output.open (main_output_file);
-    
-    
     
     /* TSIL_PATH */ std::string TSIL = "/Users/jamesmckay/Documents/Programs/tsil-1.3/tsil_cpp.h";  
     
@@ -342,17 +267,9 @@ namespace Generate_code
         base_temp_B.e1 = base_temp.e2;
         base_temp_B.e2 = base_temp.e1;
         string name_B = get_short_name(base_temp_B,masses_input, id_input);
-        //integrals.push_back(name_B);
         main_output <<"TSIL_COMPLEXCPP " << name_B << ";" << endl;
       }
     }
-    
-    
-    
-    
-    
-    
-    
     
     main_output << "TSIL_COMPLEXCPP  i;\n";
     vector<std::string> masses;
@@ -423,22 +340,13 @@ namespace Generate_code
           string name_B = get_short_name(base_temp_B,masses_input, id_input);
           integrals.push_back(name_B);
           main_output << name_B << " = " << name << ";" << endl;
-          
         }
-        
         main_output << "\n";
       }
     
     }
     
-    
-    
     main_output << "}"  << endl;
-    
-    
-    
-    
-    
     main_output << "\n";
     main_output << "\n";
     // init function
@@ -472,32 +380,23 @@ namespace Generate_code
     
     
     
-    
-    
-    
     ifstream infile4("output/functions.txt");
     
     string content2 = "";
     int ii;
     
     
-    for(ii=0 ; infile4.eof()!=true ; ii++) // get content of infile
+    for(ii=0 ; infile4.eof()!=true ; ii++)
     {
       content2 += infile4.get();
     }
     ii--;
-    content2.erase(content2.end()-1);     // erase last character
+    content2.erase(content2.end()-1);
     
     
     infile4.close();
     
-    main_output << content2;                 // output
-    
-    
-    
-    
-    
-    
+    main_output << content2;
     
     
     // MAIN FUNCTION CALL
@@ -552,7 +451,7 @@ namespace Generate_code
       }
       main_output << ";" << endl;
       main_output << "SE_1_"<<particle_name_tmp_short << " = " << "SE_1_"<<particle_name_tmp_short<<"*TSIL_POW(PI,2);"<<endl;
-      //main_output << "cout << \"One-loop self energy of particle "<< particle_name_tmp_short << " = \" << real(SE_1_"<<particle_name_tmp_short<<") << endl;"<<endl;
+      
       
       /* Two loop */
       main_output<< "TSIL_COMPLEXCPP SE_2_"<<particle_name_tmp_short<<" = 0.L ";
@@ -570,28 +469,35 @@ namespace Generate_code
           
         }
       }
+      
+
       main_output << ";" << endl;
       main_output << "SE_2_"<<particle_name_tmp_short << " = " << "SE_2_"<<particle_name_tmp_short<<"*TSIL_POW(PI,4);"<<endl;
-      //main_output << "cout << \"Two-loop self energy of particle "<< particle_name_tmp_short << " = \" << real(SE_2_"<<particle_name_tmp_short<<") << endl;"<<endl;
       
-      
-      //main_output << "data.SE_"<< particle_name_tmp_short << " = " << "real(SE_1_"<<particle_name_tmp_short<<" + " <<  "SE_2_"<<particle_name_tmp_short <<  ");"<<endl;
+  
       main_output << "data.SE_1[\""<< particle_name_tmp_short << "\"] = " << "real(SE_1_"<<particle_name_tmp_short<< ");"<<endl;
       main_output << "data.SE_2[\""<< particle_name_tmp_short << "\"] = " << "real(SE_2_"<<particle_name_tmp_short << ");"<<endl;
+      /* Print out value of each amplitude to terminal */
+      if (options.detailed_output)
+      {
+        for (int d = 0; d<nd;d++)
+        {
+          if (particle_names[d] == particle_name_tmp)
+          {
+            if (get_loop_order(levels[d]) == 2 )
+            {
+              main_output<< "cout << \"diagram"<<" "<< particle_name_tmp_short << "_" <<  tags[d] << " = \" << real(diagram" <<"_"<< particle_name_tmp_short << "_" << tags[d] << "_" << levels[d] << "())<<endl;"<<endl;
+            }
+          }
+        }
+      }
     }
     
     main_output << "}" << endl;
     
-    
-    
     main_output.close();
     
-    
-    //////////////////////////////////////////////////////////////////////////////////////////
     // create header file with required masses and couplings which can be set via user input at runtime
-    
-    
-    
     
     ofstream data_h;
     data_h.open ("include/data.hpp");
@@ -606,8 +512,7 @@ namespace Generate_code
     <<"{\n"
     <<"public:\n";
     
-    //  first define all masses and couplings required by the self energy functions as doubles (they will later be recast to TSIL_REAL)
-    
+    // define all masses and couplings required by the self energy functions
     
     for (int i=0;i<nc;i++)
     {
@@ -619,13 +524,7 @@ namespace Generate_code
     {
       data_h << "double "<< masses[i]<<";"<<endl;
     }
-    
-    // create a variable for the self energy of each particle we have
-    
-    // for (unsigned int i=0;i<particle_names_short_reduced.size();i++)
-    // {
-    // data_h << "double SE_" << particle_names_short_reduced[i]<<";"<<endl;
-    // }
+
     
     // create a map for self energies
     data_h << "std::map<std::string, double> SE_1;"<< endl;
@@ -642,12 +541,8 @@ namespace Generate_code
     data_h << particle_names_short_reduced[particle_names_short_reduced.size()-1]<<"\"};"<<endl;
     
     
+    // create constructor and user input reader
     
-    
-    // now create constructor and user input reader
-    
-    
-    // constructor
     data_h<<"  Data (){};\n"
     <<"Data(Options options) {\n"
     <<"double param [99];\n"
@@ -698,9 +593,6 @@ namespace Generate_code
     <<"};\n"
     
     <<"#endif\n";
-    
-    
-    
     
   }
 }
