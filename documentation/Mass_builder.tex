@@ -38,7 +38,7 @@ The computation of $\mathcal{O}(10)$ amplitudes simultaneously using tools such 
 
 \section{Introduction}
 
-The calculation of radiative corrections at the two-loop level is a computationally challenging task which has been significantly simplified with the introduction of modern tools.  Even at the most rudimentary level, determining all possible topologies is a non-trivial task, let alone the simplification of the resulting integral expressions, and finally the evaluation of these integrals.  Fortunately, FeynArts, FeynCalc, TARCER and TSIL have made each step of this process far more achievable for a wide range of users.
+The calculation of radiative corrections at the two-loop level is a computationally challenging task which has been significantly simplified with the introduction of modern tools.  Even at the most rudimentary level, determining all possible topologies is a non-trivial task, let alone the simplification of the resulting integral expressions, and finally the evaluation of these integrals.  Fortunately, FeynArts \cite{Hahn2000}, FeynCalc \cite{Mertig1991,Shtabovenko2016}, TARCER \cite{Mertig1998} and TSIL \cite{Martin2006} have made each step of this process far more achievable for a wide range of users.
 
 \section{Installation}
 
@@ -379,7 +379,7 @@ The diagrams available to be included in the generated TSIL interface are regist
 
 The calculation of the amplitudes depends on the performance of the tools we are using.  The time taken depends strongly on the type of two-loop topology and the number of distinct particles involved.  We find run times range from less than a minute to several hours.  Fortunately, with this interface tool once a diagram is computed it need not be computed again.
 
-The optimisation routine can take some time to complete, yet is only really nessecery when many evaluations of the amplitudes are required, in which case some time to set this up will pay off in the long term.  For example with optimisation routine employed we reduce the runtime for the calculation of an electroweak triplet model with 123 2-loop diagrams and 5 1-loop diagrams from 5.7 seconds to 1.7 seconds.  In this instance the optimisation routine took 2 minutes 37 seconds to complete.  Thus after only 40 iterations using the optimisation routine has given an advantage here.  In doing so we reduced the number of \lstinline{TSIL_EVALUATE} calls using all 5 mass parameters from 54 to 29, where the original 54 does not include the partial \lstinline{ST_evaluate} calls for the $S$ and $T$ functions which we have now combined under the more general calls which are already necessary.
+The optimisation routine can take some time to complete, yet is only really nessecery when many evaluations of the amplitudes are required, in which case some time to set this up will pay off in the long term.  For example with optimisation routine employed we reduce the runtime for the calculation of an electroweak triplet model with 123 2-loop diagrams and 5 1-loop diagrams from 5.7 seconds to 1.7 seconds.  In this instance the optimisation routine took 2 minutes 37 seconds to complete.  Thus after only 40 iterations using the optimisation routine has given an advantage here.  In doing so we reduced the number of \lstinline{TSIL_EVALUATE} calls using all 5 mass parameters from 54 to 29, where the original 54 does not include the partial \lstinline{ST_evaluate} calls for the $S$ and $T$ functions which when possible we have combined under the more general calls if they are already necessary.
 
 
 \section{Applications}
