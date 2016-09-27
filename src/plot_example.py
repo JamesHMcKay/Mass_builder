@@ -43,7 +43,7 @@ plt.plot(x,y1,'--',color='black',label='Implicit pole mass') #
 
 xlabel(r"Degenerate mass $M$ (GeV)",fontsize=16)
 ylabel(r"$\Delta M$ (Mev)",fontsize=16)
-plt.ylim([0,200])
+plt.ylim([-200,200])
 plt.legend(loc=2)
 
 

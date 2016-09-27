@@ -450,7 +450,7 @@ namespace Generate_code
         }
       }
       main_output << ";" << endl;
-      main_output << "SE_1_"<<particle_name_tmp_short << " = " << "SE_1_"<<particle_name_tmp_short<<"*TSIL_POW(PI,2);"<<endl;
+      main_output << "SE_1_"<<particle_name_tmp_short << " = " << "-SE_1_"<<particle_name_tmp_short<<"*TSIL_POW(PI,2);"<<endl;
       
       
       /* Two loop */
@@ -472,7 +472,7 @@ namespace Generate_code
       
 
       main_output << ";" << endl;
-      main_output << "SE_2_"<<particle_name_tmp_short << " = " << "SE_2_"<<particle_name_tmp_short<<"*TSIL_POW(PI,4);"<<endl;
+      main_output << "SE_2_"<<particle_name_tmp_short << " = " << "-SE_2_"<<particle_name_tmp_short<<"*TSIL_POW(PI,4);"<<endl;
       
   
       main_output << "data.SE_1[\""<< particle_name_tmp_short << "\"] = " << "real(SE_1_"<<particle_name_tmp_short<< ");"<<endl;
