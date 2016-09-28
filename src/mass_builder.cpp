@@ -14,11 +14,11 @@
 #include "calc_amplitudes.hpp"
 #include "generate_code.hpp"
 #include "self_energy.hpp"
-#include "supplements.hpp"
+//#include "supplements.hpp"
 //#include "write_tsil_ini.hpp"
 
 using namespace std;
-using namespace supplementary_code;
+//using namespace supplementary_code;
 using namespace utils;
 
 

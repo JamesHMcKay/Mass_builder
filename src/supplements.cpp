@@ -16,16 +16,12 @@
 namespace supplementary_code
 {
   /*TSIL_INCLUDE_PATH */#include "/Users/jamesmckay/Documents/Programs/tsil-1.3/tsil_cpp.h"  // Required TSIL header file
-  
   using namespace std;
-  
-  
-  
   TSIL_DATA bar;
   
-#ifndef PI
-#define PI 4.0L*atan(1.0L)
-#endif
+  #ifndef PI
+  #define PI 4.0L*atan(1.0L)
+  #endif
   long double strtold(const char *, char **);
   // define subroutines here
   TSIL_REAL Power(TSIL_REAL a, int b){return TSIL_POW(a,b);}
@@ -46,7 +42,7 @@ namespace supplementary_code
   
   TSIL_COMPLEXCPP dBwc,dBzc,dBca;
   
-    
+  
   TSIL_REAL dBds(double m, double ma, double p)
   {
     m = p;
@@ -79,25 +75,23 @@ namespace supplementary_code
     
     dBwc = i*TSIL_dBds_(mw2,mc2,s,Q2);
     dBzc = i*TSIL_dBds_(mz2,mc2,s,Q2);
-    dBca = i*dBds(mc2,ma2,s);
+    dBca = i*TSIL_dBds_(ma2,mc2,s,Q2);//dBds(mc2,ma2,s);
     
   }
   
   int init(Data data)
   {
-  /*   mw= data.mw, mz = data.mz ,ma = data.ma, mc = data.MChi, g2=data.g1;
-     mw2 = pow(mw,2);
-     mz2 = pow(mz,2);
-     ma2 = pow(ma,2);
-     mc2 = pow(mc,2);
-     tW = acos(mw/mz);
-     sw2 = data.sw2,S2TW=data.S2TW, cw2 = data.cw2;
-     sw = data.sw, cw = data.cw;
-     C = TSIL_POW(g2,2)/(16.0L*PI*PI);
-     i=Power(-1,0.5);
-     Pi=PI;
-     TSIL_REAL p = data.MChi, Q2 =data.Q;*/
-    
+    mw= data.mw, mz = data.mz ,ma = data.ma, mc = data.MChi, g2=data.g1;
+    mw2 = pow(mw,2);
+    mz2 = pow(mz,2);
+    ma2 = pow(ma,2);
+    mc2 = pow(mc,2);
+    tW = acos(mw/mz);
+    sw2 = data.sw2,S2TW=data.S2TW, cw2 = data.cw2;
+    sw = data.sw, cw = data.cw;
+    C = TSIL_POW(g2,2)/(16.0L*PI*PI);
+    i=Power(-1,0.5);
+    Pi=PI;
     DoTSIL_2( TSIL_POW(data.P,2),data.Q);
     return 0;
   }
@@ -146,16 +140,13 @@ namespace supplementary_code
   
   void Supplements::add_derivatives(Data &data)
   {
-    TSIL_REAL p = data.P, M = data.P;
+    TSIL_REAL p = data.P, M = data.MChi;
     init(data);
     TSIL_COMPLEXCPP SE_0 = (SigmaM_0(M) + M*SigmaK_0(M,p) )*( SigmaK_0(M,p) + 2.0L*TSIL_POW(M,2)*d_SigmaK_0(M,p)+2.0L*M*d_SigmaM_0(M));
     TSIL_COMPLEXCPP SE_1 =(SigmaM_1(M) + M*SigmaK_1(M,p) )*( SigmaK_1(M,p) + 2.0L*TSIL_POW(M,2)*d_SigmaK_1(M,p)+2.0L*M*d_SigmaM_1(M));
+    
     data.SE_2["F6"] = data.SE_2["F6"]+real(SE_0);
     data.SE_2["F5"] = data.SE_2["F5"]+real(SE_1);
-    
-    
-    cout << "SE derivative 0 = " << SE_0<<endl;;
-    cout << "SE derivative 1 = " << SE_1<<endl;;
     
   }
 }

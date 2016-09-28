@@ -164,8 +164,8 @@ Now we are finally able to compute the total amplitude using the command
 \end{lstterm}
 where we must explicitly enter the path to an input file which contains values for the masses and couplings.  This will return the self energy
 \begin{lstterm}
-One-loop self energy of particle S1 = 0.0316688
-Two-loop self energy of particle S1 = -3.92488e-05
+One loop self energy of particle S1 = -0.0316688
+Two loop self energy of particle S1 = 3.92488e-05
 \end{lstterm}
 where the particle name has been converted to a more convenient form, this is the form of the particle name which appears in the generated output files.
 
@@ -207,7 +207,7 @@ Optional switches
 -v		display Mathematica output during computation
 -w		generate code with detailed terminal output
 \end{lstterm}
-where \lstinline{-o} will be explained in section \ref{sec:tsil_interface} and \lstinline{-w} will put a \cpp{std::cout} statement for each amplitude computed at runtime for detailed inspection of each contribution to the total self energy, as may be useful for identifying large contributions.
+where \lstinline{-o} will be explained in section \ref{sec:tsil_interface} and \lstinline{-w} will put a \cpp{std::cout} statement for every two-loop amplitude computed at runtime for detailed inspection of each contribution to the total self energy, as may be useful for identifying large contributions.
 
 
 \subsection{Input}
@@ -286,12 +286,12 @@ To overcome this we assign a unique single character identifier to each mass in 
 class Bases
 {
 public:
-string type = "";
-string e1 = " ", e2 = " ", e3 = " ", e4 = " ", e5 = " ";
-string coefficient = "";
-string short_name = "";
-Bases() {}
-<constructors>
+	string type = "";
+	string e1 = " ", e2 = " ", e3 = " ", e4 = " ", e5 = " ";
+	string coefficient = "";
+	string short_name = "";
+	Bases() {}
+	<constructors>
 };
 \end{lstcpp}
 where we also we provide a constructor for each number of elements (masses).  For example the basis integral $V($\lstinline{mHp},\lstinline{mA0},\lstinline{mA0},\lstinline{mW}$)$ is initialised as\begin{lstcpp}
@@ -339,30 +339,30 @@ TSIL_REAL  <coupling declarations> ;
 
 void DoTSIL(TSIL_REAL s,TSIL_REAL Q2)
 {
-< TSIL basis integral evaluations >
+	< TSIL basis integral evaluations >
 }
 
 void init(Data data) 
 {
-< set couplings & masses from data >
+	< set couplings & masses from data >
 }
 
 TSIL_COMPLEXCPP  diagram_1()
 {
-TSIL_COMPLEXCPP C =  <Coefficient>;
-return  + C * <basis_integral>;
+	TSIL_COMPLEXCPP C =  <Coefficient>;
+	return  + C * <basis_integral>;
 }
 
 TSIL_COMPLEXCPP  diagram_2()
 {
-TSIL_COMPLEXCPP C =  <Coefficient>;
-return  + C * <basis_integral>;
+	TSIL_COMPLEXCPP C =  <Coefficient>;
+	return  + C * <basis_integral>;
 }
 
 void Self_energy::run_tsil (Data &data) 
 {
-TSIL_COMPLEXCPP SE_particle = diagram_1() + diagram_2();
-data.SE["particle"] = real(SE_particle);
+	TSIL_COMPLEXCPP SE_particle = diagram_1() + diagram_2();
+	data.SE["particle"] = real(SE_particle);
 }
 \end{lstcpp}
 
@@ -379,7 +379,7 @@ The diagrams available to be included in the generated TSIL interface are regist
 
 The calculation of the amplitudes depends on the performance of the tools we are using.  The time taken depends strongly on the type of two-loop topology and the number of distinct particles involved.  We find run times range from less than a minute to several hours.  Fortunately, with this interface tool once a diagram is computed it need not be computed again.
 
-The optimisation routine can take some time to complete, yet is only really nessecery when many evaluations of the amplitudes are required, in which case some time to set this up will pay off in the long term.  For example with optimisation routine employed we reduce the runtime for the calculation of an electroweak triplet model with 123 2-loop diagrams and 5 1-loop diagrams from 5.7 seconds to 1.7 seconds.  In this instance the optimisation routine took 2 minutes 37 seconds to complete.  Thus after only 40 iterations using the optimisation routine has given an advantage here.  In doing so we reduced the number of \lstinline{TSIL_EVALUATE} calls using all 5 mass parameters from 54 to 29, where the original 54 does not include the partial \lstinline{ST_evaluate} calls for the $S$ and $T$ functions which when possible we have combined under the more general calls if they are already necessary.
+The optimisation routine can take some time to complete, yet is only really nessecery when many evaluations of the amplitudes are required, in which case some time to set this up will pay off in the long term.  For example with optimisation routine employed we reduce the runtime for the calculation of an electroweak triplet model with 123 2-loop diagrams and 5 1-loop diagrams from 5.7 seconds to 1.7 seconds.  In this instance the optimisation routine took 1 minutes 45 seconds to complete.  Thus after only 26 iterations using the optimisation routine has given an advantage here.  In doing so we reduced the number of \lstinline{TSIL_EVALUATE} calls using all 5 mass parameters from 54 to 29, where the original 54 does not include the partial \lstinline{ST_evaluate} calls for the $S$ and $T$ functions which when possible we have combined under the more general calls if they are already necessary.
 
 
 \section{Applications}
@@ -408,8 +408,8 @@ python src/plot_example.py
 \begin{figure}
 \centering
 \includegraphics[width=0.5\textwidth]{mass_splittings.eps}
-\includegraphics[width=0.5\textwidth]{mass_splittings_2p.eps}
-\caption{The mass splittings in an electroweak triplet model with a massive photon resulting from one-loop (\textit{top}) and partial two-loop radiative corrections (\textit{bottom}).}\label{fig:1_loop}
+%\includegraphics[width=0.5\textwidth]{mass_splittings_2p.eps}
+\caption{The mass splittings in an electroweak triplet model with a massive photon resulting from one-loop radiative corrections.}\label{fig:1_loop}
 \end{figure}
 
 
