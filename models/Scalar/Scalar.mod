@@ -12,7 +12,7 @@ M$ClassesDescription = {
 	PropagatorArrow -> None }
 }
 M$CouplingMatrices = {
-  C[ S[1], S[1]] == -I * {{0,dc},{0,dc}},
+  C[ S[1], S[1]] == -I *  { {0, 0},{0, dc} },
   C[ S[1], S[1], S[1]] == -I*{{g,dg}},
   C[ S[1], S[1], S[1],S[1]] == -I*{{lambda,dg}}
 }
