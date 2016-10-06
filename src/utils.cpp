@@ -454,31 +454,31 @@ namespace utils
     {
       if (type == "F")
       {
-        myfile << id << " = " << "TFI[4, Pair[Momentum[p],Momentum[p]], {{1, " << base.e1  << "}, {1, " << base.e2 << "}, {1, " << base.e3 << "}, {1, " << base.e4 << "}, {1, " << base.e5 << "}}];" << endl;
+        myfile << id << " = " << "TFI[D, Pair[Momentum[p],Momentum[p]], {{1, " << base.e1  << "}, {1, " << base.e2 << "}, {1, " << base.e3 << "}, {1, " << base.e4 << "}, {1, " << base.e5 << "}}];" << endl;
       }
       if (type == "A")
       {
-        myfile << id << " = " << "TAI[4, 0, {1, " << base.e1 << "}];" << endl;
+        myfile << id << " = " << "TAI[D, 0, {1, " << base.e1 << "}];" << endl;
       }
       if (type == "B")
       {
-        myfile << id << " = " << "TBI[4, Pair[Momentum[p],Momentum[p]], {{1, " << base.e1 << "}, {1, " << base.e2 << "}}];" << endl;
+        myfile << id << " = " << "TBI[D, Pair[Momentum[p],Momentum[p]], {{1, " << base.e1 << "}, {1, " << base.e2 << "}}];" << endl;
       }
       if (type == "V")
       {
-        myfile << id << " = " << "TVI[4, Pair[Momentum[p],Momentum[p]], {{1, " << base.e1 << "}, {1, " << base.e2 << "}, {1, " << base.e3 << "}, {1, " << base.e4 << "}}];" << endl;
+        myfile << id << " = " << "TVI[D, Pair[Momentum[p],Momentum[p]], {{1, " << base.e1 << "}, {1, " << base.e2 << "}, {1, " << base.e3 << "}, {1, " << base.e4 << "}}];" << endl;
       }
       if (type == "T")
       {
-        myfile << id << " = " << "TJI[4, Pair[Momentum[p],Momentum[p]], {{2, " << base.e1 << "}, {1, " << base.e2 << "}, {1, " << base.e3 << "}}];" << endl;
+        myfile << id << " = " << "TJI[D, Pair[Momentum[p],Momentum[p]], {{2, " << base.e1 << "}, {1, " << base.e2 << "}, {1, " << base.e3 << "}}];" << endl;
       }
       if (type == "J")
       {
-        myfile << id << " = " << "TJI[4, Pair[Momentum[p],Momentum[p]], {{1, " << base.e1 << "}, {1, " << base.e2 << "}, {1, " << base.e3 << "}}];" << endl;
+        myfile << id << " = " << "TJI[D, Pair[Momentum[p],Momentum[p]], {{1, " << base.e1 << "}, {1, " << base.e2 << "}, {1, " << base.e3 << "}}];" << endl;
       }
       if (type == "K")
       {
-        myfile << id << " = " << "TJI[4, 0, {{1, " << base.e1 << "}, {1, " << base.e2 << "}, {1, " << base.e3 << "}}];" << endl;
+        myfile << id << " = " << "TJI[D, 0, {{1, " << base.e1 << "}, {1, " << base.e2 << "}, {1, " << base.e3 << "}}];" << endl;
       }
     }
 
@@ -514,19 +514,19 @@ namespace utils
     if (type1 =="F"){goto end;}
     if (type2 =="F"){goto end;}
     myfile << base_1.short_name << base_2.short_name << " = ";
-    if (type1=="A") myfile << "TAI[4, 0, {1, " << base_1.e1 << "}]";
-    if (type1=="B") myfile << "TBI[4, Pair[Momentum[p],Momentum[p]], {{1, " << base_1.e1 << "}, {1, " << base_1.e2 << "}}]";
-    if (type1=="J") myfile << "TJI[4, Pair[Momentum[p],Momentum[p]], {{1, " << base_1.e1 << "}, {1, " << base_1.e2 << "}, {1, " << base_1.e3 << "}}]";
-    if (type1=="T") myfile << "TJI[4, Pair[Momentum[p],Momentum[p]], {{2, " << base_1.e1 << "}, {1, " << base_1.e2 << "}, {1, " << base_1.e3 << "}}]";
-    if (type1=="K") myfile << "TJI[4, 0, {{1, " << base_1.e1 << "}, {1, " << base_1.e2 << "}, {1, " << base_1.e3 << "}}];";
-    if (type1=="V") myfile << "TVI[4, Pair[Momentum[p],Momentum[p]], {{1, " << base_1.e1 << "}, {1, " << base_1.e2 << "}, {1, " << base_1.e3 << "}, {1, " << base_1.e4 << "}}]";
+    if (type1=="A") myfile << "TAI[D, 0, {1, " << base_1.e1 << "}]";
+    if (type1=="B") myfile << "TBI[D, Pair[Momentum[p],Momentum[p]], {{1, " << base_1.e1 << "}, {1, " << base_1.e2 << "}}]";
+    if (type1=="J") myfile << "TJI[D, Pair[Momentum[p],Momentum[p]], {{1, " << base_1.e1 << "}, {1, " << base_1.e2 << "}, {1, " << base_1.e3 << "}}]";
+    if (type1=="T") myfile << "TJI[D, Pair[Momentum[p],Momentum[p]], {{2, " << base_1.e1 << "}, {1, " << base_1.e2 << "}, {1, " << base_1.e3 << "}}]";
+    if (type1=="K") myfile << "TJI[D, 0, {{1, " << base_1.e1 << "}, {1, " << base_1.e2 << "}, {1, " << base_1.e3 << "}}];";
+    if (type1=="V") myfile << "TVI[D, Pair[Momentum[p],Momentum[p]], {{1, " << base_1.e1 << "}, {1, " << base_1.e2 << "}, {1, " << base_1.e3 << "}, {1, " << base_1.e4 << "}}]";
     myfile << " * ";
-    if (type2=="A") myfile << "TAI[4, 0, {1, " << base_2.e1 << "}];";
-    if (type2=="B") myfile << "TBI[4, Pair[Momentum[p],Momentum[p]], {{1, " << base_2.e1 << "}, {1, " << base_2.e2 << "}}];";
-    if (type2=="J") myfile << "TJI[4, Pair[Momentum[p],Momentum[p]], {{1, " << base_2.e1 << "}, {1, " << base_2.e2 << "}, {1, " << base_2.e3 << "}}];";
-    if (type2=="T") myfile << "TJI[4, Pair[Momentum[p],Momentum[p]], {{2, " << base_2.e1 << "}, {1, " << base_2.e2 << "}, {1, " << base_2.e3 << "}}];";
-    if (type2=="K") myfile << "TJI[4, 0, {{1, " << base_2.e1 << "}, {1, " << base_2.e2 << "}, {1, " << base_2.e3 << "}}];;";
-    if (type2=="V") myfile << "TVI[4, Pair[Momentum[p],Momentum[p]], {{1, " << base_2.e1 << "}, {1, " << base_2.e2 << "}, {1, " << base_2.e3 << "}, {1, " << base_2.e4 << "}}];";
+    if (type2=="A") myfile << "TAI[D, 0, {1, " << base_2.e1 << "}];";
+    if (type2=="B") myfile << "TBI[D, Pair[Momentum[p],Momentum[p]], {{1, " << base_2.e1 << "}, {1, " << base_2.e2 << "}}];";
+    if (type2=="J") myfile << "TJI[D, Pair[Momentum[p],Momentum[p]], {{1, " << base_2.e1 << "}, {1, " << base_2.e2 << "}, {1, " << base_2.e3 << "}}];";
+    if (type2=="T") myfile << "TJI[D, Pair[Momentum[p],Momentum[p]], {{2, " << base_2.e1 << "}, {1, " << base_2.e2 << "}, {1, " << base_2.e3 << "}}];";
+    if (type2=="K") myfile << "TJI[D, 0, {{1, " << base_2.e1 << "}, {1, " << base_2.e2 << "}, {1, " << base_2.e3 << "}}];;";
+    if (type2=="V") myfile << "TVI[D, Pair[Momentum[p],Momentum[p]], {{1, " << base_2.e1 << "}, {1, " << base_2.e2 << "}, {1, " << base_2.e3 << "}, {1, " << base_2.e4 << "}}];";
     myfile << endl;
     if (base_1.short_name==base_2.short_name) myfile << "C"<< base_1.short_name << base_2.short_name << " = Coefficient["<<SEn<<","<< base_1.short_name << ", 2];" << endl;
     else myfile << "C"<< base_1.short_name << base_2.short_name << " = - (1/2)* Coefficient["<<SEn<<","<< base_1.short_name << base_2.short_name << ", 1];" << endl;

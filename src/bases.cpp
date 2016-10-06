@@ -239,11 +239,11 @@ void format_coeff(std::map <std::string, Bases > &base_map, std::vector<std::str
     {
       for (int j = 0; j<nm; j++)
       {
-        from = "TBI(4,Power(p,2),List(List(1,"+masses[i]+"),List(1," + masses[j] + ")))";  // TODO make short name for all bases object and for the B object include both permutations, then this solves this problem here
+        from = "TBI(D,Power(p,2),List(List(1,"+masses[i]+"),List(1," + masses[j] + ")))";  // TODO make short name for all bases object and for the B object include both permutations, then this solves this problem here
         to = "B"+id[j]+id[i]; // choice of i and j here is important TODO
         ReplaceAll(coefficient,from, to);
       }
-      from = "TAI(4,0,List(List(1,"+masses[i]+")))";
+      from = "TAI(D,0,List(List(1,"+masses[i]+")))";
       to = "A"+id[i];
       ReplaceAll(coefficient,from, to);
 

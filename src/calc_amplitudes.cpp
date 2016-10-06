@@ -31,8 +31,9 @@ bool Calc_amplitudes::calc_diagram(Options options)
   string model = options.model;
   int loop_order = options.loop_order;
   
-  cout << "calculating diagram " << diagram << " for particle " << particle << " in model " << model << endl;
-  if (options.counter_terms == true) { cout << "using counter terms"<< endl;}
+  cout << "calculating diagram " << diagram << " for particle " << particle << " in model ";
+  cout << model << " at " << options.loop_order << "-loop order" << endl;
+  if (options.counter_terms == true) { cout << "calculating counter term diagram"<< endl;}
   
   const char *ext = ".txt";
   string underscore = "_";
@@ -70,53 +71,43 @@ bool Calc_amplitudes::calc_diagram(Options options)
   
   vector<string> bases_names = extract_keys(base_map);
   
-#ifdef DEBUG
-  for (unsigned int i = 0; i < bases_names.size();i++)
-  {
-    Bases base_temp;
-    base_temp = base_map[bases_names[i]];
-    cout << bases_names[i] << endl;
-    cout << "masses values are " << base_temp.e1 << " " << base_temp.e2 << " " << base_temp.e3 << " " << base_temp.e4 << " " << base_temp.e5 << " " << endl;
-  }
-#endif
-  
   ofstream myfile;
-  myfile.open ("output/stage_3.m");
-  
+  myfile.open ("output/math_1.m");
   
   utils::print_math_header(myfile);
   utils::print_math_body(myfile,options,s_cwd,masses_input);
   
   myfile<<"Print[tfiamp0]\n"
-  <<"SEn = Simplify[TarcerRecurse[tfiamp0] /. D -> 4 ];\n"
-  <<"DumpSave[\""<<s_cwd<<"/output/stage_3.mx\", SEn];\n"
+  <<"SEn = Simplify[TarcerRecurse[tfiamp0] ];\n"
+  <<"DumpSave[\""<<s_cwd<<"/output/math_1.mx\", SEn];\n"
   <<"Print[\"----------- The self energy is ---------- = \"]\n"
   <<"Print[SEn]\n"
   <<"Print[\"-------------------- = \"]"<< endl;
   
-  
   print_math_basis(base_map,myfile, "SEn");
   
   myfile << "Export[\""<<s_cwd<<"/output/output.txt\", {" << endl;
-  
-  
-  
   for (unsigned int i = 0; i < bases_names.size()-1;i++)
   {
     myfile << "{\""<<bases_names[i]<<" \", CForm[C"<<bases_names[i]<<" /. Pair[Momentum[p], Momentum[p]] -> p^2 /. DiracGamma[Momentum[p]] -> p], \"\"}," << endl;
   }
-  
   myfile << "{\""<<bases_names[bases_names.size()-1]<<" \", CForm[C"<<bases_names[bases_names.size()-1]<<" /. Pair[Momentum[p], Momentum[p]] -> p^2 /. DiracGamma[Momentum[p]] -> p], \"\"}" << endl;
   myfile << " }, \"Table\", \"FieldSeparators\" -> \" \", \"TextDelimiters\" -> \"\"];" << endl;
-  
-  
   myfile.close();
   
 #ifdef RUN_ALL
-  system("chmod +x output/stage_3.m ");
-  if (options.verbose) system("./output/stage_3.m");
-  else system("./output/stage_3.m  >/dev/null");
+  system("chmod +x output/math_1.m ");
+  if (options.verbose) system("./output/math_1.m");
+  else system("./output/math_1.m  >/dev/null");
 #endif
+  
+  
+  ///  part 1 complete ////
+  
+  ///  part 2 below ////
+  
+  
+  
   
   vector<std::string> output_string, coeff_new;
   int temp_int = 0;
@@ -128,81 +119,86 @@ bool Calc_amplitudes::calc_diagram(Options options)
   get_data(output_string, coeff_new, temp_int,file_integrals2, true);
   for (int i=0; i<temp_int; i++)
   {
-    base_map[output_string[i]].coefficient = coeff_new[i];
+    base_map[output_string[i]].coefficient = coeff_new[i]; // set coefficients from first math run
   }
   
-  
-  std::map <std::string, Bases > reduced_base_map = remove_zeros(base_map, bases_names);
+  std::map <std::string, Bases > reduced_base_map = remove_zeros(base_map, bases_names); // remove integrals with zero coefficients
   vector<string> reduced_bases_names = extract_keys(reduced_base_map);
   
-  string prevb = "stage_3.mx\"";
-  ofstream myfile_stage6b;
-  myfile_stage6b.open ("output/stage_6b.m");
+  string prevb = "math_1.mx\"";
+  ofstream math_2;
+  math_2.open ("output/math_2.m");
   
-  utils::print_math_header(myfile_stage6b);
-  myfile_stage6b<<"Get[\"" << s_cwd <<"/output/"<< prevb << "]\n"
+  utils::print_math_header(math_2);
+  math_2<<"Get[\"" << s_cwd <<"/output/"<< prevb << "]\n"
   <<"Print[SEn]"<< endl;
   
-  print_math_basis(reduced_base_map,myfile_stage6b, "SEn");
+  print_math_basis(reduced_base_map,math_2, "SEn");
   
-  
-  myfile_stage6b << "SEnTrial = 0 ";
+  math_2 << "SEnTrial = 0 ";
   
   for (unsigned int i = 0; i<reduced_bases_names.size();i++)
   {
     
-    myfile_stage6b << " + "<<reduced_bases_names[i]<< " * C"<<reduced_bases_names[i];
+    math_2 << " + "<<reduced_bases_names[i]<< " * C"<<reduced_bases_names[i];
     
   }
-  myfile_stage6b << ";"<<endl;
+  math_2 << ";"<<endl;
   
-  myfile_stage6b << "diff = Simplify[SEn-SEnTrial]"<<endl;
-  myfile_stage6b << "Print[\" --------------------------------------- \"]" <<endl;
-  myfile_stage6b << "Print[\" --------------------------------------- \"]" <<endl;
-  myfile_stage6b << "Print[\" The difference between trial and actual SE is:\"]" <<endl;
-  myfile_stage6b << "Print[\" --------------------------------------- \"]" <<endl;
-  myfile_stage6b << "Print[\" --------------------------------------- \"]" <<endl;
+  math_2 << "diff = Simplify[SEn-SEnTrial]"<<endl;
+  math_2 << "Print[\" --------------------------------------- \"]" <<endl;
+  math_2 << "Print[\" --------------------------------------- \"]" <<endl;
+  math_2 << "Print[\" The difference between trial and actual SE is:\"]" <<endl;
+  math_2 << "Print[\" --------------------------------------- \"]" <<endl;
+  math_2 << "Print[\" --------------------------------------- \"]" <<endl;
   
-  myfile_stage6b << "Print[diff]"<<endl;
+  math_2 << "Print[diff]"<<endl;
   
-  myfile_stage6b << "Export[\""<<s_cwd<<"/output/result.txt\", diff]" << endl;
+  math_2 << "Export[\""<<s_cwd<<"/output/result.txt\", diff]" << endl;
   
-  print_math_basis(reduced_base_map,myfile_stage6b, "diff");
+  print_math_basis(reduced_base_map,math_2, "diff");
   
-  myfile_stage6b << "Export[\""<<s_cwd<<"/output/output2.txt\", {" << endl;
+  math_2 << "Export[\""<<s_cwd<<"/output/output2.txt\", {" << endl;
   
   
   if (reduced_bases_names.size()!=0)
   {
     for (unsigned int i=0;i<reduced_bases_names.size()-1;i++)
     {
-      myfile_stage6b << "{\""<<reduced_bases_names[i]<<" \", CForm[C"<<reduced_bases_names[i]<<" /. Pair[Momentum[p], Momentum[p]] -> p^2 /. DiracGamma[Momentum[p]] -> p], \"\"}," << endl;
+      math_2 << "{\""<<reduced_bases_names[i]<<" \", CForm[C"<<reduced_bases_names[i]<<" /. Pair[Momentum[p], Momentum[p]] -> p^2 /. DiracGamma[Momentum[p]] -> p], \"\"}," << endl;
     }
     
-    myfile_stage6b << "{\""<<reduced_bases_names[reduced_bases_names.size()-1]<<" \", CForm[C"<<reduced_bases_names[reduced_bases_names.size()-1]<<" /. Pair[Momentum[p], Momentum[p]] -> p^2 /. DiracGamma[Momentum[p]] -> p], \"\"}" << endl;
-    myfile_stage6b << " }, \"Table\", \"FieldSeparators\" -> \" \", \"TextDelimiters\" -> \"\"];" << endl;
+    math_2 << "{\""<<reduced_bases_names[reduced_bases_names.size()-1]<<" \", CForm[C"<<reduced_bases_names[reduced_bases_names.size()-1]<<" /. Pair[Momentum[p], Momentum[p]] -> p^2 /. DiracGamma[Momentum[p]] -> p], \"\"}" << endl;
+    math_2 << " }, \"Table\", \"FieldSeparators\" -> \" \", \"TextDelimiters\" -> \"\"];" << endl;
   }
   
   if (reduced_bases_names.size()==0)
   {
-    myfile_stage6b << " }, \"Table\", \"FieldSeparators\" -> \" \", \"TextDelimiters\" -> \"\"];" << endl;
+    math_2 << " }, \"Table\", \"FieldSeparators\" -> \" \", \"TextDelimiters\" -> \"\"];" << endl;
   }
-  myfile_stage6b << "Print[\"Completed\"]"<<endl;
+  math_2 << "Print[\"Completed\"]"<<endl;
   
-  myfile_stage6b.close();
+  math_2.close();
   
   
   
 #ifdef RUN_ALL
-  system("chmod +x output/stage_6b.m ");
-  if(options.verbose) system("./output/stage_6b.m ");
-  else system("./output/stage_6b.m  >/dev/null ");
+  system("chmod +x output/math_2.m ");
+  if(options.verbose) system("./output/math_2.m ");
+  else system("./output/math_2.m  >/dev/null ");
 #endif
+  
+  
+  // part 2 complete -- first attempt at constructing amplitude //
+  
+  // part 3 below, deal with products ///
+  
+  
   
   n = 0;
   vector<std::string> output_string_prod, coeff_new_prod;
   std::map <std::string, Bases > base_map_prod;
-  std::map <std::string, Bases > reduced_base_map_copy=reduced_base_map;
+  std::map <std::string, Bases > reduced_base_map_copy=reduced_base_map; // copy the reduced map of basis integrals (should this be the original base map?)
   vector<string> bases_names_prod;
   temp_int = 0;
   
@@ -210,11 +206,10 @@ bool Calc_amplitudes::calc_diagram(Options options)
   string c_file_integrals4 = file_integrals4_tmp + blank + ext;
   const char *file_integrals4 = c_file_integrals4.c_str();
   
-  get_data(output_string_prod, coeff_new_prod, temp_int,file_integrals4,true); // file_integrals2 defined earlier, same file name
+  get_data(output_string_prod, coeff_new_prod, temp_int,file_integrals4,true);
   
   if (temp_int == 0)
   {
-    //cout << "no products showing up, so we will use all basis integrals" << endl;
     for (unsigned int i=0; i<bases_names.size(); i++)
     {
       if (base_map[bases_names[i]].type != "F")
@@ -226,100 +221,90 @@ bool Calc_amplitudes::calc_diagram(Options options)
   }
   else
   {
-    
     for (int i=0; i<temp_int; i++)
     {
       reduced_base_map_copy[output_string_prod[i]].coefficient = coeff_new_prod[i];
     }
     base_map_prod = remove_zeros(reduced_base_map_copy, reduced_bases_names);
     bases_names_prod = extract_keys(base_map_prod);
-    
   }
   
-  ofstream myfile_stage8b;
-  myfile_stage8b.open ("output/stage_8b.m");
+  ofstream math_3;
+  math_3.open ("output/math_3.m");
   
-  prevb = "stage_3.mx\"";
-  utils::print_math_header(myfile_stage8b);
-  myfile_stage8b<<"Get[\"" << s_cwd <<"/output/"<< prevb << "]\n"
+  prevb = "math_1.mx\"";
+  utils::print_math_header(math_3);
+  math_3<<"Get[\"" << s_cwd <<"/output/"<< prevb << "]\n"
   <<"Print[SEn]"<< endl;
   
   
-  if (temp_int !=0) {print_math_basis(reduced_base_map,myfile_stage8b,"SEn");}
-  else {print_math_basis(base_map,myfile_stage8b,"SEn");}
+  if (temp_int !=0) {print_math_basis(reduced_base_map,math_3,"SEn");}
+  else {print_math_basis(base_map,math_3,"SEn");}
   
-  print_math_products(base_map_prod,myfile_stage8b,"SEn");
+  print_math_products(base_map_prod,math_3,"SEn");
   
-  
-  
-  myfile_stage8b << "SEnTrial = ";
+  math_3 << "SEnTrial = ";
   for (unsigned int i = 0; i<reduced_bases_names.size();i++)
   {
-    myfile_stage8b << " + "<<reduced_bases_names[i]<< " * C"<<reduced_bases_names[i];
+    math_3 << " + "<<reduced_bases_names[i]<< " * C"<<reduced_bases_names[i];
   }
   
   for (unsigned int i = 0; i<bases_names_prod.size();i++)
   {
     for (unsigned int j = 0; j<bases_names_prod.size();j++)
     {
-      myfile_stage8b << " + "<< bases_names_prod[i] << bases_names_prod[j] << " * C"<<bases_names_prod[i]<< bases_names_prod[j];
+      math_3 << " + "<< bases_names_prod[i] << bases_names_prod[j] << " * C"<<bases_names_prod[i]<< bases_names_prod[j];
     }
   }
-  myfile_stage8b << ";"<<endl;
+  math_3 << ";"<<endl;
   
-  myfile_stage8b << "diff = Simplify[SEn-SEnTrial]"<<endl;
-  myfile_stage8b << "Print[\" --------------------------------------- \"]" <<endl;
-  myfile_stage8b << "Print[\" --------------------------------------- \"]" <<endl;
-  myfile_stage8b << "Print[\" The difference between trial and actual SE is:\"]" <<endl;
-  myfile_stage8b << "Print[\" --------------------------------------- \"]" <<endl;
-  myfile_stage8b << "Print[\" --------------------------------------- \"]" <<endl;
+  math_3 << "diff = Simplify[SEn-SEnTrial]"<<endl;
+  math_3 << "Print[\" --------------------------------------- \"]" <<endl;
+  math_3 << "Print[\" --------------------------------------- \"]" <<endl;
+  math_3 << "Print[\" The difference between trial and actual SE is:\"]" <<endl;
+  math_3 << "Print[\" --------------------------------------- \"]" <<endl;
+  math_3 << "Print[\" --------------------------------------- \"]" <<endl;
   
-  myfile_stage8b << "Print[diff]"<<endl;
-  myfile_stage8b << "Export[\""<<s_cwd<<"/output/result.txt\", diff]" << endl;
+  math_3 << "Print[diff]"<<endl;
+  math_3 << "Export[\""<<s_cwd<<"/output/result.txt\", diff]" << endl;
   
   // print out coefficients of products
   int nn = bases_names_prod.size();
-  myfile_stage8b << "Export[\""<<s_cwd<<"/output/output_products.txt\", {" << endl;
+  math_3 << "Export[\""<<s_cwd<<"/output/output_products.txt\", {" << endl;
+  
+  std::map <std::string, Bases_product > products_map;
   
   for (int i = 0; i<nn;i++)
   {
     for (int j = 0; j<nn;j++)
     {
       
-      if ((i==nn-1) && (j==nn-1)){ myfile_stage8b << "{\""<<bases_names_prod[i] << bases_names_prod[j] <<" \",CForm[C"<<bases_names_prod[i] << bases_names_prod[j] <<" /. Pair[Momentum[p], Momentum[p]] -> p^2 /. DiracGamma[Momentum[p]] -> p], \";\"}" << endl;}
-      else {myfile_stage8b << "{\""<<bases_names_prod[i] << bases_names_prod[j] <<" \",CForm[C"<<bases_names_prod[i] << bases_names_prod[j] <<" /. Pair[Momentum[p], Momentum[p]] -> p^2 /. DiracGamma[Momentum[p]] -> p], \";\"}," << endl;}
+      if ((i==nn-1) && (j==nn-1)){ math_3 << "{\""<<bases_names_prod[i] << bases_names_prod[j] <<" \",CForm[C"<<bases_names_prod[i] << bases_names_prod[j] <<" /. Pair[Momentum[p], Momentum[p]] -> p^2 /. DiracGamma[Momentum[p]] -> p], \";\"}" << endl;}
+      else {math_3 << "{\""<<bases_names_prod[i] << bases_names_prod[j] <<" \",CForm[C"<<bases_names_prod[i] << bases_names_prod[j] <<" /. Pair[Momentum[p], Momentum[p]] -> p^2 /. DiracGamma[Momentum[p]] -> p], \";\"}," << endl;}
+      
+      // need to store information regarding the integrals involved in each product
+      
+      Bases_product product(base_map_prod[bases_names_prod[i]],base_map_prod[bases_names_prod[j]],bases_names_prod[i],bases_names_prod[j]);
+      
+      products_map[bases_names_prod[i] + bases_names_prod[j]] = product;
       
     }
   }
   
-  myfile_stage8b << " }, \"Table\", \"FieldSeparators\" -> \" \", \"TextDelimiters\" -> \"\"];" << endl;
+  math_3 << " }, \"Table\", \"FieldSeparators\" -> \" \", \"TextDelimiters\" -> \"\"];" << endl;
   
   
   
-  myfile_stage8b.close();
+  math_3.close();
   
 #ifdef RUN_ALL
-  system("chmod +x output/stage_8b.m ");
-  if(options.verbose) system("./output/stage_8b.m");
-  else system("./output/stage_8b.m  >/dev/null ");
+  system("chmod +x output/math_3.m ");
+  if(options.verbose) system("./output/math_3.m");
+  else system("./output/math_3.m  >/dev/null ");
 #endif
   
   success = check_done();
   
-  const char* basis_integrals_tmp = "/output/basis_integrals_"; // vector containing file names
-  string c_basis_integrals = "models/" + model + basis_integrals_tmp + tag + ext;
-  const char *basis_integrals = c_basis_integrals.c_str();
-  
-  
-  ofstream output_1;
-  output_1.open (basis_integrals);
-  
-  for (unsigned int i = 0; i<reduced_bases_names.size();i++)
-  {
-    output_1 << reduced_bases_names[i] << endl;
-  }
-  
-  output_1.close();
   
   ofstream diagram_list;
   diagram_list.open( "output/diagrams.txt", ios::out | ios::app );
@@ -361,6 +346,9 @@ bool Calc_amplitudes::calc_diagram(Options options)
   
   std::map <std::string, Bases > reduced_prod_map = remove_zeros(prod_map, extract_keys(prod_map));
   vector<string> reduced_prod_names = extract_keys(reduced_prod_map);
+  
+ 
+  
   
   
   const char* coeff_products_tmp = "/output/coeff_products_"; // vector containing file names
@@ -406,6 +394,38 @@ bool Calc_amplitudes::calc_diagram(Options options)
   
   summation_out << ";"<<endl;
   summation_out.close();
+  
+  
+  // Basis integrals list
+  // get the integrals associated with the non-zero product coefficients
+  
+  for (unsigned int i = 0; i < reduced_prod_names.size() ; i++)
+  {
+    reduced_bases_names.push_back(products_map[reduced_prod_names[i]].name_1);
+    reduced_bases_names.push_back(products_map[reduced_prod_names[i]].name_2);
+  }
+  
+  sort(reduced_bases_names.begin(),reduced_bases_names.end());
+  reduced_bases_names.erase( unique( reduced_bases_names.begin(), reduced_bases_names.end() ), reduced_bases_names.end() );
+  
+  
+  const char* basis_integrals_tmp = "/output/basis_integrals_"; // vector containing file names
+  string c_basis_integrals = "models/" + model + basis_integrals_tmp + tag + ext;
+  const char *basis_integrals = c_basis_integrals.c_str();
+  
+  
+  ofstream output_1;
+  output_1.open (basis_integrals);
+  
+  for (unsigned int i = 0; i<reduced_bases_names.size();i++)
+  {
+    output_1 << reduced_bases_names[i] << endl;
+  }
+  
+  output_1.close();
+
+  
+  
   
   update_avail_diagrams(options);
   return success;

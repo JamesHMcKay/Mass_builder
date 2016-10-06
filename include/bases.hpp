@@ -46,6 +46,19 @@ public:
   
 };
 
+struct Bases_product
+{
+
+Bases base_1;
+Bases base_2;
+string name_1,name_2;
+
+Bases_product(Bases base_1, Bases base_2,string name_1,string name_2) : base_1(base_1), base_2(base_2), name_1(name_1), name_2(name_2) {}
+
+Bases_product(){}
+
+};
+
 vector<int> find_string_lengths(vector<string> input);
 
 string get_id(std::vector<string> &masses, std::vector<string> &identifiers, string mass);
