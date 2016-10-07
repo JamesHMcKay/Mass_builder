@@ -9,12 +9,39 @@ using namespace utils;
 
 class Calc_amplitudes
 {
+private:
+
+  std::map<std::string, Bases> full_basis;
+  vector<string> full_basis_id;
+  int np;
+  
+  Options options;
+  string tag;
+  string model;
+  vector<string> masses_input,id_input;
+  int nb;
+  int nbr;
+  vector<string> reduced_basis_id;
+  std::map <std::string, Bases > reduced_basis;
+  std::map <std::string, Bases > prod_basis;
+  vector<std::string> prod_id;
+  std::map <std::string, Bases_product > products_map;
+    
+  const char *ext = ".txt";
+  string underscore = "_";
+  string blank = "";
+
 public:
 
-Calc_amplitudes(){}
+  Calc_amplitudes(){}
 
-bool calc_diagram(Options options);
-void generate_figures(Options options);
+  void compute_amp(string prevb,string dimension);
+  void make_finite_amp();
+  void make_full_trial(string prevb,string dimension);
+  bool calc_diagram(Options options_in);
+  void generate_figures(Options options_in);
+  void initial_trial(string dimension);
+  void second_initial_trial(string prevb,string dimension);
 };
 
 #endif

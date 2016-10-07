@@ -222,6 +222,19 @@ std::map <std::string, Bases > remove_zeros(std::map <std::string, Bases > base_
   return new_base_map;
 }
 
+std::map <std::string, Bases > remove_type_F(std::map <std::string, Bases > base_map, std::vector<std::string> bases_names)
+{
+  std::map <std::string, Bases > new_base_map;
+  for (unsigned int i = 0; i < base_map.size();i++)
+  {
+    if (base_map[bases_names[i]].type != "F")
+    {
+      new_base_map[bases_names[i]] = base_map[bases_names[i]];
+    }
+  }
+  return new_base_map;
+}
+
 
 // reformat the coefficient to change Mathematica expressions into readable C++ input
 void format_coeff(std::map <std::string, Bases > &base_map, std::vector<std::string> bases_names,std::vector<std::string> masses, std::vector<std::string> id)
@@ -239,11 +252,11 @@ void format_coeff(std::map <std::string, Bases > &base_map, std::vector<std::str
     {
       for (int j = 0; j<nm; j++)
       {
-        from = "TBI(D,Power(p,2),List(List(1,"+masses[i]+"),List(1," + masses[j] + ")))";  // TODO make short name for all bases object and for the B object include both permutations, then this solves this problem here
+        from = "TBI(4,Power(p,2),List(List(1,"+masses[i]+"),List(1," + masses[j] + ")))";  // TODO make short name for all bases object and for the B object include both permutations, then this solves this problem here
         to = "B"+id[j]+id[i]; // choice of i and j here is important TODO
         ReplaceAll(coefficient,from, to);
       }
-      from = "TAI(D,0,List(List(1,"+masses[i]+")))";
+      from = "TAI(4,0,List(List(1,"+masses[i]+")))";
       to = "A"+id[i];
       ReplaceAll(coefficient,from, to);
 

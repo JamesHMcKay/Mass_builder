@@ -4,13 +4,13 @@
  James McKay
  Sep 2016
  
---- utils.cpp ---
-
-This file contains functions used throughout the code to perform a range of
-tasks including reading from and writing to input/output streams, sorting
-lists of data and code generation
-
-*/
+ --- utils.cpp ---
+ 
+ This file contains functions used throughout the code to perform a range of
+ tasks including reading from and writing to input/output streams, sorting
+ lists of data and code generation
+ 
+ */
 
 
 #include "utils.hpp"
@@ -19,7 +19,7 @@ namespace utils
 {
   time_t t = time(0);
   struct tm * now = localtime( & t );
-
+  
   const char * output_file_name(std::string model, std::string tag, std::string file)
   {
     const char *ext = ".txt";
@@ -29,8 +29,8 @@ namespace utils
     const char *str = c_str.c_str();
     return str;
   }
-
-
+  
+  
   void update_avail_diagrams(Options options)
   {
     const char *ext = ".txt";
@@ -39,19 +39,19 @@ namespace utils
     string c_str = "models/" + options.model +str_tmp + "avail_diagrams" + underscore + ext;
     const char *str = c_str.c_str();
     string file_name = str;
-
+    
     vector<string> particle, diagram, type;
     vector<string> particle_new, diagram_new, type_new;
     int n;
     get_data(particle,diagram,type,n,file_name);
-
+    
     ofstream file;
     file_name = output_file_name(options.model,"","avail_diagrams");
     file.open(file_name.c_str());
-
+    
     particle.push_back(options.particle);
     diagram.push_back(options.diagram);
-
+    
     if (options.counter_terms)
     {
       type.push_back( to_string(options.loop_order)+"c" ) ;
@@ -92,17 +92,17 @@ namespace utils
     string c_str = "models/" + options.model +str_tmp + "avail_diagrams" + underscore + ext;
     const char *str = c_str.c_str();
     string file_name = str;
-
+    
     vector<string> particle, diagram, type;
     vector<string> particle_new, diagram_new, type_new;
     int n;
     get_data(particle,diagram,type,n,file_name);
-
+    
     ofstream file;
     file_name = output_file_name(options.model,"","avail_diagrams");
     file.open(file_name.c_str());
-
-
+    
+    
     for (int i = 0; i < n; i++)
     {
       for (int j = 0; j < n; j++)
@@ -124,10 +124,10 @@ namespace utils
     }
     file.close();
   }
-
-
-
-
+  
+  
+  
+  
   void user_input_guide()
   {
     cout << " Welcome to Mass Builder \n"
@@ -143,8 +143,8 @@ namespace utils
     << " -e                                          -i <file>   -  evaluate self energy with values for masses and couplings in file\n"
     << " ---------------------------------------------------------------------------------------------------- " <<endl;
   }
-
-
+  
+  
   void get_data(vector<std::string> &A,int &n,const char *filename)
   {
     n=0;
@@ -153,7 +153,7 @@ namespace utils
     while(getline(input, line))
     {
       if (!line.length() || line[0] == '#')
-      continue;
+        continue;
       std::istringstream iss(line);
       n=n+1;
     }
@@ -165,16 +165,16 @@ namespace utils
     while(getline(input2, line2))
     {
       if (!line2.length() || line2[0] == '#')
-      continue;
+        continue;
       std::istringstream iss2(line2);
       iss2>> A[n];
       n=n+1;
     }
     input2.close();
   }
-
-
-
+  
+  
+  
   void get_data(vector<std::string> &A, vector<std::string> &B,int &n,const char *filename, bool whole_line)
   {
     n=0;
@@ -184,7 +184,7 @@ namespace utils
     while(getline(input, line))
     {
       if (!line.length() || line[0] == '#')
-      continue;
+        continue;
       std::istringstream iss(line);
       std::string test;
       n=n+1;
@@ -198,7 +198,7 @@ namespace utils
         na=na+1;
       }
     }
-
+    
     A.resize(na);
     B.resize(nb);
     n = na;
@@ -208,7 +208,7 @@ namespace utils
     while(getline(input2, line2))
     {
       if (!line2.length() || line2[0] == '#')
-      continue;
+        continue;
       std::istringstream iss2(line2);
       if (std::count( line2.begin(), line2.end(), ' ' )>0)
       {
@@ -220,7 +220,7 @@ namespace utils
         {
           iss2>> A[na] >> B[nb];
         }
-
+        
         na=na+1;
         nb=nb+1;
       }
@@ -233,8 +233,8 @@ namespace utils
     input.close();
     input2.close();
   }
-
-
+  
+  
   void get_data(vector<std::string> &A,vector<std::string> &B,vector<std::string> &C,int &n, string file_name_temp)
   {
     n=0;
@@ -243,7 +243,7 @@ namespace utils
     while(getline(input, line))
     {
       if (!line.length() || line[0] == '#')
-      continue;
+        continue;
       std::istringstream iss(line);
       n=n+1;
     }
@@ -257,17 +257,17 @@ namespace utils
     while(getline(input2, line2))
     {
       if (!line2.length() || line2[0] == '#')
-      continue;
+        continue;
       std::istringstream iss2(line2);
       iss2>> A[n] >> B[n] >> C[n];
       n=n+1;
     }
     input2.close();
   }
-
-
+  
+  
   void print_math_header(ofstream &file)
-    {
+  {
     /*MATH_PATH */  file<< "#!/Applications/Mathematica.app/Contents/MacOS/MathematicaScript -script"<<endl;
     file << "(* ---------------------------------------------------- *)\n"
     << "(* This file has been automatically generated by Mass Builder, on "<< now->tm_mday << '-'
@@ -284,8 +284,8 @@ namespace utils
     <<"SetOptions[DiracTrace, DiracTraceEvaluate -> True];\n"
     <<"$GenericMixing = True;\n";
   }
-
-
+  
+  
   void print_math_body(ofstream &file,Options options,string cwd,std::vector<std::string> masses)
   {
     int loop_order = options.loop_order;
@@ -328,12 +328,33 @@ namespace utils
       <<"fullamp0 = (amp0) // DiracSimplify // FCMultiLoopTID[#, {k1}] & //DiracSimplify;\n"
       <<"tfiamp0 = fullamp0 // ToTFI[#, k1, p] & // ChangeDimension[#, 4] &;\n";
     }
-
-
+    
+    
   }
-
-
-
+  
+  
+  bool check_done_quiet()
+  {
+    std::ifstream file("output/result.txt");
+    std::string str;
+    std::string result;
+    std::getline(file, str);
+    result += str;
+    // need to check if the result of diff is zero, if not then throw an error
+    bool success = 0;
+    if (result == "0")
+    {
+      
+      success = 1;
+    }
+    else
+    {
+      
+      success = 0;
+    }
+    return success;
+  }
+  
   bool check_done()
   {
     std::ifstream file("output/result.txt");
@@ -356,21 +377,21 @@ namespace utils
     }
     return success;
   }
-
-
+  
+  
   std::string part_name_simple(std::string particle_name_full)
   {
     stringstream _part_1,_part_2;
     string part_1,part_2;
-
+    
     _part_1 << particle_name_full[0];
     _part_1 >> part_1;
     _part_2 << particle_name_full[2];
     _part_2 >> part_2;
-
+    
     return part_1+part_2;
   }
-
+  
   vector<string> remove_duplicates(vector<string> input,string warning)
   {
     vector<std::string> input_unique = input;
@@ -382,7 +403,7 @@ namespace utils
     }
     return input_unique;
   }
-
+  
   vector<string> remove_duplicates(vector<string> input)
   {
     vector<std::string> input_unique = input;
@@ -390,7 +411,7 @@ namespace utils
     input_unique.erase( unique( input_unique.begin(), input_unique.end() ), input_unique.end() );
     return input_unique;
   }
-
+  
   vector<char> remove_duplicates(vector<char> input,string warning)
   {
     vector<char> input_unique = input;
@@ -402,7 +423,7 @@ namespace utils
     }
     return input_unique;
   }
-
+  
   vector<char> remove_duplicates(vector<char> input)
   {
     vector<char> input_unique = input;
@@ -410,9 +431,9 @@ namespace utils
     input_unique.erase( unique( input_unique.begin(), input_unique.end() ), input_unique.end() );
     return input_unique;
   }
-
-
-
+  
+  
+  
   string char_to_string(char c)
   {
     stringstream ss;
@@ -421,8 +442,8 @@ namespace utils
     ss >> s;
     return s;
   }
-
-
+  
+  
   vector<int> find_string_lengths(vector<string> input)
   {
     vector<int> lengths;
@@ -433,8 +454,8 @@ namespace utils
     }
     return lengths;
   }
-
-
+  
+  
   std::vector<std::string> extract_keys(std::map<std::string, Bases> const& input_map)
   {
     std::vector<std::string> retval;
@@ -444,97 +465,99 @@ namespace utils
     }
     return retval;
   }
-
-
-  void print_base(ofstream &myfile, Bases base, string id, string SEn)
+  
+  
+  void print_base(ofstream &myfile, Bases base, string id, string SEn, string D)
   {
     string type = base.type;
-
-    if (SEn == "SEn")
+    
+    if (SEn != "diff")
     {
       if (type == "F")
       {
-        myfile << id << " = " << "TFI[D, Pair[Momentum[p],Momentum[p]], {{1, " << base.e1  << "}, {1, " << base.e2 << "}, {1, " << base.e3 << "}, {1, " << base.e4 << "}, {1, " << base.e5 << "}}];" << endl;
+        myfile << id << " = " << "TFI["<<D<<", Pair[Momentum[p],Momentum[p]], {{1, " << base.e1  << "}, {1, " << base.e2 << "}, {1, " << base.e3 << "}, {1, " << base.e4 << "}, {1, " << base.e5 << "}}];" << endl;
       }
       if (type == "A")
       {
-        myfile << id << " = " << "TAI[D, 0, {1, " << base.e1 << "}];" << endl;
+        myfile << id << " = " << "TAI["<<D<<", 0, {{1, " << base.e1 << "}}];" << endl;
       }
       if (type == "B")
       {
-        myfile << id << " = " << "TBI[D, Pair[Momentum[p],Momentum[p]], {{1, " << base.e1 << "}, {1, " << base.e2 << "}}];" << endl;
+        myfile << id << " = " << "TBI["<<D<<", Pair[Momentum[p],Momentum[p]], {{1, " << base.e1 << "}, {1, " << base.e2 << "}}];" << endl;
       }
       if (type == "V")
       {
-        myfile << id << " = " << "TVI[D, Pair[Momentum[p],Momentum[p]], {{1, " << base.e1 << "}, {1, " << base.e2 << "}, {1, " << base.e3 << "}, {1, " << base.e4 << "}}];" << endl;
+        myfile << id << " = " << "TVI["<<D<<", Pair[Momentum[p],Momentum[p]], {{1, " << base.e1 << "}, {1, " << base.e2 << "}, {1, " << base.e3 << "}, {1, " << base.e4 << "}}];" << endl;
       }
       if (type == "T")
       {
-        myfile << id << " = " << "TJI[D, Pair[Momentum[p],Momentum[p]], {{2, " << base.e1 << "}, {1, " << base.e2 << "}, {1, " << base.e3 << "}}];" << endl;
+        myfile << id << " = " << "TJI["<<D<<", Pair[Momentum[p],Momentum[p]], {{2, " << base.e1 << "}, {1, " << base.e2 << "}, {1, " << base.e3 << "}}];" << endl;
       }
       if (type == "J")
       {
-        myfile << id << " = " << "TJI[D, Pair[Momentum[p],Momentum[p]], {{1, " << base.e1 << "}, {1, " << base.e2 << "}, {1, " << base.e3 << "}}];" << endl;
+        myfile << id << " = " << "TJI["<<D<<", Pair[Momentum[p],Momentum[p]], {{1, " << base.e1 << "}, {1, " << base.e2 << "}, {1, " << base.e3 << "}}];" << endl;
       }
       if (type == "K")
       {
-        myfile << id << " = " << "TJI[D, 0, {{1, " << base.e1 << "}, {1, " << base.e2 << "}, {1, " << base.e3 << "}}];" << endl;
+        myfile << id << " = " << "TJI["<<D<<", 0, {{1, " << base.e1 << "}, {1, " << base.e2 << "}, {1, " << base.e3 << "}}];" << endl;
       }
     }
-
+    
     myfile << "C"<< id << " = Coefficient["<<SEn<<", " << id << ", 1];" << endl;
   }
-
-
-
-
-
-
+  
+  
+  
+  
+  
+  
   // print the basis integrals out in Mathematica notation
-  void print_math_basis(std::map<std::string, Bases> base_map, ofstream &myfile, string target)
+  void print_math_basis(std::map<std::string, Bases> base_map, ofstream &myfile, string target, string D)
   {
     vector<string> bases_names = extract_keys(base_map);
     for (unsigned int i = 0; i < bases_names.size();i++)
     {
       Bases base_temp;
       base_temp = base_map[bases_names[i]];
-      print_base(myfile, base_temp, bases_names[i], target);
+      print_base(myfile, base_temp, bases_names[i], target,D);
     }
   }
-
-
-
-
-
-
-  void print_base_product(ofstream &myfile,Bases base_1,Bases base_2,string SEn)
+  
+  
+  
+  
+  
+  
+  void print_base_product(ofstream &myfile,Bases base_1,Bases base_2,string SEn, string D)
   {
     string type1 = base_1.type;
     string type2 = base_2.type;
     if (type1 =="F"){goto end;}
     if (type2 =="F"){goto end;}
     myfile << base_1.short_name << base_2.short_name << " = ";
-    if (type1=="A") myfile << "TAI[D, 0, {1, " << base_1.e1 << "}]";
-    if (type1=="B") myfile << "TBI[D, Pair[Momentum[p],Momentum[p]], {{1, " << base_1.e1 << "}, {1, " << base_1.e2 << "}}]";
-    if (type1=="J") myfile << "TJI[D, Pair[Momentum[p],Momentum[p]], {{1, " << base_1.e1 << "}, {1, " << base_1.e2 << "}, {1, " << base_1.e3 << "}}]";
-    if (type1=="T") myfile << "TJI[D, Pair[Momentum[p],Momentum[p]], {{2, " << base_1.e1 << "}, {1, " << base_1.e2 << "}, {1, " << base_1.e3 << "}}]";
-    if (type1=="K") myfile << "TJI[D, 0, {{1, " << base_1.e1 << "}, {1, " << base_1.e2 << "}, {1, " << base_1.e3 << "}}];";
-    if (type1=="V") myfile << "TVI[D, Pair[Momentum[p],Momentum[p]], {{1, " << base_1.e1 << "}, {1, " << base_1.e2 << "}, {1, " << base_1.e3 << "}, {1, " << base_1.e4 << "}}]";
+    if (type1=="A") myfile << "TAI["<<D<<", 0, {{1, " << base_1.e1 << "}}]";
+    if (type1=="B") myfile << "TBI["<<D<<", Pair[Momentum[p],Momentum[p]], {{1, " << base_1.e1 << "}, {1, " << base_1.e2 << "}}]";
+    if (type1=="J") myfile << "TJI["<<D<<", Pair[Momentum[p],Momentum[p]], {{1, " << base_1.e1 << "}, {1, " << base_1.e2 << "}, {1, " << base_1.e3 << "}}]";
+    if (type1=="T") myfile << "TJI["<<D<<", Pair[Momentum[p],Momentum[p]], {{2, " << base_1.e1 << "}, {1, " << base_1.e2 << "}, {1, " << base_1.e3 << "}}]";
+    if (type1=="K") myfile << "TJI["<<D<<", 0, {{1, " << base_1.e1 << "}, {1, " << base_1.e2 << "}, {1, " << base_1.e3 << "}}];";
+    if (type1=="V") myfile << "TVI["<<D<<", Pair[Momentum[p],Momentum[p]], {{1, " << base_1.e1 << "}, {1, " << base_1.e2 << "}, {1, " << base_1.e3 << "}, {1, " << base_1.e4 << "}}]";
+    //if (type1=="F") myfile << "TFI["<<D<<", Pair[Momentum[p],Momentum[p]], {{1, " << base_1.e1 << "}, {1, " << base_1.e2 << "}, {1, " << base_1.e3 << "}, {1, " << base_1.e4 << "},{1, " << base_1.e5 << "}}]";
     myfile << " * ";
-    if (type2=="A") myfile << "TAI[D, 0, {1, " << base_2.e1 << "}];";
-    if (type2=="B") myfile << "TBI[D, Pair[Momentum[p],Momentum[p]], {{1, " << base_2.e1 << "}, {1, " << base_2.e2 << "}}];";
-    if (type2=="J") myfile << "TJI[D, Pair[Momentum[p],Momentum[p]], {{1, " << base_2.e1 << "}, {1, " << base_2.e2 << "}, {1, " << base_2.e3 << "}}];";
-    if (type2=="T") myfile << "TJI[D, Pair[Momentum[p],Momentum[p]], {{2, " << base_2.e1 << "}, {1, " << base_2.e2 << "}, {1, " << base_2.e3 << "}}];";
-    if (type2=="K") myfile << "TJI[D, 0, {{1, " << base_2.e1 << "}, {1, " << base_2.e2 << "}, {1, " << base_2.e3 << "}}];;";
-    if (type2=="V") myfile << "TVI[D, Pair[Momentum[p],Momentum[p]], {{1, " << base_2.e1 << "}, {1, " << base_2.e2 << "}, {1, " << base_2.e3 << "}, {1, " << base_2.e4 << "}}];";
+    if (type2=="A") myfile << "TAI["<<D<<", 0, {{1, " << base_2.e1 << "}}];";
+    if (type2=="B") myfile << "TBI["<<D<<", Pair[Momentum[p],Momentum[p]], {{1, " << base_2.e1 << "}, {1, " << base_2.e2 << "}}];";
+    if (type2=="J") myfile << "TJI["<<D<<", Pair[Momentum[p],Momentum[p]], {{1, " << base_2.e1 << "}, {1, " << base_2.e2 << "}, {1, " << base_2.e3 << "}}];";
+    if (type2=="T") myfile << "TJI["<<D<<", Pair[Momentum[p],Momentum[p]], {{2, " << base_2.e1 << "}, {1, " << base_2.e2 << "}, {1, " << base_2.e3 << "}}];";
+    if (type2=="K") myfile << "TJI["<<D<<", 0, {{1, " << base_2.e1 << "}, {1, " << base_2.e2 << "}, {1, " << base_2.e3 << "}}];;";
+    if (type2=="V") myfile << "TVI["<<D<<", Pair[Momentum[p],Momentum[p]], {{1, " << base_2.e1 << "}, {1, " << base_2.e2 << "}, {1, " << base_2.e3 << "}, {1, " << base_2.e4 << "}}];";
+    //if (type2=="F") myfile << "TFI["<<D<<", Pair[Momentum[p],Momentum[p]], {{1, " << base_1.e1 << "}, {1, " << base_1.e2 << "}, {1, " << base_1.e3 << "}, {1, " << base_1.e4 << "},{1, " << base_1.e5 << "}}]";
     myfile << endl;
     if (base_1.short_name==base_2.short_name) myfile << "C"<< base_1.short_name << base_2.short_name << " = Coefficient["<<SEn<<","<< base_1.short_name << ", 2];" << endl;
     else myfile << "C"<< base_1.short_name << base_2.short_name << " = - (1/2)* Coefficient["<<SEn<<","<< base_1.short_name << base_2.short_name << ", 1];" << endl;
-    end:;
+  end:;
   }
-
-
-  void print_math_products(std::map<std::string, Bases> base_map, ofstream &myfile, string target)
+  
+  
+  void print_math_products(std::map<std::string, Bases> base_map, ofstream &myfile, string target, string D)
   {
     vector<string> bases_names = extract_keys(base_map);
     int n = bases_names.size();
@@ -542,22 +565,22 @@ namespace utils
     {
       for (int j = 0; j<n;j++)
       {
-
+        
         Bases base_1;
         base_1 = base_map[bases_names[i]];
         base_1.short_name = bases_names[i];
         Bases base_2;
         base_2 = base_map[bases_names[j]];
         base_2.short_name = bases_names[j];  // TODO make this an automatic get and set function perhaps, could do short_names nicer
-
-        print_base_product(myfile,base_1,base_2,target);
-
+        
+        print_base_product(myfile,base_1,base_2,target,D);
+        
       }
     }
   }
-
-
-
+  
+  
+  
   void ReplaceAll(std::string &input, const std::string& from, const std::string& to)
   {
     size_t start_pos = 0;
@@ -567,8 +590,8 @@ namespace utils
       start_pos += to.length();
     }
   }
-
-
+  
+  
   void print_doTSIL(ofstream &myfile,Bases base)
   {
     string type = base.type;
@@ -613,7 +636,7 @@ namespace utils
       myfile << "TSIL_Evaluate (&bar, s);" << endl;
       myfile << name << "= -TSIL_GetFunction (&bar,\"Uzxyv" <<"\");"<< endl;
     }
-
+    
   }
   
   void print_doTSIL_cout(Bases base)
@@ -661,7 +684,76 @@ namespace utils
       cout << "TSIL_Evaluate (&bar, s);" << endl;
       cout << name << "= -TSIL_GetFunction (&bar,\"Uzxyv" <<"\");"<< endl;
     }
-
+    
   }
+  
+  
+  
+  
+  
+  void print_finite_base(ofstream &myfile, Bases base, string id)
+  {
+    string type = base.type;
+    
+    if (type == "F")
+    {
+      myfile << id << "4 = " << "TFI[4, Pair[Momentum[p],Momentum[p]], {{1, " << base.e1  << "}, {1, " << base.e2 << "}, {1, " << base.e3 << "}, {1, " << base.e4 << "}, {1, " << base.e5 << "}}];" << endl;
+      myfile << id << "f = " << id << "4 " << endl;
+    }
+    if (type == "A")
+    {
+      myfile << id << "4 = " <<  "TAI[4, 0, {1, " << base.e1 << "}];" << endl;
+      //myfile << id << "f = " << id << "4 " << endl;
+      myfile << id << "f = " <<  id << "4 + " << base.e1 <<"^2 * I /epsilon " <<  endl;
+    }
+    if (type == "B")
+    {
+      myfile << id << "4 = " << "TBI[4, Pair[Momentum[p],Momentum[p]], {{1, " << base.e1 << "}, {1, " << base.e2 << "}}];" << endl;
+      //myfile << id << "f = " << id << "4 " << endl;
+      myfile << id << "f = " << id << "4 - I/epsilon " << endl;
+    }
+    if (type == "V")
+    {
+      myfile << id << "4 = " << "TVI[4, Pair[Momentum[p],Momentum[p]], {{1, " << base.e1 << "}, {1, " << base.e2 << "}, {1, " << base.e3 << "}, {1, " << base.e4 << "}}];" << endl;
+      myfile << id << "f = " << id << "4 " << endl;
+    }
+    if (type == "T")
+    {
+      myfile << id << "4 = " << "TJI[4, Pair[Momentum[p],Momentum[p]], {{2, " << base.e1 << "}, {1, " << base.e2 << "}, {1, " << base.e3 << "}}];" << endl;
+      myfile << id << "f = " << id << "4 " << endl;
+    }
+    if (type == "J")
+    {
+      myfile << id << "4 = " << "TJI[4, Pair[Momentum[p],Momentum[p]], {{1, " << base.e1 << "}, {1, " << base.e2 << "}, {1, " << base.e3 << "}}];" << endl;
+      myfile << id << "f = " << id << "4 " << endl;
+    }
+    if (type == "K")
+    {
+      myfile << id << "4 = " << "TJI[4, 0, {{1, " << base.e1 << "}, {1, " << base.e2 << "}, {1, " << base.e3 << "}}];" << endl;
+      myfile << id << "f = " << id << "4 " << endl;
+    }
+    
+    
+  }
+  
+  
+  
+  
+  
+  
+  // print the basis integrals out in Mathematica notation
+  void print_finite_basis(std::map<std::string, Bases> base_map, ofstream &myfile)
+  {
+    vector<string> bases_names = extract_keys(base_map);
+    for (unsigned int i = 0; i < bases_names.size();i++)
+    {
+      Bases base_temp;
+      base_temp = base_map[bases_names[i]];
+      print_finite_base(myfile, base_temp, bases_names[i]);
+    }
+  }
+  
+  
+  
   
 }

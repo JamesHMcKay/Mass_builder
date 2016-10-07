@@ -1,4 +1,3 @@
-D
 sw
 cw
 sw2
