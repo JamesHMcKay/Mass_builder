@@ -340,40 +340,51 @@ namespace utils
     std::string result;
     std::getline(file, str);
     result += str;
-    // need to check if the result of diff is zero, if not then throw an error
-    bool success = 0;
-    if (result == "0")
+    // need to check if the result contains a basis integral
+    bool success = true;
+    
+    std::string bad_list[5] = {"TFI","TBI","TVI","TAI","TJI"};
+    
+    for (int i = 0; i<5; i++)
     {
-      
-      success = 1;
+      if (result.find(bad_list[i]) != std::string::npos)
+      {
+        success = false;
+      }
     }
-    else
-    {
-      
-      success = 0;
-    }
+
+
     return success;
   }
   
-  bool check_done()
+  bool check_done(string &result)
   {
     std::ifstream file("output/result.txt");
     std::string str;
-    std::string result;
     std::getline(file, str);
     result += str;
-    // need to check if the result of diff is zero, if not then throw an error
-    bool success = 0;
-    if (result == "0")
+    // need to check if the result contains a basis integral
+    bool success = true;
+    
+    std::string bad_list[5] = {"TFI","TBI","TVI","TAI","TJI"};
+    
+    for (int i = 0; i<5; i++)
+    {
+      if (result.find(bad_list[i]) != std::string::npos)
+      {
+        success = false;
+      }
+    }
+
+
+    if (success)
     {
       cout << "Successful!!!" << endl;
-      success = 1;
     }
     else
     {
       cout << "Something has gone wrong.  Check that all mass terms match the masses in the model file and that there are no masses missing in your masses.txt input file." << endl;
       cout << "Also confirm that Mathematica is starting correctly and finding the required packages, run with \"-v\" flag to display Mathematica output." << endl;
-      success = 0;
     }
     return success;
   }
@@ -596,6 +607,10 @@ namespace utils
   {
     string type = base.type;
     string name = base.short_name;
+    if (type == "const")
+    {
+      myfile << "const" << " = 1.0L"<<endl;
+    }
     if (type == "A")
     {
       myfile << name << " = -i*TSIL_A_ ("<<base.e1<<"2 , Q2);"<<endl;
@@ -639,57 +654,6 @@ namespace utils
     
   }
   
-  void print_doTSIL_cout(Bases base)
-  {
-    string type = base.type;
-    string name = base.short_name;
-    if (type == "A")
-    {
-      cout << name << " = -i*TSIL_A_ ("<<base.e1<<"2 , Q2);"<<endl;
-    }
-    if (type == "B")
-    {
-      cout << name <<" = i*TSIL_B_ (" << base.e1 << "2, " << base.e2 << "2, s, Q2);"<< endl;
-    }
-    if (type == "K")
-    {
-      cout << name <<" = TSIL_I2_(" << base.e1 << "2, " << base.e2 << "2, " << base.e3 << ", Q2);"<< endl;
-    }
-    if (type == "J")
-    {
-      string A = base.e1,B=base.e2,C=base.e3;
-      cout << "TSIL_SetParametersST (&bar," << B << "2, " << A << "2, " << C <<"2, Q2);" << endl;
-      cout << "TSIL_Evaluate (&bar, s);" << endl;
-      cout << name << "= TSIL_GetFunction (&bar,\"Suxv" <<"\");"<< endl;
-    }
-    if (type == "T")
-    {
-      string A = base.e1,B=base.e2,C=base.e3;
-      cout << "TSIL_SetParametersST (&bar," << A << "2, " << B << "2, " << C <<"2, Q2);" << endl;
-      cout << "TSIL_Evaluate (&bar, s);" << endl;
-      cout << name << "= -TSIL_GetFunction (&bar,\"Txuv" <<"\");"<< endl;
-    }
-    if (type == "F")
-    {
-      string A = base.e1,B=base.e2,C=base.e3,D=base.e4,E=base.e5;
-      cout << "TSIL_SetParameters (&bar," << A << "2, " << B << "2, " << C << "2 , " << D << "2 , " << E  << "2, Q2);" << endl;
-      cout << "TSIL_Evaluate (&bar, s);" << endl;
-      cout << name << "= TSIL_GetFunction (&bar,\"M" <<"\");"<< endl;
-    }
-    if (type == "V")
-    {
-      string A = base.e1,B=base.e2,C=base.e3,D=base.e4;
-      //cout << "TSIL_SetParameters (&bar," << D << "2, " << C << "2, " << B << "2 , " << "1.0" << " , " << A  << "2, Q2);" << endl;
-      cout << "TSIL_SetParameters (&bar," << A << "2, " << C << "2, " << D << "2 , " << "1.0" << " , " << B << "2, Q2);" << endl;
-      cout << "TSIL_Evaluate (&bar, s);" << endl;
-      cout << name << "= -TSIL_GetFunction (&bar,\"Uzxyv" <<"\");"<< endl;
-    }
-    
-  }
-  
-  
-  
-  
   
   void print_finite_base(ofstream &myfile, Bases base, string id)
   {
@@ -703,14 +667,13 @@ namespace utils
     if (type == "A")
     {
       myfile << id << "4 = " <<  "TAI[4, 0, {1, " << base.e1 << "}];" << endl;
-      //myfile << id << "f = " << id << "4 " << endl;
       myfile << id << "f = " <<  id << "4 + " << base.e1 <<"^2 * I /epsilon " <<  endl;
     }
     if (type == "B")
     {
       myfile << id << "4 = " << "TBI[4, Pair[Momentum[p],Momentum[p]], {{1, " << base.e1 << "}, {1, " << base.e2 << "}}];" << endl;
       //myfile << id << "f = " << id << "4 " << endl;
-      myfile << id << "f = " << id << "4 - I/epsilon " << endl;
+      myfile << id << "f = " << id << "4 + I/epsilon " << endl;
     }
     if (type == "V")
     {
@@ -732,13 +695,7 @@ namespace utils
       myfile << id << "4 = " << "TJI[4, 0, {{1, " << base.e1 << "}, {1, " << base.e2 << "}, {1, " << base.e3 << "}}];" << endl;
       myfile << id << "f = " << id << "4 " << endl;
     }
-    
-    
   }
-  
-  
-  
-  
   
   
   // print the basis integrals out in Mathematica notation

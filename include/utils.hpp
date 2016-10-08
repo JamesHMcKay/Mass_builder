@@ -29,7 +29,7 @@ namespace utils
   
   void user_input_guide();
   
-  bool check_done();
+  bool check_done(std::string &result);
   
   bool check_done_quiet();
   
@@ -66,7 +66,7 @@ namespace utils
   void print_math_products(map<string, Bases> base_map, ofstream &myfile, string target, string D);
   
   void print_doTSIL(ofstream &myfile,Bases base);
-  void print_doTSIL_cout(Bases base);
+  //void print_doTSIL_cout(Bases base);
   
   void print_finite_base(ofstream &myfile, Bases base, string id);
   

@@ -39,6 +39,8 @@ public:
   
   Bases(string type, string e1) : type(type) , e1(e1) {}
   
+  Bases(string type) : type(type) {}
+  
   
   void set_coeff(string _coefficient){coefficient = _coefficient;}
   

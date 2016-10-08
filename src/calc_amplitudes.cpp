@@ -98,6 +98,8 @@ void Calc_amplitudes::compute_amp(string prevb,string dimension)
   string c_file_integrals4 = file_integrals4_tmp + blank + ext;
   const char *file_integrals4 = c_file_integrals4.c_str();
   vector<std::string> coeff_new_prod;
+  prod_basis.clear();
+  prod_id.clear();
   get_data(prod_id, coeff_new_prod, temp_int,file_integrals4,true);
   
   prod_basis = remove_type_F(full_basis,full_basis_id);
@@ -122,11 +124,13 @@ void Calc_amplitudes::compute_amp(string prevb,string dimension)
   
   if (prod_basis.size()==0 && !check_done_quiet())
   {
+    cout << "here" << endl;
     prod_basis = full_basis;
     prod_id = extract_keys(prod_basis);
     prod_basis = remove_type_F(prod_basis, prod_id);
     prod_id = extract_keys(prod_basis);
   }
+  
   np = prod_id.size();
 }
 
@@ -171,7 +175,8 @@ void Calc_amplitudes::make_full_trial(string prevb,string dimension)
   math_3 << "Print[\" --------------------------------------- \"]" <<endl;
   math_3 << "Print[diff]"<<endl;
   
-  math_3 << "Export[\""<<s_cwd<<"/output/result.txt\", diff]" << endl;
+  math_3 << "Export[\""<<s_cwd<<"/output/result.txt\", CForm[diff/. DiracGamma[Momentum[p]] -> p] ]" << endl;
+  //math_3 << "Export[\""<<s_cwd<<"/output/result.txt\", diff]" << endl;
   
   // print out coefficients of products -- this is for the purposes of passing as final output to TSIL
   
@@ -183,8 +188,8 @@ void Calc_amplitudes::make_full_trial(string prevb,string dimension)
   {
     for (int j = 0; j<np;j++)
     {
-      if ((i==np-1) && (j==np-1)){ math_3 << "{\""<<prod_id[i] << prod_id[j] <<" \",CForm[C"<<prod_id[i] << prod_id[j] <<" /. Pair[Momentum[p], Momentum[p]] -> p^2 /. DiracGamma[Momentum[p]] -> p], \";\"}" << endl;}
-      else {math_3 << "{\""<<prod_id[i] << prod_id[j] <<" \",CForm[C"<<prod_id[i] << prod_id[j] <<" /. Pair[Momentum[p], Momentum[p]] -> p^2 /. DiracGamma[Momentum[p]] -> p], \";\"}," << endl;}
+      if ((i==np-1) && (j==np-1)){ math_3 << "{\""<<prod_id[i] << prod_id[j] <<" \",CForm[C"<<prod_id[i] << prod_id[j] <<" /. Pair[Momentum[p], Momentum[p]] -> p^2 /. DiracGamma[Momentum[p]] -> p], \"\"}" << endl;}
+      else {math_3 << "{\""<<prod_id[i] << prod_id[j] <<" \",CForm[C"<<prod_id[i] << prod_id[j] <<" /. Pair[Momentum[p], Momentum[p]] -> p^2 /. DiracGamma[Momentum[p]] -> p], \"\"}," << endl;}
       
       // need to store information regarding the integrals involved in each product
       Bases_product product(prod_basis[prod_id[i]],prod_basis[prod_id[j]],prod_id[i],prod_id[j]);
@@ -346,31 +351,39 @@ bool Calc_amplitudes::calc_diagram(Options options_in)
    const char* file_masses_tmp = "models/";
   string c_file_masses = file_masses_tmp + model + "/masses" + ext;
   const char *file_masses = c_file_masses.c_str();
-  
-  
-  
   int na;
   get_data(masses_input,id_input,na,file_masses);
   
   full_basis = set_bases(masses_input, id_input);
-  
   full_basis_id = extract_keys(full_basis);
-  vector<string> bases_names = full_basis_id; // temporary remove when not needed
-  
   nb = full_basis_id.size();
   
+  
+  // subroutine to generate and call Mathematica scripts
   initial_trial("D");
-  
   compute_amp("math_1.mx\"","D");
-  
   make_full_trial("math_1.mx\"","D");
-  make_finite_amp();
   
+  make_finite_amp();
   second_initial_trial("math_2.mx\"","4");
   compute_amp("math_2.mx\"","4");
   make_full_trial("math_2.mx\"","4");
   
-  success = check_done();
+  
+  string remainder;
+  success = check_done(remainder);
+  
+  /*if (remainder != "0")
+  {
+  Bases C0("extra");
+  C0.coefficient = remainder;
+  reduced_basis["extra"] = C0;
+  reduced_basis_id = extract_keys(reduced_basis);
+  nbr = reduced_basis_id.size();
+  }
+  */
+  // need to check result.txt and take anything in there as input for C0
+  // if C0 is not null then add this as a basis integral
   
   
   
@@ -388,6 +401,10 @@ bool Calc_amplitudes::calc_diagram(Options options_in)
   ofstream coeff_integrals_out;
   coeff_integrals_out.open (coeff_integrals);
   format_coeff(reduced_basis,  reduced_basis_id, masses_input, id_input);
+  if (remainder != "0")
+  {
+    coeff_integrals_out << "TSIL_COMPLEXCPP C0 = " << remainder << ";" <<endl;
+  }
   for (int i = 0; i < nbr;i++)
   {
     coeff_integrals_out << "TSIL_COMPLEXCPP C" << reduced_basis_id[i] << " = " << reduced_basis[reduced_basis_id[i]].coefficient << ";" <<endl;
@@ -435,6 +452,12 @@ bool Calc_amplitudes::calc_diagram(Options options_in)
   ofstream summation_out;
   summation_out.open (summation);
   summation_out << "return ";
+  if (remainder != "0")
+  {
+    summation_out << " + C0 ";
+  }
+  
+  
   for (int i = 0; i<nbr;i++)
   {
     if (sum_integrals != 0 ) summation_out  << " + "<<reduced_basis_id[i]<< " * C"<<reduced_basis_id[i];
@@ -470,9 +493,6 @@ bool Calc_amplitudes::calc_diagram(Options options_in)
     basis_integral_out << reduced_basis_id[i] << endl;
   }
   basis_integral_out.close();
-
-  
-  // DONE
   
   if (success) {update_avail_diagrams(options);}
   return success;
