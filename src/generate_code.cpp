@@ -230,6 +230,8 @@ namespace Generate_code
     << "#endif\n"
     //<< "long double strtold(const char *, char **);\n"
     << "// define subroutines here\n"
+    << "TSIL_REAL Q2;\n"
+    << "TSIL_COMPLEX Log(TSIL_REAL a){return TSIL_Ap(a,Q2);}\n"
     << "TSIL_REAL Power(TSIL_REAL a, int b){return TSIL_POW(a,b);}\n"
     << "TSIL_REAL Sin(TSIL_REAL a){return sin(a);}\n"
     << "TSIL_REAL Cos(TSIL_REAL a){return cos(a);}\n"
@@ -361,6 +363,7 @@ namespace Generate_code
     }
     main_output<<";"<<endl;
     main_output<< "\n";
+    main_output<< "Q2 = data.Q;\n";
     
     
     for (int i=0;i<nm;i++)

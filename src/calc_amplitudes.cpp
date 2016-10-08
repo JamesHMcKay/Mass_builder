@@ -124,7 +124,6 @@ void Calc_amplitudes::compute_amp(string prevb,string dimension)
   
   if (prod_basis.size()==0 && !check_done_quiet())
   {
-    cout << "here" << endl;
     prod_basis = full_basis;
     prod_id = extract_keys(prod_basis);
     prod_basis = remove_type_F(prod_basis, prod_id);
@@ -215,48 +214,48 @@ void Calc_amplitudes::make_finite_amp()
 
   string prevb = "math_1.mx\"";
   string dimension = "D";
-  ofstream math_3;
-  math_3.open ("output/math_3.m");
+  ofstream math_4;
+  math_4.open ("output/math_4.m");
   
-  utils::print_math_header(math_3);
-  math_3<<"Get[\"" << s_cwd <<"/output/"<< prevb << "]\n";
+  utils::print_math_header(math_4);
+  math_4<<"Get[\"" << s_cwd <<"/output/"<< prevb << "]\n";
   
-  print_math_basis(reduced_basis,math_3,"SEn",dimension);
-  print_math_basis(prod_basis,math_3,"SEn",dimension);
-  print_math_products(prod_basis,math_3,"SEn",dimension);
+  print_math_basis(reduced_basis,math_4,"SEn",dimension);
+  print_math_basis(prod_basis,math_4,"SEn",dimension);
+  print_math_products(prod_basis,math_4,"SEn",dimension);
   
   
   // now construct full amplitude but with finite basis integrals
-  print_finite_basis(reduced_basis,math_3);
-  print_finite_basis(prod_basis,math_3);
+  print_finite_basis(reduced_basis,math_4);
+  print_finite_basis(prod_basis,math_4);
   
-  math_3 << "SEnFinite = ";
+  math_4 << "SEnFinite = ";
   for (int i = 0; i<nbr;i++)
   {
-    math_3 << " + "<<reduced_basis_id[i]<< "f * C"<<reduced_basis_id[i];
+    math_4 << " + "<<reduced_basis_id[i]<< "f * C"<<reduced_basis_id[i];
   }
   
   for (int i = 0; i<np ; i++)
   {
     for (int j = 0; j<np ; j++)
     {
-      math_3 << " + "<< prod_id[i] << "f * " << prod_id[j] << "f * C"<<prod_id[i]<< prod_id[j];
+      math_4 << " + "<< prod_id[i] << "f * " << prod_id[j] << "f * C"<<prod_id[i]<< prod_id[j];
     }
   }
-  math_3 << ";"<<endl;
+  math_4 << ";"<<endl;
 
-  math_3<<"SEn = SEnFinite /. D-> 4-epsilon;\n";
-  math_3<<"SEn = Coefficient[SEn,epsilon,0]; \n";
-  math_3<<"SEn = Simplify[SEn /. epsilon->0];\n"; // some integrals come through as D = 4-epsilon so fix these
+  math_4<<"SEn = SEnFinite /. D-> 4-epsilon;\n";
+  math_4<<"SEn = Coefficient[SEn,epsilon,0]; \n";
+  math_4<<"SEn = Simplify[SEn /. epsilon->0];\n"; // some integrals come through as D = 4-epsilon so fix these
   
-  math_3<<"DumpSave[\""<<s_cwd<<"/output/math_2.mx\", SEn];\n";
+  math_4<<"DumpSave[\""<<s_cwd<<"/output/math_2.mx\", SEn];\n";
   
-  math_3.close();
+  math_4.close();
   
 #ifdef RUN_ALL
-  system("chmod +x output/math_3.m ");
-  if(options.verbose) system("./output/math_3.m");
-  else system("./output/math_3.m  >/dev/null ");
+  system("chmod +x output/math_4.m ");
+  if(options.verbose) system("./output/math_4.m");
+  else system("./output/math_4.m  >/dev/null ");
 #endif
 }
 
@@ -372,6 +371,10 @@ bool Calc_amplitudes::calc_diagram(Options options_in)
   
   string remainder;
   success = check_done(remainder);
+        
+  
+  
+  ReplaceAll(remainder,"Pair(Momentum(p),Momentum(p))", "Power(p,2)");
   
   /*if (remainder != "0")
   {

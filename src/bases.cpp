@@ -268,6 +268,12 @@ void format_coeff(std::map <std::string, Bases > &base_map, std::vector<std::str
       from = "Spinor(Momentum(p),"+masses[i]+",1)";
       to = "1.0L";
       ReplaceAll(coefficient,from, to);
+      
+      
+      from = "Pair(Momentum(p),Momentum(p))";
+      to = "Power(p,2)";
+      ReplaceAll(coefficient,from, to);
+      
 
       from = "Dot(1.0,1.0)";
       to = "1.0L";
