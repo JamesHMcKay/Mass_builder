@@ -677,27 +677,27 @@ namespace utils
     if (type == "V")
     {
       myfile << id << "4 = " << "TVI[4, Pair[Momentum[p],Momentum[p]], {{1, " << base.e1 << "}, {1, " << base.e2 << "}, {1, " << base.e3 << "}, {1, " << base.e4 << "}}];" << endl;
-      myfile << id << "f = " << id << "4 - TBI[4, Pair[Momentum[p],Momentum[p]], {{1, " << base.e1 << "}, {1, " << base.e2 << "}}]/epsilon";
-      myfile << "+1/(2*epsilon^2) - 1/(2*epsilon) " << endl;
+      myfile << id << "f = " << id << "4 + I * TBI[4, Pair[Momentum[p],Momentum[p]], {{1, " << base.e1 << "}, {1, " << base.e2 << "}}]/epsilon";
+      myfile << "-3/(2*epsilon) + 1/(2*epsilon^2) " << endl;
     }
     if (type == "T")
     {
       myfile << id << "4 = " << "TJI[4, Pair[Momentum[p],Momentum[p]], {{2, " << base.e1 << "}, {1, " << base.e2 << "}, {1, " << base.e3 << "}}];" << endl;
-      myfile << id << "f = " << id << "4 - 3/(2*epsilon^2) + 1/(2*epsilon) + (1/epsilon)*Log["<<base.e1<<"] " << endl;
+      myfile << id << "f = " << id << "4 - 3/(2*epsilon^2) + 1/(2*epsilon) + (1/epsilon)*Log["<<base.e1<<"] - (1/2)*(Log["<<base.e1<<"])^2 -Zeta2/2" << endl;
     }
     if (type == "J")
     {
       myfile << id << "4 = " << "TJI[4, Pair[Momentum[p],Momentum[p]], {{1, " << base.e1 << "}, {1, " << base.e2 << "}, {1, " << base.e3 << "}}];" << endl;
-      myfile << id << "f = " << id << "4 - ( TAI[4, 0, {1, " << base.e1 << "}] + TAI[4, 0, {1, " << base.e2 << "}] + TAI[4, 0, {1, " << base.e3 << "}])/epsilon ";
-      myfile << " - ( " << base.e1 << "^2 + " << base.e2 << "^2 + " << base.e3 << "^2 )/ (2* epsilon^2)";
+      myfile << id << "f = " << id << "4 + I*( TAI[4, 0, {1, " << base.e1 << "}] + TAI[4, 0, {1, " << base.e2 << "}] + TAI[4, 0, {1, " << base.e3 << "}])/epsilon ";
+      myfile << " - (" << base.e1 << "^2 + " << base.e2 << "^2 + " << base.e3 << "^2 )/ (2* epsilon^2)";
       myfile << "+ (Pair[Momentum[p],Momentum[p]]/2 - " << base.e1 << "^2 - " << base.e2 << "^2 - " << base.e3 << "^2 ) / (2*epsilon) " << endl;
     }
     if (type == "K")
     {
       myfile << id << "4 = " << "TJI[4, 0, {{1, " << base.e1 << "}, {1, " << base.e2 << "}, {1, " << base.e3 << "}}];" << endl;
-      myfile << id << "f = " << id << "4 - ( TAI[4, 0, {1, " << base.e1 << "}] + TAI[4, 0, {1, " << base.e2 << "}] + TAI[4, 0, {1, " << base.e3 << "}])/epsilon ";
-      myfile << " - ( " << base.e1 << "^2 + " << base.e2 << "^2 + " << base.e3 << "^2 )/ (2* epsilon^2)";
-      myfile << "+ (- " << base.e1 << "^2 - " << base.e2 << "^2 - " << base.e3 << "^2 ) / (2*epsilon) " << endl;
+      myfile << id << "f = " << id << "4 + I*( TAI[4, 0, {1, " << base.e1 << "}] + TAI[4, 0, {1, " << base.e2 << "}] + TAI[4, 0, {1, " << base.e3 << "}])/epsilon ";
+      myfile << " - (" << base.e1 << "^2 + " << base.e2 << "^2 + " << base.e3 << "^2 )/ (2* epsilon^2)";
+      myfile << "+ ( - " << base.e1 << "^2 - " << base.e2 << "^2 - " << base.e3 << "^2 ) / (2*epsilon) " << endl;
     }
   }
   
