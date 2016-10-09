@@ -2,9 +2,11 @@ sw
 cw
 sw2
 cw2
+STW
 S2TW
 g2
 g1
 CTW
 C2TW
 v
+Lam
