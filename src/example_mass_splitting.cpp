@@ -42,7 +42,7 @@ double iterative_mass_F5(Data data)
     Self_energy se;
     se.run_tsil(data);
     
-    double M_1loop=M_tree + (data.SE_1["F5"]+data.SE_2["F5"]);
+    double M_1loop=M_tree + (data.SE_1["F1"]+data.SE_2["F1"]);
     MFn=M_1loop;
     new_MFn=MFn;
     diff=abs(new_MFn-old_MFn);
@@ -82,7 +82,7 @@ double iterative_mass_F6(Data data)
     Self_energy se;
     se.run_tsil(data);
     
-    double M_1loop=M_tree +(data.SE_1["F6"]+data.SE_2["F6"]);
+    double M_1loop=M_tree +(data.SE_1["F2"]+data.SE_2["F2"]);
     MFn=M_1loop;
     new_MFn=MFn;
     diff=abs(new_MFn-old_MFn);
@@ -109,7 +109,7 @@ double pole_mass_F5(Data data)
   se.run_tsil(data);
   //Supplements supp(data);
   //supp.add_derivatives(data);
-  double Mp = data.MChi + (data.SE_1["F5"]+data.SE_2["F5"]);
+  double Mp = data.MChi + (data.SE_1["F1"]+data.SE_2["F1"]);
   return Mp;
 }
 
@@ -119,7 +119,7 @@ double pole_mass_F6(Data data)
   se.run_tsil(data);
   //Supplements supp(data);
   //supp.add_derivatives(data);
-  double Mp = data.MChi + (data.SE_1["F6"]+data.SE_2["F6"]);
+  double Mp = data.MChi + (data.SE_1["F2"]+data.SE_2["F2"]);
   return Mp;
 }
 
@@ -137,7 +137,7 @@ int main(int argc, char *argv[])
   Data data(options);
   
   ofstream myfile;
-  myfile.open ("models/MDM/output/mass_splittings.txt");
+  myfile.open ("models/EW_triplet/output/mass_splittings.txt");
   int pts = 30;
   double n = 0;
   double M=0;

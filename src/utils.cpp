@@ -677,8 +677,8 @@ namespace utils
     if (type == "V")
     {
       myfile << id << "4 = " << "TVI[4, Pair[Momentum[p],Momentum[p]], {{1, " << base.e1 << "}, {1, " << base.e2 << "}, {1, " << base.e3 << "}, {1, " << base.e4 << "}}];" << endl;
-      myfile << id << "f = " << id << "4 + I * TBI[4, Pair[Momentum[p],Momentum[p]], {{1, " << base.e1 << "}, {1, " << base.e2 << "}}]/epsilon";
-      myfile << "-3/(2*epsilon) + 1/(2*epsilon^2) " << endl;
+      myfile << id << "f = " << id << "4 + I* TBI[4, Pair[Momentum[p],Momentum[p]], {{1, " << base.e2 << "}, {1, " << base.e4 << "}}]/epsilon";
+      myfile << "+1/(2*epsilon) + 1/(2*epsilon^2) " << endl;
     }
     if (type == "T")
     {

@@ -29,7 +29,7 @@ ax.set_xscale('log')
 
 ax.xaxis.set_major_formatter(ticker.FormatStrFormatter("%d"))
 
-A=np.genfromtxt('models/MDM/output/mass_splittings.txt',usecols=[0,1,2])
+A=np.genfromtxt('models/EW_triplet/output/mass_splittings.txt',usecols=[0,1,2])
 x=A[:,0]
 y1=A[:,1]*1000
 y2=A[:,2]*1000
@@ -43,7 +43,7 @@ plt.plot(x,y1,'--',color='black',label='Implicit pole mass') #
 
 xlabel(r"Degenerate mass $M$ (GeV)",fontsize=16)
 ylabel(r"$\Delta M$ (Mev)",fontsize=16)
-plt.ylim([-200,200])
+plt.ylim([0,200])
 plt.legend(loc=2)
 
 
