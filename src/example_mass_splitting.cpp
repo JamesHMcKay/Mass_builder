@@ -149,7 +149,7 @@ int main(int argc, char *argv[])
     data.MChi=M;
     data.P = M;
     
-    double delta_m_it=iterative_mass_F5(data) - iterative_mass_F6(data);
+    double delta_m_it=0;//iterative_mass_F5(data) - iterative_mass_F6(data);
     data.MChi=M;
     data.P = M;
     M= pow(10,n);

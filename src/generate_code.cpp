@@ -237,6 +237,8 @@ namespace Generate_code
     << "TSIL_REAL Cos(TSIL_REAL a){return cos(a);}\n"
     << "TSIL_REAL Dot(TSIL_REAL a, TSIL_REAL b){return a*b;}\n"
     << "TSIL_REAL Zeta2 = 1.6449340668482;\n"
+    << "TSIL_COMPLEXCPP Ae(TSIL_REAL a) { return TSIL_Aeps_(a,Q2);}\n"
+    //<< "TSIL_COMPLEXCPP Be(TSIL_REAL a, TSIL_REAL b, TSIL_REAL p) { return TSIL_Beps_(a,b, TSIL_POW(p,2), Q2);}\n"
     << "int          init(Data data);\n"
     << "TSIL_COMPLEXCPP operator*(int a, TSIL_COMPLEXCPP b){TSIL_COMPLEXCPP c=a;return c*b;}\n"
     << "TSIL_COMPLEXCPP Complex(double a,double b){dcomp i;i=-1;i=sqrt(i);TSIL_COMPLEXCPP result = a + i*b; return result ;}\n"

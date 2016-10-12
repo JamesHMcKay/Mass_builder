@@ -374,6 +374,29 @@ Before code is generated \lstinline{self_energy.cpp} is a skeleton necessary for
 
 The diagrams available to be included in the generated TSIL interface are registered in \lstinline{models/<model>/output/avail_diagrams.txt} which is updated each time a new diagram is computed (it is also checked for duplicate entries, so no diagram, particle, and type combination appears twice).  However, if using the \lstinline{-i} option with the generate code mode, then it is possible for duplicate diagrams to appear (we choose not to override this possibility to avoid unnecessary interference with user input).
 
+\subsection{Subtraction of divergences}
+
+The integrals obtained from the TARCER output are in terms of divergent basis integrals.  In a consistent field theory these divergences should be accounted for by divergent counter-term diagrams.  We leave the determination of counter-terms and checking that divergences cancel to the user, although it is possible to compute the counter-term diagrams via this interface (\textit{not fully supported yet}).  Once we are assured the divergent terms can be accounted for by appropriate counter-term couplings, we make limit our consideration to only the finite part of the basis integrals.
+
+The TSIL package provides the finite basis integrals, with the divergences subtracted, which is convenient in most cases.  However, if the divergent term is of order $1/\epsilon$ and the basis integral had a coefficient of the form $D = 4-\epsilon$, then this leading divergence becomes a finite contribution that must be accounted.  Thus we must appropriately take $D=4-\epsilon$ when converting from a divergent integral as output by TARCER into the finite integral evaluated in TSIL.  This non-trivial step requires an additional repetition of the algorithm to deconstruct the new, finite, amplitude into a coefficient and basis integral form.
+
+In this section we give details of the leading divergences included from the TSIL documentation and how these are adjusted for sign conventions between the TARCER and TSIL packages.  In the following bold face and standard face characters denote the divergent and finite basis integrals respectively.  We use $A$, $B$ and so on to denote the TSIL definitions and $\mathtt{TAI}$, $\mathtt{TBI}$ and so on to denote the TARCER definitions.
+
+For the $A(x)$ integral we have \cite{Martin2006}
+\begin{align}
+\vec{A}(x) = A(x) -\frac{x}{\epsilon} +\epsilon A(x) +\mathcal{O}{\epsilon^2}
+\end{align}
+so using the relation $\vec{A}(x) =ia \vec{\mathtt{TAI}}$ we find
+\begin{align}
+\vec{\mathtt{TAI} }= \mathtt{TAI}+\frac{ix}{\epsilon} + \mathcal{O}{\epsilon}
+\end{align}
+
+
+
+
+
+
+
 
 \subsection{Runtime}
 

@@ -655,6 +655,92 @@ namespace utils
   }
   
   
+  
+  // expressing basis integrals as finite + divergent parts
+  // x -> x^2 unless in a TXI function call
+  // TSIL -> TARCER
+  // A(x) = ia TAI(x,y)
+  // B(x,y) = - ia TBI(x,y)
+  
+  void finite_A(ofstream &myile, string x, string id)
+  {
+    // print A_f(x) = A_4(x) + ...
+    myfile << id << "f = " <<  id << "4 + ";
+    
+    // -x/epsilon + A(x) + epsilon * A_epsilon(x)
+    myfile << x <<"^2 * ( I /epsilon - (I/2)*Log[4*PI*Q]) " <<  endl;
+  }
+  
+  void finite_B(ofstream &myile, string x, string y, string id)
+  {
+    // B_f(x,y) = B_4(x,y) +
+    myfile << id << "f = " <<  id << "4 + ";
+    
+    // 1/epsilon + epsilon*B_epsilon(x,y)
+    myfile << " + I/epsilon - (I/2)*Log[4*PI*Q]" << endl;
+  }
+  
+  void finite_J(ofstream &myile, string x, string y, string z, string id)
+  {
+    // print J_f(x,y,z) = J_4(x,y,z) + a^{-1} * (
+    myfile << id << "f = " <<  id << "4 + (1 + (epsilon/2)*Log[4*PI*Q])* ( ";
+    
+    // -(x+y+z)/2epsilon^2 + [A(x)+A(y)+A(z) - (x+y+z)/2 + s/4] / epsilon + Aepsilon(x) + Aepsilon(y) + Aepsilon(z)
+    myfile << " - (" << x << "^2 + " << y << "^2 + " << z << "^2 )/ (2* epsilon^2)";
+    myfile << " + I*( - (x+y+z)/2 + Pair[Momentum[p],Momentum[p]]/4 )/epsilon";
+    myfile << " + Ae(" << x << "2)" << " + Ae(" << y << "2)" <<" + Ae(" << z << "2)";
+    myfile << " ) ";
+    
+    //functions for which the a terms cancels
+    myfile << "+ I*( TAI[4, 0, {1, " << x << "}] + TAI[4, 0, {1, " << y << "}] + TAI[4, 0, {1, " << z << "}] )/epsilon";
+  }
+  
+  void finite_T(ofstream &myile, string x, string y, string z, string id)
+  {
+    // T_f(x,y,z) = T_4(x,y,z) + a^{-1} * (
+    myfile << id << "f = " <<  id << "4 + (1 + (epsilon/2)*Log[4*PI*Q])* ( ";
+    
+    // 1/2epsilon^2 - [A(x)/x + 1/2]/epsilon + [A(x)-Ae(x)]/x
+    myfile << " 1/(2*epsilon^2) - ( 1/2 )/epsilon";
+    myfile << " + ( TAI[4, 0, {1, " << x<< "}] - Ae( " << x << "2) )/ "<< x << "2 ";
+    myfile << " ) ";
+    
+    //functions for which the a terms cancels
+    myfile << " 1/(2*epsilon^2) - (TAI[4, 0, {1, "<<x<<"}])/"<<x<<"2 )/epsilon";
+    myfile << " +( TAI[4, 0, {1, " << x<< "}] )/ "<< x << "2 " << endl;
+  }
+  
+  void finite_K(ofstream &myile, string x, string y, string z, string id)
+  {
+    // K_f(x,y,z) = K_4(x,y,z) + a^{-1} * (
+    myfile << id << "f = " <<  id << "4 + (1 + (epsilon/2)*Log[4*PI*Q])* ( ";
+    
+    // -(x+y+z)/2epsilon^2 + [A(x)+A(y)+A(z)-(x+y+z)/2]/epsilon + Aepsilon(x)+Aepsilon(y)+Aepsilon(z)
+    myfile << " - (" << x << "^2 + " << y << "^2 + " << z << "^2 )/ (2* epsilon^2)";
+    myfile << " + Ae(" << x << "2)" << " + Ae(" << y << "2)" <<" + Ae(" << z << "2)";
+    myfile << " ) ";
+    
+    //functions for which the a terms cancels
+    myfile << " + I*( TAI[4, 0, {1, " << x << "}] + TAI[4, 0, {1, " << y << "}] + TAI[4, 0, {1, " << z << "}])/epsilon "<< endl;
+  }
+  
+  
+  void finite_V(ofstream &myile, string x, string y, string z, string u, string id)
+  {
+    // V_f(x,y,z,u) = V_4(x,y,z,u) + a^{-1} * (
+    myfile << id << "f = " <<  id << "4 + (1 + (epsilon/2)*Log[4*PI*Q])* ( ";
+    
+    // print 1/2epsilon^2 + [1/2 + B(x,y)]/epsilon + Bepsilon(x,y)
+    myfile << "-(1/(2*epsilon^2)) - (1/2)/epsilon";
+    myfile << " - Be("<< y << "2, " << u << "2)";
+    myfile << " ) ";
+    
+    //functions for which the a terms cancels
+    myfile << " - ( - I * TBI[4, Pair[Momentum[p],Momentum[p]], {{1, " << y << "}, {1, " << u << "}}])/epsilon"<<endl;
+    
+  }
+
+  
   void print_finite_base(ofstream &myfile, Bases base, string id)
   {
     string type = base.type;
@@ -667,37 +753,32 @@ namespace utils
     if (type == "A")
     {
       myfile << id << "4 = " <<  "TAI[4, 0, {1, " << base.e1 << "}];" << endl;
-      myfile << id << "f = " <<  id << "4 + " << base.e1 <<"^2 * I /epsilon " <<  endl;
+      finite_A(myfile,base.e1,id);
     }
     if (type == "B")
     {
       myfile << id << "4 = " << "TBI[4, Pair[Momentum[p],Momentum[p]], {{1, " << base.e1 << "}, {1, " << base.e2 << "}}];" << endl;
-      myfile << id << "f = " << id << "4 + I/epsilon " << endl;
+      finite_B(myfile,base.e1,base.e2,id);
     }
     if (type == "V")
     {
       myfile << id << "4 = " << "TVI[4, Pair[Momentum[p],Momentum[p]], {{1, " << base.e1 << "}, {1, " << base.e2 << "}, {1, " << base.e3 << "}, {1, " << base.e4 << "}}];" << endl;
-      myfile << id << "f = " << id << "4 + I* TBI[4, Pair[Momentum[p],Momentum[p]], {{1, " << base.e2 << "}, {1, " << base.e4 << "}}]/epsilon";
-      myfile << "+1/(2*epsilon) + 1/(2*epsilon^2) " << endl;
+      finite_V(myfile, base.e1,base.e2,base.e3,base.e4,id);
     }
     if (type == "T")
     {
       myfile << id << "4 = " << "TJI[4, Pair[Momentum[p],Momentum[p]], {{2, " << base.e1 << "}, {1, " << base.e2 << "}, {1, " << base.e3 << "}}];" << endl;
-      myfile << id << "f = " << id << "4 - 3/(2*epsilon^2) + 1/(2*epsilon) + (1/epsilon)*Log["<<base.e1<<"] - (1/2)*(Log["<<base.e1<<"])^2 -Zeta2/2" << endl;
+      finite_T(myfile,base.e1,base.e2,base.e3,id);
     }
     if (type == "J")
     {
       myfile << id << "4 = " << "TJI[4, Pair[Momentum[p],Momentum[p]], {{1, " << base.e1 << "}, {1, " << base.e2 << "}, {1, " << base.e3 << "}}];" << endl;
-      myfile << id << "f = " << id << "4 + I*( TAI[4, 0, {1, " << base.e1 << "}] + TAI[4, 0, {1, " << base.e2 << "}] + TAI[4, 0, {1, " << base.e3 << "}])/epsilon ";
-      myfile << " - (" << base.e1 << "^2 + " << base.e2 << "^2 + " << base.e3 << "^2 )/ (2* epsilon^2)";
-      myfile << "+ (Pair[Momentum[p],Momentum[p]]/2 - " << base.e1 << "^2 - " << base.e2 << "^2 - " << base.e3 << "^2 ) / (2*epsilon) " << endl;
+      finite_J(myfile,base.e1,base.e2,base.e3,id);
     }
     if (type == "K")
     {
       myfile << id << "4 = " << "TJI[4, 0, {{1, " << base.e1 << "}, {1, " << base.e2 << "}, {1, " << base.e3 << "}}];" << endl;
-      myfile << id << "f = " << id << "4 + I*( TAI[4, 0, {1, " << base.e1 << "}] + TAI[4, 0, {1, " << base.e2 << "}] + TAI[4, 0, {1, " << base.e3 << "}])/epsilon ";
-      myfile << " - (" << base.e1 << "^2 + " << base.e2 << "^2 + " << base.e3 << "^2 )/ (2* epsilon^2)";
-      myfile << "+ ( - " << base.e1 << "^2 - " << base.e2 << "^2 - " << base.e3 << "^2 ) / (2*epsilon) " << endl;
+      finite_K(myfile,base.e1,base.e2,base.e3,id);
     }
   }
   
