@@ -237,7 +237,7 @@ std::map <std::string, Bases > remove_type_F(std::map <std::string, Bases > base
 
 
 // reformat the coefficient to change Mathematica expressions into readable C++ input
-void format_coeff(std::map <std::string, Bases > &base_map, std::vector<std::string> bases_names,std::vector<std::string> masses, std::vector<std::string> id)
+void format_coeff(string dimension, std::map <std::string, Bases > &base_map, std::vector<std::string> bases_names,std::vector<std::string> masses, std::vector<std::string> id)
 {
   int nb = bases_names.size();
   int nm = masses.size();
@@ -252,11 +252,19 @@ void format_coeff(std::map <std::string, Bases > &base_map, std::vector<std::str
     {
       for (int j = 0; j<nm; j++)
       {
-        from = "TBI(4,Power(p,2),List(List(1,"+masses[i]+"),List(1," + masses[j] + ")))";  // TODO make short name for all bases object and for the B object include both permutations, then this solves this problem here
+        from = "TBI["+dimension+", p^2, {{1, "+masses[i]+"}, {1, " + masses[j] + "}}]";
+        to = "B"+id[j]+id[i]; // choice of i and j here is important TODO
+        ReplaceAll(coefficient,from, to);
+      
+        from = "TBI("+dimension+",Power(p,2),List(List(1,"+masses[i]+"),List(1," + masses[j] + ")))";
         to = "B"+id[j]+id[i]; // choice of i and j here is important TODO
         ReplaceAll(coefficient,from, to);
       }
-      from = "TAI(4,0,List(List(1,"+masses[i]+")))";
+      from = "TAI("+dimension+",0,List(List(1,"+masses[i]+")))";
+      to = "A"+id[i];
+      ReplaceAll(coefficient,from, to);
+      
+      from = "TAI["+dimension+",0,{{1,"+masses[i]+"}}]";
       to = "A"+id[i];
       ReplaceAll(coefficient,from, to);
 
@@ -285,6 +293,51 @@ void format_coeff(std::map <std::string, Bases > &base_map, std::vector<std::str
     base_map[bases_names[k]].coefficient = coefficient;
   }
 }
+
+
+// format coefficients for use in Mathematica input
+// change bracket type and remove decimal after integers
+// to avoid numerical computation
+void format_coeff_brackets(std::map <std::string, Bases > &base_map, std::vector<std::string> bases_names,std::vector<std::string> masses, std::vector<std::string> id)
+{
+  int nb = bases_names.size();
+  int nm = masses.size();
+
+  
+  string from="",to="";
+
+  for (int k = 0; k<nb ; k++)
+  {
+    string coefficient = base_map[bases_names[k]].coefficient;
+    for (int i = 0; i<nm; i++)
+    {
+      from = "Power(";
+      to = "Power[";
+      ReplaceAll(coefficient,from, to);
+      
+      
+      for (int j = 1; j<20;j++)
+      {
+        from = ","+std::to_string(j)+")";
+        to = ","+std::to_string(j)+"]";
+        ReplaceAll(coefficient,from, to);
+        from = std::to_string(j)+".";
+        to = std::to_string(j);
+        ReplaceAll(coefficient,from, to);
+        from = "Power[Pi,"+std::to_string(j)+"]";
+        to = "Pi^"+std::to_string(j)+"";
+        ReplaceAll(coefficient,from, to);
+      }
+      
+      
+
+      
+
+    }
+    base_map[bases_names[k]].coefficient = coefficient;
+  }
+}
+
 
 
 std::map <std::string, Bases > products_container(vector<string> bases_names)

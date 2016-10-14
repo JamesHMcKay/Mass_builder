@@ -609,47 +609,47 @@ namespace utils
     string name = base.short_name;
     if (type == "const")
     {
-      myfile << "const" << " = 1.0L"<<endl;
+      myfile << "  const" << " = 1.0L"<<endl;
     }
     if (type == "A")
     {
-      myfile << name << " = -i*TSIL_A_ ("<<base.e1<<"2 , Q2);"<<endl;
+      myfile << "  " <<  name << " = -i*TSIL_A_ ("<<base.e1<<"2 , Q2);"<<endl;
     }
     if (type == "B")
     {
-      myfile << name <<" = i*TSIL_B_ (" << base.e1 << "2, " << base.e2 << "2, s, Q2);"<< endl;
+      myfile << "  " << name <<" = i*TSIL_B_ (" << base.e1 << "2, " << base.e2 << "2, s, Q2);"<< endl;
     }
     if (type == "K")
     {
-      myfile << name <<" = TSIL_I2_(" << base.e1 << "2, " << base.e2 << "2, " << base.e3 << ", Q2);"<< endl;
+      myfile << "  " << name <<" = TSIL_I2_(" << base.e1 << "2, " << base.e2 << "2, " << base.e3 << "2, Q2);"<< endl;
     }
     if (type == "J")
     {
       string A = base.e1,B=base.e2,C=base.e3;
-      myfile << "TSIL_SetParametersST (&bar," << B << "2, " << A << "2, " << C <<"2, Q2);" << endl;
-      myfile << "TSIL_Evaluate (&bar, s);" << endl;
-      myfile << name << "= TSIL_GetFunction (&bar,\"Suxv" <<"\");"<< endl;
+      myfile << "  TSIL_SetParametersST (&bar," << B << "2, " << A << "2, " << C <<"2, Q2);" << endl;
+      myfile << "  TSIL_Evaluate (&bar, s);" << endl;
+      myfile << "  " << name << "= TSIL_GetFunction (&bar,\"Suxv" <<"\");"<< endl;
     }
     if (type == "T")
     {
       string A = base.e1,B=base.e2,C=base.e3;
-      myfile << "TSIL_SetParametersST (&bar," << A << "2, " << B << "2, " << C <<"2, Q2);" << endl;
-      myfile << "TSIL_Evaluate (&bar, s);" << endl;
-      myfile << name << "= -TSIL_GetFunction (&bar,\"Txuv" <<"\");"<< endl;
+      myfile << "  TSIL_SetParametersST (&bar," << A << "2, " << B << "2, " << C <<"2, Q2);" << endl;
+      myfile << "  TSIL_Evaluate (&bar, s);" << endl;
+      myfile << "  " << name << "= -TSIL_GetFunction (&bar,\"Txuv" <<"\");"<< endl;
     }
     if (type == "F")
     {
       string A = base.e1,B=base.e2,C=base.e3,D=base.e4,E=base.e5;
-      myfile << "TSIL_SetParameters (&bar," << A << "2, " << B << "2, " << C << "2 , " << D << "2 , " << E  << "2, Q2);" << endl;
-      myfile << "TSIL_Evaluate (&bar, s);" << endl;
-      myfile << name << "= TSIL_GetFunction (&bar,\"M" <<"\");"<< endl;
+      myfile << "  TSIL_SetParameters (&bar," << A << "2, " << B << "2, " << C << "2 , " << D << "2 , " << E  << "2, Q2);" << endl;
+      myfile << "  TSIL_Evaluate (&bar, s);" << endl;
+      myfile << "  " << name << "= TSIL_GetFunction (&bar,\"M" <<"\");"<< endl;
     }
     if (type == "V")
     {
       string A = base.e1,B=base.e2,C=base.e3,D=base.e4;
-      myfile << "TSIL_SetParameters (&bar," << D << "2, " << C << "2, " << B << "2 , " << "1.0" << " , " << A  << "2, Q2);" << endl;
-      myfile << "TSIL_Evaluate (&bar, s);" << endl;
-      myfile << name << "= -TSIL_GetFunction (&bar,\"Uzxyv" <<"\");"<< endl;
+      myfile << "  TSIL_SetParameters (&bar," << D << "2, " << C << "2, " << B << "2 , " << "1.0" << " , " << A  << "2, Q2);" << endl;
+      myfile << "  TSIL_Evaluate (&bar, s);" << endl;
+      myfile << "  " << name << "= -TSIL_GetFunction (&bar,\"Uzxyv" <<"\");"<< endl;
     }
     
   }
@@ -659,80 +659,106 @@ namespace utils
   // expressing basis integrals as finite + divergent parts
   // x -> x^2 unless in a TXI function call
   // TSIL -> TARCER
-  // A(x) = ia TAI(x,y)
-  // B(x,y) = - ia TBI(x,y)
+  // A(x)       =   ia TAI(x,y)
+  // B(x,y)     = - ia TBI(x,y)
+  // I(x,y,z)   =   a^2 TJI[0,{1,1,1}] = a^2 K(x,y,z)
+  // S(x,y,z)   =   a^2 TJI[s,{1,1,1}] = a^2 J(x,y,z)
+  // T(x,y,z)   = - a^2 TJI[s,{2,1,1}] = a^2 T(x,y,z)
+  // U(x,y,z,u) = - a^2 TVI[s,{1,1,1,1},{u,x,z,y}] = a^2 V(u,x,z,y)
   
-  void finite_A(ofstream &myile, string x, string id)
+  void Af(ofstream &myfile, string x)
+  {
+    // for use in other finite function definitions
+    // does not terminate line
+    myfile << "I*TAI[4, 0, {1, " << x << "}]";
+     //-  (1 (*- (epsilon/2)*Log[4*PI*Q]*))* ( ";
+    // -x/epsilon + A(x) + epsilon * A_epsilon(x)
+   // myfile << " -" << x <<"^2 /epsilon (*+epsilon * Ae["<< x << "] *)";
+   // myfile << ")";
+  }
+  
+  void finite_A(ofstream &myfile, string x, string id)
   {
     // print A_f(x) = A_4(x) + ...
-    myfile << id << "f = " <<  id << "4 + ";
+    myfile << id << " = " <<  id << "4 +  ( ";
     
-    // -x/epsilon + A(x) + epsilon * A_epsilon(x)
-    myfile << x <<"^2 * ( I /epsilon - (I/2)*Log[4*PI*Q]) " <<  endl;
+    // -x/epsilon
+    myfile << " I*" << x <<"^2 /epsilon";
+    //myfile << " -I*epsilon*Ae[" << x << "2]";
+    myfile << ")" <<  endl;
   }
   
-  void finite_B(ofstream &myile, string x, string y, string id)
+  void finite_B(ofstream &myfile, string x, string y, string id)
   {
     // B_f(x,y) = B_4(x,y) +
-    myfile << id << "f = " <<  id << "4 + ";
+    myfile << id << " = " <<  id << "4 +  ( ";
     
-    // 1/epsilon + epsilon*B_epsilon(x,y)
-    myfile << " + I/epsilon - (I/2)*Log[4*PI*Q]" << endl;
+    // -I/epsilon
+    myfile << " -I/epsilon (*-I*epsilon * Be["<< x << ", " << y << " , p ]*) ";
+    myfile << ")" << endl;
   }
   
-  void finite_J(ofstream &myile, string x, string y, string z, string id)
+  void finite_J(ofstream &myfile, string x, string y, string z, string id)
   {
     // print J_f(x,y,z) = J_4(x,y,z) + a^{-1} * (
-    myfile << id << "f = " <<  id << "4 + (1 + (epsilon/2)*Log[4*PI*Q])* ( ";
+    myfile << id << " = " <<  id << "4 + (1 )* ( ";
     
     // -(x+y+z)/2epsilon^2 + [A(x)+A(y)+A(z) - (x+y+z)/2 + s/4] / epsilon + Aepsilon(x) + Aepsilon(y) + Aepsilon(z)
     myfile << " - (" << x << "^2 + " << y << "^2 + " << z << "^2 )/ (2* epsilon^2)";
-    myfile << " + I*( - (x+y+z)/2 + Pair[Momentum[p],Momentum[p]]/4 )/epsilon";
-    myfile << " + Ae(" << x << "2)" << " + Ae(" << y << "2)" <<" + Ae(" << z << "2)";
+    myfile << " + I*( - ("<<x<<"+"<<y<<"+"<<z<<")/2 + Pair[Momentum[p],Momentum[p]]/4 )/epsilon";
+    myfile << " (*+ Ae[" << x << "2]" << " + Ae[" << y << "2]" <<" + Ae[" << z << "2]*)";
     myfile << " ) ";
     
     //functions for which the a terms cancels
-    myfile << "+ I*( TAI[4, 0, {1, " << x << "}] + TAI[4, 0, {1, " << y << "}] + TAI[4, 0, {1, " << z << "}] )/epsilon";
+    myfile << "- I*( I*TAI[4, 0, {1, " << x << "}] + I*TAI[4, 0, {1, " << y << "}] + I*TAI[4, 0, {1, " << z << "}] )/epsilon"<< endl;
   }
   
-  void finite_T(ofstream &myile, string x, string y, string z, string id)
+  void finite_T(ofstream &myfile, string x, string y, string z, string id)
   {
     // T_f(x,y,z) = T_4(x,y,z) + a^{-1} * (
-    myfile << id << "f = " <<  id << "4 + (1 + (epsilon/2)*Log[4*PI*Q])* ( ";
+    myfile << id << " = " <<  id << "4 - (1 )* ( ";
     
     // 1/2epsilon^2 - [A(x)/x + 1/2]/epsilon + [A(x)-Ae(x)]/x
-    myfile << " 1/(2*epsilon^2) - ( 1/2 )/epsilon";
-    myfile << " + ( TAI[4, 0, {1, " << x<< "}] - Ae( " << x << "2) )/ "<< x << "2 ";
+    myfile << " 1/(2*epsilon^2) - ( 1/2 )*(1/epsilon)";
+    myfile << " (*+ ( - Ae[ " << x << "2] )/ "<< x << "2*) ";
     myfile << " ) ";
     
     //functions for which the a terms cancels
-    myfile << " 1/(2*epsilon^2) - (TAI[4, 0, {1, "<<x<<"}])/"<<x<<"2 )/epsilon";
-    myfile << " +( TAI[4, 0, {1, " << x<< "}] )/ "<< x << "2 " << endl;
+    myfile << "  - ((I*TAI[4, 0, {1, "<<x<<"}])/"<<x<<"2 )/epsilon"<<endl;
+    //myfile << " +( I*TAI[4, 0, {1, " << x<< "}] )/ "<< x << "2 " << endl;
   }
   
-  void finite_K(ofstream &myile, string x, string y, string z, string id)
+  void finite_K(ofstream &myfile, string x, string y, string z, string id)
   {
     // K_f(x,y,z) = K_4(x,y,z) + a^{-1} * (
-    myfile << id << "f = " <<  id << "4 + (1 + (epsilon/2)*Log[4*PI*Q])* ( ";
+    myfile << id << " = " <<  id << "4 + (1)* ( ";
     
     // -(x+y+z)/2epsilon^2 + [A(x)+A(y)+A(z)-(x+y+z)/2]/epsilon + Aepsilon(x)+Aepsilon(y)+Aepsilon(z)
+    // CORRECTION: -(x+y+z)/2epsilon^2 + [A(x)+A(y)+A(z)-(x+y+z)]/epsilon + Aepsilon(x)+Aepsilon(y)+Aepsilon(z)
+    // removed a factor of 1/2 from -(x+y+z)/epsilon term
     myfile << " - (" << x << "^2 + " << y << "^2 + " << z << "^2 )/ (2* epsilon^2)";
-    myfile << " + Ae(" << x << "2)" << " + Ae(" << y << "2)" <<" + Ae(" << z << "2)";
+    myfile << " - (" << x << "^2 + " << y << "^2 + " << z << "^2 )/ ( epsilon)";
+    //myfile << " + Ae[" << x << "2]" << " + Ae[" << y << "2]" <<" + Ae[" << z << "2]";
     myfile << " ) ";
     
-    //functions for which the a terms cancels
-    myfile << " + I*( TAI[4, 0, {1, " << x << "}] + TAI[4, 0, {1, " << y << "}] + TAI[4, 0, {1, " << z << "}])/epsilon "<< endl;
+    myfile << " + ( ";
+    Af(myfile,x);
+    myfile << " + ";
+    Af(myfile,y);
+    myfile << " + ";
+    Af(myfile,z);
+    myfile << " )/epsilon "<< endl;
   }
   
   
-  void finite_V(ofstream &myile, string x, string y, string z, string u, string id)
+  void finite_V(ofstream &myfile, string x, string y, string z, string u, string id)
   {
     // V_f(x,y,z,u) = V_4(x,y,z,u) + a^{-1} * (
-    myfile << id << "f = " <<  id << "4 + (1 + (epsilon/2)*Log[4*PI*Q])* ( ";
+    myfile << id << " = " <<  id << "4 - (1)* ( ";
     
     // print 1/2epsilon^2 + [1/2 + B(x,y)]/epsilon + Bepsilon(x,y)
-    myfile << "-(1/(2*epsilon^2)) - (1/2)/epsilon";
-    myfile << " - Be("<< y << "2, " << u << "2)";
+    myfile << "+(1/(2*epsilon^2)) + (1/2)/epsilon";
+    //myfile << " + Be["<< y << "2, " << u << "2,p]";
     myfile << " ) ";
     
     //functions for which the a terms cancels
@@ -748,7 +774,7 @@ namespace utils
     if (type == "F")
     {
       myfile << id << "4 = " << "TFI[4, Pair[Momentum[p],Momentum[p]], {{1, " << base.e1  << "}, {1, " << base.e2 << "}, {1, " << base.e3 << "}, {1, " << base.e4 << "}, {1, " << base.e5 << "}}];" << endl;
-      myfile << id << "f = " << id << "4 " << endl;
+      myfile << id << " = " << id << "4 " << endl;
     }
     if (type == "A")
     {

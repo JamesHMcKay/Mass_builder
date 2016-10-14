@@ -230,17 +230,18 @@ namespace Generate_code
     << "#endif\n"
     //<< "long double strtold(const char *, char **);\n"
     << "// define subroutines here\n"
-    << "TSIL_REAL Q2;\n"
+    << "TSIL_REAL Q2,Q;\n"
     << "TSIL_REAL Log(TSIL_REAL a){return TSIL_LOG(a/Q2);}\n"
-    << "TSIL_REAL Power(TSIL_REAL a, int b){return TSIL_POW(a,b);}\n"
+    << "TSIL_COMPLEXCPP Power(TSIL_REAL a, int b){return TSIL_POW(a,b);}\n"
     << "TSIL_REAL Sin(TSIL_REAL a){return sin(a);}\n"
     << "TSIL_REAL Cos(TSIL_REAL a){return cos(a);}\n"
     << "TSIL_REAL Dot(TSIL_REAL a, TSIL_REAL b){return a*b;}\n"
     << "TSIL_REAL Zeta2 = 1.6449340668482;\n"
     << "TSIL_COMPLEXCPP Ae(TSIL_REAL a) { return TSIL_Aeps_(a,Q2);}\n"
-    //<< "TSIL_COMPLEXCPP Be(TSIL_REAL a, TSIL_REAL b, TSIL_REAL p) { return TSIL_Beps_(a,b, TSIL_POW(p,2), Q2);}\n"
+    << "TSIL_COMPLEXCPP Be(TSIL_REAL a, TSIL_REAL b, TSIL_REAL p) { return TSIL_Beps_(a,b, TSIL_POW(p,2), Q2);}\n"
     << "int          init(Data data);\n"
     << "TSIL_COMPLEXCPP operator*(int a, TSIL_COMPLEXCPP b){TSIL_COMPLEXCPP c=a;return c*b;}\n"
+    << "TSIL_COMPLEXCPP operator+(int a, TSIL_COMPLEXCPP b){TSIL_COMPLEXCPP c=a;return c+b;}\n"
     << "TSIL_COMPLEXCPP Complex(double a,double b){dcomp i;i=-1;i=sqrt(i);TSIL_COMPLEXCPP result = a + i*b; return result ;}\n"
     <<endl;
     
@@ -344,7 +345,7 @@ namespace Generate_code
           base_temp_B.e2 = base_temp.e1;
           string name_B = get_short_name(base_temp_B,masses_input, id_input);
           integrals.push_back(name_B);
-          main_output << name_B << " = " << name << ";" << endl;
+          main_output << "  " <<  name_B << " = " << name << ";" << endl;
         }
         main_output << "\n";
       }
@@ -361,27 +362,28 @@ namespace Generate_code
     
     for (int i=0;i<nc;i++)
     {
-      if (i!=(nc-1)) main_output << couplings[i] << " = data."<<couplings[i]<<", ";
-      else main_output << couplings[i] << " = data."<<couplings[i]<< " ";
+      if (i!=(nc-1)) main_output << "  " << couplings[i] << " = data."<<couplings[i]<<", ";
+      else main_output << "  " << couplings[i] << " = data."<<couplings[i]<< " ";
     }
     main_output<<";"<<endl;
     main_output<< "\n";
-    main_output<< "Q2 = data.Q;\n";
+    main_output<< "  Q2 = data.Q;\n";
+    main_output<< "  Q = pow(Q2,0.5);\n";
     
     
     for (int i=0;i<nm;i++)
     {
-      if (i!=(nm-1)) main_output <<" "<< masses[i] << " = data."<<masses[i]<<", " << masses[i]<<"2 = TSIL_POW(data."<<masses[i]<<", 2) , ";
-      else main_output << " "<<masses[i] << " = data."<<masses[i]<<" , " << masses[i]<<"2 = TSIL_POW(data."<<masses[i]<<", 2) ";
+      if (i!=(nm-1)) main_output <<"  "<< masses[i] << " = data."<<masses[i]<<", " << masses[i]<<"2 = TSIL_POW(data."<<masses[i]<<", 2) , ";
+      else main_output << "  "<<masses[i] << " = data."<<masses[i]<<" , " << masses[i]<<"2 = TSIL_POW(data."<<masses[i]<<", 2) ";
     }
     main_output<<";"<<endl;
     main_output<< "\n";
     
     
     
-    main_output<<"dcomp ii=-1;ii=sqrt(ii);i=ii;\n"
-    <<"Pi=PI;\n"
-    <<"return 0;\n"
+    main_output<<"  dcomp ii=-1;ii=sqrt(ii);i=ii;\n"
+    <<"  Pi=PI;\n"
+    <<"  return 0;\n"
     <<"}\n";
     
     
@@ -411,17 +413,17 @@ namespace Generate_code
     
     main_output << "void Self_energy::init_tsil(Data data)\n"
     << "{\n"
-    << "TSIL_REAL qq= data.Q;\n"
-    << "TSIL_REAL s=pow(data.P,2);\n"
-    << "init(data);\n"
-    << "DoTSIL(s,qq);\n"
+    << "  TSIL_REAL qq= data.Q;\n"
+    << "  TSIL_REAL s=pow(data.P,2);\n"
+    << "  init(data);\n"
+    << "  DoTSIL(s,qq);\n"
     << "}\n"
     << "\n"
     << "\n"
     << "void Self_energy::run_tsil (Data &data) \n"
     << "{\n"
-    << "p=data.P;\n"
-    << "init_tsil(data);\n"
+    << "  p=data.P;\n"
+    << "  init_tsil(data);\n"
     << endl;
     
     vector<std::string> particle_names_short = particle_names;
@@ -440,7 +442,7 @@ namespace Generate_code
       particle_names_short_reduced.push_back(particle_name_tmp_short);
       /* One loop */
       
-      main_output<< "TSIL_COMPLEXCPP SE_1_"<<particle_name_tmp_short<<" = 0.L  ";
+      main_output<< "  TSIL_COMPLEXCPP SE_1_"<<particle_name_tmp_short<<" = 0.L  ";
       for (int d = 0; d<nd;d++)
       {
         if (particle_names[d] == particle_name_tmp)
@@ -456,11 +458,11 @@ namespace Generate_code
         }
       }
       main_output << ";" << endl;
-      main_output << "SE_1_"<<particle_name_tmp_short << " = " << "-SE_1_"<<particle_name_tmp_short<<"*TSIL_POW(PI,2);"<<endl;
+      main_output << "  SE_1_"<<particle_name_tmp_short << " = " << "-SE_1_"<<particle_name_tmp_short<<"*TSIL_POW(PI,2);"<<endl;
       
       
       /* Two loop */
-      main_output<< "TSIL_COMPLEXCPP SE_2_"<<particle_name_tmp_short<<" = 0.L ";
+      main_output<< "  TSIL_COMPLEXCPP SE_2_"<<particle_name_tmp_short<<" = 0.L ";
       for (int d = 0; d<nd;d++)
       {
         if (particle_names[d] == particle_name_tmp)
@@ -478,11 +480,11 @@ namespace Generate_code
       
 
       main_output << ";" << endl;
-      main_output << "SE_2_"<<particle_name_tmp_short << " = " << "-SE_2_"<<particle_name_tmp_short<<"*TSIL_POW(PI,4);"<<endl;
+      main_output << "  SE_2_"<<particle_name_tmp_short << " = " << "-SE_2_"<<particle_name_tmp_short<<"*TSIL_POW(PI,4);"<<endl;
       
   
-      main_output << "data.SE_1[\""<< particle_name_tmp_short << "\"] = " << "real(SE_1_"<<particle_name_tmp_short<< ");"<<endl;
-      main_output << "data.SE_2[\""<< particle_name_tmp_short << "\"] = " << "real(SE_2_"<<particle_name_tmp_short << ");"<<endl;
+      main_output << "  data.SE_1[\""<< particle_name_tmp_short << "\"] = " << "real(SE_1_"<<particle_name_tmp_short<< ");"<<endl;
+      main_output << "  data.SE_2[\""<< particle_name_tmp_short << "\"] = " << "real(SE_2_"<<particle_name_tmp_short << ");"<<endl;
       /* Print out value of each amplitude to terminal */
       if (options.detailed_output)
       {
@@ -492,7 +494,7 @@ namespace Generate_code
           {
             if (get_loop_order(levels[d]) == 2 )
             {
-              main_output<< "cout << \"diagram"<<" "<< particle_name_tmp_short << "_" <<  tags[d] << " = \" << real(diagram" <<"_"<< particle_name_tmp_short << "_" << tags[d] << "_" << levels[d] << "())<<endl;"<<endl;
+              main_output<< "  cout << \"diagram"<<" "<< particle_name_tmp_short << "_" <<  tags[d] << " = \" << TSIL_POW(PI,4)*real(diagram" <<"_"<< particle_name_tmp_short << "_" << tags[d] << "_" << levels[d] << "())<<endl;"<<endl;
             }
           }
         }
@@ -522,24 +524,24 @@ namespace Generate_code
     
     for (int i=0;i<nc;i++)
     {
-      data_h << "double "<< couplings[i]<<";"<<endl;
+      data_h << "  double "<< couplings[i]<<";"<<endl;
     }
     
     
     for (int i=0;i<nm;i++)
     {
-      data_h << "double "<< masses[i]<<";"<<endl;
+      data_h << "  double "<< masses[i]<<";"<<endl;
     }
 
     
     // create a map for self energies
-    data_h << "std::map<std::string, double> SE_1;"<< endl;
-    data_h << "std::map<std::string, double> SE_2;"<< endl;
+    data_h << "  std::map<std::string, double> SE_1;"<< endl;
+    data_h << "  std::map<std::string, double> SE_2;"<< endl;
     
     
-    data_h << "double P, Q;" << endl;
+    data_h << "  double P, Q;" << endl;
     
-    data_h << "std::vector<std::string> avail_part = {\"";
+    data_h << "  std::vector<std::string> avail_part = {\"";
     for (unsigned int i=0;i<particle_names_short_reduced.size()-1;i++)
     {
       data_h << particle_names_short_reduced[i]<<"\",\"";
@@ -550,52 +552,53 @@ namespace Generate_code
     // create constructor and user input reader
     
     data_h<<"  Data (){};\n"
-    <<"Data(Options options) {\n"
-    <<"double param [99];\n"
-    <<"std::string name [99]; int i=0;\n"
-    <<"std::ifstream input(options.input_list);\n"
-    <<"std::string line;\n"
-    <<"while(getline(input, line)) {\n"
-    <<"if (!line.length() || line[0] == '#')\n"
-    <<" continue;\n"
-    <<" std::istringstream iss(line);\n"
-    <<" iss>> name[i] >> param[i];\n"
-    <<"     i=i+1;\n"
-    <<"   }\n"
-    //<<"  }\n"
-    <<"  for (int n=0;n<i+1;n++)\n"
-    <<"  {\n";
+    <<"  Data(Options options) \n"
+    <<"  {\n"
+    <<"    double param [99];\n"
+    <<"    std::string name [99]; int i=0;\n"
+    <<"    std::ifstream input(options.input_list);\n"
+    <<"    std::string line;\n"
+    <<"    while(getline(input, line))\n"
+    <<"    {\n"
+    <<"      if (!line.length() || line[0] == '#')\n"
+    <<"      continue;\n"
+    <<"      std::istringstream iss(line);\n"
+    <<"      iss>> name[i] >> param[i];\n"
+    <<"      i=i+1;\n"
+    <<"    }\n"
+    <<"    for (int n=0;n<i+1;n++)\n"
+    <<"    {\n";
     
     for (int i=0;i<nc;i++)
     {
-      data_h<<"  if (name[n]==\""<<couplings[i] <<"\")\n"
-      <<"  {\n"
-      <<"  " <<couplings[i] << "=param[n];\n"
-      <<"  }"<<endl;
+      data_h<<"      if (name[n]==\""<<couplings[i] <<"\")\n"
+      <<"      {\n"
+      <<"        " <<couplings[i] << " = param[n];\n"
+      <<"      }"<<endl;
     }
     
     for (int i=0;i<nm;i++)
     {
-      data_h<<"  if (name[n]==\""<<masses[i] <<"\")\n"
-      <<"  {"
-      <<"  " <<masses[i] << "=param[n];"
-      <<"  }"<<endl;
+      data_h<<"      if (name[n]==\""<<masses[i] <<"\")\n"
+      <<"      {\n"
+      <<"        " <<masses[i] << " = param[n];\n"
+      <<"      }"<<endl;
     }
     
-    data_h<<"  if (name[n]==\"Q\")\n"
-    <<"  {"
-    <<"  Q =param[n];"
-    <<"  }"<<endl;
+    data_h<<"      if (name[n]==\"Q\")\n"
+    <<"      {\n"
+    <<"        Q = param[n];\n"
+    <<"      }"<<endl;
     
     
-    data_h<<"  if (name[n]==\"P\")\n"
-    <<"  {"
-    <<"  P =param[n];"
-    <<"  }"<<endl;
+    data_h<<"      if (name[n]==\"P\")\n"
+    <<"      {\n"
+    <<"        P = param[n];\n"
+    <<"      }"<<endl;
     
     
-    data_h<<"}\n"
-    <<"}\n"
+    data_h<<"    }\n"
+    <<"  }\n"
     <<"};\n"
     
     <<"#endif\n";

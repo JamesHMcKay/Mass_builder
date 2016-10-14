@@ -75,7 +75,9 @@ std::map <std::string, Bases > remove_zeros(std::map <std::string, Bases > base_
 
 std::map <std::string, Bases > remove_type_F(std::map <std::string, Bases > base_map, std::vector<std::string> base_names);
 
-void format_coeff(std::map <std::string, Bases > &base_map, std::vector<std::string> bases_names,std::vector<std::string> masses,std::vector<std::string> id);
+void format_coeff(std::string dimension, std::map <std::string, Bases > &base_map, std::vector<std::string> bases_names,std::vector<std::string> masses,std::vector<std::string> id);
+
+void format_coeff_brackets(std::map <std::string, Bases > &base_map, std::vector<std::string> bases_names,std::vector<std::string> masses, std::vector<std::string> id);
 
 std::map <std::string, Bases > products_container(vector<string> bases_names);
 

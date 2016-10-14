@@ -133,7 +133,7 @@ void Calc_amplitudes::compute_amp(string prevb,string dimension)
   np = prod_id.size();
 }
 
-void Calc_amplitudes::make_full_trial(string prevb,string dimension)
+void Calc_amplitudes::make_full_trial(string prevb,string dimension,bool cform)
 {
 
   ofstream math_3;
@@ -175,7 +175,6 @@ void Calc_amplitudes::make_full_trial(string prevb,string dimension)
   math_3 << "Print[diff]"<<endl;
   
   math_3 << "Export[\""<<s_cwd<<"/output/result.txt\", CForm[diff/. DiracGamma[Momentum[p]] -> p] ]" << endl;
-  //math_3 << "Export[\""<<s_cwd<<"/output/result.txt\", diff]" << endl;
   
   // print out coefficients of products -- this is for the purposes of passing as final output to TSIL
   
@@ -183,19 +182,47 @@ void Calc_amplitudes::make_full_trial(string prevb,string dimension)
   
   
   products_map.clear();
-  for (int i = 0; i<np;i++)
+  
+  
+  
+  if (cform)
   {
-    for (int j = 0; j<np;j++)
+    for (int i = 0; i<np;i++)
     {
-      if ((i==np-1) && (j==np-1)){ math_3 << "{\""<<prod_id[i] << prod_id[j] <<" \",CForm[C"<<prod_id[i] << prod_id[j] <<" /. Pair[Momentum[p], Momentum[p]] -> p^2 /. DiracGamma[Momentum[p]] -> p], \"\"}" << endl;}
-      else {math_3 << "{\""<<prod_id[i] << prod_id[j] <<" \",CForm[C"<<prod_id[i] << prod_id[j] <<" /. Pair[Momentum[p], Momentum[p]] -> p^2 /. DiracGamma[Momentum[p]] -> p], \"\"}," << endl;}
+      for (int j = 0; j<np;j++)
+      {
+        if ((i==np-1) && (j==np-1)){ math_3 << "{\""<<prod_id[i] << prod_id[j] <<" \",CForm[C"<<prod_id[i] << prod_id[j] <<" /. Pair[Momentum[p], Momentum[p]] -> p^2 /. DiracGamma[Momentum[p]] -> p], \"\"}" << endl;}
+        else {math_3 << "{\""<<prod_id[i] << prod_id[j] <<" \",CForm[C"<<prod_id[i] << prod_id[j] <<" /. Pair[Momentum[p], Momentum[p]] -> p^2 /. DiracGamma[Momentum[p]] -> p], \"\"}," << endl;}
+        
+        // need to store information regarding the integrals involved in each product
+        Bases_product product(prod_basis[prod_id[i]],prod_basis[prod_id[j]],prod_id[i],prod_id[j]);
+        products_map[prod_id[i] + prod_id[j]] = product;
       
-      // need to store information regarding the integrals involved in each product
-      Bases_product product(prod_basis[prod_id[i]],prod_basis[prod_id[j]],prod_id[i],prod_id[j]);
-      products_map[prod_id[i] + prod_id[j]] = product;
-    
+      }
     }
   }
+  else
+  {
+    for (int i = 0; i<np;i++)
+    {
+      for (int j = 0; j<np;j++)
+      {
+        if ((i==np-1) && (j==np-1)){ math_3 << "{\""<<prod_id[i] << prod_id[j] <<" \",C"<<prod_id[i] << prod_id[j] <<" /. Pair[Momentum[p], Momentum[p]] -> p^2 /. DiracGamma[Momentum[p]] -> p, \"\"}" << endl;}
+        else {math_3 << "{\""<<prod_id[i] << prod_id[j] <<" \",C"<<prod_id[i] << prod_id[j] <<" /. Pair[Momentum[p], Momentum[p]] -> p^2 /. DiracGamma[Momentum[p]] -> p, \"\"}," << endl;}
+        
+        // need to store information regarding the integrals involved in each product
+        Bases_product product(prod_basis[prod_id[i]],prod_basis[prod_id[j]],prod_id[i],prod_id[j]);
+        products_map[prod_id[i] + prod_id[j]] = product;
+      
+      }
+    }
+  
+  }
+  
+  
+  
+  
+  
   
   math_3 << " }, \"Table\", \"FieldSeparators\" -> \" \", \"TextDelimiters\" -> \"\"];" << endl;
   math_3.close();
@@ -218,31 +245,60 @@ void Calc_amplitudes::make_finite_amp()
   math_4.open ("output/math_4.m");
   
   utils::print_math_header(math_4);
-  math_4<<"Get[\"" << s_cwd <<"/output/"<< prevb << "]\n";
+ // math_4<<"Get[\"" << s_cwd <<"/output/"<< prevb << "]\n";
   
-  print_math_basis(reduced_basis,math_4,"SEn",dimension);
-  print_math_basis(prod_basis,math_4,"SEn",dimension);
-  print_math_products(prod_basis,math_4,"SEn",dimension);
-  
-  
-  // now construct full amplitude but with finite basis integrals
   print_finite_basis(reduced_basis,math_4);
   print_finite_basis(prod_basis,math_4);
   
-  math_4 << "SEnFinite = ";
-  for (int i = 0; i<nbr;i++)
+  ////// new stuff below  //////
+  
+   // BASIS INTEGRAL COEFFICIENTS //
+  format_coeff("D",reduced_basis,  reduced_basis_id, masses_input, id_input);
+  //format_coeff_brackets(reduced_basis,  reduced_basis_id, masses_input, id_input);
+
+  for (int i = 0; i < nbr;i++)
   {
-    math_4 << " + "<<reduced_basis_id[i]<< "f * C"<<reduced_basis_id[i];
+    math_4 << "C" << reduced_basis_id[i] << " = " << reduced_basis[reduced_basis_id[i]].coefficient << ";" <<endl;
   }
   
-  for (int i = 0; i<np ; i++)
+  // PRODUCTS COEFFICIENTS //
+  
+  const char* file_integrals3_tmp = "output/output_products";
+  string c_file_integrals3 = file_integrals3_tmp + blank + ext;
+  const char *file_integrals3 = c_file_integrals3.c_str();
+  vector<string> name_products,coeff_products_new;
+  int temp_int;
+  get_data(name_products, coeff_products_new, temp_int,file_integrals3, true);
+  std::map <std::string, Bases > prod_map = products_container(prod_id);
+  for (int i=0; i<temp_int; i++)
   {
-    for (int j = 0; j<np ; j++)
-    {
-      math_4 << " + "<< prod_id[i] << "f * " << prod_id[j] << "f * C"<<prod_id[i]<< prod_id[j];
-    }
+    prod_map[name_products[i]].coefficient = coeff_products_new[i];
+  }
+  std::map <std::string, Bases > reduced_prod_map = remove_zeros(prod_map, extract_keys(prod_map));
+  vector<string> reduced_prod_names = extract_keys(reduced_prod_map);
+
+  format_coeff("D",reduced_prod_map,  reduced_prod_names, masses_input, id_input);
+ // format_coeff_brackets(reduced_prod_map,  reduced_prod_names, masses_input, id_input);
+  for (unsigned int i = 0; i < reduced_prod_names.size();i++)
+  {
+    math_4 << "C" << reduced_prod_names[i] << " = " << reduced_prod_map[reduced_prod_names[i]].coefficient << ";" <<endl;
+  }
+  
+  //  SUMMATION
+  
+  math_4 << "  SEnFinite = ";
+  for (int i = 0; i<nbr;i++)
+  {
+     math_4  << " + "<<reduced_basis_id[i]<< " * C"<<reduced_basis_id[i];
+  }
+  for (unsigned int i = 0; i<reduced_prod_names.size();i++)
+  {
+    Bases temp_base;
+    temp_base = reduced_prod_map[reduced_prod_names[i]];
+    math_4 << " + "<< temp_base.e1 << " * " << temp_base.e2 << " * C" << reduced_prod_names[i];
   }
   math_4 << ";"<<endl;
+  
 
   math_4<<"SEn = SEnFinite /. D-> 4-epsilon;\n";
   math_4<<"SEn = Coefficient[SEn,epsilon,0]; \n";
@@ -303,9 +359,11 @@ void Calc_amplitudes::initial_trial(string dimension)
   math_1 << "Export[\""<<s_cwd<<"/output/output.txt\", {" << endl;
   for (int i = 0; i < nb-1;i++)
   {
-    math_1 << "{\""<<full_basis_id[i]<<" \", CForm[C"<<full_basis_id[i]<<" /. Pair[Momentum[p], Momentum[p]] -> p^2 /. DiracGamma[Momentum[p]] -> p], \"\"}," << endl;
+    //math_1 << "{\""<<full_basis_id[i]<<" \", CForm[C"<<full_basis_id[i]<<" /. Pair[Momentum[p], Momentum[p]] -> p^2 /. DiracGamma[Momentum[p]] -> p], \"\"}," << endl;
+    math_1 << "{\""<<full_basis_id[i]<<" \", C"<<full_basis_id[i]<<" /. Pair[Momentum[p], Momentum[p]] -> p^2 /. DiracGamma[Momentum[p]] -> p, \"\"}," << endl;
   }
-  math_1 << "{\""<<full_basis_id[nb-1]<<" \", CForm[C"<<full_basis_id[nb-1]<<" /. Pair[Momentum[p], Momentum[p]] -> p^2 /. DiracGamma[Momentum[p]] -> p], \"\"}" << endl;
+  //math_1 << "{\""<<full_basis_id[nb-1]<<" \", CForm[C"<<full_basis_id[nb-1]<<" /. Pair[Momentum[p], Momentum[p]] -> p^2 /. DiracGamma[Momentum[p]] -> p], \"\"}" << endl;
+  math_1 << "{\""<<full_basis_id[nb-1]<<" \", C"<<full_basis_id[nb-1]<<" /. Pair[Momentum[p], Momentum[p]] -> p^2 /. DiracGamma[Momentum[p]] -> p, \"\"}" << endl;
   math_1 << " }, \"Table\", \"FieldSeparators\" -> \" \", \"TextDelimiters\" -> \"\"];" << endl;
   math_1.close();
   
@@ -361,12 +419,12 @@ bool Calc_amplitudes::calc_diagram(Options options_in)
   // subroutine to generate and call Mathematica scripts
   initial_trial("D");
   compute_amp("math_1.mx\"","D");
-  make_full_trial("math_1.mx\"","D");
+  make_full_trial("math_1.mx\"","D",false);
   
   make_finite_amp();
   second_initial_trial("math_2.mx\"","4");
   compute_amp("math_2.mx\"","4");
-  make_full_trial("math_2.mx\"","4");
+  make_full_trial("math_2.mx\"","4",true);
   
   
   string remainder;
@@ -376,26 +434,6 @@ bool Calc_amplitudes::calc_diagram(Options options_in)
   
   ReplaceAll(remainder,"Pair(Momentum(p),Momentum(p))", "Power(p,2)");
   
-  /*if (remainder != "0")
-  {
-  Bases C0("extra");
-  C0.coefficient = remainder;
-  reduced_basis["extra"] = C0;
-  reduced_basis_id = extract_keys(reduced_basis);
-  nbr = reduced_basis_id.size();
-  }
-  */
-  // need to check result.txt and take anything in there as input for C0
-  // if C0 is not null then add this as a basis integral
-  
-  
-  
-  ////////////////////////////////////////////////////////////////
-  ////////////////////////////////////////////////////////////////
-  //  OUTPUT //
-  
-  
-  
   // BASIS INTEGRAL COEFFICIENTS //
   
   const char* coeff_integrals_tmp = "/output/coeff_integrals_";
@@ -403,14 +441,14 @@ bool Calc_amplitudes::calc_diagram(Options options_in)
   const char *coeff_integrals = c_coeff_integrals.c_str();
   ofstream coeff_integrals_out;
   coeff_integrals_out.open (coeff_integrals);
-  format_coeff(reduced_basis,  reduced_basis_id, masses_input, id_input);
+  format_coeff("4",reduced_basis,  reduced_basis_id, masses_input, id_input);
   if (remainder != "0")
   {
-    coeff_integrals_out << "TSIL_COMPLEXCPP C0 = " << remainder << ";" <<endl;
+    coeff_integrals_out << "  TSIL_COMPLEXCPP C0 = " << remainder << ";" <<endl;
   }
   for (int i = 0; i < nbr;i++)
   {
-    coeff_integrals_out << "TSIL_COMPLEXCPP C" << reduced_basis_id[i] << " = " << reduced_basis[reduced_basis_id[i]].coefficient << ";" <<endl;
+    coeff_integrals_out << "  TSIL_COMPLEXCPP C" << reduced_basis_id[i] << " = " << reduced_basis[reduced_basis_id[i]].coefficient << ";" <<endl;
   }
   coeff_integrals_out.close();
   
@@ -437,10 +475,10 @@ bool Calc_amplitudes::calc_diagram(Options options_in)
   
   ofstream coeff_products_out;
   coeff_products_out.open (coeff_products);
-  format_coeff(reduced_prod_map,  reduced_prod_names, masses_input, id_input);
+  format_coeff("4",reduced_prod_map,  reduced_prod_names, masses_input, id_input);
   for (unsigned int i = 0; i < reduced_prod_names.size();i++)
   {
-    coeff_products_out << "TSIL_COMPLEXCPP C" << reduced_prod_names[i] << " = " << reduced_prod_map[reduced_prod_names[i]].coefficient << ";" <<endl;
+    coeff_products_out << "  TSIL_COMPLEXCPP C" << reduced_prod_names[i] << " = " << reduced_prod_map[reduced_prod_names[i]].coefficient << ";" <<endl;
   }
   coeff_products_out.close();
   
@@ -454,7 +492,7 @@ bool Calc_amplitudes::calc_diagram(Options options_in)
   
   ofstream summation_out;
   summation_out.open (summation);
-  summation_out << "return ";
+  summation_out << "  return ";
   if (remainder != "0")
   {
     summation_out << " + C0 ";

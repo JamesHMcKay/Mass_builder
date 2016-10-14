@@ -212,8 +212,8 @@ string Print_dotsil::coeff(string type)
 
 void Print_dotsil::print_eval_obj(ofstream &myfile,eval_obj &eo, vector<int> &total)
 {
-  myfile << "TSIL_SetParameters (&bar," << eo.x << "2, " << eo.y << "2, " << eo.z << "2 , " << eo.u << "2 , " << eo.v  << "2, Q2);" << endl;
-  myfile << "TSIL_Evaluate (&bar, s);" << endl;
+  myfile << "  TSIL_SetParameters (&bar," << eo.x << "2, " << eo.y << "2, " << eo.z << "2 , " << eo.u << "2 , " << eo.v  << "2, Q2);" << endl;
+  myfile << "  TSIL_Evaluate (&bar, s);" << endl;
   
   vector<bool> check_vec = eo.get_check_vec(names, base_map);
   
@@ -221,7 +221,7 @@ void Print_dotsil::print_eval_obj(ofstream &myfile,eval_obj &eo, vector<int> &to
   {
     if (check_vec[i] && total[i]==1)
     {
-      myfile << base_map[names[i]].short_name << "="<< coeff(base_map[names[i]].type) << " TSIL_GetFunction (&bar,\""<< eo.eval_string[i] <<"\");"<< endl;
+      myfile << "  " << base_map[names[i]].short_name << "="<< coeff(base_map[names[i]].type) << " TSIL_GetFunction (&bar,\""<< eo.eval_string[i] <<"\");"<< endl;
       total [i] = 2;
     }
   }

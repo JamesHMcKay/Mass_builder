@@ -37,7 +37,7 @@ public:
 
   void compute_amp(string prevb,string dimension);
   void make_finite_amp();
-  void make_full_trial(string prevb,string dimension);
+  void make_full_trial(string prevb,string dimension,bool cform);
   bool calc_diagram(Options options_in);
   void generate_figures(Options options_in);
   void initial_trial(string dimension);
