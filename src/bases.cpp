@@ -264,7 +264,9 @@ void format_coeff(string dimension, std::map <std::string, Bases > &base_map, st
       to = "A"+id[i];
       ReplaceAll(coefficient,from, to);
       
-      from = "TAI["+dimension+",0,{{1,"+masses[i]+"}}]";
+      
+      //TAI[D, 0, {{1, Ms}}]
+      from = "TAI["+dimension+", 0, {{1, "+masses[i]+"}}]";
       to = "A"+id[i];
       ReplaceAll(coefficient,from, to);
 
