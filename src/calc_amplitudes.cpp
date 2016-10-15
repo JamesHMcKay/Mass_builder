@@ -76,9 +76,9 @@ void Calc_amplitudes::compute_amp(string prevb,string dimension)
   math_2 << "Export[\""<<s_cwd<<"/output/output2.txt\", {" << endl;
   for (int i = 0; i < nb-1;i++)
   {
-    math_2 << "{\""<<full_basis_id[i]<<" \", CForm[C"<<full_basis_id[i]<<" /. Pair[Momentum[p], Momentum[p]] -> p^2 /. DiracGamma[Momentum[p]] -> p], \"\"}," << endl;
+    math_2 << "{\""<<full_basis_id[i]<<" \", CForm[C"<<full_basis_id[i]<<" + C" <<full_basis_id[i] <<"2 /. Pair[Momentum[p], Momentum[p]] -> p^2 /. DiracGamma[Momentum[p]] -> p], \"\"}," << endl;
   }
-  math_2 << "{\""<<full_basis_id[nb-1]<<" \", CForm[C"<<full_basis_id[nb-1]<<" /. Pair[Momentum[p], Momentum[p]] -> p^2 /. DiracGamma[Momentum[p]] -> p], \"\"}" << endl;
+  math_2 << "{\""<<full_basis_id[nb-1]<<" \", CForm[C"<<full_basis_id[nb-1]<<" + C"<< full_basis_id[nb-1] <<"2 /. Pair[Momentum[p], Momentum[p]] -> p^2 /. DiracGamma[Momentum[p]] -> p], \"\"}" << endl;
   math_2 << " }, \"Table\", \"FieldSeparators\" -> \" \", \"TextDelimiters\" -> \"\"];" << endl;
   
   math_2.close();
@@ -124,7 +124,7 @@ void Calc_amplitudes::compute_amp(string prevb,string dimension)
   
   if (prod_basis.size()==0 && !check_done_quiet())
   {
-    prod_basis = full_basis;
+    prod_basis = reduced_basis;//full_basis;
     prod_id = extract_keys(prod_basis);
     prod_basis = remove_type_F(prod_basis, prod_id);
     prod_id = extract_keys(prod_basis);

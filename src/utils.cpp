@@ -515,6 +515,7 @@ namespace utils
     }
     
     myfile << "C"<< id << " = Coefficient["<<SEn<<", " << id << ", 1];" << endl;
+    myfile << "C"<< id << "2 = Coefficient["<<SEn<<", " << id << ", 2];" << endl; // check if the squared integral exists
   }
   
   
@@ -694,7 +695,7 @@ namespace utils
     myfile << id << " = " <<  id << "4 +  ( ";
     
     // -I/epsilon
-    myfile << " I/epsilon (*-I*epsilon * Be["<< x << ", " << y << " , p ]*) ";
+    myfile << " param*I/epsilon (*-I*epsilon * Be["<< x << ", " << y << " , p ]*) ";
     myfile << ")" << endl;
   }
   
