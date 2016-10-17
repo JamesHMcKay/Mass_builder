@@ -242,6 +242,7 @@ namespace Generate_code
     << "int          init(Data data);\n"
     << "TSIL_COMPLEXCPP operator*(int a, TSIL_COMPLEXCPP b){TSIL_COMPLEXCPP c=a;return c*b;}\n"
     << "TSIL_COMPLEXCPP operator+(int a, TSIL_COMPLEXCPP b){TSIL_COMPLEXCPP c=a;return c+b;}\n"
+    << "TSIL_COMPLEXCPP operator-(int a, TSIL_COMPLEXCPP b){TSIL_COMPLEXCPP c=a;return c-b;}\n"
     << "TSIL_COMPLEXCPP Complex(double a,double b){dcomp i;i=-1;i=sqrt(i);TSIL_COMPLEXCPP result = a + i*b; return result ;}\n"
     <<endl;
     
@@ -554,7 +555,7 @@ namespace Generate_code
     data_h<<"  Data (){};\n"
     <<"  Data(Options options) \n"
     <<"  {\n"
-    <<"    double param [99];\n"
+    <<"    double parameter [99];\n"
     <<"    std::string name [99]; int i=0;\n"
     <<"    std::ifstream input(options.input_list);\n"
     <<"    std::string line;\n"
@@ -563,7 +564,7 @@ namespace Generate_code
     <<"      if (!line.length() || line[0] == '#')\n"
     <<"      continue;\n"
     <<"      std::istringstream iss(line);\n"
-    <<"      iss>> name[i] >> param[i];\n"
+    <<"      iss>> name[i] >> parameter[i];\n"
     <<"      i=i+1;\n"
     <<"    }\n"
     <<"    for (int n=0;n<i+1;n++)\n"
@@ -573,7 +574,7 @@ namespace Generate_code
     {
       data_h<<"      if (name[n]==\""<<couplings[i] <<"\")\n"
       <<"      {\n"
-      <<"        " <<couplings[i] << " = param[n];\n"
+      <<"        " <<couplings[i] << " = parameter[n];\n"
       <<"      }"<<endl;
     }
     
@@ -581,19 +582,19 @@ namespace Generate_code
     {
       data_h<<"      if (name[n]==\""<<masses[i] <<"\")\n"
       <<"      {\n"
-      <<"        " <<masses[i] << " = param[n];\n"
+      <<"        " <<masses[i] << " = parameter[n];\n"
       <<"      }"<<endl;
     }
     
     data_h<<"      if (name[n]==\"Q\")\n"
     <<"      {\n"
-    <<"        Q = param[n];\n"
+    <<"        Q = parameter[n];\n"
     <<"      }"<<endl;
     
     
     data_h<<"      if (name[n]==\"P\")\n"
     <<"      {\n"
-    <<"        P = param[n];\n"
+    <<"        P = parameter[n];\n"
     <<"      }"<<endl;
     
     

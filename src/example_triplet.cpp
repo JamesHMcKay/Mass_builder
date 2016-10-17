@@ -51,11 +51,15 @@ int main(int argc, char *argv[])
   
   se.run_tsil(data);
   
-  double se_two_loop = data.SE_2["F5"];
-  cout << "self energy from two loop only = " << se_two_loop << endl;
-  Supplements supp(data);
-  supp.add_derivatives(data);
-  cout << "derivative terms = " << data.SE_2["F5"] - se_two_loop << endl;
+  double se_F1= data.SE_2["F1"];
+  double se_F2 = data.SE_2["F2"];
+  cout << "mass splitting from two-loop only = " << se_F2 - se_F1 << endl;
+  
+  
+//  cout << "self energy from two loop only = " << se_two_loop << endl;
+  //Supplements supp(data);
+  //supp.add_derivatives(data);
+  //cout << "derivative terms = " << data.SE_2["F5"] - se_two_loop << endl;
   
   
   
