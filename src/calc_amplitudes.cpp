@@ -319,7 +319,7 @@ void Calc_amplitudes::make_finite_amp()
 void Calc_amplitudes::second_initial_trial(string prevb,string dimension)
 {
   ofstream math_1;
-  math_1.open ("output/math_1.m");
+  math_1.open ("output/math_1b.m");
   utils::print_math_header(math_1);
   math_1<<"Get[\"" << s_cwd <<"/output/"<< prevb << "]\n";
   print_math_basis(full_basis,math_1,"SEn",dimension);
@@ -333,9 +333,9 @@ void Calc_amplitudes::second_initial_trial(string prevb,string dimension)
   math_1.close();
   
 #ifdef RUN_ALL
-  system("chmod +x output/math_1.m ");
-  if (options.verbose) system("./output/math_1.m");
-  else system("./output/math_1.m  >/dev/null");
+  system("chmod +x output/math_1b.m ");
+  if (options.verbose) system("./output/math_1b.m");
+  else system("./output/math_1b.m  >/dev/null");
 #endif
   
 }

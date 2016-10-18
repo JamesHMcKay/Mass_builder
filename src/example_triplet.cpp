@@ -57,9 +57,9 @@ int main(int argc, char *argv[])
   
   
 //  cout << "self energy from two loop only = " << se_two_loop << endl;
-  //Supplements supp(data);
-  //supp.add_derivatives(data);
-  //cout << "derivative terms = " << data.SE_2["F5"] - se_two_loop << endl;
+  Supplements supp(data);
+  supp.add_derivatives(data);
+  cout << "derivative terms = " << data.SE_2["F2"] - data.SE_2["F1"] << endl;
   
   
   

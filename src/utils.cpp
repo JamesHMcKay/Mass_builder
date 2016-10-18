@@ -695,7 +695,7 @@ namespace utils
     myfile << id << " = " <<  id << "4 +  ( ";
     
     // -I/epsilon
-    myfile << " param*I/epsilon (*-I*epsilon * Be["<< x << ", " << y << " , p ]*) ";
+    myfile << " param*I/epsilon";
     myfile << ")" << endl;
   }
   

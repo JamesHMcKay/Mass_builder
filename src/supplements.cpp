@@ -145,8 +145,8 @@ namespace supplementary_code
     TSIL_COMPLEXCPP SE_0 = (SigmaM_0(M) + M*SigmaK_0(M,p) )*( SigmaK_0(M,p) + 2.0L*TSIL_POW(M,2)*d_SigmaK_0(M,p)+2.0L*M*d_SigmaM_0(M));
     TSIL_COMPLEXCPP SE_1 =(SigmaM_1(M) + M*SigmaK_1(M,p) )*( SigmaK_1(M,p) + 2.0L*TSIL_POW(M,2)*d_SigmaK_1(M,p)+2.0L*M*d_SigmaM_1(M));
     
-    data.SE_2["F6"] = data.SE_2["F6"]+real(SE_0);
-    data.SE_2["F5"] = data.SE_2["F5"]+real(SE_1);
+    data.SE_2["F2"] = data.SE_2["F2"]+real(SE_0);
+    data.SE_2["F1"] = data.SE_2["F1"]+real(SE_1);
     
   }
 }
