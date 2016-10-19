@@ -667,104 +667,67 @@ namespace utils
   // T(x,y,z)   = - a^2 TJI[s,{2,1,1}] = a^2 T(x,y,z)
   // U(x,y,z,u) = - a^2 TVI[s,{1,1,1,1},{u,x,z,y}] = a^2 V(u,x,z,y)
   
-  void Af(ofstream &myfile, string x)
-  {
-    // for use in other finite function definitions
-    // does not terminate line
-    myfile << "I*TAI[4, 0, {1, " << x << "}]";
-     //-  (1 (*- (epsilon/2)*Log[4*PI*Q]*))* ( ";
-    // -x/epsilon + A(x) + epsilon * A_epsilon(x)
-   // myfile << " -" << x <<"^2 /epsilon (*+epsilon * Ae["<< x << "] *)";
-   // myfile << ")";
-  }
   
   void finite_A(ofstream &myfile, string x, string id)
   {
-    // print A_f(x) = A_4(x) + ...
     myfile << id << " = " <<  id << "4 +  ( ";
     
-    // -x/epsilon
     myfile << " I*" << x <<"^2 /epsilon";
-    //myfile << " -I*epsilon*Ae[" << x << "2]";
     myfile << ")" <<  endl;
   }
   
   void finite_B(ofstream &myfile, string x, string y, string id)
   {
-    // B_f(x,y) = B_4(x,y) +
     myfile << id << " = " <<  id << "4 +  ( ";
     
-    // -I/epsilon
     myfile << " param*I/epsilon";
     myfile << ")" << endl;
   }
   
   void finite_J(ofstream &myfile, string x, string y, string z, string id)
   {
-    // print J_f(x,y,z) = J_4(x,y,z) + a^{-1} * (
-    myfile << id << " = " <<  id << "4 + (1 )* ( ";
+    myfile << id << " = " <<  id << "4 + ( ";
     
-    // -(x+y+z)/2epsilon^2 + [A(x)+A(y)+A(z) - (x+y+z)/2 + s/4] / epsilon + Aepsilon(x) + Aepsilon(y) + Aepsilon(z)
     myfile << " - (" << x << "^2 + " << y << "^2 + " << z << "^2 )/ (2* epsilon^2)";
-    myfile << " + I*( - ("<<x<<"+"<<y<<"+"<<z<<")/2 + Pair[Momentum[p],Momentum[p]]/4 )/epsilon";
-    myfile << " (*+ Ae[" << x << "2]" << " + Ae[" << y << "2]" <<" + Ae[" << z << "2]*)";
-    myfile << " ) ";
+    myfile << " + ( - ("<<x<<"+"<<y<<"+"<<z<<")/2 + Pair[Momentum[p],Momentum[p]]/4 )/epsilon";
+    myfile << " + ( I*TAI[4, 0, {1, " << x << "}] + I*TAI[4, 0, {1, " << y << "}] + I*TAI[4, 0, {1, " << z << "}] )/epsilon";
     
-    //functions for which the a terms cancels
-    myfile << "- I*( I*TAI[4, 0, {1, " << x << "}] + I*TAI[4, 0, {1, " << y << "}] + I*TAI[4, 0, {1, " << z << "}] )/epsilon"<< endl;
+    myfile << " ) "<< endl;
   }
   
   void finite_T(ofstream &myfile, string x, string y, string z, string id)
   {
-    // T_f(x,y,z) = T_4(x,y,z) + a^{-1} * (
-    myfile << id << " = " <<  id << "4 - (1 )* ( ";
+    myfile << id << " = " <<  id << "4 - ( ";
     
-    // 1/2epsilon^2 - [A(x)/x + 1/2]/epsilon + [A(x)-Ae(x)]/x
-    myfile << " 1/(2*epsilon^2) - ( 1/2 )*(1/epsilon)";
-    myfile << " (*+ ( - Ae[ " << x << "2] )/ "<< x << "2*) ";
-    myfile << " ) ";
+    myfile << " 1/(2*epsilon^2) + 1/(2*epsilon)";  // changed to +
+    myfile << " - ((I*TAI[4, 0, {1, "<<x<<"}])/"<<x<<"2 )/epsilon";
     
-    //functions for which the a terms cancels
-    myfile << "  - ((I*TAI[4, 0, {1, "<<x<<"}])/"<<x<<"2 )/epsilon"<<endl;
-    //myfile << " +( I*TAI[4, 0, {1, " << x<< "}] )/ "<< x << "2 " << endl;
+    myfile << " ) "<< endl;
   }
   
   void finite_K(ofstream &myfile, string x, string y, string z, string id)
   {
-    // K_f(x,y,z) = K_4(x,y,z) + a^{-1} * (
-    myfile << id << " = " <<  id << "4 + (1)* ( ";
+    myfile << id << " = " <<  id << "4 +  ( ";
     
-    // -(x+y+z)/2epsilon^2 + [A(x)+A(y)+A(z)-(x+y+z)/2]/epsilon + Aepsilon(x)+Aepsilon(y)+Aepsilon(z)
-    // CORRECTION: -(x+y+z)/2epsilon^2 + [A(x)+A(y)+A(z)-(x+y+z)]/epsilon + Aepsilon(x)+Aepsilon(y)+Aepsilon(z)
-    // removed a factor of 1/2 from -(x+y+z)/epsilon term
+    // CORRECTION: removed a factor of 1/2 from -(x+y+z)/epsilon term
     myfile << " - (" << x << "^2 + " << y << "^2 + " << z << "^2 )/ (2* epsilon^2)";
     myfile << " - (" << x << "^2 + " << y << "^2 + " << z << "^2 )/ ( epsilon)";
-    //myfile << " + Ae[" << x << "2]" << " + Ae[" << y << "2]" <<" + Ae[" << z << "2]";
-    myfile << " ) ";
+    myfile << "+(  I*TAI[4, 0, {1, "<<x<<"}]";
+    myfile << "  + I*TAI[4, 0, {1, "<<y<<"}]";
+    myfile << "  + I*TAI[4, 0, {1, "<<z<<"}]";
+    myfile << "    )/epsilon ";
     
-    myfile << " + ( ";
-    Af(myfile,x);
-    myfile << " + ";
-    Af(myfile,y);
-    myfile << " + ";
-    Af(myfile,z);
-    myfile << " )/epsilon "<< endl;
+    myfile << " ) "<< endl;
   }
   
   
   void finite_V(ofstream &myfile, string x, string y, string z, string u, string id)
   {
-    // V_f(x,y,z,u) = V_4(x,y,z,u) + a^{-1} * (
-    myfile << id << " = " <<  id << "4 - (1)* ( ";
+    myfile << id << " = " <<  id << "4 - ( ";
     
-    // print 1/2epsilon^2 + [1/2 + B(x,y)]/epsilon + Bepsilon(x,y)
-    myfile << "+(1/(2*epsilon^2)) + (1/2)/epsilon";
-    //myfile << " + Be["<< y << "2, " << u << "2,p]";
-    myfile << " ) ";
-    
-    //functions for which the a terms cancels
-    myfile << " - ( - I * TBI[4, Pair[Momentum[p],Momentum[p]], {{1, " << y << "}, {1, " << u << "}}])/epsilon"<<endl;
-    
+    myfile << "+1/(2*epsilon^2) + 1/(2*epsilon)";
+    myfile << " + ( - I * TBI[4, Pair[Momentum[p],Momentum[p]], {{1, " << y << "}, {1, " << u << "}}] ) /epsilon";
+    myfile << " ) " << endl;
   }
 
   
