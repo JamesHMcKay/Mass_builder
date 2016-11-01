@@ -300,7 +300,7 @@ void Calc_amplitudes::make_finite_amp()
   math_4 << ";"<<endl;
   
 
-  math_4<<"SEn = SEnFinite /. D-> 4-epsilon;\n";
+  math_4<<"SEn = SEnFinite /. D-> 4-2*epsilon;\n";
   math_4<<"SEn = Coefficient[SEn,epsilon,0]; \n";
   math_4<<"SEn = Simplify[SEn /. epsilon->0];\n"; // some integrals come through as D = 4-epsilon so fix these
   

@@ -711,7 +711,7 @@ namespace utils
     
     // CORRECTION: removed a factor of 1/2 from -(x+y+z)/epsilon term
     myfile << " - (" << x << "^2 + " << y << "^2 + " << z << "^2 )/ (2* epsilon^2)";
-    myfile << " - (" << x << "^2 + " << y << "^2 + " << z << "^2 )/ ( epsilon)";
+    myfile << " - (" << x << "^2 + " << y << "^2 + " << z << "^2 )/  ( 2*epsilon)";
     myfile << "+(  I*TAI[4, 0, {1, "<<x<<"}]";
     myfile << "  + I*TAI[4, 0, {1, "<<y<<"}]";
     myfile << "  + I*TAI[4, 0, {1, "<<z<<"}]";
