@@ -378,21 +378,28 @@ The diagrams available to be included in the generated TSIL interface are regist
 
 The integrals obtained from the TARCER output are in terms of divergent basis integrals.  In a consistent field theory these divergences should be accounted for by divergent counter-term diagrams.  We leave the determination of counter-terms and checking that divergences cancel to the user, although it is possible to compute the counter-term diagrams via this interface (\textit{not fully supported yet}).  Once we are assured the divergent terms can be accounted for by appropriate counter-term couplings, we make limit our consideration to only the finite part of the basis integrals.
 
-The TSIL package provides the finite basis integrals, with the divergences subtracted, which is convenient in most cases.  However, if the divergent term is of order $1/\epsilon$ and the basis integral had a coefficient of the form $D = 4-\epsilon$, then this leading divergence becomes a finite contribution that must be accounted.  Thus we must appropriately take $D=4-\epsilon$ when converting from a divergent integral as output by TARCER into the finite integral evaluated in TSIL.  This non-trivial step requires an additional repetition of the algorithm to deconstruct the new, finite, amplitude into a coefficient and basis integral form.
+The TSIL package provides the finite basis integrals, with the divergences subtracted, which is convenient in most cases.  However, if the divergent term is of order $1/\epsilon$ and the basis integral had a coefficient of the form $D = 4-2\epsilon$, then this leading divergence becomes a finite contribution that must be accounted.  Thus we must appropriately take $D=4-2\epsilon$ when converting from a divergent integral as output by TARCER into the finite integral evaluated in TSIL.  This non-trivial step requires an additional repetition of the algorithm to deconstruct the new, finite, amplitude into a coefficient and basis integral form.
 
 In this section we give details of the leading divergences included from the TSIL documentation and how these are adjusted for sign conventions between the TARCER and TSIL packages.  In the following bold face and standard face characters denote the divergent and finite basis integrals respectively.  We use $A$, $B$ and so on to denote the TSIL definitions and $\mathtt{TAI}$, $\mathtt{TBI}$ and so on to denote the TARCER definitions.
 
-For the $A(x)$ integral we have \cite{Martin2006}
-\begin{align}
-\vec{A}(x) = A(x) -\frac{x}{\epsilon} +\epsilon A(x) +\mathcal{O}{\epsilon^2}
-\end{align}
-so using the relation $\vec{A}(x) =ia \vec{\mathtt{TAI}}$ we find
-\begin{align}
-\vec{\mathtt{TAI} }= \mathtt{TAI}+\frac{ix}{\epsilon} + \mathcal{O}{\epsilon}
-\end{align}
-
-
-
+For the divergent integrals we have \cite{Martin2006}
+\begin{align*}
+&\vec{A}(x) = A(x) -\frac{x}{\epsilon} +\epsilon A(x) +\mathcal{O}(\epsilon^2) \\
+&\vec{B}(x,y)= B(x,y) +\frac{1}{\epsilon} +\epsilon B_{\epsilon}(x,y) +\mathcal{O}(\epsilon^2) \\
+&\vec{I}(x,y,z)= I(x,y) +\frac{(x+y+z)}{2\epsilon^2}  \\ &- \left[A(x)+A(y)+A(z)-(x+y+z)/2\right]/\epsilon\\ &+ A_{\epsilon}(x)+ A_{\epsilon}(y)+ A_{\epsilon}(z)+\mathcal{O}(\epsilon) \\
+&\vec{S}(x,y,z)= S(x,y) -\frac{(x+y+z)}{2\epsilon^2} + \\ & \left[A(x)+A(y)+A(z)-(x+y+z)/2+s/4\right]/\epsilon\\ &+ A_{\epsilon}(x)+ A_{\epsilon}(y)+ A_{\epsilon}(z)+\mathcal{O}(\epsilon) \\
+&\vec{T}(x,y,z)= T(x,y) +\frac{1}{2\epsilon^2} -\left[A(x)/x +1/2\right]/\epsilon\\ &+ (A(x)- A_{\epsilon}(x))/x+\mathcal{O}(\epsilon) \\
+&\vec{U}(x,y,z,u)= U(x,y,z,u) +\frac{1}{2\epsilon^2} +\left[B(x,y) +1/2\right]/\epsilon\\ &+ B_{\epsilon}(x,y)+\mathcal{O}(\epsilon)
+\end{align*}
+so using the relation $\vec{A}(x) =ia \mathtt{\mathbf{TAI}}(x)$ , $\vec{B}(x,y) =-ia \mathtt{\mathbf{TBI}}(x,y)$, $\mathtt{TJI}_0(x,y,z)=I(x,y,z)$,  $\mathtt{TJI}_s(x,y,z)=S(x,y,z)$, $\vec{T}(x,y,z)=\mathtt{\mathbf{TJI}}_{s,2}$, $\vec{U}(x,y,z,u)=-\mathtt{\mathbf{TVI}}(x,y,z,u)$ we find the useful relationships
+\begin{align*}
+&\mathtt{\mathbf{TAI} }(x)= \mathtt{TAI}(x)+\frac{ix}{\epsilon} + \mathcal{O}(\epsilon)\\
+&\mathtt{\mathbf{TBI} }(x,y)= \mathtt{TBI}(x,y)+\frac{i}{\epsilon} + \mathcal{O}(\epsilon)\\
+&\mathtt{\mathbf{TJI}_0 }(x,y,z)= \mathtt{TJI}_0(x,y,z)+\frac{(x+y+z)}{2\epsilon^2}  \\ & -\left[i\mathtt{TAI}(x)+i\mathtt{TAI}(y)+i\mathtt{TAI}(z)-(x+y+z)/2\right]/\epsilon\\&+ \mathcal{O}(\epsilon)\\
+&\mathtt{\mathbf{TJI}_s }(x,y,z)= \mathtt{TJI}_s(x,y,z)+\frac{(x+y+z)}{2\epsilon^2}  \\ & -\left[i\mathtt{TAI}(x)+i\mathtt{TAI}(y)+i\mathtt{TAI}(z)-(x+y+z)/2+s/4\right]/\epsilon\\&+ \mathcal{O}(\epsilon)\\
+&\mathtt{\mathbf{TJI}}_{s,2}(x,y,z)= \mathtt{TJI}_{s,2}(x,y,z) -\frac{1}{2\epsilon^2} +\left[A(x)/x +1/2\right]/\epsilon\\ &- (A(x)- A_{\epsilon}(x))/x)+\mathcal{O}(\epsilon) \\
+&\mathtt{\mathbf{TVI}}(x,y,z,u)= \mathtt{TVI}(x,y,z,u) +\frac{1}{2\epsilon^2} +\left[B(x,y) +1/2\right]/\epsilon\\ &+ B_{\epsilon}(x,y)+\mathcal{O}(\epsilon)
+\end{align*}
 
 
 

@@ -680,7 +680,7 @@ namespace utils
   {
     myfile << id << " = " <<  id << "4 +  ( ";
     
-    myfile << " param*I/epsilon";
+    myfile << " I/epsilon";
     myfile << ")" << endl;
   }
   
@@ -689,7 +689,7 @@ namespace utils
     myfile << id << " = " <<  id << "4 + ( ";
     
     myfile << " - (" << x << "^2 + " << y << "^2 + " << z << "^2 )/ (2* epsilon^2)";
-    myfile << " + ( - ("<<x<<"+"<<y<<"+"<<z<<")/2 + Pair[Momentum[p],Momentum[p]]/4 )/epsilon";
+    myfile << " + (- ("<<x<<"^2 +"<<y<<"^2 +"<<z<<"^2)/2 - Pair[Momentum[p],Momentum[p]]/4 )/epsilon";
     myfile << " + ( I*TAI[4, 0, {1, " << x << "}] + I*TAI[4, 0, {1, " << y << "}] + I*TAI[4, 0, {1, " << z << "}] )/epsilon";
     
     myfile << " ) "<< endl;
@@ -697,10 +697,11 @@ namespace utils
   
   void finite_T(ofstream &myfile, string x, string y, string z, string id)
   {
-    myfile << id << " = " <<  id << "4 - ( ";
+    myfile << id << " = " <<  id << "4 + ( ";
     
-    myfile << " 1/(2*epsilon^2) + 1/(2*epsilon)";  // changed to +
-    myfile << " - ((I*TAI[4, 0, {1, "<<x<<"}])/"<<x<<"2 )/epsilon";
+    myfile << " -1/(2*epsilon^2) + 1/(2*epsilon)";
+    myfile << " + ((I*TAI[4, 0, {1, "<<x<<"}])/"<<x<<"2 )/epsilon";
+    myfile << " - ((I*TAI[4, 0, {1, "<<x<<"}])/"<<x<<"2 )";
     
     myfile << " ) "<< endl;
   }
@@ -709,7 +710,6 @@ namespace utils
   {
     myfile << id << " = " <<  id << "4 +  ( ";
     
-    // CORRECTION: removed a factor of 1/2 from -(x+y+z)/epsilon term
     myfile << " - (" << x << "^2 + " << y << "^2 + " << z << "^2 )/ (2* epsilon^2)";
     myfile << " - (" << x << "^2 + " << y << "^2 + " << z << "^2 )/  ( 2*epsilon)";
     myfile << "+(  I*TAI[4, 0, {1, "<<x<<"}]";
@@ -723,10 +723,10 @@ namespace utils
   
   void finite_V(ofstream &myfile, string x, string y, string z, string u, string id)
   {
-    myfile << id << " = " <<  id << "4 - ( ";
+    myfile << id << " = " <<  id << "4 + ( ";
     
-    myfile << "+1/(2*epsilon^2) + 1/(2*epsilon)";
-    myfile << " + ( - I * TBI[4, Pair[Momentum[p],Momentum[p]], {{1, " << y << "}, {1, " << u << "}}] ) /epsilon";
+    myfile << "-1/(2*epsilon^2) - 1/(2*epsilon)";
+    myfile << " - ( - I * TBI[4, Pair[Momentum[p],Momentum[p]], {{1, " << y << "}, {1, " << u << "}}] ) /epsilon";
     myfile << " ) " << endl;
   }
 
