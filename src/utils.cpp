@@ -670,7 +670,7 @@ namespace utils
   
   void finite_A(ofstream &myfile, string x, string id)
   {
-    myfile << id << " = " <<  id << "4 +  ( ";
+    myfile << id << " = -" <<  id << "4 -  ( ";
     
     myfile << " I*" << x <<"^2 /epsilon";
     myfile << ")" <<  endl;
