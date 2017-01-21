@@ -670,7 +670,7 @@ namespace utils
   
   void finite_A(ofstream &myfile, string x, string id)
   {
-    myfile << id << " = -" <<  id << "4 -  ( ";
+    myfile << id << " = " <<  id << "4 +  ( ";
     
     myfile << " I*" << x <<"^2 /epsilon";
     myfile << ")" <<  endl;
@@ -689,7 +689,7 @@ namespace utils
     myfile << id << " = " <<  id << "4 + ( ";
     
     myfile << " - (" << x << "^2 + " << y << "^2 + " << z << "^2 )/ (2* epsilon^2)";
-    myfile << " + (- ("<<x<<"^2 +"<<y<<"^2 +"<<z<<"^2)/2 - Pair[Momentum[p],Momentum[p]]/4 )/epsilon";
+    myfile << " + (- ("<<x<<"^2 +"<<y<<"^2 +"<<z<<"^2)/2 + Pair[Momentum[p],Momentum[p]]/4 )/epsilon";
     myfile << " + ( I*TAI[4, 0, {1, " << x << "}] + I*TAI[4, 0, {1, " << y << "}] + I*TAI[4, 0, {1, " << z << "}] )/epsilon";
     
     myfile << " ) "<< endl;
@@ -712,7 +712,7 @@ namespace utils
     
     myfile << " - (" << x << "^2 + " << y << "^2 + " << z << "^2 )/ (2* epsilon^2)";
     myfile << " - (" << x << "^2 + " << y << "^2 + " << z << "^2 )/  ( 2*epsilon)";
-    myfile << "+(  I*TAI[4, 0, {1, "<<x<<"}]";
+    myfile << "+  (  I*TAI[4, 0, {1, "<<x<<"}]";
     myfile << "  + I*TAI[4, 0, {1, "<<y<<"}]";
     myfile << "  + I*TAI[4, 0, {1, "<<z<<"}]";
     myfile << "    )/epsilon ";
