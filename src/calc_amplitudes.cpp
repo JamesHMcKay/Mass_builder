@@ -3,6 +3,7 @@
  
  James McKay
  Aug - Sep 2016
+ Jan 2017
  
  --- calc_amplitudes.cpp ---
  
@@ -305,6 +306,8 @@ void Calc_amplitudes::make_finite_amp(bool counter_terms)
   
 
   math_4<<"SEn = SEnFinite /. D-> 4-2*epsilon;\n";
+  math_4<<"Get[\"" << s_cwd <<"/output/remainder.mx\"]\n";
+  math_4<<"SEn = SEn + remainder;\n";
   
   if (counter_terms)
   {
@@ -313,11 +316,6 @@ void Calc_amplitudes::make_finite_amp(bool counter_terms)
   
   math_4<<"SEn = Coefficient[SEn,epsilon,0]; \n";
   math_4<<"SEn = Simplify[SEn /. epsilon->0];\n"; // some integrals come through as D = 4-epsilon so fix these
-  
-  
-  math_4<<"Get[\"" << s_cwd <<"/output/remainder.mx\"]\n";
-  
-  math_4<<"SEn = SEn + remainder;\n";
   
   math_4<<"DumpSave[\""<<s_cwd<<"/output/math_2.mx\", SEn];\n";
   

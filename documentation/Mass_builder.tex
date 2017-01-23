@@ -165,7 +165,7 @@ Now we are finally able to compute the total amplitude using the command
 where we must explicitly enter the path to an input file which contains values for the masses and couplings.  This will return the self energy
 \begin{lstterm}
 One loop self energy of particle S1 = -0.0316688
-Two loop self energy of particle S1 = 3.92488e-05
+Two loop self energy of particle S1 = 2.91938e-05
 \end{lstterm}
 where the particle name has been converted to a more convenient form, this is the form of the particle name which appears in the generated output files.
 
@@ -232,12 +232,15 @@ MChi	       c
 \end{lstterm}
 where for even more readable output code one could choose unique one character identifiers for \lstinline{wm} and \lstinline{wp} instead.
 
-The file \lstinline{masses.txt} is simply a one column list of couplings and constants exactly as they appear in the FeynArts model file.  This is essential for the generated code to compile and for the user input header to contain options for setting these couplings at runtime via an input file \footnote{Constants such as \lstinline{sw2} which regularly appear in couplings must be set, although the final release version will include an option to enter analytical expressions at this stage so they can be set via more sensible inputs at runtime, we will also include many standard expressions by default.}.  For example a typical couplings file would be
+The file \lstinline{couplings.txt} is a list of couplings and constants exactly as they appear in the FeynArts model file.  This is essential for the generated code to compile and for the user input header to contain options for setting these couplings at runtime via an input file.  There is also the option to specify derived couplings and the corresponding analytic expression.  All derived couplings and the corresponding relationships must be specified first in the list, as in the example below.  The couplings file would typically look like
 \begin{lstterm}
 # couplings.txt
+d1 (g*g/2+lambda*Ms*Ms/2)
+dlambda 0
 lambda
 g
 \end{lstterm}
+where the counter-term couplings are set to be $d_1=g^2/2 + \lambda M_S^2/2$ and $d_{\lambda}=0$ and the other couplings are left free to be set at run time.  In this case \lstinline{Ms} must be listed in the \lstinline{masses.txt} file.  Any value or relationship defined in the second column of the \lstinline{couplings.txt} file will override user input at runtime.
 
 Finally \lstinline{diagrams.txt} is a list of diagrams to compute.  This is identical to the file entered along with the \lstinline{-i} option at runtime.  This file contains at least two columns, the first specifies the particle name in FeynArts format (such as \lstinline{S[1]}) and the second the corresponding diagram number (to obtain a list of diagrams for each particle in \lstinline{pdf} output see section \ref{generate_diagrams}.  An optional column may be added to specify the loop order and if this is to be a counter term diagram (if these options are not set globally with the appropriate flags at runtime), including all columns this file would look like
 \begin{lstterm}
