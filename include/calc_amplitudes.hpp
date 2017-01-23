@@ -36,7 +36,7 @@ public:
   Calc_amplitudes(){}
 
   void compute_amp(string prevb,string dimension);
-  void make_finite_amp();
+  void make_finite_amp(bool counter_terms);
   void make_full_trial(string prevb,string dimension,bool cform);
   bool calc_diagram(Options options_in);
   void generate_figures(Options options_in);

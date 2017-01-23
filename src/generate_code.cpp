@@ -298,12 +298,13 @@ namespace Generate_code
     main_output << "TSIL_REAL p,Pi;\n";
     // model specific variables need to be written here
     
-    vector<std::string> couplings;
+    vector<std::string> couplings, relationships;
     string c_file_couplings = "models/" + model + "/couplings.txt";  // need to make this model independent
     const char *file_couplings = c_file_couplings.c_str();
     int nc; // number of diagrams, length of diagram_number vector
-    get_data(couplings, nc,file_couplings);
+    get_data(couplings, relationships, nc,file_couplings,true);
     main_output << "TSIL_REAL ";
+    
     for (int i=0;i<nc;i++)
     {
       if (i!=(nc-1)) main_output << couplings[i] << ", ";
@@ -383,8 +384,17 @@ namespace Generate_code
     
     
     main_output<<"  dcomp ii=-1;ii=sqrt(ii);i=ii;\n"
-    <<"  Pi=PI;\n"
-    <<"  return 0;\n"
+    <<"  Pi=PI;\n";
+    
+    if (relationships.size()!=0)
+    {
+      for (unsigned int i=0;i<relationships.size();i++)
+      {
+        main_output << "  " << couplings[i] << " = " << relationships[i] << ";"<<endl;
+      }
+    }
+    
+    main_output<<"  return 0;\n"
     <<"}\n";
     
     

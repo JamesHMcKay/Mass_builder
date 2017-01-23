@@ -147,7 +147,7 @@ void Calc_amplitudes::make_full_trial(string prevb,string dimension,bool cform)
   print_math_products(prod_basis,math_3,"SEn",dimension);
   
   
-  math_3 << "SEnTrial = ";
+  math_3 << "SEnTrial = 0 ";
   for (int i = 0; i<nbr;i++)
   {
     math_3 << " + "<<reduced_basis_id[i]<< " * C"<<reduced_basis_id[i];
@@ -175,6 +175,10 @@ void Calc_amplitudes::make_full_trial(string prevb,string dimension,bool cform)
   math_3 << "Print[diff]"<<endl;
   
   math_3 << "Export[\""<<s_cwd<<"/output/result.txt\", CForm[diff/. DiracGamma[Momentum[p]] -> p] ]" << endl;
+  
+  math_3<<"remainder = diff;"<<endl;
+  
+  math_3<<"DumpSave[\""<<s_cwd<<"/output/remainder.mx\", remainder];"<<endl;
   
   // print out coefficients of products -- this is for the purposes of passing as final output to TSIL
   
@@ -236,7 +240,7 @@ void Calc_amplitudes::make_full_trial(string prevb,string dimension,bool cform)
 
 }
 
-void Calc_amplitudes::make_finite_amp()
+void Calc_amplitudes::make_finite_amp(bool counter_terms)
 {
 
   string prevb = "math_1.mx\"";
@@ -286,7 +290,7 @@ void Calc_amplitudes::make_finite_amp()
   
   //  SUMMATION
   
-  math_4 << "  SEnFinite = ";
+  math_4 << "  SEnFinite = 0 ";
   for (int i = 0; i<nbr;i++)
   {
      math_4  << " + "<<reduced_basis_id[i]<< " * C"<<reduced_basis_id[i];
@@ -301,8 +305,19 @@ void Calc_amplitudes::make_finite_amp()
   
 
   math_4<<"SEn = SEnFinite /. D-> 4-2*epsilon;\n";
+  
+  if (counter_terms)
+  {
+    math_4<<"SEn = SEn * (1/epsilon)"<<endl;
+  }
+  
   math_4<<"SEn = Coefficient[SEn,epsilon,0]; \n";
   math_4<<"SEn = Simplify[SEn /. epsilon->0];\n"; // some integrals come through as D = 4-epsilon so fix these
+  
+  
+  math_4<<"Get[\"" << s_cwd <<"/output/remainder.mx\"]\n";
+  
+  math_4<<"SEn = SEn + remainder;\n";
   
   math_4<<"DumpSave[\""<<s_cwd<<"/output/math_2.mx\", SEn];\n";
   
@@ -421,7 +436,8 @@ bool Calc_amplitudes::calc_diagram(Options options_in)
   compute_amp("math_1.mx\"","D");
   make_full_trial("math_1.mx\"","D",false);
   
-  make_finite_amp();
+  
+  make_finite_amp(options.counter_terms);
   second_initial_trial("math_2.mx\"","4");
   compute_amp("math_2.mx\"","4");
   make_full_trial("math_2.mx\"","4",true);
@@ -509,6 +525,12 @@ bool Calc_amplitudes::calc_diagram(Options options_in)
     temp_base = reduced_prod_map[reduced_prod_names[i]];
     summation_out << " + "<< temp_base.e1 << " * " << temp_base.e2 << " * C" << reduced_prod_names[i];
   }
+  
+  if ((nbr==0) && (reduced_prod_names.size()==0) && (remainder == "0"))
+  {
+    summation_out << "0";
+  }
+  
   summation_out << ";"<<endl;
   summation_out.close();
   

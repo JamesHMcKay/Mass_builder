@@ -325,11 +325,16 @@ namespace utils
         file<<"amp0 = amp0 /. MajoranaSpinor[p, "<<masses[i]<<"] -> 1 /.Spinor[Momentum[p], "<<masses[i]<<", 1] -> 1;"<<endl;
       }
       file<<"SetOptions[Eps, Dimension -> D];\n"
-      <<"fullamp0 = (amp0) // DiracSimplify // FCMultiLoopTID[#, {k1}] & //DiracSimplify;\n"
-      <<"tfiamp0 = fullamp0 // ToTFI[#, k1, p] & // ChangeDimension[#, 4] &;\n";
+      <<"fullamp0 = (amp0) // DiracSimplify // FCMultiLoopTID[#, {k1}] & //DiracSimplify;\n";
+      if (options.counter_terms)
+      {
+        file<<"tfiamp0 = fullamp0 // ToTFI[#, k1,k2, p] & // ChangeDimension[#, 4] &;"<<endl;
+      }
+      else
+      {
+        file<<"tfiamp0 = fullamp0 // ToTFI[#, k1, p] & // ChangeDimension[#, 4] &;"<<endl;
+      }
     }
-    
-    
   }
   
   
