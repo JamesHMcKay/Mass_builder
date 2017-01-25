@@ -46,7 +46,7 @@ void User_input::user_interface()
     if (find_and_read_string("-l",input))
     {
       if (input == "2"){ options.loop_order = 2;}
-      if (input == "1"){ options.loop_order = 1;}
+      else if (input == "1"){ options.loop_order = 1;}
       else {cout <<"This loop order is not supported please enter 1 or 2"<<endl;}
     }
   }
