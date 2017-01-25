@@ -130,16 +130,16 @@ for the one-loop, one-loop counter-terms and two-loop counter terms respectively
 
 \subsection{Compute amplitudes}
 
-The first non-trivial task performed by Mass Builder is taking the computed amplitude for each process and sorting it into a useful form for generating the TSIL interface.  That is, we must extract the required basis integrals and their non-zero coefficients.  The details of this algorithm are given in section \ref{sec:amplitudes}.  For this example we will compute all diagrams in the list \lstinline{models/Scalar/diagrams.txt}, see section \ref{sec:user_guide} for details on the format of this file.  To set this calculation running we simply enter
+The first non-trivial task performed by Mass Builder is taking the computed amplitude for each process and sorting it into a useful form for generating the TSIL interface.  That is, we must extract the required basis integrals and their non-zero coefficients.  The details of this algorithm are given in section \ref{sec:amplitudes}.  To set this calculation running we simply enter
 \begin{lstterm}
 mkdir models/Scalar/output
 ./mass_builder -a -m Scalar
 \end{lstterm}
-which will tell Mass Builder to compute all diagrams in this specific list for the Scalar model.  Alternatively, if only a few diagrams are required one may enter
+which will tell Mass Builder to compute all diagrams in the default list \lstinline{models/Scalar/diagrams.txt}, see section \ref{sec:user_guide} for details on the format of this file.  Alternatively, if only a few diagrams are required one may enter
 \begin{lstterm}
 ./mass_builder -a -m Scalar -p S[1] -d 1
 \end{lstterm}
-to compute diagram 1, for example.  Additional flags may also be entered here, such as \lstinline{-c} for counter term diagrams or \lstinline{-l 1} to use one loop order instead.  Finally, one may specify an alternative list rather than the default one using the flag \lstinline{-i} followed by the path to the list file.
+to compute diagram one, for example.  Additional flags may also be entered here, such as \lstinline{-c} for counter term diagrams or \lstinline{-l 1} to use one loop order instead.  Finally, one may specify an alternative list rather than the default one using the flag \lstinline{-i} followed by the path to the list file.
 
 
 \subsection{Generate code and evaluate}
@@ -167,7 +167,7 @@ where we must explicitly enter the path to an input file which contains values f
 One loop self energy of particle S1 = -0.0316688
 Two loop self energy of particle S1 = 2.91938e-05
 \end{lstterm}
-where the particle name has been converted to a more convenient form, this is the form of the particle name which appears in the generated output files.
+where the particle name has been converted to a simplified form, this is the form of the particle name which appears in the generated output files.
 
 \section{Full user guide}\label{sec:user_guide}
 \subsection{Command line interface}

@@ -141,6 +141,21 @@ GaugeXi[V[3,___]] = GaugeXi[Wp]
 
 
 M$CouplingMatrices= {
+C[ -V[3], V[3] ] == I *
+    { {0, dZW1, dZW2},
+      {0, MW^2 dZW1 + dMWsq1, MW^2 dZW2 + dMWsq2 + dMWsq1 dZW1},
+      {0, -dZW1, -dZW2} },
+
+  C[ V[2], V[2] ] == I *
+    { {0, dZZZ1, dZZZ2 + 1/4 dZAZ1^2},
+      {0, MZ^2 dZZZ1 + dMZsq1, MZ^2 dZZZ2 + dMZsq2 + dMZsq1 dZZZ1},
+      {0, -dZZZ1, -dZZZ2 - 1/4 dZAZ1^2} },
+
+  C[ V[1], V[1] ] == I *
+    { {0, dZAA1, dZAA2 + 1/4 dZZA1^2},
+      {0, 0, 1/4 MZ^2 dZZA1^2},
+      {0, -dZAA1, -dZAA2 - 1/4 dZZA1^2} },
+C[ F[1], -F[1]] == -I *  { {0, d1},{0, -d1},{0,0},{0,0} },
 C[-V[3], V[1], V[1], V[3]] == {{I*g2^2*STW^2}, {I*g2^2*STW^2}, {(-2*I)*g2^2*STW^2}},
  C[-V[3], V[1], V[3], V[2]] == {{(I/2)*g2^2*S2TW}, {(-I)*g2^2*S2TW}, {(I/2)*g2^2*S2TW}},
  C[-V[3], -V[3], V[3], V[3]] == {{(2*I)*g2^2}, {(-I)*g2^2}, {(-I)*g2^2}},
@@ -161,7 +176,7 @@ C[-V[3], V[1], V[1], V[3]] == {{I*g2^2*STW^2}, {I*g2^2*STW^2}, {(-2*I)*g2^2*STW^
  C[S[3], -S[3], V[1], V[2]] == {{(I/2)*C2TW*g1*g2 - (I/4)*g1^2*S2TW + (I/4)*g2^2*S2TW}},
  C[S[3], -S[3], -V[3], V[3]] == {{(I/2)*g2^2}},
  C[S[3], -S[3], V[2], V[2]] == {{(I/2)*CTW^2*g2^2 - I*CTW*g1*g2*STW + (I/2)*g1^2*STW^2}},
- C[F[2], F[1], -V[3]] == {{I*g2}, {I*g2}},
+ C[F[2], F[1], -V[3]] == {{I*g2,dg}, {I*g2,dg}},
  C[-F[1], F[1], V[1]] == {{(-I)*g2*STW}, {(-I)*g2*STW}},
  C[-F[1], F[1], V[2]] == {{(-I)*CTW*g2}, {(-I)*CTW*g2}},
  C[-F[1], F[2], V[3]] == {{I*g2}, {I*g2}},
