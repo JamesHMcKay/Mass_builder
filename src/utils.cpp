@@ -286,7 +286,7 @@ namespace utils
     <<"$GenericMixing = True;\n";
   }
   
-  
+/*  old version of function, new version below, can delete after full testing
   void print_math_body(ofstream &file,Options options,string cwd,std::vector<std::string> masses)
   {
     int loop_order = options.loop_order;
@@ -336,6 +336,50 @@ namespace utils
         file<<"tfiamp0 = fullamp0 // ToTFI[#, k1, p] & // ChangeDimension[#, 4] &;"<<endl;
       }
     }
+  }
+  */
+  
+void print_math_body(ofstream &file,Options options,string cwd,std::vector<std::string> masses)
+  {
+    int loop_order = options.loop_order;
+    string particle_full = options.particle;
+    string diagram = options.diagram;
+    string model = options.model;
+    if (options.counter_terms)
+    {
+      file<<"t12 = CreateCTTopologies["<< loop_order<<", 1 -> 1, ExcludeTopologies -> Internal];"<<endl;
+    }
+    else
+    {
+      file<<"t12 = CreateTopologies["<< loop_order<<", 1 -> 1, ExcludeTopologies -> Internal];"<<endl;
+    }
+    
+    file <<"alldiags = InsertFields[t12, {"<<particle_full<<"} -> {"<<particle_full<<"},InsertionLevel -> {Particles}, GenericModel -> Lorentz,Model -> \""<<cwd<<"/models/"<<model<<"/"<<model<<"\"];\n"
+    <<"subdiags0 =   DiagramExtract[alldiags, "<<diagram<<"]\n"
+    <<"amp0 := FCFAConvert[CreateFeynAmp[subdiags0], IncomingMomenta -> {p}, OutgoingMomenta -> {p}, LoopMomenta -> {k1, k2} ,UndoChiralSplittings -> True,DropSumOver -> True, List -> False,ChangeDimension -> D] // Contract\n"; // TODO change dimension removed as done in 1 loop case below?
+    for (unsigned int i=0; i < masses.size();i++)
+    {
+      file<<"amp0 = amp0 /. MajoranaSpinor[p, "<<masses[i]<<"] -> 1 /.Spinor[Momentum[p], "<<masses[i]<<", 1] -> 1;"<<endl;
+    }
+    file<<"SetOptions[Eps, Dimension -> D];\n";
+    
+    if ( (loop_order == 2) && (!options.counter_terms) )
+    {
+      file<<"fullamp0 = (amp0) // DiracSimplify // FCMultiLoopTID[#, {k1, k2}] & //DiracSimplify;\n"
+      <<"tfiamp0 = fullamp0 // ToTFI[#, k1, k2, p] & // ChangeDimension[#, 4] &;\n";
+    }
+    else if ( (loop_order == 1) && (options.counter_terms) )
+    {
+      file<<" fullamp0 = (amp0) // DiracSimplify;\n"
+      <<"tfiamp0 = fullamp0 // ChangeDimension[#, 4] &;\n";
+    }
+    else
+    {
+      file<<" fullamp0 = (amp0) // DiracSimplify // TID[#, k1] & // DiracSimplify;\n"
+      <<"tfiamp0 = fullamp0 // ToTFI[#, k1, p] & // ChangeDimension[#, 4] &;\n";
+    }
+    
+    
   }
   
   
