@@ -379,6 +379,12 @@ void print_math_body(ofstream &file,Options options,string cwd,std::vector<std::
       <<"tfiamp0 = fullamp0 // ToTFI[#, k1, p] & // ChangeDimension[#, 4] &;\n";
     }
     
+    for (unsigned int i=0; i < masses.size();i++)
+    {
+      file<<"tfiamp0 = tfiamp0 /. MajoranaSpinor[p, "<<masses[i]<<"] -> 1 /.Spinor[Momentum[p], "<<masses[i]<<", 1] -> 1;"<<endl;
+    }
+    
+    
     
   }
   
