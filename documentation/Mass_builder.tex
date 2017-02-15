@@ -264,6 +264,11 @@ Between computing the amplitudes and generating the code Mass Builder stores the
 \end{itemize}
 where \lstinline{tag} encodes the particle name, diagram and loop order (and if this is a counter-term diagram).  When necessary the output is written in C++ style for simple implementation into the final code.
 
+\subsection{Tree-level counter-term coupling calculation}
+
+It is possible to compute the tree-level counter-term coupling given the sum of the loop corrections at one-loop.  Since the tree-level counter-term is the only counter-term of one-loop order, we only need to solve one equation to demand no divergences of order $1/\epsilon$.  To automatically compute this coupling one first needs to compute all the one-loop amplitudes, and then use the \lstinline{-b} flag followed by the model and particle identifier, along with the \lstinline{-v} flag to display the Mathematica output which will print the result to the terminal.
+
+
 \section{Algorithm details and code structure}
 
 \subsection{Computing the amplitudes}\label{sec:amplitudes}

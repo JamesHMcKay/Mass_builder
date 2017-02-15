@@ -305,9 +305,9 @@ void Calc_amplitudes::make_finite_amp(bool counter_terms)
   math_4 << ";"<<endl;
   
 
-  math_4<<"SEn = SEnFinite /. D-> 4-2*epsilon;\n";
+  math_4<<"SEnFinite = SEnFinite /. D-> 4-2*epsilon;\n";
   math_4<<"Get[\"" << s_cwd <<"/output/remainder.mx\"]\n";
-  math_4<<"SEn = SEn + remainder;\n";
+  math_4<<"SEn = SEnFinite + remainder;\n";
   
   if (counter_terms)
   {
@@ -318,6 +318,7 @@ void Calc_amplitudes::make_finite_amp(bool counter_terms)
   math_4<<"SEn = Simplify[SEn /. epsilon->0];\n"; // some integrals come through as D = 4-epsilon so fix these
   
   math_4<<"DumpSave[\""<<s_cwd<<"/output/math_2.mx\", SEn];\n";
+  math_4<<"DumpSave[\""<<s_cwd<<"/output/math_ct.mx\", SEnFinite];\n";
   
   math_4.close();
   
@@ -443,7 +444,16 @@ bool Calc_amplitudes::calc_diagram(Options options_in)
   
   string remainder;
   success = check_done(remainder);
-        
+  
+  
+  // copy the Mathematica data file containing the full divergent amplitude
+  const char *mx_ext = ".mx";
+  const char* copy_tmp = "/output/math_data_";
+  string c_copy = "cp output/math_ct.mx models/" + model +copy_tmp + tag + mx_ext;
+  const char *copy_cmd = c_copy.c_str();
+  system(copy_cmd);
+  
+  
   
   
   ReplaceAll(remainder,"Pair(Momentum(p),Momentum(p))", "Power(p,2)");

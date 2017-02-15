@@ -12,6 +12,7 @@
  */
 #include "data.hpp"
 #include "calc_amplitudes.hpp"
+#include "calc_counter_terms.hpp"
 #include "generate_code.hpp"
 #include "self_energy.hpp"
 //#include "supplements.hpp"
@@ -67,6 +68,11 @@ void run_mass_builder_mode_1b(Options options)
   ca.calc_diagram(options);
 }
 
+void run_mass_builder_mode_2(Options options)
+{
+  Calc_counter_terms ct;
+  ct.calc_counter_terms(options);
+}
 
 void run_mass_builder_mode_6(Options options)
 {
@@ -120,6 +126,12 @@ int main(int argc, char *argv[])
         else { run_mass_builder_mode_1b(options);}
       }
     }
+  }
+  
+  if (options.run_mode == 2)
+  {
+    if ((options.particle == "")) { cout << "please enter a particle" << endl; return 0;}
+    else { run_mass_builder_mode_2(options);}
   }
   
   if (options.run_mode == 4 )
