@@ -142,9 +142,9 @@ GaugeXi[V[3,___]] = GaugeXi[Wp]
 
 M$CouplingMatrices= {
 C[ -V[3], V[3] ] == I *
-    { {0, dZW1, dZW2},
-      {0, MW^2 dZW1 + dMWsq1, MW^2 dZW2 + dMWsq2 + dMWsq1 dZW1},
-      {0, -dZW1, -dZW2} },
+    { {0, 0, 0},
+      {0, dw, 0},
+      {0, 0, 0} },
 
   C[ V[2], V[2] ] == I *
     { {0, dZZZ1, dZZZ2 + 1/4 dZAZ1^2},

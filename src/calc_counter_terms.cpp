@@ -84,7 +84,7 @@ bool Calc_counter_terms::calc_counter_terms(Options options_in)
 
   const char *ext = ".txt";
   const char* file_diagrams_tmp = "models/";
-  string c_file_diagrams = file_diagrams_tmp + options.model + "/diagrams" + ext;
+  string c_file_diagrams = file_diagrams_tmp + options.model + "/output/avail_diagrams_" + ext;
   const char *file_diagrams = c_file_diagrams.c_str();
 
   vector<std::string> tags;
