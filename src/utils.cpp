@@ -21,6 +21,16 @@ namespace utils
   time_t t = time(0);
   struct tm * now = localtime( & t );
   
+  
+  int get_loop_order(string type)
+  {
+    int loop_order;
+    string loop_order_str = utils::char_to_string(type[0]);
+    stringstream convert(loop_order_str);
+    convert >> loop_order;
+    return loop_order;
+  }
+  
   const char * output_file_name(std::string model, std::string tag, std::string file)
   {
     const char *ext = ".txt";

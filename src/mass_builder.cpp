@@ -142,7 +142,8 @@ int main(int argc, char *argv[])
       sort_avail_diagrams(options);
     }
     if (options.model == "") { cout << "please specify a model" << endl; return 0;}
-    Generate_code::generate_code(options);
+    Generate_code gen_code(options);
+    gen_code.generate_code();
   }
   
   if (options.run_mode == 5 )

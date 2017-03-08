@@ -21,6 +21,8 @@ using namespace std;
 namespace utils
 {
   
+  int get_loop_order(string type);
+  
   string char_to_string(char c);
   
   vector<string> extract_keys(map<string, Bases> const& input_map);

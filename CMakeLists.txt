@@ -17,17 +17,18 @@ set(SRC_TRIPLET src/example_triplet.cpp src/supplements.cpp)
 set(HEADER_FILES_GEN include/calc_amplitudes.hpp include/calc_counter_terms.hpp include/utils.hpp include/write_tsil_ini.hpp)
 set(SRC_FILES_GEN src/calc_amplitudes.cpp src/calc_counter_terms.cpp src/generate_code.cpp src/utils.cpp src/write_tsil_ini.cpp)
 
+include(src/CMakeLists.txt)
 
 LINK_DIRECTORIES(/Users/jamesmckay/Documents/Programs/tsil-1.3) 
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 set(CMAKE_CXX_FLAGS -L.)
 
-add_executable(mass_builder ${SRC_MB} ${SRC_FILES_GEN} ${HEADER_FILES_GEN} ${TSIL_HEADER_FILE} ${SRC_FILES} ${HEADER_FILES})
+add_executable(mass_builder ${SRC_MB} ${SRC_FILES_GEN} ${HEADER_FILES_GEN} ${TSIL_HEADER_FILE} ${SRC_FILES} ${HEADER_FILES} ${GENERATED_SRC_FILES})
 
-add_executable(example EXCLUDE_FROM_ALL ${SRC_example} ${SRC_FILES_GEN} ${HEADER_FILES_GEN} ${TSIL_HEADER_FILE} ${SRC_FILES} ${HEADER_FILES})
+add_executable(example EXCLUDE_FROM_ALL ${SRC_example} ${SRC_FILES_GEN} ${HEADER_FILES_GEN} ${TSIL_HEADER_FILE} ${SRC_FILES} ${HEADER_FILES} ${GENERATED_SRC_FILES})
 
-add_executable(triplet EXCLUDE_FROM_ALL ${SRC_TRIPLET} ${HEADER_TRIPLET} ${SRC_FILES_GEN} ${HEADER_FILES_GEN} ${TSIL_HEADER_FILE} ${SRC_FILES} ${HEADER_FILES})
+add_executable(triplet EXCLUDE_FROM_ALL ${SRC_TRIPLET} ${HEADER_TRIPLET} ${SRC_FILES_GEN} ${HEADER_FILES_GEN} ${TSIL_HEADER_FILE} ${SRC_FILES} ${HEADER_FILES} ${GENERATED_SRC_FILES})
 
 TARGET_LINK_LIBRARIES(mass_builder libtsil.a)
 

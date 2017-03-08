@@ -1,0 +1,3 @@
+file(GLOB GENERATED_SRC_FILES
+    "${CMAKE_CURRENT_LIST_DIR}/amp_*.cpp"
+)
