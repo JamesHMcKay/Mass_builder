@@ -155,9 +155,11 @@ alternatively one may use their own custom list by adding the additional flag \l
 Next the generated C++ code must be compiled using the same commands used to make Mass Builder
 \begin{lstterm}
 cd build
+cmake .
 make
 cd ..
 \end{lstterm}
+we must run cmake again as it must find the generated source files.
 Now we are finally able to compute the total amplitude using the command
 \begin{lstterm}
 ./mass_builder -e -i models/Scalar/input.txt
