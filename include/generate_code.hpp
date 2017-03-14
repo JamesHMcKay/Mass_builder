@@ -49,6 +49,7 @@ class  Generate_code
     vector<std::string> couplings, relationships;
     int nc; // number of diagrams, length of diagram_number vector
     int nm; // number of diagrams, length of diagram_number vector
+    int n_group; // number of diagrams in each source file
     vector<std::string> temp_vec; // TODO remove!
     vector<std::string> masses;
   
@@ -60,6 +61,7 @@ class  Generate_code
     int nd,np; // number of diagrams
     ofstream se_hpp;
     vector<std::string> particle_names_short_reduced;
+    vector<int> subgrouplist;
 
     public:
     Generate_code(Options options) : options(options)
@@ -75,11 +77,14 @@ class  Generate_code
       cout << "np = " << np << endl;
       
       se_hpp.open ("include/self_energy.hpp");
+      
+      n_group = options.n_group;
+      
     };
   
     void generate_code();
   
-    void generate_particle_src(std::string particle);
+    void generate_particle_src(std::string particle,int);
   
     void decalare_var(ofstream &main_output);
     void decalare_var_tsil(ofstream &main_output);
@@ -87,6 +92,43 @@ class  Generate_code
     void generate_data_hpp();
   
     void generate_self_energy_hpp();
+  
+    pair<int,int> number_of_diagrams(std::string particle)
+    {
+      int num_diagrams = 0;
+      for (int d = 0; d<nd;d++)
+      {
+        if (particle == particle_names[d])
+        {
+          num_diagrams = num_diagrams + 1;
+          
+          int diff = num_diagrams % n_group;
+          if ((num_diagrams - diff)!=0)
+          {
+            subgrouplist[d] = (num_diagrams - diff)/n_group;
+          }
+          else
+          {
+            subgrouplist[d] = 0;
+          }
+          
+        }
+      }
+      
+      int modulo = num_diagrams % n_group;
+      int groups = (num_diagrams - modulo)/n_group;
+      
+      pair<int,int> result;
+      
+      result.first = groups;
+      result.second = modulo;
+      
+      return result;
+    }
+  
+  
+  
+  
   
 };
 #endif

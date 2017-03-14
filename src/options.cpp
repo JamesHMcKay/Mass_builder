@@ -41,6 +41,7 @@ void User_input::user_interface()
   if (find_string("-w")){ options.detailed_output = true;}
   if (find_string("-a")){ options.run_mode = 1;}
   if (find_string("-b")){ options.run_mode = 2;}
+  if (find_string("-s")){ options.n_group = 2;}
   if (find_string("-l"))
   {
     string input = "loop order";

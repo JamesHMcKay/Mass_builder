@@ -300,10 +300,10 @@ void Generate_code::decalare_var(ofstream &main_output)
 }
 
 
-void Generate_code::generate_particle_src(std::string particle)
+void Generate_code::generate_particle_src(std::string particle,int subgroup)
 {
   particle_name =  part_name_simple(particle);
-  string c_src_file_name = "src/amp_" + particle_name + cpp;
+  string c_src_file_name = "src/amp_" + particle_name + "_" + std::to_string(subgroup) + cpp;
   
   const char *src_file_name = c_src_file_name.c_str();
   
@@ -337,7 +337,7 @@ void Generate_code::generate_particle_src(std::string particle)
   << " \n"
   << " \n"
   << " \n"
-  << "namespace " << particle_name << "\n"
+  << "namespace " << particle_name << "_" << std::to_string(subgroup) << "\n"
   << "{\n"
   << "#include \""<< TSIL << "\"\n"
   << "  TSIL_DATA bar;\n"
@@ -372,7 +372,7 @@ void Generate_code::generate_particle_src(std::string particle)
   
   for (int d = 0; d<nd;d++)
   {
-    if (particle == particle_names[d])
+    if (particle == particle_names[d] && subgroup==subgrouplist[d])
     {
       
       level = levels[d];
@@ -522,7 +522,7 @@ void Generate_code::generate_particle_src(std::string particle)
   functions<< "    double SE = real(0.L  ";
   for (int d = 0; d<nd;d++)
   {
-    if (particle_names[d] == particle)
+    if (particle_names[d] == particle && subgroup==subgrouplist[d])
     {
       if (get_loop_order(levels[d]) == 1 )
       {
@@ -547,7 +547,7 @@ void Generate_code::generate_particle_src(std::string particle)
   functions<< "    double  SE = real(0.L ";
   for (int d = 0; d<nd;d++)
   {
-    if (particle_names[d] == particle)
+    if (particle_names[d] == particle && subgroup==subgrouplist[d])
     {
       if (get_loop_order(levels[d]) == 2 )
       {
@@ -568,7 +568,7 @@ void Generate_code::generate_particle_src(std::string particle)
   
   functions.close();
   
-  se_hpp << "namespace "<< particle_name << "\n"
+  se_hpp << "namespace " << particle_name << "_" << std::to_string(subgroup) << "\n"
   <<"{\n"
   <<" \n"
   <<"void  SE_"<<particle_name <<"(Data data, tsil::Integrals integral);\n"
@@ -758,18 +758,14 @@ void Generate_code::generate_code()
   
   vector<std::string> particle_names_short = particle_names;
   
-  // create a class for each source file and have a generic function which deals with everything after that
-  // each class needs:
-  //  list of diagrams to compute
-  //  list of integrals to define (can be all of them to start with)
-  //  list of couplings, masses and relationships between parameters
-  //  the full particle name
-  //  a tag to identifiy subgroups
-  
-  
   
   sort(particle_names_short.begin(),particle_names_short.end());
   particle_names_short.erase( unique( particle_names_short.begin(), particle_names_short.end() ), particle_names_short.end() );
+  
+  
+  // for each particle split the list of diagrams into subgroups of 10 and create a new particle tag P1_1, P1_2, P1_3, ...
+  
+  subgrouplist.resize(tags.size());
   
   for (unsigned int i=0;i<particle_names_short.size();i++)
   {
@@ -777,10 +773,27 @@ void Generate_code::generate_code()
     string particle_name_tmp_short = part_name_simple(particle_names_short[i]);
     particle_names_short_reduced.push_back(particle_name_tmp_short);
     
-    generate_particle_src(particle_names_reduced[i]);
-    main_output<< "  " << particle_name_tmp_short <<"::SE_"<<particle_name_tmp_short<<"(data,integrals);\n";
-    main_output << "  double "<<  particle_name_tmp_short << "_1= " << particle_name_tmp_short <<"::SE_1();\n";
-    main_output << "  double "<<  particle_name_tmp_short << "_2= " << particle_name_tmp_short <<"::SE_2();\n";
+    
+    // function to determine number of diagrams associated with this particle -> nd (number of groups of 10, remainder)
+    pair<int,int> num_diagrams = number_of_diagrams(particle_names_reduced[i]);
+    
+    
+    main_output << "  double "<<  particle_name_tmp_short << "_1= 0;\n";
+    main_output << "  double "<<  particle_name_tmp_short << "_2= 0;\n";
+    
+    // loop over nd/10 setting setting a flag for include diagram or not (new vector of bool)
+    
+    for (int j = 0; j< num_diagrams.first+1; j++)
+    {
+      generate_particle_src(particle_names_reduced[i],j);
+      main_output<< "  " << particle_name_tmp_short <<"_"<<std::to_string(j)<<"::SE_"<<particle_name_tmp_short<<"(data,integrals);\n";
+      main_output << "  "<<  particle_name_tmp_short << "_1 = " << particle_name_tmp_short << "_1 + " << particle_name_tmp_short <<"_"<<std::to_string(j)<<"::SE_1();\n";
+      main_output << "  "<<  particle_name_tmp_short << "_2 = " << particle_name_tmp_short << "_2 + " << particle_name_tmp_short <<"_"<<std::to_string(j)<<"::SE_2();\n";
+    }
+  
+    
+    //main_output << "  double "<<  particle_name_tmp_short << "_1= " << particle_name_tmp_short <<"::SE_1();\n";
+    //main_output << "  double "<<  particle_name_tmp_short << "_2= " << particle_name_tmp_short <<"::SE_2();\n";
     // this step should call all available functions tagged with this particle name and loop level
     
     main_output << "  data.SE_1[\""<< particle_name_tmp_short << "\"] = " << "real("<<particle_name_tmp_short<< "_1);"<<endl;

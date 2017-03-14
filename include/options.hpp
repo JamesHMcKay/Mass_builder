@@ -19,6 +19,7 @@ bool verbose = false;
 bool optimise = false;
 bool detailed_output = false;
 int loop_order = 2;
+int n_group = 10;
 string particle;
 string model;
 string diagram;
