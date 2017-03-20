@@ -561,6 +561,29 @@ void Generate_code::generate_particle_src(std::string particle,int subgroup)
   }
   functions << ");" << endl;
   functions << "    SE = -SE * TSIL_POW(PI,4);\n"<<endl;
+  
+  
+  
+  // Print out value of each amplitude to terminal
+  if (options.detailed_output)
+  {
+    for (int d = 0; d<nd;d++)
+    {
+      if (particle_names[d] == particle && subgroup==subgrouplist[d])
+      {
+        //if (get_loop_order(levels[d]) == 2 )
+        //{
+        functions<< "  cout << \""<< levels[d] << "-loop diagram"<<" "<< particle_name << "_" <<  tags[d] << " = \" << TSIL_POW(PI,4)*real(diagram" <<"_"<< particle_name << "_" << tags[d] << "_" << levels[d] << "())<<endl;"<<endl;
+        //}
+      }
+    }
+  }
+
+  
+  
+  
+  
+  
   functions << "    return SE;\n"<<endl;
   functions <<"  }\n";
   functions << "\n"
@@ -577,20 +600,8 @@ void Generate_code::generate_particle_src(std::string particle,int subgroup)
   <<"double SE_2();"
   <<"\n"
   <<"}\n";
-  //    Print out value of each amplitude to terminal  (REDUNDANT OPTION NOW, UPDATE LATER)
-  //    if (options.detailed_output)
-  //    {
-  //      for (int d = 0; d<nd;d++)
-  //      {
-  //        if (particle_names[d] == particle_name_tmp)
-  //        {
-  //          if (get_loop_order(levels[d]) == 2 )
-  //          {
-  //            main_output<< "  cout << \"diagram"<<" "<< particle_name_tmp_short << "_" <<  tags[d] << " = \" << TSIL_POW(PI,4)*real(diagram" <<"_"<< particle_name_tmp_short << "_" << tags[d] << "_" << levels[d] << "())<<endl;"<<endl;
-  //          }
-  //        }
-  //      }
-  //    }
+  
+  
 }
 
 
