@@ -3,8 +3,3 @@ ma a
 mw w
 mz z
 mh h
-mA0 A
-mHp H
-Gma Ga
-Gmw Gw
-Gmz Gz

@@ -88,6 +88,7 @@ void User_input::user_interface()
 
   if (find_string("-f")){ options.run_mode = 5;}
   if (find_string("-e")){ options.run_mode = 6;}
+  if (find_string("-0")){ options.run_mode = 7;}
 
   #ifdef DEBUG
   options.print_options();

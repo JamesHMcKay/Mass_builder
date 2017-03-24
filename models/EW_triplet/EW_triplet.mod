@@ -1,4 +1,4 @@
-(* ----------------------------------------------------------------------------- *) 
+(* ----------------------------------------------------------------------------- *)
 (* This model file was automatically created by SARAH version4.7.0  *) 
 (* SARAH References: arXiv:0806.0538, 0909.2863, 1002.0840, 1207.0906, 1309.7223 *) 
 (* (c) Florian Staub, 2013  *) 
@@ -38,7 +38,7 @@ PropagatorArrow -> Forward},
  
 S[2] == {SelfConjugate -> True,
 Indices -> {},
-Mass -> mA0,
+Mass -> mz,
 PropagatorLabel->ComposedChar["A","0"],
 PropagatorType -> ScalarDash,
 PropagatorArrow -> None},
@@ -94,7 +94,7 @@ PropagatorArrow -> Forward},
  
 U[1] == {SelfConjugate -> False,
 Indices -> {},
-Mass -> Gma,
+Mass -> ma,
 PropagatorLabel->ComposedChar["\\eta","\\gamma"],
 PropagatorType -> GhostDash,
 PropagatorArrow -> Forward},

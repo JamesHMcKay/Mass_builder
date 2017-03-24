@@ -76,10 +76,10 @@ void run_mass_builder_mode_2(Options options)
 
 void run_mass_builder_mode_6(Options options)
 {
-  Self_energy se;
   Data data(options);
-  se.run_tsil(data);
+  Self_energy se;
   
+  se.run_tsil(data);
   for (unsigned int i = 0;i < data.avail_part.size();i++)
   {
     cout << "One loop self energy of particle " << data.avail_part[i] << " = " << data.SE_1[data.avail_part[i]] << endl;
@@ -90,18 +90,63 @@ void run_mass_builder_mode_6(Options options)
 }
 
 
+void run_mass_builder_mode_7(Options options)
+{
+  
+  // iterate to determine physical mass of spin 0 particle
+  Data data(options);
+  for (unsigned int i = 0;i < data.avail_part.size();i++)
+  {
+    
+    
+    //double M_tree = pow(data.M_tree[data.avail_part[i]],2);
+    double M_tree = pow(data.M_tree[data.avail_part[i]],2);
+    
+   
+   // cout << "data.M_tree[data.avail_part[i]] = " << data.M_tree[data.avail_part[i]] << endl;
+    
+    double diff = 10;
+    data.P = data.M_tree[data.avail_part[i]];
+    double mass = 0;
+    
+    while (diff>0.0001)
+    {
+      Self_energy se;
+      
+      se.run_tsil(data);
+      
+      double self_energy = data.SE_1[data.avail_part[i]];
+      double mass_sqr = M_tree - self_energy;
+      
+      mass = pow(abs(mass_sqr),0.5);
+      
+      diff = abs(mass - data.P);
+     // cout << "diff = " << diff << endl;
+     // cout << "self energy = " << self_energy << endl;
+     // cout << "M_tree = " << pow(M_tree,0.5) << endl;
+     // cout << "M_physical = " << mass << endl;
+      data.P = mass;
+    }
+    
+    cout << "physical one-loop mass of " << data.avail_part[i] << " = " << mass << endl;
+    
+  }
+  
+}
+
+
 
 int main(int argc, char *argv[])
 {
-
-// testing
-
+  
+  // testing
+  
   //Print_dotsil dotsil;
   //dotsil.sort_integrals();
-
-
-
-
+  
+  
+  
+  
   User_input user(argc,argv);
   
   user.user_interface();
@@ -110,7 +155,7 @@ int main(int argc, char *argv[])
   
   // read options and work through possibilities for each run mode and check requirements are meant
   
-  if (options.model=="" && (options.run_mode != 6)){ cout << "no model specified" << endl; return 0;}
+  if (options.model=="" && (options.run_mode < 6)){ cout << "no model specified" << endl; return 0;}
   
   if (options.run_mode == 1)
   {
@@ -157,6 +202,12 @@ int main(int argc, char *argv[])
   {
     if (options.input_list == "" ) { cout << "missing input data" << endl; return 0;}
     run_mass_builder_mode_6(options);
+  }
+  
+  if (options.run_mode == 7 )
+  {
+    if (options.input_list == "" ) { cout << "missing input data" << endl; return 0;}
+    run_mass_builder_mode_7(options);
   }
   
 }

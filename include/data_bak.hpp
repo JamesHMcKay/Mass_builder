@@ -10,6 +10,7 @@ public:
 double P, Q;
 std::map<std::string, double> SE_1;
 std::map<std::string, double> SE_2;
+std::map<std::string, double> M_tree;
 
 std::vector<std::string> avail_part;
 

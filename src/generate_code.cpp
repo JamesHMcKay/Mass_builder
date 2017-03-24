@@ -89,6 +89,7 @@ void Generate_code::generate_data_hpp()
   // create a map for self energies
   data_h << "  std::map<std::string, double> SE_1;"<< endl;
   data_h << "  std::map<std::string, double> SE_2;"<< endl;
+  data_h << "  std::map<std::string, double> M_tree;"<< endl;
   data_h << "  double P, Q;" << endl;
   data_h << "  std::vector<std::string> avail_part = {\"";
   for (unsigned int i=0;i<particle_names_short_reduced.size()-1;i++)
@@ -133,6 +134,19 @@ void Generate_code::generate_data_hpp()
     <<"        " <<masses[i] << " = parameter[n];\n"
     <<"      }"<<endl;
   }
+  
+  
+  for (unsigned int i=0;i<particle_names_short_reduced.size();i++)
+  {
+    data_h<<"      if (name[n]==\""<<particle_names_short_reduced[i] <<"\")\n"
+    <<"      {\n"
+    <<"        M_tree[\"" <<particle_names_short_reduced[i] << "\"] = parameter[n];\n"
+    <<"      }"<<endl;
+  }
+  
+  
+  
+  
   
   data_h<<"      if (name[n]==\"Q\")\n"
   <<"      {\n"
