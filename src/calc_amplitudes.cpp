@@ -363,6 +363,7 @@ void Calc_amplitudes::initial_trial(string dimension)
   utils::print_math_body(math_1,options,s_cwd,masses_input);
   math_1<<"Print[tfiamp0]\n"
   <<"SEn = Simplify[TarcerRecurse[tfiamp0] ];\n"
+  <<"SEn = DiracSimplify[SEn];\n"
   <<"DumpSave[\""<<s_cwd<<"/output/math_1.mx\", SEn];\n"
   <<"Print[\"----------- The self energy is ---------- = \"]\n"
   <<"Print[SEn]\n"

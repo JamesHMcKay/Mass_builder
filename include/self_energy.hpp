@@ -17,11 +17,16 @@ namespace tsil
   class Integrals
   {
     public:
-    std::complex<long double> Aa, Ah, Aw, Az, Baw ;
-    std::complex<long double> Bwh, Bww, Bwz ;
+    std::complex<long double> Aa, Ac, Ah, Aw, Az ;
+    std::complex<long double> Baw, Bca, Bcw, Bcz, Bwh ;
+    std::complex<long double> Bww, Bwz, Bzh ;
     std::complex<long double> Bwa;
+    std::complex<long double> Bac;
+    std::complex<long double> Bwc;
+    std::complex<long double> Bzc;
     std::complex<long double> Bhw;
     std::complex<long double> Bzw;
+    std::complex<long double> Bhz;
     std::complex<long double>  i;
     double  MChi,  MChi2 ,  ma,  ma2 ,  mw,  mw2 ,  mz,  mz2 ,  mh, mh2 ;
 
@@ -32,10 +37,38 @@ namespace tsil
     void DoTSIL(Data data);
   };
 }
+namespace F1_0
+{
+ 
+void  SE_F1(Data data, tsil::Integrals integral);
+
+double SE_1();double SE_2();
+}
+namespace F2_0
+{
+ 
+void  SE_F2(Data data, tsil::Integrals integral);
+
+double SE_1();double SE_2();
+}
 namespace V1_0
 {
  
 void  SE_V1(Data data, tsil::Integrals integral);
+
+double SE_1();double SE_2();
+}
+namespace V2_0
+{
+ 
+void  SE_V2(Data data, tsil::Integrals integral);
+
+double SE_1();double SE_2();
+}
+namespace V2_1
+{
+ 
+void  SE_V2(Data data, tsil::Integrals integral);
 
 double SE_1();double SE_2();
 }

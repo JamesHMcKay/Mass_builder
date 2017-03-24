@@ -40,20 +40,26 @@ std::string Calc_counter_terms::solve_1loop(std::string particle,vector<std::str
  
   math_ct<<"SEtotal = SEnFinite + SEtotal;"<<endl;
   }
-  math_ct << "Print[\" -------------Total SE is ------------- \"]" <<endl;
-  math_ct << "Print[SEtotal]"<<endl;
+  //math_ct << "Print[\" -------------Total SE is ------------- \"]" <<endl;
+  //math_ct << "Print[SEtotal]"<<endl;
   
  
   math_ct<<"SE = Coefficient[SEtotal,epsilon,-1]; \n";
   math_ct<<"SE = Simplify[SE /. epsilon->0];\n"; // some integrals come through as D = 4-epsilon so fix these
   
-  math_ct << "Print[\" ------------- 1-loop counter-term coupling is ------------- \"]" <<endl;
-  math_ct << "Print[SE]"<<endl;
   
   // check for higher orders in 1/epsilon
-  math_ct<<"SE = Coefficient[SEtotal,epsilon,-2] + Coefficient[SEtotal,epsilon,-3]; \n";
-  math_ct << "Print[\" ------------- higher order terms in 1/epsilon ------------- \"]" <<endl;
-  math_ct << "Print[SE]"<<endl;
+  math_ct<<"SEhot = Coefficient[SEtotal,epsilon,-2] + Coefficient[SEtotal,epsilon,-3]; \n"
+  << "Print[\" ------------- higher order terms in 1/epsilon ------------- \"]\n"
+  << "Print[SEhot]\n"
+  << "ct = FullSimplify[SE, {v == (2 mw/g2), g1 == (g2 STW/CTW), CTW^2 + STW^2 == 1,CTW == mw/mz}];\n"
+  << "Print[\" ------------- 1-loop counter-term coupling is ------------- \"]\n"
+  << "Print[ct]\n"
+  << "Print[\"------------- coefficient of p^2 is -------------\"]\n"
+  << "Print[Coefficient[ct, p^2, 1]]\n"
+  << "Print[\"------------- coefficient of p^0 is -------------\"]\n"
+  << "Print[Coefficient[ct, p^2, 0]]\n";
+  math_ct.close();
  
 #ifdef RUN_ALL
   system("chmod +x output/math_ct.m ");
@@ -61,7 +67,7 @@ std::string Calc_counter_terms::solve_1loop(std::string particle,vector<std::str
   else system("./output/math_ct.m  >/dev/null ");
 #endif
 
-  math_ct.close();
+  
   std::string null;
   return null;
 }
