@@ -369,31 +369,32 @@ void print_math_body(ofstream &file,Options options,string cwd,std::vector<std::
     <<"amp0 := FCFAConvert[CreateFeynAmp[subdiags0], IncomingMomenta -> {p}, OutgoingMomenta -> {p}, LoopMomenta -> {k1, k2} ,UndoChiralSplittings -> True,TransversePolarizationVectors -> {p},DropSumOver -> True, List -> False,ChangeDimension -> D] // Contract\n"; // TODO change dimension removed as done in 1 loop case below?
     for (unsigned int i=0; i < masses.size();i++)
     {
-      file<<"amp0 = amp0 /. MajoranaSpinor[p, "<<masses[i]<<"] -> 1 /.Spinor[Momentum[p], "<<masses[i]<<", 1] -> 1;"<<endl;
+      file<<"amp0 = amp0 /. MajoranaSpinor[Momentum[p, D], "<<masses[i]<<"] -> 1 /.Spinor[Momentum[p, D], "<<masses[i]<<", 1] -> 1;"<<endl;
     }
     file<<"SetOptions[Eps, Dimension -> D];\n";
     
     if ( (loop_order == 2) && (!options.counter_terms) )
     {
       file<<"fullamp0 = (amp0) // DiracSimplify // FCMultiLoopTID[#, {k1, k2}] & //DiracSimplify;\n"
-      <<"tfiamp0 = fullamp0 // ToTFI[#, k1, k2, p] & // ChangeDimension[#, 4] &;\n";
+      <<"tfiamp0 = fullamp0 // ToTFI[#, k1, k2, p] & // ChangeDimension[#, D] &;\n";
     }
+    
     else if ( (loop_order == 1) && (options.counter_terms) )
     {
       file<<" fullamp0 = (amp0) // DiracSimplify;\n"
-      <<"tfiamp0 = fullamp0 // ChangeDimension[#, 4] &;\n";
+      <<"tfiamp0 = fullamp0 // ChangeDimension[#, D] &;\n";
     }
     else
     {
       file<<" fullamp0 = (amp0) // DiracSimplify // TID[#, k1] & // DiracSimplify;\n"
-      <<"tfiamp0 = fullamp0 // ToTFI[#, k1, p] & // ChangeDimension[#, 4] &;\n";
+      <<"tfiamp0 = fullamp0 // ToTFI[#, k1, p] & // ChangeDimension[#, D] &;\n";
     }
     
-    // replaced the following with a DiracSimplify statement
-    //for (unsigned int i=0; i < masses.size();i++)
-   // {
-   //   file<<"tfiamp0 = tfiamp0 /. MajoranaSpinor[p, "<<masses[i]<<"] -> 1 /.Spinor[Momentum[p], "<<masses[i]<<", 1] -> 1;"<<endl;
-   // }
+    for (unsigned int i=0; i < masses.size();i++)
+    {
+      file<<"tfiamp0 = tfiamp0 /. MajoranaSpinor[Momentum[p,D], "<<masses[i]<<"] -> 1 /.Spinor[Momentum[p,D], "<<masses[i]<<", 1] -> 1;"<<endl;
+      file<<"tfiamp0 = tfiamp0 /. MajoranaSpinor[p, "<<masses[i]<<"] -> 1 /.Spinor[Momentum[p], "<<masses[i]<<", 1] -> 1;"<<endl;
+    }
     
   }
   
@@ -546,12 +547,17 @@ void print_math_body(ofstream &file,Options options,string cwd,std::vector<std::
   void print_base(ofstream &myfile, Bases base, string id, string SEn, string D)
   {
     string type = base.type;
+    string momentum = "Pair[Momentum[p],Momentum[p]]";
+    if (D=="D")
+    {
+      momentum = "Pair[Momentum[p,D],Momentum[p,D]]";
+    }
     
     if (SEn != "diff")
     {
       if (type == "F")
       {
-        myfile << id << " = " << "TFI["<<D<<", Pair[Momentum[p],Momentum[p]], {{1, " << base.e1  << "}, {1, " << base.e2 << "}, {1, " << base.e3 << "}, {1, " << base.e4 << "}, {1, " << base.e5 << "}}];" << endl;
+        myfile << id << " = " << "TFI["<<D<<", " << momentum << ", {{1, " << base.e1  << "}, {1, " << base.e2 << "}, {1, " << base.e3 << "}, {1, " << base.e4 << "}, {1, " << base.e5 << "}}];" << endl;
       }
       if (type == "A")
       {
@@ -559,19 +565,19 @@ void print_math_body(ofstream &file,Options options,string cwd,std::vector<std::
       }
       if (type == "B")
       {
-        myfile << id << " = " << "TBI["<<D<<", Pair[Momentum[p],Momentum[p]], {{1, " << base.e1 << "}, {1, " << base.e2 << "}}];" << endl;
+        myfile << id << " = " << "TBI["<<D<<", " << momentum << ", {{1, " << base.e1 << "}, {1, " << base.e2 << "}}];" << endl;
       }
       if (type == "V")
       {
-        myfile << id << " = " << "TVI["<<D<<", Pair[Momentum[p],Momentum[p]], {{1, " << base.e1 << "}, {1, " << base.e2 << "}, {1, " << base.e3 << "}, {1, " << base.e4 << "}}];" << endl;
+        myfile << id << " = " << "TVI["<<D<<", " << momentum << ", {{1, " << base.e1 << "}, {1, " << base.e2 << "}, {1, " << base.e3 << "}, {1, " << base.e4 << "}}];" << endl;
       }
       if (type == "T")
       {
-        myfile << id << " = " << "TJI["<<D<<", Pair[Momentum[p],Momentum[p]], {{2, " << base.e1 << "}, {1, " << base.e2 << "}, {1, " << base.e3 << "}}];" << endl;
+        myfile << id << " = " << "TJI["<<D<<", " << momentum << ", {{2, " << base.e1 << "}, {1, " << base.e2 << "}, {1, " << base.e3 << "}}];" << endl;
       }
       if (type == "J")
       {
-        myfile << id << " = " << "TJI["<<D<<", Pair[Momentum[p],Momentum[p]], {{1, " << base.e1 << "}, {1, " << base.e2 << "}, {1, " << base.e3 << "}}];" << endl;
+        myfile << id << " = " << "TJI["<<D<<", " << momentum << ", {{1, " << base.e1 << "}, {1, " << base.e2 << "}, {1, " << base.e3 << "}}];" << endl;
       }
       if (type == "K")
       {
@@ -609,24 +615,29 @@ void print_math_body(ofstream &file,Options options,string cwd,std::vector<std::
   {
     string type1 = base_1.type;
     string type2 = base_2.type;
+    string momentum = "Pair[Momentum[p],Momentum[p]]";
+    if (D=="D")
+    {
+      momentum = "Pair[Momentum[p,D],Momentum[p,D]]";
+    }
     if (type1 =="F"){goto end;}
     if (type2 =="F"){goto end;}
     myfile << base_1.short_name << base_2.short_name << " = ";
     if (type1=="A") myfile << "TAI["<<D<<", 0, {{1, " << base_1.e1 << "}}]";
-    if (type1=="B") myfile << "TBI["<<D<<", Pair[Momentum[p],Momentum[p]], {{1, " << base_1.e1 << "}, {1, " << base_1.e2 << "}}]";
-    if (type1=="J") myfile << "TJI["<<D<<", Pair[Momentum[p],Momentum[p]], {{1, " << base_1.e1 << "}, {1, " << base_1.e2 << "}, {1, " << base_1.e3 << "}}]";
-    if (type1=="T") myfile << "TJI["<<D<<", Pair[Momentum[p],Momentum[p]], {{2, " << base_1.e1 << "}, {1, " << base_1.e2 << "}, {1, " << base_1.e3 << "}}]";
+    if (type1=="B") myfile << "TBI["<<D<<", " << momentum << " , {{1, " << base_1.e1 << "}, {1, " << base_1.e2 << "}}]";
+    if (type1=="J") myfile << "TJI["<<D<<", " << momentum << ", {{1, " << base_1.e1 << "}, {1, " << base_1.e2 << "}, {1, " << base_1.e3 << "}}]";
+    if (type1=="T") myfile << "TJI["<<D<<", " << momentum << ", {{2, " << base_1.e1 << "}, {1, " << base_1.e2 << "}, {1, " << base_1.e3 << "}}]";
     if (type1=="K") myfile << "TJI["<<D<<", 0, {{1, " << base_1.e1 << "}, {1, " << base_1.e2 << "}, {1, " << base_1.e3 << "}}];";
-    if (type1=="V") myfile << "TVI["<<D<<", Pair[Momentum[p],Momentum[p]], {{1, " << base_1.e1 << "}, {1, " << base_1.e2 << "}, {1, " << base_1.e3 << "}, {1, " << base_1.e4 << "}}]";
-    //if (type1=="F") myfile << "TFI["<<D<<", Pair[Momentum[p],Momentum[p]], {{1, " << base_1.e1 << "}, {1, " << base_1.e2 << "}, {1, " << base_1.e3 << "}, {1, " << base_1.e4 << "},{1, " << base_1.e5 << "}}]";
+    if (type1=="V") myfile << "TVI["<<D<<", " << momentum << ", {{1, " << base_1.e1 << "}, {1, " << base_1.e2 << "}, {1, " << base_1.e3 << "}, {1, " << base_1.e4 << "}}]";
+    //if (type1=="F") myfile << "TFI["<<D<<", Pair[Momentum[p,D],Momentum[p,D]], {{1, " << base_1.e1 << "}, {1, " << base_1.e2 << "}, {1, " << base_1.e3 << "}, {1, " << base_1.e4 << "},{1, " << base_1.e5 << "}}]";
     myfile << " * ";
     if (type2=="A") myfile << "TAI["<<D<<", 0, {{1, " << base_2.e1 << "}}];";
-    if (type2=="B") myfile << "TBI["<<D<<", Pair[Momentum[p],Momentum[p]], {{1, " << base_2.e1 << "}, {1, " << base_2.e2 << "}}];";
-    if (type2=="J") myfile << "TJI["<<D<<", Pair[Momentum[p],Momentum[p]], {{1, " << base_2.e1 << "}, {1, " << base_2.e2 << "}, {1, " << base_2.e3 << "}}];";
-    if (type2=="T") myfile << "TJI["<<D<<", Pair[Momentum[p],Momentum[p]], {{2, " << base_2.e1 << "}, {1, " << base_2.e2 << "}, {1, " << base_2.e3 << "}}];";
+    if (type2=="B") myfile << "TBI["<<D<<", " << momentum << ", {{1, " << base_2.e1 << "}, {1, " << base_2.e2 << "}}];";
+    if (type2=="J") myfile << "TJI["<<D<<", " << momentum << ", {{1, " << base_2.e1 << "}, {1, " << base_2.e2 << "}, {1, " << base_2.e3 << "}}];";
+    if (type2=="T") myfile << "TJI["<<D<<", " << momentum << ", {{2, " << base_2.e1 << "}, {1, " << base_2.e2 << "}, {1, " << base_2.e3 << "}}];";
     if (type2=="K") myfile << "TJI["<<D<<", 0, {{1, " << base_2.e1 << "}, {1, " << base_2.e2 << "}, {1, " << base_2.e3 << "}}];;";
-    if (type2=="V") myfile << "TVI["<<D<<", Pair[Momentum[p],Momentum[p]], {{1, " << base_2.e1 << "}, {1, " << base_2.e2 << "}, {1, " << base_2.e3 << "}, {1, " << base_2.e4 << "}}];";
-    //if (type2=="F") myfile << "TFI["<<D<<", Pair[Momentum[p],Momentum[p]], {{1, " << base_1.e1 << "}, {1, " << base_1.e2 << "}, {1, " << base_1.e3 << "}, {1, " << base_1.e4 << "},{1, " << base_1.e5 << "}}]";
+    if (type2=="V") myfile << "TVI["<<D<<", " << momentum << ", {{1, " << base_2.e1 << "}, {1, " << base_2.e2 << "}, {1, " << base_2.e3 << "}, {1, " << base_2.e4 << "}}];";
+    //if (type2=="F") myfile << "TFI["<<D<<", Pair[Momentum[p,D],Momentum[p,D]], {{1, " << base_1.e1 << "}, {1, " << base_1.e2 << "}, {1, " << base_1.e3 << "}, {1, " << base_1.e4 << "},{1, " << base_1.e5 << "}}]";
     myfile << endl;
     if (base_1.short_name==base_2.short_name) myfile << "C"<< base_1.short_name << base_2.short_name << " = Coefficient["<<SEn<<","<< base_1.short_name << ", 2];" << endl;
     else myfile << "C"<< base_1.short_name << base_2.short_name << " = - (1/2)* Coefficient["<<SEn<<","<< base_1.short_name << base_2.short_name << ", 1];" << endl;
