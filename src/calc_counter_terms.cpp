@@ -54,11 +54,7 @@ std::string Calc_counter_terms::solve_1loop(std::string particle,vector<std::str
   << "Print[SEhot]\n"
   << "ct = FullSimplify[SE, {v == (2 mw/g2), g1 == (g2 STW/CTW), CTW^2 + STW^2 == 1,CTW == mw/mz}];\n"
   << "Print[\" ------------- 1-loop counter-term coupling is ------------- \"]\n"
-  << "Print[ct]\n"
-  << "Print[\"------------- coefficient of p^2 is -------------\"]\n"
-  << "Print[Coefficient[ct, p^2, 1]]\n"
-  << "Print[\"------------- coefficient of p^0 is -------------\"]\n"
-  << "Print[Coefficient[ct, p^2, 0]]\n";
+  << "Print[ct]\n";
   math_ct.close();
  
 #ifdef RUN_ALL
