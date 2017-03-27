@@ -305,6 +305,8 @@ void format_coeff(string dimension, std::map <std::string, Bases > &base_map, st
   }
 }
 
+
+// use this to format the remainder, may need to scale this up to scanning over all the masses at some point too
 void format_coeff(std::string &coefficient)
 {
   string from="",to="";
@@ -313,6 +315,17 @@ void format_coeff(std::string &coefficient)
   ReplaceAll(coefficient,from, to);
   
   from = "DiracGamma(7)";
+  to = "1.0L";
+  ReplaceAll(coefficient,from, to);
+  
+  from = "Pair(Momentum(p),Momentum(p))";
+  to = "Power(p,2)";
+  ReplaceAll(coefficient,from, to);
+  
+  from = "Dot(1.0,1.0)";
+  to = "1.0L";
+  ReplaceAll(coefficient,from, to);
+  from = "Dot(1.0L,1.0L)";
   to = "1.0L";
   ReplaceAll(coefficient,from, to);
   
