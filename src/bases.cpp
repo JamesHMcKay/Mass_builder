@@ -4,12 +4,12 @@
  James McKay
  Sep 2016
  
---- bases.cpp ---
+ --- bases.cpp ---
  
  The functions defined in this file deal with function related to the Bases object
  which holds all the required information for a basis integral and the corresponding
  coefficient
-*/
+ */
 
 
 #include "bases.hpp"
@@ -50,14 +50,14 @@ void set_id(std::vector<string> &masses_input, std::vector<string> &identifiers_
   vector<string> identifiers;
   vector<string> masses;
   // first need to make sure there are no duplicate masses, and assign a unique one character identifier to each mass
-  #ifdef DEBUG
+#ifdef DEBUG
   cout << "masses are " << endl;
   for (unsigned int i = 0; i < masses_input.size(); i++)
   {
     cout << masses_input[i] << endl;
   }
-  #endif
-
+#endif
+  
   if (identifiers_input.size()==0)  // need to create unique identifiers
   {
     masses = remove_duplicates(masses_input,"Duplicate input masses duplicates are removed but please check this was not a case of a mislabelled mass and that all masses are accounted for.");
@@ -86,7 +86,7 @@ void set_id(std::vector<string> &masses_input, std::vector<string> &identifiers_
     // check for duplicates in new list
     if ( !(remove_duplicates(identifiers).size()) == (identifiers.size()) )
     {
-    // if the above hasn't worked just throw an error, can do something fancy later
+      // if the above hasn't worked just throw an error, can do something fancy later
       cout << "FATAL ERROR, mass names are too long and too similar please provide unique identifiers or relabel, if two masses are intended to be the same then give them the same identifier, this is the only way for Mass_builder to know it's safe to assign these the same mass";
       exit(1);
     }
@@ -110,80 +110,80 @@ void set_id(std::vector<string> &masses_input, std::vector<string> &identifiers_
     }
     masses = masses_input;
   }
-
-
+  
+  
   vector<string> id = identifiers;
-  #ifdef DEBUG
+#ifdef DEBUG
   cout << "identifiers are " << endl;
   for (unsigned int i = 0; i < identifiers.size(); i++)
   {
     cout << identifiers[i] << endl;
   }
   cout << " --- " << endl;
-  #endif
-
+#endif
+  
   identifiers_input = identifiers;
   masses_input = masses;
+  
+}
 
-  }
-
-  std::map <std::string, Bases > set_bases(std::vector<string> masses, std::vector<string> &identifiers_input)
-  {
+std::map <std::string, Bases > set_bases(std::vector<string> masses, std::vector<string> &identifiers_input)
+{
   set_id( masses, identifiers_input);
   vector<string> id = identifiers_input;
   std::map <std::string, Bases > bases_map;
   int n = id.size();
   for (int i1 = 0; i1 < n ; i1++)
   {
-  Bases a("A",masses[i1]);
-  bases_map["A"+id[i1]] = a ;
-  for (int i2 = 0; i2 < n ; i2++)
-  {
-    for (int i3 = 0; i3 < n ; i3++)
+    Bases a("A",masses[i1]);
+    bases_map["A"+id[i1]] = a ;
+    for (int i2 = 0; i2 < n ; i2++)
     {
-      for (int i4 = 0; i4 < n ; i4++)
+      for (int i3 = 0; i3 < n ; i3++)
       {
-        Bases v("V",masses[i1],masses[i2],masses[i3],masses[i4]);
-        bases_map["V"+id[i1]+id[i2]+id[i3]+id[i4]]= v;
-        for (int i5 = 0; i5 < n ; i5++)
+        for (int i4 = 0; i4 < n ; i4++)
         {
-          Bases f("F",masses[i1],masses[i2],masses[i3],masses[i4],masses[i5]);
-          bases_map["F"+id[i1]+id[i2]+id[i3]+id[i4]+id[i5]]= f;
+          Bases v("V",masses[i1],masses[i2],masses[i3],masses[i4]);
+          bases_map["V"+id[i1]+id[i2]+id[i3]+id[i4]]= v;
+          for (int i5 = 0; i5 < n ; i5++)
+          {
+            Bases f("F",masses[i1],masses[i2],masses[i3],masses[i4],masses[i5]);
+            bases_map["F"+id[i1]+id[i2]+id[i3]+id[i4]+id[i5]]= f;
+          }
         }
       }
     }
   }
-  }
-
+  
   //deal with symmetries appropriately
   for (int i1 = 0; i1 < n ; i1++)
   {
-  for (int i2 = i1; i2 < n ; i2++)
-  {
-    Bases b("B",masses[i1],masses[i2]/*,id[i1],id[i2]*/); // B integrals also carry the identifiers in arguments 3 & 4 for later use
-    b.id1=id[i1];
-    b.id2=id[i2];
-    bases_map["B"+id[i1]+id[i2]]= b;
-
-  }
-  }
-
-
-  for (int i1 = 0; i1 < n ; i1++)
-  {
-  for (int i2 = i1; i2 < n ; i2++)
-  {
-    for (int i3 = i2; i3 < n ; i3++)
+    for (int i2 = i1; i2 < n ; i2++)
     {
-      Bases j("J",masses[i1],masses[i2],masses[i3]);
-      bases_map["J"+id[i1]+id[i2]+id[i3]]= j;
-      Bases k("K",masses[i1],masses[i2],masses[i3]);
-      bases_map["K"+id[i1]+id[i2]+id[i3]]= k;
+      Bases b("B",masses[i1],masses[i2]/*,id[i1],id[i2]*/); // B integrals also carry the identifiers in arguments 3 & 4 for later use
+      b.id1=id[i1];
+      b.id2=id[i2];
+      bases_map["B"+id[i1]+id[i2]]= b;
+      
     }
   }
+  
+  
+  for (int i1 = 0; i1 < n ; i1++)
+  {
+    for (int i2 = i1; i2 < n ; i2++)
+    {
+      for (int i3 = i2; i3 < n ; i3++)
+      {
+        Bases j("J",masses[i1],masses[i2],masses[i3]);
+        bases_map["J"+id[i1]+id[i2]+id[i3]]= j;
+        Bases k("K",masses[i1],masses[i2],masses[i3]);
+        bases_map["K"+id[i1]+id[i2]+id[i3]]= k;
+      }
+    }
   }
-
-
+  
+  
   for (int i1 = 0; i1 < n ; i1++)
   {
     for (int i2 = 0; i2 < n ; i2++)
@@ -241,10 +241,10 @@ void format_coeff(string dimension, std::map <std::string, Bases > &base_map, st
 {
   int nb = bases_names.size();
   int nm = masses.size();
-
+  
   // deal with TAI and TBI objects that frequently appear in the coefficients
   string from="",to="";
-
+  
   for (int k = 0; k<nb ; k++)
   {
     string coefficient = base_map[bases_names[k]].coefficient;
@@ -255,7 +255,7 @@ void format_coeff(string dimension, std::map <std::string, Bases > &base_map, st
         from = "TBI["+dimension+", p^2, {{1, "+masses[i]+"}, {1, " + masses[j] + "}}]";
         to = "B"+id[j]+id[i]; // choice of i and j here is important TODO
         ReplaceAll(coefficient,from, to);
-      
+        
         from = "TBI("+dimension+",Power(p,2),List(List(1,"+masses[i]+"),List(1," + masses[j] + ")))";
         to = "B"+id[j]+id[i]; // choice of i and j here is important TODO
         ReplaceAll(coefficient,from, to);
@@ -269,12 +269,12 @@ void format_coeff(string dimension, std::map <std::string, Bases > &base_map, st
       from = "TAI["+dimension+", 0, {{1, "+masses[i]+"}}]";
       to = "A"+id[i];
       ReplaceAll(coefficient,from, to);
-
+      
       from = "MajoranaSpinor(p,"+masses[i]+")";
       to = "1.0L";
-
+      
       ReplaceAll(coefficient,from, to);
-
+      
       from = "Spinor(Momentum(p),"+masses[i]+",1)";
       to = "1.0L";
       ReplaceAll(coefficient,from, to);
@@ -284,7 +284,6 @@ void format_coeff(string dimension, std::map <std::string, Bases > &base_map, st
       to = "Power(p,2)";
       ReplaceAll(coefficient,from, to);
       
-
       from = "Dot(1.0,1.0)";
       to = "1.0L";
       ReplaceAll(coefficient,from, to);
@@ -292,9 +291,34 @@ void format_coeff(string dimension, std::map <std::string, Bases > &base_map, st
       to = "1.0L";
       ReplaceAll(coefficient,from, to);
     }
+    
+    
+    from = "DiracGamma(6)";
+    to = "1.0L";
+    ReplaceAll(coefficient,from, to);
+    
+    from = "DiracGamma(7)";
+    to = "1.0L";
+    ReplaceAll(coefficient,from, to);
+    
     base_map[bases_names[k]].coefficient = coefficient;
   }
 }
+
+void format_coeff(std::string &coefficient)
+{
+  string from="",to="";
+  from = "DiracGamma(6)";
+  to = "1.0L";
+  ReplaceAll(coefficient,from, to);
+  
+  from = "DiracGamma(7)";
+  to = "1.0L";
+  ReplaceAll(coefficient,from, to);
+  
+}
+
+
 
 
 // format coefficients for use in Mathematica input
@@ -304,10 +328,10 @@ void format_coeff_brackets(std::map <std::string, Bases > &base_map, std::vector
 {
   int nb = bases_names.size();
   int nm = masses.size();
-
+  
   
   string from="",to="";
-
+  
   for (int k = 0; k<nb ; k++)
   {
     string coefficient = base_map[bases_names[k]].coefficient;
@@ -332,9 +356,9 @@ void format_coeff_brackets(std::map <std::string, Bases > &base_map, std::vector
       }
       
       
-
       
-
+      
+      
     }
     base_map[bases_names[k]].coefficient = coefficient;
   }
@@ -355,7 +379,7 @@ std::map <std::string, Bases > products_container(vector<string> bases_names)
       base.short_name = name;
       base.e1 = bases_names[i];
       base.e2 = bases_names[j];
-
+      
       prod_map[name] = base;
     }
   }

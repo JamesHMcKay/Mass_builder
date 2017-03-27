@@ -31,7 +31,7 @@ namespace tsil
     double  MChi,  MChi2 ,  ma,  ma2 ,  mw,  mw2 ,  mz,  mz2 ,  mh, mh2 ;
 
     double p,Pi;
-  double cw, cw2, sw, g2, sw2, g1, STW, CTW, S2TW, C2TW, Lam, v ;
+  double cw, cw2, sw, g2, sw2, g1, STW, CTW, S2TW, C2TW, Lam, v, d1 ;
 
     Integrals (){}
     void DoTSIL(Data data);
