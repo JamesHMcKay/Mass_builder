@@ -11,3 +11,4 @@ C2TW cw2-sw2
 Lam mh/(2.*TSIL_POW(v,2))
 v
 d1 1.0
+dg2 1.0

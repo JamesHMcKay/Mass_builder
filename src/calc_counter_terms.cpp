@@ -52,7 +52,7 @@ std::string Calc_counter_terms::solve_1loop(std::string particle,vector<std::str
   math_ct<<"SEhot = Coefficient[SEtotal,epsilon,-2] + Coefficient[SEtotal,epsilon,-3]; \n"
   << "Print[\" ------------- higher order terms in 1/epsilon ------------- \"]\n"
   << "Print[SEhot]\n"
-  << "ct = FullSimplify[SE, {v == (2 mw/g2), g1 == (g2 STW/CTW), CTW^2 + STW^2 == 1,CTW == mw/mz}];\n"
+  << "ct = FullSimplify[-SE*Pi^2, {v == (2 mw/g2), g1 == (g2 STW/CTW), CTW^2 + STW^2 == 1,CTW == mw/mz}];\n"
   << "Print[\" ------------- 1-loop counter-term coupling is ------------- \"]\n"
   << "Print[ct]\n";
   math_ct.close();

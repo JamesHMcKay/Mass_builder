@@ -18,8 +18,8 @@ namespace tsil
   {
     public:
     std::complex<long double> Aa, Ac, Ah, Aw, Az ;
-    std::complex<long double> Baw, Bca, Bcw, Bcz, Bwh ;
-    std::complex<long double> Bww, Bwz, Bzh ;
+    std::complex<long double> Baw, Bca, Bcc, Bcw, Bcz ;
+    std::complex<long double> Bwh, Bww, Bwz, Bzh ;
     std::complex<long double> Bwa;
     std::complex<long double> Bac;
     std::complex<long double> Bwc;
@@ -31,7 +31,7 @@ namespace tsil
     double  MChi,  MChi2 ,  ma,  ma2 ,  mw,  mw2 ,  mz,  mz2 ,  mh, mh2 ;
 
     double p,Pi;
-  double cw, cw2, sw, g2, sw2, g1, STW, CTW, S2TW, C2TW, Lam, v, d1 ;
+  double cw, cw2, sw, g2, sw2, g1, STW, CTW, S2TW, C2TW, Lam, v, d1, dg2 ;
 
     Integrals (){}
     void DoTSIL(Data data);
