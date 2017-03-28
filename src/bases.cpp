@@ -259,6 +259,11 @@ void format_coeff(string dimension, std::map <std::string, Bases > &base_map, st
         from = "TBI("+dimension+",Power(p,2),List(List(1,"+masses[i]+"),List(1," + masses[j] + ")))";
         to = "B"+id[j]+id[i]; // choice of i and j here is important TODO
         ReplaceAll(coefficient,from, to);
+        
+        from = "TBI["+dimension+", Pair[Momentum[p, D], Momentum[p, D]], {{1, "+masses[i]+"}, {1, " + masses[j] + "}}]";
+        to = "B"+id[j]+id[i]; // choice of i and j here is important TODO
+        ReplaceAll(coefficient,from, to);
+        
       }
       from = "TAI("+dimension+",0,List(List(1,"+masses[i]+")))";
       to = "A"+id[i];
