@@ -18,8 +18,8 @@ namespace tsil
   {
     public:
     std::complex<long double> Aa, Ac, Ah, Aw, Az ;
-    std::complex<long double> Baw, Bca, Bcc, Bcw, Bcz ;
-    std::complex<long double> Bwh, Bww, Bwz, Bzh ;
+    std::complex<long double> Baw, Bca, Bcw, Bcz, Bwh ;
+    std::complex<long double> Bww, Bwz, Bzh ;
     std::complex<long double> Bwa;
     std::complex<long double> Bac;
     std::complex<long double> Bwc;
