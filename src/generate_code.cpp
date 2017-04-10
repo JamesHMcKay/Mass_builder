@@ -465,7 +465,7 @@ void Generate_code::generate_particle_src(std::string particle,int subgroup)
   
   functions << "  void SE_"<<particle_name << " (Data data, Integrals integral)\n";
   functions << "  {\n";
-  
+/*
   for (int i=0;i<nc;i++)
   {
     if (i!=(nc-1)) functions << "    " << couplings[i] << " = data."<<couplings[i]<<", ";
@@ -474,17 +474,10 @@ void Generate_code::generate_particle_src(std::string particle,int subgroup)
   functions<<";\n"
   << "\n"
   << "    Q2 = data.Q;\n"
-  << "    Q = pow(Q2,0.5);\n"
+  //<< "    Q = pow(Q2,0.5);\n"
   << "    p=data.P;\n";
   
-  
-  for (int i=0;i<nm;i++)
-  {
-    if (i!=(nm-1)) functions <<"    "<< masses[i] << " = data."<<masses[i]<<", " << masses[i]<<"2 = TSIL_POW(data."<<masses[i]<<", 2) , ";
-    else functions << "    "<<masses[i] << " = data."<<masses[i]<<" , " << masses[i]<<"2 = TSIL_POW(data."<<masses[i]<<", 2) ";
-  }
-  functions<<";\n"
-  << "\n";
+
   
   
   
@@ -498,6 +491,29 @@ void Generate_code::generate_particle_src(std::string particle,int subgroup)
       functions << "    " << couplings[i] << " = " << relationships[i] << ";"<<endl;
     }
   }
+  */
+  
+  // set values of couplings
+  functions<<"    dcomp ii=-1;ii=sqrt(ii);i=ii;\n"
+  <<"    Pi=PI;\n";
+
+    
+  for (int i=0;i<nm;i++)
+  {
+    if (i!=(nm-1)) functions <<"    "<< masses[i] << " = data."<<masses[i]<<", " << masses[i]<<"2 = TSIL_POW(data."<<masses[i]<<", 2) , ";
+    else functions << "    "<<masses[i] << " = data."<<masses[i]<<" , " << masses[i]<<"2 = TSIL_POW(data."<<masses[i]<<", 2) ";
+  }
+  functions<<";\n"
+  << "\n";
+  
+  for (int i=0;i<nc;i++)
+  {
+    functions << "    " << couplings[i] << " = integral."<<couplings[i]<<";\n";
+  }
+  functions<<";\n"
+  << "\n"
+  << "    Q2 = data.Q;\n"
+  << "    p=data.P;\n";
   
   
   // set values of integrals
@@ -716,7 +732,7 @@ void Generate_code::generate_code()
   main_output<<";"<<endl;
   main_output<< "\n";
   main_output<< "   TSIL_REAL Q2 = data.Q;\n";
-  main_output<< "   TSIL_REAL Q = pow(Q2,0.5);\n";
+  //main_output<< "   TSIL_REAL Q = pow(Q2,0.5);\n";
   main_output<< "   TSIL_REAL s=pow(data.P,2);\n";
   
   
@@ -732,6 +748,23 @@ void Generate_code::generate_code()
   
   main_output<<"    dcomp ii=-1;ii=sqrt(ii);i=ii;\n"
   <<"   Pi=PI;\n";
+  
+  
+  // define derived couplings
+
+  
+  if (relationships.size()!=0)
+  {
+    for (unsigned int i=0;i<relationships.size();i++)
+    {
+      main_output << "    " << couplings[i] << " = " << relationships[i] << ";"<<endl;
+    }
+  }
+  
+  //
+  
+  
+  
   
   if (options.optimise)
   {
