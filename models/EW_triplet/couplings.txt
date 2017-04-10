@@ -9,6 +9,10 @@ CTW cw
 S2TW 2.*STW*CTW
 C2TW cw2-sw2
 Lam mh/(2.*TSIL_POW(v,2))
+d1 (p*p)*(-g2*g2/(8.*TSIL_POW(Pi,4)))+(-g2*g2*MChi/(2.*TSIL_POW(Pi,4)))
+d2 (p*p)*(-g2*g2/(8.*TSIL_POW(Pi,4)))+(-g2*g2*MChi/(2.*TSIL_POW(Pi,4)))
+dw (-g2*g2/(16.*TSIL_POW(Pi,4))) * (  (p*p)*(-11.0/6.0) + mz2*(2*sw2-1) - ma2*sw2)
+dz (-g2*g2/(16.*cw2*TSIL_POW(Pi,4))) * ( (p*p)*(-11./6.+11.*sw2/3.-5.*sw2*sw2/3.) + mz2*(-1.+6.*sw2-4.*sw2*sw2) )
+dgamma (p*p)*(-g2*g2/(16.*TSIL_POW(Pi,4)))*(-5.*sw2/3.)
+dg2 TSIL_POW(g2,3)/(4.*TSIL_POW(Pi,4))
 v
-d1
-dg2
