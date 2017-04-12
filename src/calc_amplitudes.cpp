@@ -364,6 +364,7 @@ void Calc_amplitudes::initial_trial(string dimension)
   math_1<<"Print[tfiamp0]\n"
   <<"SEn = Simplify[TarcerRecurse[tfiamp0] ];\n"
   //<<"SEn = DiracSimplify[SEn];\n"
+  //<<"SEn = DiracTrace[SEn];\n"
   <<"SEn = SEn /. DiracGamma[Momentum[p, D], D] -> p ;\n"
   <<"DumpSave[\""<<s_cwd<<"/output/math_1.mx\", SEn];\n"
   <<"Print[\"----------- The self energy is ---------- = \"]\n"
