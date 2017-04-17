@@ -54,10 +54,17 @@ void run_mass_builder_mode_1a(Options options)
   }
   for (int k=0;k<i;k++)
   {
+    options.particle_1 = particles[k];
+    options.particle_2 = particles[k];
     options.particle = particles[k];
     options.diagram = diagrams[k];
     options.set_type(types[k]);
     options.model = model;
+    
+    //if (options.particle_1!=options.particle_2)
+    //{
+    // options.particle = options.particle_1 + "_" + options.particle_2;
+    //}
     ca.calc_diagram(options);
   }
 }

@@ -37,6 +37,8 @@ namespace utils
   
   string part_name_simple(string particle_name_full);
   
+  string part_name_simple(std::string particle_name_full_1,std::string particle_name_full_2);
+  
   vector<string> remove_duplicates(vector<string> input,string name);
   vector<string> remove_duplicates(vector<string> input);
   

@@ -222,7 +222,7 @@ void Generate_code::decalare_var_tsil(ofstream &main_output)
   // other global variable definitions
   
   
-  main_output << "  TSIL_REAL p,Pi;\n";
+  main_output << "  TSIL_REAL Pi;\n";
   // model specific variables need to be written here
   
   
@@ -361,14 +361,15 @@ void Generate_code::generate_particle_src(std::string particle,int subgroup)
   << "#endif\n"
   << "// define subroutines here\n"
   << "  TSIL_REAL Q2,Q;\n"
+  << "  TSIL_REAL p;\n"
   << "  TSIL_REAL Log(TSIL_REAL a){return TSIL_LOG(a/Q2);}\n"
   << "  TSIL_REAL Power(TSIL_REAL a, int b){return TSIL_POW(a,b);}\n"
   << "  TSIL_REAL Sin(TSIL_REAL a){return sin(a);}\n"
   << "  TSIL_REAL Cos(TSIL_REAL a){return cos(a);}\n"
   << "  TSIL_REAL Dot(TSIL_REAL a, TSIL_REAL b){return a*b;}\n"
   << "  TSIL_REAL Zeta2 = 1.6449340668482;\n"
-  << "  TSIL_COMPLEXCPP Ae(TSIL_REAL a) { return TSIL_Aeps_(a,Q2);}\n"
-  << "  TSIL_COMPLEXCPP Be(TSIL_REAL a, TSIL_REAL b, TSIL_REAL p) { return TSIL_Beps_(a,b, TSIL_POW(p,2), Q2);}\n"
+  << "  TSIL_COMPLEXCPP Ae(TSIL_REAL a) { return TSIL_Aeps_(TSIL_POW(a,2),Q2);}\n"
+  << "  TSIL_COMPLEXCPP Be(TSIL_REAL a, TSIL_REAL b) { return TSIL_Beps_(TSIL_POW(a,2),TSIL_POW(b,2), TSIL_POW(p,2), Q2);}\n"
   << "  int          init(Data data);\n"
   << "  TSIL_COMPLEXCPP operator*(int a, TSIL_COMPLEXCPP b){TSIL_COMPLEXCPP c=a;return c*b;}\n"
   << "  TSIL_COMPLEXCPP operator+(int a, TSIL_COMPLEXCPP b){TSIL_COMPLEXCPP c=a;return c+b;}\n"
@@ -733,7 +734,8 @@ void Generate_code::generate_code()
   main_output<< "\n";
   main_output<< "   TSIL_REAL Q2 = data.Q;\n";
   //main_output<< "   TSIL_REAL Q = pow(Q2,0.5);\n";
-  main_output<< "   TSIL_REAL s=pow(data.P,2);\n";
+  main_output<< "   TSIL_REAL s = pow(data.P,2);\n";
+  main_output<< "   TSIL_REAL p = data.P;\n";
   
   
   for (int i=0;i<nm;i++)

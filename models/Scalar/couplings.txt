@@ -1,6 +1,6 @@
 d1 (1.0/(16.0*Pi*Pi*Pi*Pi))*(g*g/2+lambda*Ms2/2)
-dlambda 0
-dg 0
+dlambda (1.0/(16.0*Pi*Pi*Pi*Pi))*3.0*TSIL_POW(lambda,2)/2.0
+dg (1.0/(16.0*Pi*Pi*Pi*Pi))*3.0*lambda*g/2.0
 lambda
 g
 param

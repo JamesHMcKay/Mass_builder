@@ -21,6 +21,8 @@ bool detailed_output = false;
 int loop_order = 2;
 int n_group = 10;
 string particle;
+string particle_1;
+string particle_2;
 string model;
 string diagram;
 string particle_safe;

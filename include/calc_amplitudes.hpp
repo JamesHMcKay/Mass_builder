@@ -14,6 +14,7 @@ private:
   std::map<std::string, Bases> full_basis;
   vector<string> full_basis_id;
   int np;
+  bool multi_particle;
   
   Options options;
   string tag;

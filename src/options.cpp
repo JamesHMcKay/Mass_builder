@@ -62,7 +62,21 @@ void User_input::user_interface()
   if (find_string("-p"))
   {
     string input = "particle name";
-    if (find_and_read_string("-p",input)){options.particle = input;}
+    if (find_and_read_string("-p",input))
+    {
+      options.particle = input;
+      options.particle_1 = input;
+      options.particle_2 = input;
+    }
+  }
+  
+  if (find_string("-q"))
+  {
+    string input = "secondary particle name";
+    if (find_and_read_string("-q",input))
+    {
+      options.particle_2 = input;
+    }
   }
 
   if (find_string("-d"))
@@ -89,6 +103,12 @@ void User_input::user_interface()
   if (find_string("-f")){ options.run_mode = 5;}
   if (find_string("-e")){ options.run_mode = 6;}
   if (find_string("-0")){ options.run_mode = 7;}
+  
+  
+  if (options.particle_1!=options.particle_2)
+  {
+    options.particle = options.particle_1 + "_" + options.particle_2;
+  }
 
   #ifdef DEBUG
   options.print_options();

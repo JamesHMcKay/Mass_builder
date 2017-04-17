@@ -403,24 +403,47 @@ bool Calc_amplitudes::calc_diagram(Options options_in)
   options = options_in;
   
   string diagram = options.diagram;
-  string particle = options.particle;
+  //string particle = options.particle;
+  string particle_1 = options.particle_1;
+  string particle_2 = options.particle_2;
   model = options.model;
   int loop_order = options.loop_order;
   
+  multi_particle = (particle_1!=particle_2);
   
-  cout << "calculating diagram " << diagram << " for particle " << particle << " in model ";
+  if (multi_particle)
+  {
+    cout << "calculating diagram " << diagram << " for particle " << particle_1 << " to " << particle_2 << " in model ";
+  }
+  else
+  {
+    cout << "calculating diagram " << diagram << " for particle " << particle_1 << " in model ";
+  }
+  
   cout << model << " at " << options.loop_order << "-loop order" << endl;
   if (options.counter_terms == true) { cout << "calculating counter term diagram"<< endl;}
 
   
-  string particle_full = particle;
+  //string particle_full = particle; // redundant now?
   
-  particle =  part_name_simple(particle_full);
+  //particle =  part_name_simple(particle);
+  particle_1 =  part_name_simple(particle_1);
+  particle_2 =  part_name_simple(particle_2);
   // edit particle name to a safe string
+  string particle_tag;
+  if (multi_particle)
+  {
+    particle_tag = particle_1 + "_" + particle_2;
+  }
+  else
+  {
+    particle_tag = particle_1;
+  }
+  
   
   string tag="";
-  if (options.counter_terms) {tag = particle + "_" + diagram + "_" + to_string(loop_order)+"c";}
-  else {tag = particle + "_" + diagram + "_" + to_string(loop_order);}
+  if (options.counter_terms) {tag = particle_tag + "_" + diagram + "_" + to_string(loop_order)+"c";}
+  else {tag = particle_tag + "_" + diagram + "_" + to_string(loop_order);}
   
    const char* file_masses_tmp = "models/";
   string c_file_masses = file_masses_tmp + model + "/masses" + ext;
@@ -577,9 +600,19 @@ bool Calc_amplitudes::calc_diagram(Options options_in)
 void draw_all_diagrams(Options options)
 {
   string s_cwd(getcwd(NULL,0));
-  string particle = options.particle;
+  string particle_1 = options.particle_1;
+  string particle_2 = options.particle_2;
+
   string model = options.model;
   
+  string tag = particle_1;
+  
+  if (particle_1 != particle_2)
+  {
+    tag = particle_1 + "_" + particle_2;
+  }
+  
+
   ofstream myfile;
   myfile.open ("output/make_figures.m");
   
@@ -589,8 +622,8 @@ void draw_all_diagrams(Options options)
     type = to_string(options.loop_order) +"c";}
   else {myfile<<"t12 = CreateTopologies["<<options.loop_order<<", 1 -> 1, ExcludeTopologies -> Internal];"<<endl;
     type = to_string(options.loop_order);}
-  myfile<<"alldiags = InsertFields[t12, {"<<particle<<"} -> {"<<particle<<"},InsertionLevel -> {Particles}, GenericModel -> Lorentz,Model -> \""<<s_cwd<<"/models/"<<model<<"/"<<model<<"\"];\n"
-  <<"Export[\""<<s_cwd<<"/models/"<<options.model<<"/FA_diagrams/diagrams_"<<particle<< "_" << type <<".pdf\",Paint[alldiags,Numbering->Simple]];\n"  // print the FA diagram to pdf in local directory
+  myfile<<"alldiags = InsertFields[t12, {"<<particle_1<<"} -> {"<<particle_2<<"},InsertionLevel -> {Particles}, GenericModel -> Lorentz,Model -> \""<<s_cwd<<"/models/"<<model<<"/"<<model<<"\"];\n"
+  <<"Export[\""<<s_cwd<<"/models/"<<options.model<<"/FA_diagrams/diagrams_"<<tag<< "_" << type <<".pdf\",Paint[alldiags,Numbering->Simple]];\n"  // print the FA diagram to pdf in local directory
   <<endl;
   
 #ifdef RUN_ALL

@@ -101,7 +101,7 @@ bool Calc_counter_terms::calc_counter_terms(Options options_in)
   // one-loop corrections
   vector<std::string> tags_1;
   vector<std::string> particle_names_1,levels_1;
-
+  
   for (int i=0;i<nd;i++)
   {
     if (levels[i]=="1" && particle_names[i]==options.particle)
@@ -115,7 +115,8 @@ bool Calc_counter_terms::calc_counter_terms(Options options_in)
   // send new array to Mathematica script which adds up
   // the amplitudes via another loop
   
-  string particle_simple = part_name_simple(options.particle);
+  
+  string particle_simple = part_name_simple(options.particle_1,options.particle_2);
   
   solve_1loop(particle_simple,tags_1);
   
