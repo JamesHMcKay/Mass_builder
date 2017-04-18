@@ -16,6 +16,7 @@
 
 void Options::set_type(std::string type)
 {
+  counter_terms = false;
   string loop_order_str = utils::char_to_string(type[0]);
   stringstream convert(loop_order_str);
   convert >> loop_order;
