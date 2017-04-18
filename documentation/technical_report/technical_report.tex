@@ -582,32 +582,23 @@ converting to TSIL notation and inserting the counter-term coupling (each introd
 \section{The electroweak triplet model}
 \subsection{Introduction}
 
-Minimal dark matter (arXiv:0903.3381)  is an extension of the standard model by an electroweak fermionic 5-plet with hypercharge zero.  The neutral component of this 5-plet is the lowest mass, and stable component, and thus the dark matter candidate.  The addition of this 5-plet involves only one new parameter, the degenerate tree-level mass.  At the one loop level the charged components have a \textit{small} mass increase above the neutral, of approximately 170 MeV and 690 MeV for the charged and doubly charged components respectively (see arXiv:0903.3381 and arXiv:1506.03445), in the limit of large degenerate mass.\\
-
-We aim to reproduce this mass splitting in a spectrum generator using a SARAH generated model.  However, the generated spectrum in both SPheno and FlexibleSUSY shows a mass splitting orders of magnitude greater than it should be, and which increases without bound at larger values of the degenerate mass.  This suggests something is wrong with the self energies output by SARAH, so I have checked these to the best of my abilities in the following, doing calculations using FeynCalc and by hand.\\
+The extension of the standard model by an electroweak multiplet is a common procedure to produce a dark matter candidate.  At the lowest order in perturbation theory all components of the multiplet have the same mass, which would result in charged dark matter, contrary to what is observed.  However when one goes to the next order in perturbation theory by computing the radiatively corrected mass, then the charged components obtain a slightly larger mass correction that the neutral component, resulting in a sufficient mass splitting to render the charged components to have a lifetime much shorter than the age of the universe.  The exact value of this mass splitting at the two-loop level is of interest.  We will work with the most simple multiplet, a triplet, to determine the value of this mass splitting at the two-loop order in perturbation theory.
 
 
-The MDM Lagrangian is given by
+
+For these calculations we use a triplet electroweak extension to simplify the number of interactions required to compute the mass splitting between the neutral and charged component.  The Lagrangian is then
 \begin{align}
 \begin{split}
-\mathcal{L}&=\frac{1}{2}\overline{\chi}(i\slashed{D}-M_{\chi})\chi\\
-&=\frac{1}{2}\overline{\chi^0}(i\slashed{\partial}-M)\chi^0+\frac{1}{2}\overline{\chi^+}(i\slashed{\partial}-M)\chi^{+}+\frac{1}{2}\overline{\chi^{++}}(i\slashed{\partial}-M)\chi^{++}\\
-&+g\left(\overline{\chi^+}\gamma_{\mu}\chi^++2\overline{\chi^{++}}\gamma_{\mu}\chi^{++}\right)\left(s_wA_{\mu}+c_wZ_{\mu}\right)\\
-&+g\left(\sqrt{3}\overline{\chi^+}\gamma_{\mu}\chi^0+\sqrt{2}\overline{\chi^{++}}\gamma_{\mu}\chi^+\right)W_{\mu}^++\text{h.c.}
+\mathcal{L}=&\mathcal{L}_{\text{SM}}+\frac{1}{2}\overline{\mychi^0}(i\slashed{\partial}-M)\mychi^0+\frac{1}{2}\overline{\mychi^+}(i\slashed{\partial}-M)\mychi^{+}\\
+&+g\left(\overline{\mychi^+}\gamma_{\mu}\mychi^+\right)\left(s_wA_{\mu}+c_wZ_{\mu}\right)\\
+&+g\left(\overline{\mychi^+}\gamma_{\mu}\mychi^0 \right)W_{\mu}^++\text{h.c.}
 \end{split}
 \end{align}
 
-
-The momentum dependent contribution to the MDM mass, the self energy, is given by calculating the 1PI loop process.  For the $
+The momentum dependent contribution to the triplet mass, the self energy, is given by calculating the 1PI loop process.  For the $
 \chi^0$ at one loop level this involves a loop with a W boson and $\chi^{\pm}$ particle, for $\chi^{\pm}$ we also have loops involving $
 \chi^{\pm\pm}$, $W^{\pm}$ and the $A$ and $Z$ bosons.  The propagators we will use are (in the Feynman gauge)
-%\begin{align}
-%i\Pi^{W^{\pm}}_{\mu\nu}&=-i\frac{\left(-g_{\mu\nu}+k_{\mu}k_{\nu}/m^2_w\right)}{k^2-m_{\text{w}}^2}\\
-%i\Pi^{\chi^{\pm}}_{\mu\nu}&=-i\frac{\slashed{k}-m}{k^2-m^2}\\
-%i\Pi^{\chi^{\pm\pm}}_{\mu\nu}&=-i\frac{\slashed{k}-m}{k^2-m^2}\\
-%i\Pi^{A}_{\mu\nu}&=-i\frac{\left(-g_{\mu\nu}+(\xi-1)k_{\mu}k_{\nu}/k^2\right)}{k^2-m_A^2}\\
-%i\Pi^{Z^{\pm}}_{\mu\nu}&=-i\frac{\left(-g_{\mu\nu}+k_{\mu}k_{\nu}/m^2_z\right)}{k^2-m_z^2}\\
-%\end{align}
+
 \begin{align}
 i\Pi^{W^{\pm}}_{\mu\nu}&=-i\frac{-g_{\mu\nu}}{k^2-m_{\text{w}}^2}\\
 i\Pi^{\chi^{0}}_{\mu\nu}&=i\Pi^{\chi^{\pm}}_{\mu\nu}=i\Pi^{\chi^{\pm\pm}}_{\mu\nu}=-i\frac{\slashed{k}-m}{k^2-m^2}\\
@@ -616,82 +607,32 @@ i\Pi^{Z^{\pm}}_{\mu\nu}&=-i\frac{g_{\mu\nu}}{k^2-m_z^2}\\
 \end{align}
 
 
-where $m$ is taken to the be the degenerate (tree-level) MDM mass.
-
-%The two point propagator is given by
-%$$
-%\frac{i}{\sp-m+\Sigma}
-%$$
-%where we split the self energy into two parts, where $\Sigma$ is the self energy.
-
-
-In the following I use bold-face for the divergent integrals and normal type for the finite pieces, as defined in the TSIL manual.  I use $\tt{TAI}$ to refer to TARCER notation and $A$ for TSIL notation as there is a different normalisation between such integrals.  We define $\kappa = 1/16\pi^2$.
-
-The field theory we will deal with here is that with Lagrangian
-\begin{align}
-\mathcal{L}=\mathcal{L}_{\text{SM}}+\frac{1}{2}\overline{\mychi}\,(i\slashed{\mathcal{D}}-M)\,\mychi
-\end{align}
-where $\mychi$
-
+where $m$ is taken to the be the degenerate (tree-level) triplet mass.
 
 \section{One-loop self energy}
 \begin{figure}[h!]
 \center
 \includegraphics[width=0.6\textwidth]{1loop.pdf}\\
-\includegraphics[width=0.3\textwidth]{1loop_1c.pdf}
-\caption{The one-loop order loop (\textit{top}) and counter-term (\textit{bottom}) corrections to the scalar propagator.}\label{fig:1loop}
+\includegraphics[width=0.3\textwidth]{1loop_1c.pdf}\\
+\includegraphics[width=0.8\textwidth]{diagrams_F[1]_1.pdf}
+\caption{The one-loop order loop (\textit{top}) and counter-term (\textit{bottom}) corrections to the scalar propagator.}\label{fig:1loop_chi}
 \end{figure}
 
-\subsection{Diagram 1 \& 2}
-
-The output from \tarcer is 
-\begin{align}
-\begin{split}
-\Pi^{(1)}_1 =i &g\left\{ (D-2)\frac{ \gamma\cdot p}{32\pi^4 p^2} \left(- \left(p^2+M^2-m_W^2\right)TBI(m_W,M)+A(M)-TAI(m_W)\right)\right.\\
-&\left. \ \ \ + 2D M p^2 TBI(m_W,M)\right\}
-\end{split}
-\end{align}
-by expanding out the basis integrals we can determine the divergent pieces and obtain the tree-level counter-term coupling to be
-\begin{align}
-d_1 = \frac{g^2 (p-4M)}{8\pi^2}
-\end{align}
-
-\section{W boson self energy calculation of counter-terms}
+The processes which contribute the one-loop self energy are given in Figure \ref{fig:1loop_chi} for both the charged and neutral components.  We will present a detailed calculation of the one-loop self energy for the purposes of illustration.
 
 
-
-
-
-
-
-\subsection{1-loop self energies}
 \subsubsection{Neutral component}
 
 The neutral component only has one possible radiative correction, due to the processes $\chi_0\rightarrow W^{\pm} + \chi^{\mp}$, so the loop integral we need to evaluate is
-%\begin{align}
-%i\Sigma_{\cn}(\slashed{p})&= (-3gi)^2 \int \frac{\d^4k}{(2\pi)^4} \gamma^{\mu}\frac{(\slashed{k}+\slashed{p}+m)\gamma^{\nu}\left(-g_{\mu\nu}+k_{\mu}k_{\nu}/m^2_w\right)}{((p+k)^2-m^2)(k^2-m_{\text{w}}^2)}\label{eqn:cn_loop}
-%\end{align}
+
 \begin{align}
 i\Sigma_{\cn}(\slashed{p})&= 2 (-\sqrt{3}gi)^2 \int \frac{\d^4k}{(2\pi)^4} \gamma^{\mu}\frac{(\slashed{p}-\slashed{k}+m)\gamma^{\nu}\left(-g_{\mu\nu}\right)}{((p-k)^2-m^2)(k^2-m_{\text{w}}^2)}\label{eqn:cn_loop}
 \end{align}
 where we have included a factor of two since this process can occur via either $\chi_0\rightarrow W^+ + \chi^-$ or $\chi_0\rightarrow W^- + \chi^+$.  Evaluating this integral using FeynCalc gives, with $\sp=m$
-%\begin{align}
-%\Sigma_M=&-2m+\frac{m}{m_{\text{w}}^2}A_0(m^2)+3m B_0(p^2,m^2,m_{\text{w}}^2)\\
-%\sp\Sigma_K=&\sp+\sp\frac{A_0(m^2)}{m_{\text{w}}^2}+\sp\left(1+\frac{m^2}{m_{\text{w}}^2}-\frac{p^2}{m_{\text{w}}^2}\right)B_0(p^2,m^2,m_{\text{w}}^2)\\&
-%+\sp\left(2+\frac{m^2}{m_{\text{w}}^2}-\frac{p^2}{m_{\text{w}}^2}\right)B_1(p^2,m^2,m_{\text{w}}^2)\end{align}
-%such that for the self energy, calculated for $\sp=m$ we obtain
-\begin{align}
-\Sigma_{\cn}(m)= \frac{12g^2}{(4\pi)^2} m \left(2B_0(m^2,m^2,m_{\text{w}}^2)+B_1(m^2,m^2,m_2^2)\right) \label{eqn:neutral_SE}
-\end{align}
-or with FeynCalc integration dimension and dimension of Dirac matrices set to $D$ we find (not sure why this makes a difference)
 \begin{align}
 \Sigma_{\cn}(m)= \frac{12g^2}{(4\pi)^2} m \left(\frac{1}{2}+2B_0(m^2,m^2,m_{\text{w}}^2)+B_1(m^2,m^2,m_2^2)\right)
 \end{align}
-The SARAH output is
-\begin{align}
-\Sigma_{\cn}(m)= \frac{24g^2}{(4\pi)^2} m \left(1+2B_0(m^2,m^2,m_{\text{w}}^2)+B_1(m^2,m^2,m_{\text{w}}^2)\right)
-\end{align}
-so the constant term is a factor of four larger, and the rest a factor of two larger.
+
 
 
 \subsubsection{Charged component}
@@ -905,57 +846,6 @@ To bring it into the same form as given by FeynCalc and SARAH use the identity $
 \end{align}
 
 
-
-\subsection{2-loop self energies}
-
-For these calculations we use a triplet electroweak extension to simplify the number of interactions required to compute the mass splitting between the neutral and charged component.  The Lagrangian is then
-\begin{align}
-\begin{split}
-\mathcal{L}=&\mathcal{L}_{\text{SM}}+\frac{1}{2}\overline{\mychi^0}(i\slashed{\partial}-M)\mychi^0+\frac{1}{2}\overline{\mychi^+}(i\slashed{\partial}-M)\mychi^{+}\\
-&+g\left(\overline{\mychi^+}\gamma_{\mu}\mychi^+\right)\left(s_wA_{\mu}+c_wZ_{\mu}\right)\\
-&+g\left(\overline{\mychi^+}\gamma_{\mu}\mychi^0 \right)W_{\mu}^++\text{h.c.}
-\end{split}
-\end{align}
-
-
-\subsubsection{Neutral component}
-
-- generic diagrams
-
-- list diagrams with topology (e) and (d) from FeynArts
-
-
-
-
-
-
-
-
-
-
-
-
-\section{Mass splittings}
-
-\subsection{1-loop}
-We can compute the mass splittings for large $M\gg m_{\text{z,w}}$ using (from arXiv:1212.5989)
-\begin{align}
-B_0(M^2,M^2,m^2)&=\Delta-\log\frac{M^2}{Q^2}+2-\frac{\pi m}{M}+\mathcal{O}\left(\frac{m^2}{M^2}\log\frac{M^2}{m^2}\right)\\
-B_1(M^2,M^2,m^2)&=-\frac{\Delta}{2}+\frac{1}{2}\log\frac{M^2}{Q^2}-\frac{3}{2}+\frac{\pi m}{M}+\mathcal{O}\left(\frac{m^2}{M^2}\log\frac{M^2}{m^2}\right)
-\end{align}
-where $\Delta=2/(4-d)-\gamma+\log(4\pi)$, which will cancel out when taking a difference as we will see, and $Q$ is the renormalisation scale, of which the mass splitting should also be independent.\\
-
-Taking the difference of the self energies, (\ref{eqn:neutral_SE}) and (\ref{eqn:charged_SE}), $\delta m=\Sigma_{\cm}(m)-\Sigma_{\cn}(m)$ we obtain with the use of the above relations
-\begin{align*}
-\delta m=&-\frac{1}{16\pi^2}2g^2m \left[  -(2B_0(m^2,m^2,m_{\text{w}}^2)+B_1(m^2,m^2,m_{\text{w}}^2)) \right.\\ & +c_{\text{w}}^2 (2B_0(m^2,m^2,m_{\text{z}}^2)+B_1(m^2,m^2,m_{\text{z}}^2)) \\&\left.+s_w^2(2B_0(m^2,m^2,0)+B_1(m^2,m^2,0))\right]\\
-&=\frac{g^2}{8\pi}(m_{\text{w}}-c_{\text{w}}^2m_z)\approx 160\ \text{MeV}
-\end{align*}
-
-If we were to use the values for $\Sigma_{\cn}(\sp)$ output by SARAH we do not obtain a small limiting value of 160 MeV (see mathematica work sheet), instead obtaining a result dependent on $Q$ and $M$, which grows with $M$.  This is apparent when the model is used in a spectrum generator such as SPheno or FlexibleSUSY, where the mass splitting is large and continues to grow without bound as the degenerate mass increases (see next section).\\
-
-
-\subsection{2-loop}
-
 \section{1-loop boson self energies}
 
 To verify the method and FeynArts model we cross-check the boson self energies with that presented by Ibe et al.
@@ -1114,36 +1004,33 @@ We compute the self energy using the Mass Builder set up and find a consistent r
 for $m_{\gamma}=0$.  This is the only ``descrepancy" between our working and that of Ibe et al. where they have clearly just set this term to zero (as they do not explicitly use a  $m_{\gamma}$ quantity in their expressions, instead just using a zero).
 
 
-\begin{mmaCell}{Output}
-(1/(576 CTW^2 p^2 Pi^2))g2^2 (-6 mh^2 p^2 - 4 p^4 + 
-   24 (ma^2 - mw^2 - 2 p^2) STW^2 (-1 + STW^2) A0[ma^2] - 
-   3 mh^2 A0[mh^2] + 6 p^2 A0[mh^2] + 3 mh^2 A0[mw^2] + 
-   60 p^2 A0[mw^2] + 54 p^2 A0[mz^2] + 3 mh^4 B0[p^2, mh^2, mw^2] - 
-   6 mh^2 p^2 B0[p^2, mh^2, mw^2] + 3 p^4 B0[p^2, mh^2, mw^2] + 
-   3 mw^4 (B0[p^2, mh^2, mw^2] - B0[p^2, mw^2, mz^2]) + 
-   3 mw^2 mz^2 B0[p^2, mw^2, mz^2] - 117 p^4 B0[p^2, mw^2, mz^2] + 
-   24 mw^4 STW^4 (-B0[p^2, ma^2, mw^2] + B0[p^2, mw^2, mz^2]) + 
-   24 mw^2 STW^4 (A0[mz^2] + 2 (ma^2 + p^2) B0[p^2, ma^2, mw^2] - 
-      2 p^2 B0[p^2, mw^2, mz^2]) - 
-   12 STW^4 (2 ma^2 A0[mw^2] - 
-      4 p^2 (ma^2 + A0[mz^2]) + (2 ma^4 - 7 ma^2 p^2 - 10 p^4) B0[p^2,
-         ma^2, mw^2] + 10 p^4 B0[p^2, mw^2, mz^2]) + 
-   mw^4 STW^2 (24 B0[p^2, ma^2, mw^2] - 
-      3 (B0[p^2, mh^2, mw^2] + B0[p^2, mw^2, mz^2])) + 
-   STW^2 (-48 ma^2 p^2 + 6 mh^2 p^2 + 4 p^4 + 
-      3 (mh^2 - 2 p^2) A0[mh^2] + 
-      3 (8 ma^2 - mh^2 - 20 p^2) A0[mw^2] + 
-      24 ma^4 B0[p^2, ma^2, mw^2] - 3 mh^4 B0[p^2, mh^2, mw^2] - 
-      3 p^2 (34 A0[mz^2] + 
-         4 (7 ma^2 + 10 p^2) B0[p^2, ma^2, mw^2] + (-2 mh^2 + p^2) B0[
-           p^2, mh^2, mw^2] - 79 p^2 B0[p^2, mw^2, mz^2])) + 
-   3 mw^2 (A0[mh^2] - A0[mw^2] - 
-      2 ((mh^2 - 5 p^2) B0[p^2, mh^2, mw^2] + 
-         p^2 (19 + 30 B0[p^2, mw^2, mz^2]))) - 
-   3 mw^2 STW^2 (A0[mh^2] - 2 A0[mw^2] + 9 A0[mz^2] + 
-      2 (8 (ma^2 + p^2) B0[p^2, ma^2, mw^2] - (mh^2 - 5 p^2) B0[p^2, 
-           mh^2, mw^2] - p^2 (18 + 43 B0[p^2, mw^2, mz^2]))))
-\end{mmaCell}
+{
+\begin{eqnarray}
+\Pi_{ZZ}^{(V,h)}(p^2) &=& 
+-\frac{ \hat{g}^2} {576 c_W^4 p^2 \pi^2}\left\{ -6 mh^2 p^2 - 4 p^4 \right.\nonumber \\
+&&+  24 (ma^2 - mw^2 - 2 p^2) s_W^2 (-1 + s_W^2) A0[ma^2] -  \nonumber\\
+&&   3 mh^2 A0[mh^2] + 6 p^2 A0[mh^2] + 3 mh^2 A0[mw^2] +\nonumber \\
+&&   60 p^2 A0[mw^2] + 54 p^2 A0[mz^2] + 3 mh^4 B0[p^2, mh^2, mw^2] -\nonumber \\
+&&6 mh^2 p^2 B0[p^2, mh^2, mw^2] + 3 p^4 B0[p^2, mh^2, mw^2] + \nonumber\\
+&&   3 mw^4 (B0[p^2, mh^2, mw^2] - B0[p^2, mw^2, mz^2])\nonumber \\
+&&   + 3 mw^2 mz^2 B0[p^2, mw^2, mz^2] - 117 p^4 B0[p^2, mw^2, mz^2] \nonumber\\
+&&   + 24 mw^4 s_W^4 (-B0[p^2, ma^2, mw^2] + B0[p^2, mw^2, mz^2])\nonumber \\
+&&   + 24 mw^2 s_W^4 (A0[mz^2] + 2 (ma^2 + p^2) B0[p^2, ma^2, mw^2] - 2 p^2 B0[p^2, mw^2, mz^2])\nonumber \\
+&&   - 12 s_W^4 \left[    2 ma^2 A0[mw^2] -  4 p^2 (ma^2 + A0[mz^2]) \right.\nonumber \\
+&& \left. + (2 ma^4 - 7 ma^2 p^2 - 10 p^4) B0[p^2,ma^2, mw^2] + 10 p^4 B0[p^2, mw^2, mz^2]\right] \nonumber\\
+&&  + mw^4 s_W^2 (24 B0[p^2, ma^2, mw^2] - 3 (B0[p^2, mh^2, mw^2] + B0[p^2, mw^2, mz^2])) \nonumber\\
+&&   +  s_W^2 \left[-48 ma^2 p^2 + 6 mh^2 p^2 + 4 p^4 +  3 (mh^2 - 2 p^2) A0[mh^2] \right.\nonumber\\
+&&   +  3 (8 ma^2 - mh^2 - 20 p^2) A0[mw^2] +\nonumber \\
+&&      24 ma^4 B0[p^2, ma^2, mw^2] - 3 mh^4 B0[p^2, mh^2, mw^2] - \nonumber\\
+&&    3 p^2 (34 A0[mz^2] + 4 (7 ma^2 + 10 p^2) B0[p^2, ma^2, mw^2] + (-2 mh^2 + p^2) B0[p^2, mh^2, mw^2] \nonumber\\
+&& \left.- 79 p^2 B0[p^2, mw^2, mz^2])\right]    \nonumber\\
+&& +  3 mw^2 (A0[mh^2] - A0[mw^2] \nonumber\\
+&& -  2 ((mh^2 - 5 p^2) B0[p^2, mh^2, mw^2]\nonumber\\
+&&       + p^2 (19 + 30 B0[p^2, mw^2, mz^2])))\nonumber \\
+&&     - 3 mw^2 s_W^2 \left[A0[mh^2] - 2 A0[mw^2] + 9 A0[mz^2] + 2 (8 (ma^2 + p^2) B0[p^2, ma^2, mw^2] \right.\nonumber\\
+&& \left. \left .- (mh^2 - 5 p^2) B0[p^2, mh^2, mw^2] - p^2 (18 + 43 B0[p^2, mw^2, mz^2]))\right] \right\}\nonumber
+\end{eqnarray}
+}
 
 
 
@@ -1194,7 +1081,7 @@ Using Mass Builder we calculate the self energy in terms of $A_0$ and $B_0$ inte
 We compute the gauge boson self energies and interface the output to TSIL automatically in Mass Builder.  This enables numerical calculation of the 1-loop self energies.  Using the input values and relationships in Table \ref{table:input_params} we calculate a one-loop pole mass of $(m_W^{(1)},m_Z^{(1)}) = (91.44,80,82)$ GeV.
 
 \begin{table}[tp]
-\caption{The parameter values used for the electroweak triplet self energy calculations.  Where a derived quantity is used this is passed directly to Mass Builder in the analytic form.}\label{table:input_params}
+\caption{The parameter values used for the electroweak triplet self energy calculations.  Where a derived quantity is used this is passed directly to Mass Builder in the analytic form. FIX THIS TABLE $Q=100$ ?!?!?}\label{table:input_params}
 \centering
 \begin{tabular}{l l}
 \hline
@@ -1260,9 +1147,47 @@ We also compute the one-loop counter-term couplings for the fermionic triplet
 \end{eqnarray}
 which agree with that of Ibe et al.
 
- 
+Finally, we also need the counter term for the $W\chi\chi$ interaction which we use the value from Ibe et al.
+\begin{align}
+\delta_{\chi\chi W} = \frac{g^3}{4 \pi^2}.
+\end{align}
+
+\subsection{2-loop self energy}
+
+We are finally ready to compute the two-loop self energies for the electroweak triplet.  For the neutral (charged) component there are 48 (75) two-loop diagrams and eight (10) two-loop order counter-term diagrams.  
 
 
 
+\begin{figure}[h!]
+\center
+\includegraphics[width=0.5\textwidth]{diagrams_F[1]_2_1.pdf}\includegraphics[width=0.5\textwidth]{diagrams_F[1]_2_2.pdf}
+\includegraphics[width=0.5\textwidth]{diagrams_F[1]_2_3.pdf}\includegraphics[width=0.5\textwidth]{diagrams_F[1]_2_4.pdf}
+\includegraphics[width=0.5\textwidth]{diagrams_F[1]_2_5.pdf}\includegraphics[width=0.5\textwidth]{diagrams_F[1]_2_6.pdf}
+\caption{The two-loop corrections to the $\chi^+$ propagator.}\label{fig:chi1chi1_1}
+\end{figure}
+
+\begin{figure}[h!]
+\center
+\includegraphics[width=0.5\textwidth]{diagrams_F[1]_2_7.pdf}\includegraphics[width=0.5\textwidth]{diagrams_F[1]_2_8.pdf}
+\includegraphics[width=0.5\textwidth]{diagrams_F[1]_2_9.pdf}
+\caption{The two-loop corrections to the $\chi^+$ propagator.}\label{fig:chi1chi1_2}
+\end{figure}
+
+\begin{figure}[h!]
+\center
+\includegraphics[width=0.5\textwidth]{diagrams_F[2]_2_1.pdf}\includegraphics[width=0.5\textwidth]{diagrams_F[2]_2_2.pdf}
+\includegraphics[width=0.5\textwidth]{diagrams_F[2]_2_3.pdf}\includegraphics[width=0.5\textwidth]{diagrams_F[2]_2_4.pdf}
+\includegraphics[width=0.5\textwidth]{diagrams_F[2]_2_5.pdf}\includegraphics[width=0.5\textwidth]{diagrams_F[2]_2_6.pdf}
+\caption{The two-loop corrections to the $\chi^0$ propagator.}\label{fig:chi0chi0}
+\end{figure}
+
+
+
+\begin{figure}[h!]
+\center
+\includegraphics[width=0.5\textwidth]{diagrams_F[1]_2c_1.pdf}\includegraphics[width=0.5\textwidth]{diagrams_F[1]_2c_2.pdf}
+\includegraphics[width=0.5\textwidth]{diagrams_F[2]_2c.pdf}
+\caption{The two-loop order counter-terms corrections to the $\chi^+$ and $\chi^0$ propagators.}\label{fig:chi_ct2}
+\end{figure}
 
 \end{document}  
