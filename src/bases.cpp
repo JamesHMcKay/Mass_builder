@@ -297,6 +297,14 @@ void format_coeff(string dimension, std::map <std::string, Bases > &base_map, st
       ReplaceAll(coefficient,from, to);
     }
     
+    /*from = "Pair[Momentum[Polarization[p, -I, Transversality -> True]], Momentum[Polarization[p, I, Transversality -> True]]]";
+    to = "1.0L";
+    ReplaceAll(coefficient,from, to);
+    
+    from = "Pair(Momentum(Polarization(p,Complex(0,-1),Rule(Transversality,True))),Momentum(Polarization(p,Complex(0,1),Rule(Transversality,True))))";
+    to = "1.0L";
+    ReplaceAll(coefficient,from, to);
+    */
     
     from = "DiracGamma(6)";
     to = "1.0L";
@@ -333,6 +341,12 @@ void format_coeff(std::string &coefficient)
   from = "Dot(1.0L,1.0L)";
   to = "1.0L";
   ReplaceAll(coefficient,from, to);
+  
+  
+  //from = "Pair(Momentum(Polarization(p,Complex(0,-1),Rule(Transversality,True))),Momentum(Polarization(p,Complex(0,1),Rule(Transversality,True))))";
+  //to = "1.0L";
+  //ReplaceAll(coefficient,from, to);
+  
   
 }
 
