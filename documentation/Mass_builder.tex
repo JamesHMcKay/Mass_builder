@@ -6,6 +6,11 @@
 \def\B{\mathcal{B}}
 \def\C{\mathcal{C}}
 
+
+\newcommand{\mb}{\textsf{Mass Builder} \! }
+\newcommand{\tsil}{\textsf{TSIL} \! }
+\newcommand{\tarcer}{\textsf{TARCER} \! }
+
 \graphicspath{ {Figures/}}
 
 \title{Mass builder -- an interface tool for automated self energy calculation}
@@ -268,7 +273,7 @@ Between computing the amplitudes and generating the code Mass Builder stores the
 \end{itemize}
 where \lstinline{tag} encodes the particle name, diagram and loop order (and if this is a counter-term diagram).  When necessary the output is written in C++ style for simple implementation into the final code.
 
-\subsection{Tree-level counter-term coupling calculation}
+\subsection{Tree-level counter-term coupling calculation}\label{sec:ct}
 
 It is possible to compute the tree-level counter-term coupling given the sum of the loop corrections at one-loop.  Since the tree-level counter-term is the only counter-term of one-loop order, we only need to solve one equation to demand no divergences of order $1/\epsilon$.  To automatically compute this coupling one first needs to compute all the one-loop amplitudes, and then use the \lstinline{-b} flag followed by the model and particle identifier, along with the \lstinline{-v} flag to display the Mathematica output which will print the result to the terminal.
 
@@ -388,11 +393,11 @@ The diagrams available to be included in the generated TSIL interface are regist
 
 \subsection{Subtraction of divergences}
 
-The integrals obtained from the TARCER output are in terms of divergent basis integrals.  In a consistent field theory these divergences should be accounted for by divergent counter-term diagrams.  We leave the determination of counter-terms and checking that divergences cancel to the user, although it is possible to compute the counter-term diagrams via this interface (\textit{not fully supported yet}).  Once we are assured the divergent terms can be accounted for by appropriate counter-term couplings, we make limit our consideration to only the finite part of the basis integrals.
+The integrals obtained from the \tarcer output are in terms of divergent basis integrals.  In a consistent field theory these divergences should be accounted for by divergent counter-term diagrams.  \mb offers the ability to compute counter-term diagrams and also compute the analytical form of the two-point tree-level counter-term coupling.  The determination of higher order counter-terms and those with more vertices are left to the user to determine via other means.  Once we are assured the divergent terms can be accounted for by appropriate counter-term couplings, we may limit our consideration to only the finite part of the basis integrals.
 
-The TSIL package provides the finite basis integrals, with the divergences subtracted, which is convenient in most cases.  However, if the divergent term is of order $1/\epsilon$ and the basis integral had a coefficient of the form $D = 4-2\epsilon$, then this leading divergence becomes a finite contribution that must be accounted.  Thus we must appropriately take $D=4-2\epsilon$ when converting from a divergent integral as output by TARCER into the finite integral evaluated in TSIL.  This non-trivial step requires an additional repetition of the algorithm to deconstruct the new, finite, amplitude into a coefficient and basis integral form.
+The \tsil package provides the finite basis integrals, with the divergences subtracted, which is convenient in most cases.  However, if the divergent term is of order $1/\epsilon$ and the basis integral had a coefficient of the form $D = 4-2\epsilon$, then this leading divergence becomes a finite contribution that must be accounted.  Thus we must appropriately take $D=4-2\epsilon$ when converting from a divergent integral as output by \tarcer into the finite integral evaluated in \tsil.  This non-trivial step requires an additional repetition of the algorithm to deconstruct the new, finite, amplitude into a coefficient and basis integral form.
 
-In this section we give details of the leading divergences included from the TSIL documentation and how these are adjusted for sign conventions between the TARCER and TSIL packages.  In the following bold face and standard face characters denote the divergent and finite basis integrals respectively.  We use $A$, $B$ and so on to denote the TSIL definitions and $\mathtt{TAI}$, $\mathtt{TBI}$ and so on to denote the TARCER definitions.
+In this section we give details of the leading divergences included from the \tsil documentation and how these are adjusted for sign conventions between the \tarcer and \tsil packages.  In the following bold face and standard face characters denote the divergent and finite basis integrals respectively.  We use $A$, $B$ and so on to denote the \tsil definitions and $\mathtt{TAI}$, $\mathtt{TBI}$ and so on to denote the \tarcer definitions.
 
 For the divergent integrals we have \cite{Martin2006}
 \begin{align*}
@@ -403,16 +408,26 @@ For the divergent integrals we have \cite{Martin2006}
 &\vec{T}(x,y,z)= T(x,y) +\frac{1}{2\epsilon^2} -\left[A(x)/x +1/2\right]/\epsilon\\ &+ (A(x)- A_{\epsilon}(x))/x+\mathcal{O}(\epsilon) \\
 &\vec{U}(x,y,z,u)= U(x,y,z,u) +\frac{1}{2\epsilon^2} +\left[B(x,y) +1/2\right]/\epsilon\\ &+ B_{\epsilon}(x,y)+\mathcal{O}(\epsilon)
 \end{align*}
-so using the relation $\vec{A}(x) =ia \mathtt{\mathbf{TAI}}(x)$ , $\vec{B}(x,y) =-ia \mathtt{\mathbf{TBI}}(x,y)$, $\mathtt{TJI}_0(x,y,z)=I(x,y,z)$,  $\mathtt{TJI}_s(x,y,z)=S(x,y,z)$, $\vec{T}(x,y,z)=\mathtt{\mathbf{TJI}}_{s,2}$, $\vec{U}(x,y,z,u)=-\mathtt{\mathbf{TVI}}(x,y,z,u)$ we find the useful relationships
+so using the relations:
+\begin{eqnarray*}
+&\vec{A}(x) &=i \mathtt{\mathbf{TAI}}(x)\\
+&\vec{B}(x,y) &=-i \mathtt{\mathbf{TBI}}(x,y)\\
+&\vec{I}(x,y,z)&=\mathtt{\mathbf{TJI}}_0(x,y,z)\\
+&\vec{S}(x,y,z)&=\mathtt{\mathbf{TJI}}_s(x,y,z)\\
+&\vec{T}(x,y,z)&=\mathtt{\mathbf{TJI}}_{s,2}(x,y,z)\\
+&\vec{U}(x,y,z,u)&=-\mathtt{\mathbf{TVI}}(u,x,z,y)
+\end{eqnarray*}
+we find the relationships that are used in the code to convert from divergent to finite integrals
 \begin{align*}
-&\mathtt{\mathbf{TAI} }(x)= \mathtt{TAI}(x)+\frac{ix}{\epsilon} + \mathcal{O}(\epsilon)\\
-&\mathtt{\mathbf{TBI} }(x,y)= \mathtt{TBI}(x,y)+\frac{i}{\epsilon} + \mathcal{O}(\epsilon)\\
-&\mathtt{\mathbf{TJI}_0 }(x,y,z)= \mathtt{TJI}_0(x,y,z)+\frac{(x+y+z)}{2\epsilon^2}  \\ & -\left[i\mathtt{TAI}(x)+i\mathtt{TAI}(y)+i\mathtt{TAI}(z)-(x+y+z)/2\right]/\epsilon\\&+ \mathcal{O}(\epsilon)\\
-&\mathtt{\mathbf{TJI}_s }(x,y,z)= \mathtt{TJI}_s(x,y,z)+\frac{(x+y+z)}{2\epsilon^2}  \\ & -\left[i\mathtt{TAI}(x)+i\mathtt{TAI}(y)+i\mathtt{TAI}(z)-(x+y+z)/2+s/4\right]/\epsilon\\&+ \mathcal{O}(\epsilon)\\
+&\mathtt{\mathbf{TAI} }(x)= \mathtt{TAI}(x)+\frac{ix}{\epsilon} -i\epsilon A_{\epsilon}(x) + \mathcal{O}(\epsilon)\\
+&\mathtt{\mathbf{TBI} }(x,y)= \mathtt{TBI}(x,y)+\frac{i}{\epsilon} + i\epsilon B_{\epsilon}(x,y) + \mathcal{O}(\epsilon)\\
+&\mathtt{\mathbf{TJI}_0 }(x,y,z)= \mathtt{TJI}_0(x,y,z)+\frac{(x+y+z)}{2\epsilon^2}  \\ & -\left[i\mathtt{TAI}(x)+i\mathtt{TAI}(y)+i\mathtt{TAI}(z)-(x+y+z)/2\right]/\epsilon\\&+ \epsilon A_{\epsilon}(x)+\epsilon A_{\epsilon}(y)+\epsilon A_{\epsilon}(z) +  \mathcal{O}(\epsilon)\\
+&\mathtt{\mathbf{TJI}_s }(x,y,z)= \mathtt{TJI}_s(x,y,z)+\frac{(x+y+z)}{2\epsilon^2}  \\ & -\left[i\mathtt{TAI}(x)+i\mathtt{TAI}(y)+i\mathtt{TAI}(z)-(x+y+z)/2+s/4\right]/\epsilon\\&+ \epsilon A_{\epsilon}(x)+\epsilon A_{\epsilon}(y)+\epsilon A_{\epsilon}(z) + \mathcal{O}(\epsilon)\\
 &\mathtt{\mathbf{TJI}}_{s,2}(x,y,z)= \mathtt{TJI}_{s,2}(x,y,z) -\frac{1}{2\epsilon^2} +\left[A(x)/x +1/2\right]/\epsilon\\ &- (A(x)- A_{\epsilon}(x))/x)+\mathcal{O}(\epsilon) \\
 &\mathtt{\mathbf{TVI}}(x,y,z,u)= \mathtt{TVI}(x,y,z,u) +\frac{1}{2\epsilon^2} +\left[B(x,y) +1/2\right]/\epsilon\\ &+ B_{\epsilon}(x,y)+\mathcal{O}(\epsilon)
 \end{align*}
 
+where $\mathtt{\mathbf{TJI}}_{s,2}= \mathtt{TJI[D,s,\{\{2,x\}, \{1,y\}, \{1,z\}\}]}$, $\mathtt{\mathbf{TJI}}_{s}= \mathtt{TJI[D,s,\{\{1,x\}, \{1,y\}, \{1,z\}\}]}$ and $\mathtt{\mathbf{TJI}}_{0}= \mathtt{TJI[D,0,\{\{1,x\}, \{1,y\}, \{1,z\}\}]}$
 
 
 
