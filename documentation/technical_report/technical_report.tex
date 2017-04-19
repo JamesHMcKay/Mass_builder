@@ -1078,7 +1078,10 @@ Using Mass Builder we calculate the self energy in terms of $A_0$ and $B_0$ inte
 
 \subsection{Calculation in Mass Builder}
 
-We compute the gauge boson self energies and interface the output to TSIL automatically in Mass Builder.  This enables numerical calculation of the 1-loop self energies.  Using the input values and relationships in Table \ref{table:input_params} we calculate a one-loop pole mass of $(m_W^{(1)},m_Z^{(1)}) = (91.44,80,82)$ GeV.
+We compute the gauge boson self energies and interface the output to TSIL automatically in Mass Builder.  This enables numerical calculation of the 1-loop self energies.  Using the input values and relationships in Table \ref{table:input_params} we calculate a one-loop pole mass of $(m_W^{(1)},m_Z^{(1)}) = ( , )$ GeV.
+
+In our choice of gauge the ghost fields take on the same mass as their respective field, such that $m_{\eta_{\gamma}} = m_{\gamma}$, $m_{\eta_Z}=m_{Z}$, $m_{\eta^+}=m_{W}$.  The fields $A_0$ and $H^+$ from the pre-EWSB theory are also given the respective masses of $m_{A_0}=m_Z$ and $m_{H^+}=m_W$.
+
 
 \begin{table}[tp]
 \caption{The parameter values used for the electroweak triplet self energy calculations.  Where a derived quantity is used this is passed directly to Mass Builder in the analytic form. FIX THIS TABLE $Q=100$ ?!?!?}\label{table:input_params}
@@ -1155,7 +1158,6 @@ Finally, we also need the counter term for the $W\chi\chi$ interaction which we 
 \subsection{2-loop self energy}
 
 We are finally ready to compute the two-loop self energies for the electroweak triplet.  For the neutral (charged) component there are 48 (75) two-loop diagrams and eight (10) two-loop order counter-term diagrams.  
-
 
 
 \begin{figure}[h!]

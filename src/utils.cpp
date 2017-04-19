@@ -305,11 +305,11 @@ void print_math_body(ofstream &file,Options options,string cwd,std::vector<std::
     string model = options.model;
     if (options.counter_terms)
     {
-      file<<"t12 = CreateCTTopologies["<< loop_order<<", 1 -> 1, ExcludeTopologies -> Internal];"<<endl;
+      file<<"t12 = CreateCTTopologies["<< loop_order<<", 1 ->  " << options.n_final_states << ", ExcludeTopologies -> Internal];"<<endl;
     }
     else
     {
-      file<<"t12 = CreateTopologies["<< loop_order<<", 1 -> 1, ExcludeTopologies -> Internal];"<<endl;
+      file<<"t12 = CreateTopologies["<< loop_order<<", 1 -> " << options.n_final_states << ", ExcludeTopologies -> Internal];"<<endl;
     }
     
     file <<"alldiags = InsertFields[t12, {"<<particle_1<<"} -> {"<<particle_2<<"},InsertionLevel -> {Particles}, GenericModel -> Lorentz,Model -> \""<<cwd<<"/models/"<<model<<"/"<<model<<"\"];\n"

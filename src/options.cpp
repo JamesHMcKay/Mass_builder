@@ -100,6 +100,17 @@ void User_input::user_interface()
       options.run_mode = 4;
     }
   }
+  
+  
+  if (find_string("-n"))
+  {
+    string input = "number of final states";
+    if (find_and_read_string("-n",input))
+    {
+      if (input == "2"){options.n_final_states = 2;}
+    }
+  }
+  
 
   if (find_string("-f")){ options.run_mode = 5;}
   if (find_string("-e")){ options.run_mode = 6;}

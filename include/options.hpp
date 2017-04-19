@@ -20,6 +20,7 @@ bool optimise = false;
 bool detailed_output = false;
 int loop_order = 2;
 int n_group = 10;
+int n_final_states = 1;
 string particle;
 string particle_1;
 string particle_2;
@@ -55,6 +56,7 @@ cout << "diagram = " << diagram << endl;
 cout << "model = " << model << endl;
 cout << "run mode = " << run_mode << endl;
 cout << "input list = " << input_list << endl;
+cout << "number of final states = " << n_final_states << endl;
 }
 
 
