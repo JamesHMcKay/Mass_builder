@@ -367,7 +367,7 @@ void Calc_amplitudes::initial_trial(string dimension)
   //<<"SEn = DiracTrace[SEn];\n"
   <<"SEn = SEn /. DiracGamma[Momentum[p, D], D] -> p ;\n"
   
-  <<"SEn = SEn /. Pair[Momentum[Polarization[p, -I, Transversality -> True], D], Momentum[Polarization[p, I, Transversality -> True], D]] -> 1 ;\n"
+  <<"SEn = SEn /. Pair[Momentum[Polarization[p, -I, Transversality -> True], D], Momentum[Polarization[p, I, Transversality -> True], D]] -> -1 ;\n"
   
   
   <<"DumpSave[\""<<s_cwd<<"/output/math_1.mx\", SEn];\n"
