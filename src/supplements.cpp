@@ -35,12 +35,12 @@ namespace supplementary_code
   TSIL_REAL ma, mc, mw, mz ;
   TSIL_REAL ma2,mc2,mw2,mz2;
   
-  TSIL_REAL Pi,g2, tW, sw2, cw2, sw, cw , C,p,S2TW;
+  TSIL_REAL Pi,g2, tW, sw2, cw2, sw, cw , C, p, v;
   
   
   TSIL_COMPLEXCPP Bwc, Bzc, Bca;
   
-  TSIL_COMPLEXCPP dBwc,dBzc,dBca;
+  TSIL_COMPLEXCPP dBwc,dBzc,dBca,M;
   
   
   TSIL_REAL dBds(double m, double ma, double p)
@@ -76,18 +76,28 @@ namespace supplementary_code
     dBwc = i*TSIL_dBds_(mw2,mc2,s,Q2);
     dBzc = i*TSIL_dBds_(mz2,mc2,s,Q2);
     dBca = i*TSIL_dBds_(ma2,mc2,s,Q2);//dBds(mc2,ma2,s);
-    
   }
   
   int init(Data data)
   {
-    mw= data.mw, mz = data.mz ,ma = data.ma, mc = data.MChi, g2=data.g1;
+  
+    cw = data.cw,   cw2 = data.cw2,   sw = data.sw,   g2 = data.g2,   sw2 = data.sw2, v = data.v;;
+  
+    mw= data.mw, mz = data.mz ,ma = data.ma, mc = data.MChi;
+    
+    cw =  mw/mz;
+    cw2 =  TSIL_POW(cw,2);
+    sw =  TSIL_POW(1.-cw2,0.5);
+    g2 =  2.*mw/v;
+    sw2 =  TSIL_POW(sw,2);
+
+    
     mw2 = pow(mw,2);
     mz2 = pow(mz,2);
     ma2 = pow(ma,2);
     mc2 = pow(mc,2);
     tW = acos(mw/mz);
-    sw2 = data.sw2,S2TW=data.S2TW, cw2 = data.cw2;
+    sw2 = data.sw2, cw2 = data.cw2;
     sw = data.sw, cw = data.cw;
     C = TSIL_POW(g2,2)/(16.0L*PI*PI);
     i=Power(-1,0.5);

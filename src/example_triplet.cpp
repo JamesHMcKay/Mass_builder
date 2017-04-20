@@ -8,7 +8,7 @@
  
  compute full two-loop self energy including derivative of 1-loop functions
  
- requires an input list flag at runtime: ./triplet -i models/MDM/input.txt
+ requires an input list flag at runtime: ./triplet -i models/EW_triplet/input.txt
  */
 
 #include "data.hpp"
@@ -21,17 +21,17 @@ using namespace std;
 using namespace supplementary_code;
 using namespace utils;
 
-Self_energy se;
+Self_energy self_energy;
 
-double pole_mass_F5(Data data)
+double pole_mass_F1(Data data)
 {
-  double Mp = data.MChi + (data.SE_1["F5"]+data.SE_2["F5"]);
+  double Mp = data.MChi + (data.SE_1["F1"]+data.SE_2["F1"]);
   return Mp;
 }
 
-double pole_mass_F6(Data data)
+double pole_mass_F2(Data data)
 {
-  double Mp = data.MChi + (data.SE_1["F6"]+data.SE_2["F6"]);
+  double Mp = data.MChi + (data.SE_1["F2"]+data.SE_2["F2"]);
   return Mp;
 }
 
@@ -45,25 +45,19 @@ int main(int argc, char *argv[])
   
   if (options.input_list == "") {cout << "please enter an input list" << endl; return 0;}
   
-  Self_energy se;
+  Self_energy self_energy;
   Data data(options);
 
+  self_energy.run_tsil(data);
   
-  se.run_tsil(data);
+  cout << "one-loop mass splitting = " << data.SE_1["F2"] - data.SE_1["F1"] << endl;
+
+  cout << "two-loop mass splitting = " << data.SE_2["F2"] - data.SE_2["F1"] << endl;
   
-  double se_F1= data.SE_2["F1"];
-  double se_F2 = data.SE_2["F2"];
-  cout << "mass splitting from two-loop only = " << se_F2 - se_F1 << endl;
-  
-  
-//  cout << "self energy from two loop only = " << se_two_loop << endl;
-  Supplements supp(data);
-  supp.add_derivatives(data);
-  cout << "derivative terms = " << data.SE_2["F2"] - data.SE_2["F1"] << endl;
-  
-  
-  
-  
+  Supplements supplemets(data);
+  supplemets.add_derivatives(data);
+
+  cout << "two-loop mass splitting including derivative terms = " << data.SE_2["F2"] - data.SE_2["F1"] << endl;
   
   return 0;
 }
