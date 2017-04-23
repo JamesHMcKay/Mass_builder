@@ -293,7 +293,8 @@ namespace utils
     <<"ds[p_] := DiracSlash[p]\n"
     <<"SetOptions[DiracSlash, Dimension -> D, FeynCalcInternal -> True];\n"
     <<"SetOptions[DiracTrace, DiracTraceEvaluate -> True];\n"
-    <<"$GenericMixing = True;\n";
+    <<"$GenericMixing = True;\n"
+    <<"null=0;\n";
   }
  
 void print_math_body(ofstream &file,Options options,string cwd,std::vector<std::string> masses)
@@ -523,7 +524,7 @@ void print_math_body(ofstream &file,Options options,string cwd,std::vector<std::
       {
         myfile << id << " = " << "TFI["<<D<<", " << momentum << ", {{1, " << base.e1  << "}, {1, " << base.e2 << "}, {1, " << base.e3 << "}, {1, " << base.e4 << "}, {1, " << base.e5 << "}}];" << endl;
       }
-      if (type == "A")
+      if (type == "A" && base.e1!="null")
       {
         myfile << id << " = " << "TAI["<<D<<", 0, {{1, " << base.e1 << "}}];" << endl;
       }
@@ -543,11 +544,12 @@ void print_math_body(ofstream &file,Options options,string cwd,std::vector<std::
       {
         myfile << id << " = " << "TJI["<<D<<", " << momentum << ", {{1, " << base.e1 << "}, {1, " << base.e2 << "}, {1, " << base.e3 << "}}];" << endl;
       }
-      if (type == "K")
+      if (type == "K" && (base.e1!="null" || base.e2!="null" || base.e3!="null"))
       {
         myfile << id << " = " << "TJI["<<D<<", 0, {{1, " << base.e1 << "}, {1, " << base.e2 << "}, {1, " << base.e3 << "}}];" << endl;
       }
     }
+    
     
     myfile << "C"<< id << " = Coefficient["<<SEn<<", " << id << ", 1];" << endl;
     myfile << "C"<< id << "2 = Coefficient["<<SEn<<", " << id << ", 2];" << endl; // check if the squared integral exists

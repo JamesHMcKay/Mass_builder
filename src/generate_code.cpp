@@ -602,10 +602,14 @@ void Generate_code::generate_particle_src(std::string particle,int subgroup)
     {
       if (particle_names[d] == particle && subgroup==subgrouplist[d])
       {
-        //if (get_loop_order(levels[d]) == 2 )
-        //{
+        if (get_loop_order(levels[d]) == 2 )
+        {
         functions<< "  cout << \""<< levels[d] << "-loop diagram"<<" "<< particle_name << "_" <<  tags[d] << " = \" << TSIL_POW(PI,4)*real(diagram" <<"_"<< particle_name << "_" << tags[d] << "_" << levels[d] << "())<<endl;"<<endl;
-        //}
+        }
+        if (get_loop_order(levels[d]) == 1 )
+        {
+        functions<< "  cout << \""<< levels[d] << "-loop diagram"<<" "<< particle_name << "_" <<  tags[d] << " = \" << TSIL_POW(PI,2)*real(diagram" <<"_"<< particle_name << "_" << tags[d] << "_" << levels[d] << "())<<endl;"<<endl;
+        }
       }
     }
   }
