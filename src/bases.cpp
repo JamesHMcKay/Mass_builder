@@ -317,11 +317,11 @@ void format_coeff(string dimension, std::map <std::string, Bases > &base_map, st
     */
     
     from = "DiracGamma(6)";
-    to = "1.0L";
+    to = "0.5L";
     ReplaceAll(coefficient,from, to);
     
     from = "DiracGamma(7)";
-    to = "1.0L";
+    to = "0.5L";
     ReplaceAll(coefficient,from, to);
     
     base_map[bases_names[k]].coefficient = coefficient;
