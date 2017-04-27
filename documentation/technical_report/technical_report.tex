@@ -46,33 +46,42 @@
 \def\kmpm{k^{\mu}p_{\mu}}
 \def\he{\frac{\epsilon}{2}}
 
-\newcommand{\mb}{\textsf{Mass Builder} \! }
-\newcommand{\tsil}{\textsf{TSIL} \! }
-\newcommand{\tarcer}{\textsf{TARCER} \! }
+\newcommand{\mb}{\textsf{Mass Builder} }
+\newcommand{\mbs}{\textsf{Mass Builder}}
+\newcommand{\tsil}{\textsf{TSIL} }
+\newcommand{\tsils}{\textsf{TSIL}}
+\newcommand{\tarcer}{\textsf{TARCER} }
+\newcommand{\tarcers}{\textsf{TARCER}}
+\newcommand{\sarah}{\textsf{SARAH} }
+\newcommand{\sarahs}{\textsf{SARAH}}
+\newcommand{\feynarts}{\textsf{FeynArts} }
+\newcommand{\feynartss}{\textsf{FeynArts}}
+\newcommand{\feyncalc}{\textsf{FeynCalc} }
+\newcommand{\feyncalcs}{\textsf{FeynCalc}}
 
-%\title{Minimal dark matter self energy}
 \usepackage{braket}
 
 \begin{document}
-%\maketitle
-\section{Radiative mass corrections at the two-loop order}
+\title{Radiative mass corrections at the two-loop order}
+\maketitle
+\tableofcontents
 
-\subsection{Introduction}
+\section{Introduction}
 
-In this document we present a self-contained guide for calculating radiative corrections up to two-loop order in the perturbative couplings.  For the purposes of a clear and explanatory presentation we work through a scalar field theory example using all the tools available.  This is followed by a more complicated example of two-loop mass corrections in a triplet extended electroweak model.\\
+In this document we present a detailed calculation of radiative corrections up to two-loop order in the perturbative couplings for two quantum field theories.  For the purposes of a clear and explanatory presentation we work through a scalar field theory example using all the tools available.  This is followed by a more complicated calculation of the two-loop mass corrections in a triplet extended electroweak model.\\
 
 The physical mass of a particle observed in experiments is not the \mbox{\footnotesize$\overline{\rm MS}~$} mass appearing in a renormalised Lagrangian.  Instead it is given by the \textit{pole mass}, which is defined as the pole of the two-point propagator.  The form of the propagator, and thus the pole mass, depends on the field in question.  For a scalar field, $\phi(x)$, the two-point propagator is given by
 \begin{align}
 \braket{\Omega |T\phi(x)\phi(y) | \Omega} = \frac{i}{p^2-m^2+i\epsilon} + \frac{i}{p^2-m^2+i\epsilon}\left[-i\Sigma_2(p)\right]\frac{i}{p^2-m^2+i\epsilon}+ \ . \ . \ . 
 \end{align}
-where the first term is the free field propagator, the second term is all the diagrams with one-loop and two external legs and the dots represent terms with two-loop, three-loops and so on.  So $\Sigma_2$ is the sum of the amplitudes of all one particle irreducible processes (1PI) $\phi\rightarrow\phi$ that contain one-loop between the incoming and outgoing propagators.  Here a 1PI process is a diagram with two external scalar legs, which can not be split into a sum of such diagrams.  Once we have evaluated $\Sigma_2$ we must include an infinite series of these 1PI diagrams.  To leading order we may let $\Sigma_2=\Sigma$, or it may represent all higher order processes as well.  So after taking this infinite series of 1PI diagrams we end up with the Fourier transform of the two-point function
+where the first term is the free field propagator, the second term is all the diagrams with one-loop and two external legs and the dots represent terms with two-loops, three-loops and so on.  So $\Sigma_2$ is the sum of the amplitudes of all one particle irreducible processes (1PI) $\phi\rightarrow\phi$ that contain one-loop between the incoming and outgoing propagators.  Here a 1PI process is a diagram with two external scalar legs, which can not be split into a sum of such diagrams.  Once we have evaluated $\Sigma_2$ we must include an infinite series of these 1PI diagrams.  If one loop precision is required then one can set $\Sigma_2=\Sigma$, otherwise it may be left to represent all higher order loop processes.  After taking this infinite series of 1PI diagrams we end up with the Fourier transform of the two-point function
 \begin{align}
 \begin{split}
 \int \d^4x\braket{\Omega |T\phi(x)\phi(0) | \Omega} e^{-p\cdot x}=& \frac{i}{p^2-m^2} + \frac{i}{p^2-m^2}\left[-i\Sigma(p)\right]\frac{i}{p^2-m^2} \\
 & + \frac{i}{p^2-m^2}\left[-i\Sigma(p)\right]\frac{i}{p^2-m^2}\left[-i\Sigma(p)\right]\frac{i}{p^2-m^2}+ \ . \ . \ . 
 \end{split}
 \end{align}
-now since $\Sigma(p)$ clearly commutes with $i$, and similarly with more complicated propagators with a momentum dependent numerator, these still commute since $\Sigma(p)$ is a function of $\slashed{p}$ and pure numbers, we are able to express this sum as a convergent geometric series
+Since $\Sigma(p)$ clearly commutes with $i$ we are able to express this sum as a convergent geometric series (this case is true for other propagators with momentum dependent numerators, since $\Sigma(p)$ is a function of $\slashed{p}$ and pure numbers only)
 \begin{align}
 \begin{split}
 \int \d^4x\braket{\Omega |T\phi(x)\phi(y) | \Omega} e^{-p\cdot x}&=\frac{i}{p^2-m^2}\left(1 +\left(\frac{\Sigma(p)}{p^2-m^2}\right)+\left(\frac{\Sigma(p)}{p^2-m^2}\right)^2+\ . \ . \ .\right)\\
@@ -104,8 +113,7 @@ R}e\,\Pi^T_{VV}(M_Z^2)~,\label{mz}
 \end{eqnarray}
 %
 where $\hat M_V$ and $\hat M_V$ denote the
-\mbox{\footnotesize$\overline{\rm MS}~$} mass of the gauge boson $V\in\{W,Z,\gamma, ... \}$.
-
+\mbox{\footnotesize$\overline{\rm MS}~$} mass of the gauge boson $V\in\{W,Z,\gamma, ... \}$.\\
 
 The self-energies and \mbox{\footnotesize$\overline{\rm MS}~$} masses are evaluated at the renormalization scale $Q$.  We have omitted the explicit dependance of these quantities on $Q$ throughout as it only has relevance when we wish to numerically evaluate the self energies.\\
 
@@ -113,22 +121,21 @@ Determining the value of the self energy, $\Sigma(p)$, is the focus of this work
 \begin{align}
 \Sigma(p) = \frac{1}{16\pi^2}\Sigma^{(1)}(p)+\frac{1}{\left(16\pi^2\right)^2}\Sigma^{(2)}(p)+\ . \ . \ .
 \end{align}
-where $\Sigma^{(1)}(p)$ is the sum of all 1PI diagrams involving one-loop, $\Sigma^{(2)}(p)$ is all 1PI diagrams involving two loops and so on.  In a valid perturbation theory the magnitude of the corrections will decrease with order such that the geometric series above does properly converge.  Typically two or three loop corrections are considered sufficient when comparing to the precision of modern experiments.\\
+where $\Sigma^{(1)}(p)$ is the sum of all 1PI diagrams involving one-loop, $\Sigma^{(2)}(p)$ is all 1PI diagrams involving two loops and so on.  In a valid perturbation theory the magnitude of the corrections will decrease with order such that the geometric series above does properly converge.  Typically one or two-loop corrections are considered sufficient when comparing to the precision of modern experimental measurements.\\
 
-The expressions we have obtained for the pole mass must be solved iteratively or changed to an explicit form.  The details of these methods are outlined in the draft paper (attached).\\
+The main purpose of this document is to make clear how we employ the computational tools available to calculate the radiative corrections in a manner consistent with existing results in the literature.  We will make use of \feynarts \cite{Hahn2000} for generating amplitudes, \feyncalc \cite{Mertig1991,Shtabovenko2016} for reducing these to integrals, \tarcer \cite{Mertig1998} to further reduce these integrals to basis integrals and \tsil \cite{Martin2006} to numerically evaluate these integrals.\\
 
-The main purpose of this document is to make clear how we employ the computational tools available to calculate the radiative corrections in a manner consistent with existing results in the literature.  We will make use of FeynArts \cite{Hahn2000} for generating amplitudes, FeynCalc \cite{Mertig1991,Shtabovenko2016} for reducing these to integrals, TARCER \cite{Mertig1998} to further reduce these integrals to basis integrals and TSIL \cite{Martin2006} to numerically evaluate these integrals.\\
-
-The final step of converting \tarcer output into code which we can interface with \tsil is non-trivial.  The amplitude produced by \tarcer is written in terms of divergent basis integrals which we must also seperate into a divergent and finite piece.  For this purpose, and for organising the entire calculation, we make use of the \mb program (see attached program manual) which generates both Mathematica scripts to perform the symbolic calculations, right from the initial amplitude generation with FeynArts, through to generating C++ code to perform the numerical evaluation of the amplitudes.
+The final step of converting \tarcer output into an interface with \tsil is non-trivial in that it requires organisation and sorting of massive amounts of symbolic expressions.  The amplitude produced by \tarcer is written in terms of divergent basis integrals which we must also seperate into a divergent and finite piece.  For this purpose, and for organising the entire calculation, we make use of the \mb program (see attached program manual) which generates Mathematica scripts to perform the symbolic calculations, right from the initial amplitude generation with \feynartss, through to generating C++ code to perform the numerical evaluation of the amplitudes.
 
 
 \section{Scalar field theory}
+\subsection{Introduction}
 
 The field theory we will deal with here is that with Lagrangian
 \begin{align}
 \mathcal{L} = \frac{1}{2}(\partial_{\mu} s)^2-\frac{1}{2}m^2s^2-\frac{g}{3!}s^3-\frac{\lambda}{4!}s^4
 \end{align}
-where $m$ is the Lagrangian mass parameter of the field and we have two couplings, $g$ and $\lambda$, for the cubic and quartic interactions respectively.  We now need to redefine the field in couplings in terms of renormalised $\overline{MS}$ parameters,
+where $m$ is the Lagrangian mass parameter of the field and we have two couplings, $g$ and $\lambda$, for the cubic and quartic interactions respectively.  We now need to redefine the field and couplings in terms of renormalised $\overline{MS}$ parameters,
 
 \begin{align}
 s\rightarrow Z^{1/2}_ss, \ \ \ m^2\rightarrow\frac{1}{Z_s}(m^2+\delta m^2),  \ \ \ g\rightarrow \frac{1}{Z_s^{3/2}}(g+\delta_g), \ \ \ \lambda\rightarrow \frac{1}{Z_s^2}(\lambda+\delta\lambda)
@@ -143,15 +150,13 @@ where
 &\mathcal{L}_{interaction} &= \ -\frac{g}{3!}s^3-\frac{\lambda}{4!}s^4  +\frac{1}{2}(Z_s-1)(\partial_{\mu} s)^2 -\frac{\delta m}{2}m^2s^2-\frac{\delta g}{3!}s^3-\frac{\delta \lambda}{4!}s^4
 \end{eqnarray}
 
-We can use the above interaction Lagrangian to determine the Feynman rules for each vertex interaction.  For the two-point propagator we have the tree-level counter-term with interaction coupling $i(Z_s-1)k^2-i\delta m$.  We will define $Z_s-1=\delta Z$.  The cubic and quartic interactions are simply $-i\delta g$ and $-i\delta \lambda$ respectively, with no momentum dependant part.
+We can use the above interaction Lagrangian to determine the Feynman rules for each vertex interaction.  For the two-point propagator we have the tree-level counter-term with interaction coupling $i(Z_s-1)k^2-i\delta m$.  We will define $Z_s-1=\delta Z$.  The cubic and quartic interactions are simply $-i\delta g$ and $-i\delta \lambda$ respectively, with no momentum dependant part.  The \feynarts model file that we have created for this model and use in the following calcualtions is provided with \mbs.
 
 
 
+\subsection{One-loop self energy}\label{sec:scalar_one_loop}
 
-
-\subsection{One-loop self energy}
-
-In this section we present the one-loop corrections to the scalar propagator.  There are two loop corrections and one counter-term correction at the one-loop order.  Although these are easily written down by hand we use \mb to carry out the calculation and demonstrate consistency.
+In this section we present the corrections to the scalar propagator that are of one-loop order, including the tree-level counter-term.  Although these are easily written down by hand we use \mb to carry out the calculation and demonstrate consistency.\\
 
 \noindent\begin{minipage}{0.3\textwidth}
 \includegraphics[width=0.8\textwidth]{1loop_1.pdf}\\
@@ -159,31 +164,31 @@ In this section we present the one-loop corrections to the scalar propagator.  T
 \includegraphics[width=0.8\textwidth]{1loop_c.pdf}
 \end{minipage}
 \noindent\begin{minipage}{0.7\textwidth}
-The ``tadpole" diagram on the left is the easiest to evaluate, the integral is
+The ``tadpole" diagram on the top left is the easiest to evaluate, the integral is
 \begin{align}
-\Pi^{(1)}_1 =  \kappa\frac{\lambda}{2} \int \d^4k \frac{-i}{k^2-m^2} =  \kappa \frac{\lambda}{2} \mathbf{A}(m^2)
+\Pi^{(1)}_1 =  \kappa\frac{\lambda}{2} \int \d^4k \frac{-i}{k^2-m^2} =  \kappa \frac{\lambda}{2} \mathbf{A}(m^2).
 \end{align}
 
-The result directly from TARCER is
+The result directly from \tarcer is
 \begin{align}
 \Pi^{(1)}_1 = -i \kappa \frac{\lambda}{2} \mathbf{TAI}(m^2)
 \end{align}
-so after using the relationship $i\mathbf{TAI} = \mathbf{A}$ we see these are equivalent.  The result here is a divergent integral, expressing it as a divergent plus finite piece we have
+so after using the relationship $i\mathbf{TAI}(x) = \mathbf{A}(x)$ we see these are equivalent.  The result here is a divergent integral, expressing it as a divergent plus finite piece we have
 \begin{align}
 \Pi^{(1)}_1 = \frac{1}{2}\kappa\lambda\left(A(m^2)+\epsilon A_{\epsilon}(m^2)-\frac{m^2}{\epsilon}\right).\label{eqn:scalar_1}
 \end{align}
 
 \end{minipage}
 
-For the second loop correction we can again quickly write down the integral
+For the second loop correction we can again immediately write down the integral
 \begin{align}
 \Pi^{(1)}_2 = -\kappa \frac{g^2}{2} \mathbf{B}(m^2,m^2).
 \end{align}
- and then  and $-i\mathbf{TBI} = \mathbf{B}$ to convert to \tsil notation
+ and then use and $-i\mathbf{TBI} = \mathbf{B}$ to convert to \tsil notation
 \begin{align}
 \Pi^{(1)}_2 =-i \kappa \frac{g^2}{2} \mathbf{TBI}(m^2,m^2)
 \end{align}
-which is the output we obtain from TARCER.  The finite plus divergent result is
+which is the output we obtain from \tarcers.  The finite plus divergent result is
 \begin{align}
 \Pi^{(1)}_2 = - \frac{1}{2}\kappa g^2\left(B(m^2)+\epsilon B_{\epsilon}(m^2)+\frac{1}{\epsilon}\right).\label{eqn:scalar_2}
 \end{align}
@@ -205,11 +210,11 @@ so we find
 &\delta m &=\frac{\kappa}{2\epsilon} \left(g^2+\lambda m^2\right)+\mathcal{O}(\kappa^2)\\
 &\delta Z &= \mathcal{O}(\kappa^2)
 \end{eqnarray}
-where we allow for high order terms which are required to cancel divergences from amplitudes above the one-loop order.\\
+where we allow for high order terms which are required to cancel divergences from amplitudes above the one-loop order, which we will determine in the next section.\\
 
 \subsection{Two-loop self energy}
 
-There are 9 loop corrections and 5 counter-term corrections to the scalar propagator at the two-loop level.  We present the results as output by \tarcer and the required conversions to \tsil integrals on a diagram by diagram basis in this section.  For the first diagram we show equivalence with the result as it would be computed by hand and from \mb, which for this diagram is non-trivial.  We show this equivalence at the level of finite integrals.  For the rest we either omit this working or the equivalence is immediately evident, and leave the result as divergent integrals for brevity.
+There are 9 loop corrections and 5 counter-term corrections to the scalar propagator at the two-loop level.  We present the results as output by \tarcer and the required conversions to \tsil integrals on a diagram by diagram basis in this section.  This enables a direct comparison between our results and that found in the \tsil manual \cite{Martin2006}.  For the first diagram we show the equivalence down to the level of finite integrals, for which the fully worked result from \mb is most useful.  For the rest we either omit this working or the equivalence is immediately evident, and leave the result as divergent integrals for brevity.
 
 \subsection*{Diagram 1}
 \noindent\begin{minipage}{0.3\textwidth}
@@ -222,7 +227,7 @@ In integral form this diagram can be written down as
 \begin{align}
 \Pi^{(2)}_1=-\kappa^2\frac{\lambda g^2}{2}\mathbf{A}(x)\mathbf{B}(x',x)\label{eqn:scalar_2a}
 \end{align}
-using the definitions given in the appendix.  However, we can't deal with derivatives of basis integrals with the computational tools we have as TARCER will always reduce to the most fundamental basis.  So to make a proper check of the tools we must convert this to the most fundamental basis using the relationship
+using the definitions given in the appendix.  However, we can't deal with derivatives of basis integrals with the computational tools we have as \tarcer will always reduce to the most fundamental basis.  So to make a proper check of the tools we must convert this to the most fundamental basis using the relationship
 \end{minipage}
 \begin{align}
 {\bf B}(x',y) = 
@@ -235,7 +240,7 @@ where
 \Delta_{abc} \equiv a^2 + b^2 + c^2 - 2 a b - 2 a c - 2 b c.
 \end{align}
 
-Now we will work through from the initial divergent basis integrals in (\ref{eqn:scalar_2a}) and obtain all finite contributions to the amplitude and compare this with the result from \mb.  First I deal with $\mathbf{B}_p(m^2,m^2)$.  From (\ref{eqn:deltaxyz}) setting $x=y$ we have
+Now we will work through from the initial divergent basis integrals in (\ref{eqn:scalar_2a}) and obtain all finite contributions to the amplitude and compare this with the result from \mbs.  First I deal with $\mathbf{B}_p(m^2,m^2)$.  From (\ref{eqn:deltaxyz}) setting $x=y$ we have
 \begin{align}
 \mathbf{B}(x',x) = \frac{2x(3-D)\mathbf{B}(x,x)+(2-D)\mathbf{A}}{2x(s-4x)}
 \end{align}
@@ -249,7 +254,7 @@ So setting $x=m^2$ and $s=p^2$ we have
 \Pi = -\frac{g^2\lambda}{2(16\pi^2)^2} \frac{\left(2m^4B(m^2,m^2)+m^2A(m^2)B(m^2,m^2)+(A(m^2))^2\right)}{m^2(p^2-4m^2)}
 \end{align}
 
-Evaluating this diagram with FeynArts, FeynCalc and TARCER via \mb we obtain the finite amplitude
+Evaluating this diagram with \mb we obtain the finite amplitude
 \begin{align}
 \Pi = -\frac{g^2\lambda}{(16\pi^2)^2} \frac{ \left(m^2A(m^2)B(m^2,m^2) + 2m^4B(m^2,m^2) + (A(m^2))^2 \right) }{ 2m^2 (4m^2-p^2)}
 \end{align}
@@ -301,13 +306,10 @@ making the conversion to \tsil notation, $\mathbf{TFI}=\mathbf{M}$, we have
 \noindent\begin{minipage}{0.3\textwidth}
 \begin{center}
 \includegraphics{2loop_5.pdf}
-
-
-
 \end{center}
 \end{minipage}
 \noindent\begin{minipage}{0.7\textwidth}
-This diagram is given by TARCER to be, in terms of divergent integrals,
+This diagram is given by \tarcer to be, in terms of divergent integrals,
 \begin{align}
 \begin{split}
 \Pi_5 =&- \kappa^2 \frac{g^4}{12 m^4} \left( \frac{3(3D-8)m^2(2m^2-p^2)}{p^2(4m^2-p^2)}\mathbf{TJI}(m^2,m^2,m^2)\right. \\
@@ -318,7 +320,7 @@ This diagram is given by TARCER to be, in terms of divergent integrals,
 \end{split}
 \end{align}
 \end{minipage}
-converting to TSIL notation we obtain
+converting to \tsil notation we obtain
 
 \begin{align}
 \begin{split}
@@ -338,11 +340,11 @@ converting to TSIL notation we obtain
 \end{center}
 \end{minipage}
 \noindent\begin{minipage}{0.7\textwidth}
-This diagram is given by TARCER to be
+This diagram is given by \tarcer to be
 \begin{align}
 \Pi_6 &= -\kappa^2 \frac{\lambda^2(D-2)}{8}\frac{ \left({\tt{\mathbf{TAI}}} (m^2)\right)^2}{ m^2 }  
 \end{align}
-converting to TSIL notation and accounting for the negative sign we obtain
+converting to \tsil notation and accounting for the negative sign we obtain
 \begin{align}
 \Pi_6 &=- \kappa^2 \frac{\lambda^2(D-2)}{8}\frac{ \left({\tt{\mathbf{A}}} (m^2)\right)^2}{ m^2 }  
 \end{align}
@@ -352,14 +354,14 @@ now we must set $D=4-2\epsilon$ and account for finite contributions which come 
 \begin{align}
 {\tt{\mathbf{TAI}}}(x) &= \frac{ix}{\epsilon} +  {\tt{TAI}}(x)
 \end{align}
-where we have converted \textcolor{blue}{(1.28)} of the TSIL manual into the TARCER definition using $\mathbf{A}= ia \tt{\mathbf{TAI}}$ and taking $a=1$ for small $\epsilon$ (see the \mb manual for the equivalent relationship for all basis integrals).  So the amplitude becomes
+where we have converted \textcolor{blue}{(1.28)} of the \tsil manual \cite{Martin2006} into the \tarcer definition using $\mathbf{A}= ia \tt{\mathbf{TAI}}$ and taking $a=1$ for small $\epsilon$ (see the \mb manual for the equivalent relationship for all basis integrals).  So the amplitude becomes
 \begin{align*}
 \Pi_1 &=- \frac{\lambda^2(2-2\epsilon)}{8 m^2 }       \left( {\tt{TAI}}(m^2) +\frac{im^2}{\epsilon}\right)^2  \\
 &=- \frac{\lambda^2}{4 m^2 }  {\tt{TAI}}(m^2) \left( \frac{ {\tt{TAI}}(m^2) } {m^2} - 2i\right)
 \end{align*}
 where we ignore any divergent terms (we will be careful to account for these properly later) and take the limit of $\epsilon\rightarrow 0$.\\
 
-Finally we need to evaluate this in terms of TSIL integrals, which have a different normalization.  The relationship is $\mathbf{A}= ia \tt{\mathbf{TAI}}$ where $a = (4\pi\mu^2)^{2-D/2} \approx 1 +\frac{r\epsilon}{2}\log(4\pi\mu^2)+\mathcal{O}(\epsilon^2)$.  Since we have already removed the divergent parts and are dealing with finite integrals, I take $\epsilon =  0$ and we simply have $\mathbf{A}= i \tt{\mathbf{TAI}}$.  Therefore we end up with
+Finally we need to evaluate this in terms of \tsil integrals, which have a different normalization.  The relationship is $\mathbf{A}= ia \tt{\mathbf{TAI}}$ where $a = (4\pi\mu^2)^{2-D/2} \approx 1 +\frac{r\epsilon}{2}\log(4\pi\mu^2)+\mathcal{O}(\epsilon^2)$.  Since we have already removed the divergent parts and are dealing with finite integrals, I take $\epsilon =  0$ and we simply have $\mathbf{A}= i \tt{\mathbf{TAI}}$.  Therefore we end up with
 \begin{align}
 \Pi_1 & = \kappa^2  \frac{\lambda^2}{4 } A(m^2) \left( \frac{A(m^2)}{m^2} + 2 \right)
 \end{align}
@@ -374,7 +376,7 @@ Finally we need to evaluate this in terms of TSIL integrals, which have a differ
 \end{center}
 \end{minipage}
 \noindent\begin{minipage}{0.7\textwidth}
-This diagram is given by TARCER to be
+This diagram is given by \tarcer to be
 \begin{align}
 \Pi_7 & =  -\kappa^2 \frac{g^2 \lambda}{4 } \left(\mathbf{TBI}(m^2,m^2)\right)^2
 \end{align}
@@ -392,11 +394,11 @@ using $-i\mathbf{TBI}(x,y) = \mathbf{B}(x,y)$ we obtain
 \end{center}
 \end{minipage}
 \noindent\begin{minipage}{0.7\textwidth}
-This diagram is given by TARCER to be
+This diagram is given by \tarcer to be
 \begin{align}
 \Pi_8 & =  \kappa^2\frac{g^2 \lambda}{12 m^2 } (D-3) \mathbf{TKI}(m^2,m^2,m^2)
 \end{align}
-converting to TSIL notation we obtain and including a relative negative sign for the definition of K 
+converting to \tsil notation and including a relative negative sign for the definition of the basis integral we obtain
 \begin{align}
 \Pi_8 & =  -\kappa^2\frac{g^2 \lambda}{12 m^2 } (D-3) \mathbf{I}(m^2,m^2,m^2).
 \end{align}
@@ -409,12 +411,12 @@ converting to TSIL notation we obtain and including a relative negative sign for
 \end{center}
 \end{minipage}
 \noindent\begin{minipage}{0.7\textwidth}
-This diagram is given by TARCER to be
+This diagram is given by \tarcer to be
 
  \begin{align}
  \Pi_9 =\kappa^2 \frac{\lambda^2 {\tt{\mathbf{TJI}}}(m^2,m^2,m^2) }{6}
  \end{align}
- where ${\tt{\mathbf{TJI}}} = {\tt{\mathbf{TJI}}}\{1,1,1\}$ which is equivalent to the TSIL integral $S(x,y,z)$ for $a=1$, accounting for the negative sign we obtain
+ where ${\tt{\mathbf{TJI}}} = {\tt{\mathbf{TJI}}}\{1,1,1\}$ which is equivalent to the \tsil integral $S(x,y,z)$ for $a=1$, accounting for the negative sign we obtain
  \begin{align*}
  \Pi_9 & = -\kappa^2\frac{\lambda^2}{6}\textbf{S}(m^2,m^2,m^2).
  \end{align*}
@@ -427,7 +429,7 @@ This diagram is given by TARCER to be
 \end{center}
 \end{minipage}
 \noindent\begin{minipage}{0.7\textwidth}
-The first counter-term diagram involves a correction to the internal scalar propagator and has an amplitude given by TARCER to be
+The first counter-term diagram involves a correction to the internal scalar propagator and has an amplitude given by \tarcer to be
  \begin{align}
  \begin{split}
  \Pi_1 = \kappa\frac{ 1 }{\epsilon} \frac{i  d_1 g^2}{ 2 m^2 (4m^2-p^2)} \left( (D-2){\tt{\mathbf{TAI}}}(m^2)\right.&\\
@@ -455,7 +457,7 @@ where we have also multiplied the computed result by $1/\epsilon$\footnote{We co
  \begin{align}
  \Pi_2 = \frac{ 1 }{\epsilon} \kappa i  \frac{d_{\lambda}}{2} {\tt{\mathbf{TAI}}}(m^2)
  \end{align}
- converting from TARCER to TSIL we obtain
+ converting from \tarcer to \tsil we obtain
   \begin{align}
  \Pi_2 = - \frac{ 1 }{\epsilon}\kappa \frac{d_{\lambda}}{2} \ {\tt{\mathbf{A}}}(m^2)
  \end{align}
@@ -474,7 +476,7 @@ Counter-term diagrams 3 and 5 are identical and have a total amplitude of
  \begin{align}
  \Pi_{3,5} = \kappa i \frac{g d_g}{\epsilon} {\tt{\mathbf{TBI}}}(m^2,m^2) 
  \end{align}
-converting to TSIL notation and inserting the counter-term coupling (each introduces a negative sign)
+converting to \tsil notation and inserting the counter-term coupling (each introduces a negative sign)
 \begin{align}
  \Pi_{3,5} = \kappa^2 g \frac{c_{1,1}^g}{\epsilon} {\tt{\mathbf{B}}}(m^2,m^2) 
  \end{align}
@@ -497,21 +499,21 @@ changing to \tsil notation we find
  \end{align}
  \end{minipage}
 
-\subsection{The counter-term couplings and removing divergences}
+\subsection{The total finite mass correction}
 
 The final step is the most non-trivial and involves cancelling all divergences by a careful choice of counter-term couplings.  We use Mathematica to solve a set of simultaneous equations for the counter-term couplings.  There are five counter-terms to determine up to the order in $\epsilon$ we require, the first of these has already been calculated in the first section, leaving four to compute from the full amplitude.\\
 
 If $\Pi=\sum_{i=1}^{2} \Pi^{(1)}_i + \sum_{i=1}^{9} \Pi^{(2)}_i + \Pi^{(1c)}_1 + \sum_{i=1}^{5} \Pi^{(2c)}_i$ is the total self energy then we demand that $\Pi$ has no terms of order one or higher in $1/\epsilon$.  We take the coefficients of $1/\epsilon$, and $1/\epsilon^2$, and then subsequently take the coefficients of the $A(x)$ and $B(x,x)$ terms from each of these to form four seperate equations.  These are sufficient to solve the system and obtain the following counter-terms
 \begin{align}
-c_{11\lambda}=& \frac{3\lambda^2}{2}\\
-c_{11g}=& \frac{3g\lambda}{2}\\
-c_{22}=& \frac{1}{8}\left(7g^2\lambda+4\lambda^2m^2\right)\\
-c_{21}=& \frac{1}{24}\left(-15g^2\lambda+\lambda^2p^2-6\lambda^2m^2\right)
+\delta \lambda=& \kappa\frac{3\lambda^2}{2}\\
+\delta g=& \kappa\frac{3g\lambda}{2}\\
+\delta Z=& \frac{\kappa^2}{8}\left(7g^2\lambda+4\lambda^2m^2\right)\\
+\delta m=&\frac{\kappa}{2\epsilon} \left(g^2+\lambda m^2\right)+ \frac{\kappa^2}{24}\left(-15g^2\lambda+\lambda^2p^2-6\lambda^2m^2\right)
 \end{align}
-with these counter-term couplings all divergences are removed.  The resultant self energy is
+with these counter-term couplings all divergences are removed.  In $\delta m$ we used the result for the order $\kappa$ part from the one-loop calculation in section \ref{sec:scalar_one_loop}.  The resultant self energy is
 \begin{eqnarray}
-\Pi^{(1)}(s) &=& {1\over2}\lambda A(x) - {1\over2}g^2 B(x,x)\\
-\Pi^{(2)}(s) &=& -{1\over2}g^4 M(x,x,x,x,x) 
+\Pi^{(1)}(p^2) &=& {1\over2}\lambda A(x) - {1\over2}g^2 B(x,x)\\
+\Pi^{(2)}(p^2) &=& -{1\over2}g^4 M(x,x,x,x,x) 
 -{1\over2}g^4V(x,x,x,x) +\lambda g^2U(x,x,x,x)
 \nonumber\\
 && -{1\over6}\lambda^2 S(x,x,x)
@@ -521,7 +523,7 @@ with these counter-term couplings all divergences are removed.  The resultant se
 - {1\over4}\lambda g^2 I(x^\prime,x,x)\; ,
 \nonumber
 \end{eqnarray}
-where $x=m^2$.
+where $x=m^2$.  This result contains only finite basis integrals and note that all coefficients of the $A_{\epsilon}(x)$ and $B_{\epsilon}(x,x)$ functions are zero in the total amplitude.
 
 
 
@@ -552,7 +554,7 @@ To further reduce the number of interactions we need to consider we will use a s
 &+g\left(\overline{\mychi^+}\gamma_{\mu}\mychi^0 \right)W_{\mu}^++\text{h.c.}
 \end{split}
 \end{align}
-where $s_W=\sin(\theta_W)$ and $c_W=\cos(\theta_W)$ are the sine and cosine of the Weinberg angle respectively.
+where $s_W=\sin(\theta_W)$ and $c_W=\cos(\theta_W)$ are the sine and cosine of the Weinberg angle respectively.\\
 
 The Higgs sector is given by
 \begin{align}
@@ -598,13 +600,13 @@ and in the EWSB eigenstate
 \begin{align} 
 L_{GF} = \, & -\frac{1}{2} A^0 v \xi_{Z} \Big(g_1 \sin\Theta_W   + g_2 \cos\Theta_W  \Big) + \partial_{\mu}Z|^2 \xi_{Z}^{-1}  -\frac{1}{2} |\partial_{\mu}\gamma|^2 \xi_{\gamma}^{-1} \\&-\frac{i}{2} g_2 H^+ v \xi_{W^+}  + \partial_{\mu}W^+|^2 \xi_{W^+}^{-1}.
 \end{align} 
-In our choice of gauge the ghost fields take on the same mass as their respective field, such that $m_{\eta_{\gamma}} = m_{\gamma}$, $m_{\eta_Z}=m_{Z}$, $m_{\eta^+}=m_{W}$.  The fields $A_0$ and $H^+$ from the pre-EWSB theory are also given the respective masses of $m_{A_0}=m_Z$ and $m_{H^+}=m_W$.
+In our choice of gauge the ghost fields take on the same mass as their respective field, such that $m_{\eta_{\gamma}} = m_{\gamma}$, $m_{\eta_Z}=m_{Z}$, $m_{\eta^+}=m_{W}$.  The fields $A_0$ and $H^+$ from the pre-EWSB theory are also given the respective masses of $m_{A_0}=m_Z$ and $m_{H^+}=m_W$.\\
 
-We use the following relationships in the input to \mb, to reduce the number of free variables required at run time
+We use the following relationships in the input to \mbs, to reduce the number of free variables required at run time
 \begin{eqnarray}
 \begin{split}
-s_w^2&=\frac{g_1^2}{g_1^2+g_2^2}, \ \ \ c_w^2&=\frac{g_2^2}{g_1^2+g_2^2}\\
-\alpha&=\frac{g_1^2g_2^2}{g_1^2+g_2^2}, \ \ \ v&=\frac{2m_w}{g_2} \ \ \ \ \alpha=e^2
+s_W^2&=\frac{g_1^2}{g_1^2+g_2^2}, \ \ \ & c_W^2=\frac{g_2^2}{g_1^2+g_2^2}\\
+\alpha&=\frac{g_1^2g_2^2}{g_1^2+g_2^2}, \ \ \ v&=\frac{2m_W}{g_2}, \ \ \ \ \alpha=e^2
 \end{split}
 \end{eqnarray}
 
@@ -643,23 +645,23 @@ i\Pi^{\chi}_{\mu\nu}&=-i\frac{\slashed{k}-m}{k^2-m^2- \Pi(k^2)}
 \end{align}
 for the vector bosons ($V\in\{W^{\pm},\gamma,Z\}$) and the components of the fermionic triplet ($\chi\in\{\chi^0,\chi^{\pm}\}$).\\
 
+Because there is a large number of possible couplings and particles in this theory we use \sarah \cite{Staub2014} to generate the \feynarts \cite{Hahn2000} model file rather than listing these by hand.  The \sarah model file is given in section \ref{sec:EW_triplet_sarah_model}.\\
+
 The aim of this section is to the compute the full two-loop self energy of the charged and neutral components of the electroweak triplet, $\chi$.  For this we will require the one-loop self energy, the derivative of the one-loop self energy and the two-loop self energy.  To obtain the necessary contributions from the two-loop order counter-terms we will also require the counter-term couplings involved.  For this theory, these are limited to the tree-level counter-term couplings for the gauge bosons and the triplet, along with a single vertex correction.  All these quantities will be presented in the remainder of this section.
 
 
 \subsubsection{Pole mass calculation}
 
-We present here a detailed discussion of the method of pole mass calculation in the electroweak triplet theory.
-
-The pole mass is obtained from the 1PI effective two-point function,
+We present here a detailed discussion of the method of pole mass calculation in the electroweak triplet theory.  The pole mass is obtained from the 1PI effective two-point function,
 \begin{equation}
 \Gamma_2=\slashed{p}-M_0+\Sigma_K(p^2)\slashed{p}+\Sigma_M(p^2) \label{eqn:propagator}
 \end{equation}
-where $p$ is the four momentum of the particle and $M_0$ is the tree-level (or MS-bar after renormalisation) mass, and $\Sigma(p^2)=\Sigma_M(p^2)+\slashed{p}\Sigma_K(p^2)$ is the self energy.  We calculate self energies both by hand and using FeynCalc \cite{Mertig1991,Shtabovenko2016} at the one-loop level.  The pole mass is obtained by demanding $\Gamma_2=0$ which can be achieved by setting $p=\slashed{p}=\Mp$ and iterating
+where $p$ is the four momentum of the particle and $M_0$ is the tree-level (or MS-bar after renormalisation) mass, and $\Sigma(p^2)=\Sigma_M(p^2)+\slashed{p}\Sigma_K(p^2)$ is the self energy.  The pole mass is obtained by demanding $\Gamma_2=0$ which can be achieved by setting $p=\slashed{p}=\Mp$ and iterating
 \begin{align}
 \Mp=\text{Re}\left[\frac{M_0-\Sigma_M(\Mp^2)}{1+\Sigma_K(\Mp^2)}\right]. \label{eqn:M_pole_iterative}
 \end{align}
 
-This is the first of two methods to calculate the pole mass, which we will refer to as $\Mpa$ or the \textit{implicit pole mass}.
+This is the first of two methods to calculate the pole mass, which we will refer to as $\Mpa$ or the \textit{implicit pole mass}.\\
 
 Alternatively (\ref{eqn:M_pole_iterative}) can be expanded as a power series in the gauge coupling $g$, where for each self energy function we have $\mathcal{O}(\Sigma^{(n)})=\mathcal{O}(g^{2n})$ where $n$ is the number of radiative loop corrections computed for the self energy function.  First, expressing the self energies as a power series in $g$ we have
 \begin{align}
@@ -671,7 +673,7 @@ Then using a Taylor expansion we find to order $g^6$
 \Mp=M_0-\Sigma^{(1)}_M-\Sigma^{(2)}_M-M_0\Sigma^{(1)}_K+\Sigma^{(1)}_M\Sigma^{(1)}_K\ \ \ \ \ \ \ \ \ \ \  \ \ &\\ \left.-M_0\Sigma^{(2)}_K+\Sigma^{(1)}_K\Sigma^{(1)}_K+\mathcal{O}(g^6)\right|_{p^2=\Mp^2}&
 \end{split}
 \end{align*}
-where $\Sigma^{(n)}_X=\Sigma^{(n)}_X(p^2)$ such that $p^2$ is the first argument in the two point functions appearing in the self energies. However, this is still an iterative expression, to get an expression without iterating we must change $p$ here from $\Mp$ to $M_0$.
+where $\Sigma^{(n)}_X=\Sigma^{(n)}_X(p^2)$ such that $p^2$ is the first argument in the two point functions appearing in the self energies. However, this is still an iterative expression, to get an expression without iterating we must change $p$ here from $\Mp$ to $M_0$.\\
 
 %\begin{align*}
 %\frac{1}{1+x}=1-x+x^2+\mathcal{O}(x^3)
@@ -733,13 +735,32 @@ which agrees with Ibe and Sato \cite{Ibe2013a}.  Reducing this to the one-loop l
 \Mp&=\left[M_0-\Sigma^{(1)}_M-M_0\Sigma^{(1)}_K+\mathcal{O}\left(g^4\right)\right]_{p^2=M_0^2} \label{eqn:M_pole_explicit_1_loop}
 \end{split}
 \end{align}
-which is the second method of pole mass calculation we will use, we refer to this as $\Mpb$ or the \textit{explicit pole mass}.
+which is the second method of pole mass calculation we will use, we refer to this as $\Mpb$ or the \textit{explicit pole mass}.\\
 
-In summary, we have derived an explicit expression for the pole mass by invoking the perturbativity of the gauge coupling.  The purpose for doing so is that (\ref{eqn:M_pole_explicit_1_loop}) makes it possible to derive an expression for the mass splitting as one may simply take the difference of this expression for each quintuplet component.  Such a procedure is not possible with the pole mass implicitly defined in (\ref{eqn:M_pole_iterative}), instead one must iterate until convergence is achieved, and then take the difference of the numerical results.
+In summary, we have derived an explicit expression for the pole mass by invoking the perturbativity of the gauge coupling.  These two methods will be used to compute the two-loop pole mass of the triplet particles.
+
+\subsection{One-loop self energies}
+
+In this section we compute all the required one-loop self energies of the particles in the electroweak triplet theory.  Along with the one-loop self energy of triplet itself we must also compute the one-loop self energies of the bosons which appear in this calculation.  This is because these internal boson propagators can have counter-terms inserted and thus become of two-loop order, so we will need to evaluate what these counter-term couplings are.\\
+
+To compute the counter-terms for the gauge boson propagators we must compute the one-loop self energies and demand that these are free of UV divergences.  The computation of these one-loop self energies, which involve all the ghost and pre-EWSB scalar states, is also a good opportunity to check the model is consistent with similar results in the literature.  The analytic form for these amplitudes is presented in Ibe et al. \cite{Ibe2013a} along with the counter-term which we can make a direct comparison.\\
+
+Therefore we will present the details of the one-loop contributions to the amplitude, $\Pi(p^2)$, appearing in the gauge boson propagators, (\ref{eqn:gauge_boson_propagator}), for each boson we require.  These contributions are given by
+{\small
+\begin{eqnarray}
+\Pi_{V_1 V_2}
+= \Pi_{V_1 V_2}^{(V, h)}
++ \Pi_{V_1 V_2}^{(\tilde{\chi})}
++ p^2 \delta_{Z_{V_1 V_2}}
++ \delta_{m^2_{V_1 V_2}}\ ,
+\end{eqnarray}
+}where $V_1 V_2 =$ $\gamma \gamma$, $\gamma Z$, $ZZ$, and $WW$. The first term in the right-hand side is the contributions from the gauge-Higgs sector of the SM and the second term is from the electroweak triplet.  The third and fourth terms are the one-loop counter-terms which are determined by demanding no UV divergences in the total $\Pi_{V_1 V_2}$.\\
+
+We do not need to consider the one-loop self energies of the Higgs, ghosts, or pre-EWSB bosons as these do not appear in the one-loop triplet self energies.  Thus we do not need to determine the counter-terms which would be of two-loop order.  However, if we wanted to compute a three-loop self energy, these would then be required as their propagators appear in the two-loop triplet self energy.
 
 
 
-\subsection{One-loop self energy -- neutral component}
+\subsubsection{Triplet neutral component}
 \noindent\begin{minipage}{0.3\textwidth}
 \includegraphics[width=0.8\textwidth]{1loop_a.pdf}\\
 \includegraphics[width=0.8\textwidth]{1loop_b.pdf}
@@ -748,30 +769,30 @@ In summary, we have derived an explicit expression for the pole mass by invoking
 
 The neutral component only has two possible radiative corrections, due to the processes $\chi_0\rightarrow W^{\pm} + \chi^{\mp}$.  The corresponding Feynman diagrams are given on the left.  The loop integral we need to evaluate is
 \begin{align}
-i\Sigma_{\cn}(\slashed{p})&= 2 (-gi)^2 \int \frac{\d^4k}{(2\pi)^4} \gamma^{\mu}\frac{(\slashed{p}-\slashed{k}+m)\gamma^{\nu}\left(-g_{\mu\nu}\right)}{((p-k)^2-m^2)(k^2-m_{\text{w}}^2)}\label{eqn:cn_loop}
+i\Sigma_{\cn}(\slashed{p})&= 2 (g)^2 \int \frac{\d^4k}{(2\pi)^4} \gamma^{\mu}\frac{(\slashed{p}+\slashed{k}+m)\gamma^{\nu}\left(-g_{\mu\nu}\right)}{((p+k)^2-m^2)(k^2-m_{\text{w}}^2)}\label{eqn:cn_loop}
 \end{align}
 where we have included a factor of two since this process can occur via either $\chi_0\rightarrow W^+ + \chi^-$ or $\chi_0\rightarrow W^- + \chi^+$.  
 \end{minipage}
 
-We will calculate the neutral component self energy by hand and confirm that it is consistent with that given by FeynCalc to verify both the tools and our input model.  The loop integral is expressed as
+We will calculate the neutral component self energy by hand for the purposes of illustration and leave the rest of the calculations to the tools we have available.  The loop integral is expressed as
 \begin{align}
-i\Sigma_{\cn}(\slashed{p})&= (-gi)^2 \int \frac{\d^4k}{(2\pi)^4} \frac{N}{((p+k)^2-m^2)(k^2-m_{\text{w}}^2)}
+i\Sigma_{\cn}(\slashed{p})&=2 (g)^2 \int \frac{\d^4k}{(2\pi)^4} \frac{N}{((p+k)^2-m^2)(k^2-m_{\text{w}}^2)}
 \end{align}
 where we simplify $N$ by
 \begin{align*}
 N&=-\gm(\sk+\sp+m)\gn g_{\mu\nu}\\
 &=-\gm(\sk+\sp+m)\gamma_{\mu}\\
-&=2(\sk+\sp)-4m
+&=(D-2)(\sk+\sp)-Dm
 \end{align*}
 
 using the identities
 \begin{align}
 \begin{split}
-\gamma_{\mu}\slashed{a}\gm&=-2\slashed{a}\\
-\gm\gamma_{\mu}&=4I_4
+\gamma_{\mu}\slashed{a}\gm&=(2-D)\slashed{a}\\
+\gm\gamma_{\mu}&=DI
 \end{split}
 \end{align}
-where $I_4$ is the identity matrix in 4 dimensions.
+where $I$ is the identity matrix in $D$ dimensions.\\
 
 Now we use the Feynman parameter integral
 \begin{align}
@@ -779,73 +800,64 @@ Now we use the Feynman parameter integral
 \end{align}
 to simplify the denominator
 \begin{align*}
- \frac{1}{((p-k)^2-m^2)(k^2-m_{\text{w}}^2)}&=\int_0^1\frac{\d x}{[k^2-m_{\text{w}}^2+(p^2-2kp+k^2-(k^2-m_{\text{w}}^2))x]^2}\\
-&=\int_0^1\frac{\d x}{[ k^2-2kpx+p^2x+x(m_{\text{w}}^2-m^2)-m_{\text{w}}^2]^2}\\
-&=\int_0^1\frac{\d x}{[ (k-px)^2+x(1-x)p^2+x(m_{\text{w}}^2-m^2)-m_{\text{w}}^2]^2}\\
-&=\int_0^1\frac{\d x}{[ k'-\Delta]^2}
+ \frac{1}{((p+k)^2-m^2)(k^2-m_{\text{w}}^2)}&=\int_0^1\frac{\d x}{[k^2-m_{\text{w}}^2+(p^2+2kp+k^2-(k^2-m_{\text{w}}^2))x]^2}\\
+&=\int_0^1\frac{\d x}{[ k^2+2kpx+p^2x+x(m_{\text{w}}^2-m^2)-m_{\text{w}}^2]^2}\\
+&=\int_0^1\frac{\d x}{[ (k+px)^2+x(1-x)p^2+x(m_{\text{w}}^2-m^2)-m_{\text{w}}^2]^2}\\
+&=\int_0^1\frac{\d x}{[ k'-\xi]^2}
 \end{align*}
-where $k'=k-px$ and $\Delta=-x(1-x)p^2-x(m_{\text{w}}^2-m^2)+m_{\text{w}}^2$.
+where $k'=k+px$ and we have defined $\xi\equiv-x(1-x)p^2-x(m_{\text{w}}^2-m^2)+m_{\text{w}}^2$.  Note that we choose $(p+k)$ for the momentum in the $\chi$ internal propagator, this is to match the convention used by Ibe et al. \cite{Ibe2013a} and thus the definitions for the Passarino-Veltman integrals we will make use of shortly.\\
 
 
-We now translate the integration measure $\int \d^4k\rightarrow\int \d^4k'$ (and henceforth omitting the prime on $k'$) to obtain (after substituting $k\rightarrow k+px$ in the numerator)
+We now translate the integration measure $\int \d^4k\rightarrow\int \d^4k'$ (and henceforth omitting the prime on $k'$) to obtain (after substituting $k\rightarrow k-px$ in the numerator)
 \begin{align}
-i\Sigma_{\cn}(\slashed{p})&= (-gi)^2 \int \frac{\d^4k}{(2\pi)^4}\int_0^1 \d x \frac{2(\sp(1-x)-\sk )-4m}{[ k^2-\Delta]^2}
-\end{align}
-after shifting the integration measure.
-
-since the denominator of the loop integral is symmetric with respect to $k$ we can discard all terms here of odd order in $k$, thus
-\begin{align}
-i\Sigma_{\cn}(\slashed{p})&= (-gi)^2 \int \frac{\d^4k}{(2\pi)^4}\int_0^1 \d x \frac{2(\sp(1-x))-4m}{[ k^2-\Delta]^2}
+i\Sigma_{\cn}(\slashed{p})&= 2(g)^2 \int \frac{\d^4k}{(2\pi)^4}\int_0^1 \d x \frac{(D-2)(\sk+\sp(1-x) )-Dm}{[ k^2-\Delta]^2}.
 \end{align}
 
-
-
-Now we apply dimensional regularisation, letting $d=4-\epsilon$, such that in the limit of small $\epsilon$ we have
-
-
+Since the denominator of the loop integral is now symmetric with respect to $k$ we can discard all terms here of odd order in $k$ to give
+\begin{align}
+i\Sigma_{\cn}(\slashed{p})&= 2(g)^2 \int \frac{\d^4k}{(2\pi)^4}\int_0^1 \d x \frac{(D-2)(1-x)\sp-Dm}{[ k^2-\Delta]^2}.
+\end{align}
+Next we apply dimensional regularisation, letting $D=4-2\epsilon$, such that in the limit of small $\epsilon$ we have
 \begin{align*}
-\int \frac{\d^4k}{(2\pi)^4}{[ k^2-\Delta]^2} &\rightarrow  \mu^{\epsilon}\int \frac{\d^dk}{(2\pi)^d}  \frac{1}{[ k^2-\Delta]^2}\\
-&= \mu^{\epsilon}\frac{i}{(4\pi)^{\frac{d}{2}}} \frac{1}{\Delta^{2-\frac{d}{2}}} \Gamma\left(\frac{4-d}{2}\right) \\
-&= \mu^{\epsilon}\frac{-i}{(4\pi)^2}\frac{1}{\Delta^{\epsilon/2}}\Gamma\left(\frac{\epsilon}{2}\right) (4\pi)^{\epsilon/2}\\
-&\approx \frac{i}{(4\pi)^2} \left( 1-\he\log\Delta\right)\left(\frac{2}{\epsilon}-\gamma\right)\left(1+\he\log 4\pi\right)\left(1+\he\log\mu^2\right)\\
-&=\frac{i}{(4\pi)^2} \left(\frac{2}{\epsilon}-\gamma+\log\frac{4\pi\mu^2}{\Delta}\right)+\mathcal{O}(\epsilon)
-\end{align*}
+\int \frac{\d^4k}{(2\pi)^4}{[ k^2-\Delta]^{-2}} &\rightarrow  \mu^{2\epsilon}\int \frac{\d^Dk}{(2\pi)^D}  \frac{1}{[ k^2-\Delta]^2}\\
+&= \mu^{2\epsilon}\frac{i}{(4\pi)^{\frac{D}{2}}} \frac{1}{\Delta^{2-\frac{D}{2}}} \Gamma\left(\frac{4-D}{2}\right) \\
+&= \mu^{2\epsilon}\frac{-i}{(4\pi)^2}\frac{1}{\Delta^{\epsilon}}\Gamma\left(\epsilon\right) (4\pi)^{\epsilon}\\
+&\approx \frac{i}{(4\pi)^2} \left( 1-\epsilon\log\Delta\right)\left(\frac{1}{\epsilon}-\gamma\right)\left(1+\epsilon\log 4\pi\right)\left(1+\epsilon\log\mu^2\right)\\
+&=\frac{i}{(4\pi)^2} \left(\frac{1}{\epsilon}-\gamma+\log\frac{4\pi\mu^2}{\Delta}\right)+\mathcal{O}(\epsilon).
+\end{align*}\\
 
-We are now ready to calculate the integral for $i\Sigma_{\cn}(\slashed{p})$.
-
+We are now ready to calculate the integral for $i\Sigma_{\cn}(\slashed{p})$.  Setting $D=4-2\epsilon$ in the numerator we have
 \begin{align}
-i\Sigma_{\cn}(\slashed{p})&= (-gi)^2 \frac{i}{(4\pi)^2}  \int_0^1 \d x \left(2(\sp(1-x))-4m\right) \left(\frac{2}{\epsilon}+\log\frac{\hat{\mu}^2}{\Delta}\right)
+i\Sigma_{\cn}(\slashed{p})&= 2 (g)^2 \frac{i}{(4\pi)^2}  \int_0^1 \d x \left( (2-2\epsilon)(1-x)\sp-(4-2\epsilon)m  \right) \left(\frac{1}{\epsilon}+\log\frac{4\pi\mu^2e^{-\gamma}}{\Delta}\right).
 \end{align}
-where $\hat{\mu}^2=4\pi\mu^2e^{-\gamma}$.
-
-The Passarino-Veltman functions we have are (from arXiv:1212.5989)
+After some simplification and evaluation of the straight forward integrals over $x$ we find
 \begin{align}
-B_0(p^2,m_1^2,m_2^2)&=\int_0^1\!\d x \ \log\frac{\hat{\mu}}{\Delta}\\
-B_1(p^2,m_1^2,m_2^2)&=-\int_0^1\!\d x \ x\log\frac{\hat{\mu}}{\Delta}
-%B_{21}(p^2,m_1^2,m_2^2)&=\int_0^1\!\d x \ x^2\log\frac{\hat{\mu}}{\Delta}
+i\Sigma_{\cn}(\slashed{p})=& 2 (g)^2 \frac{i}{(4\pi)^2} \left[ 2m-\sp + 2\sp\left(-\frac{\Delta}{2}+\int_0^1\d x \, x \log\frac{\xi}{\mu^2}\right)\right. \\
+&\left. + (2\sp-4m)\left(\Delta-\int_0^1\d x\, \log\frac{\xi}{\mu^2}\right)\right]
 \end{align}
-\textcolor{red}{FIX THIS TO MATCH TSIL NOTATION AND DISCUSS DIVERGENT TERMS}
+where we let $\Delta = 1/\epsilon-\gamma_E+\log(4\pi)$.  Now using (\ref{eqn:B0_def}) and (\ref{eqn:B1_def}), following the definitions of Ibe et al. \cite{Ibe2013a}, we express this result in terms of Passarino-Veltman functions
 \begin{align}
-i\Sigma_{\cn}(\slashed{p})&= (-gi)^2 \frac{i}{(4\pi)^2}  \left(2\sp\left( B_0(p^2,m_{\text{w}}^2,m^2)+B_1(p^2,m_{\text{w}}^2,m^2)\right)-4mB_0(p^2,m_{\text{w}}^2,m^2)\right)
+i\Sigma_{\cn}(\slashed{p})=& \frac{-2i (g)^2}{(4\pi)^2} \left[ 2m-\sp + 2\sp\left(B_1(p^2,m_{\text{w}}^2,m^2)\right) + (2\sp-4m)\left(B_0(p^2,m_{\text{w}}^2,m^2)\right)\right]
 \end{align}
-
-To bring it into the same form as given by FeynCalc we use the identity $B_1(p^2,m_1^2,m_2^2)=-B_1(p^2,m_2^2,m_1^2)-B_0(p^2,m_2^2,m_1^2)$ such that
+To bring this into the same form as given by Ibe et al. \cite{Ibe2013a} we use the identities $B_1(p^2,m_1^2,m_2^2)=-B_1(p^2,m_2^2,m_1^2)-B_0(p^2,m_2^2,m_1^2)$ and $B_0(p^2,m_1^2,m_2^2)=B_0(p^2,m_2^2,m_1^2)$  such that
 \begin{align}
-\Sigma_{\cn}(m)&= \frac{2mg^2}{(4\pi)^2}   \left( 2B_0(p^2,m^2,m_{\text{w}}^2)+B_1(p^2,m^2,m_{\text{w}}^2)\right)
+\Sigma_{\cn}(m)&= \frac{g^2}{16\pi^2}   \left[ -m\left(8 B_0(p^2,m^2,m_{\text{w}}^2)-4\right)-\slashed{p}\left(4 B_1(p^2,m^2,m_{\text{w}}^2)+2\right)\right]
 \end{align}
 
+\vspace{0.5cm}
 
 \noindent\begin{minipage}{0.3\textwidth}
 \includegraphics[width=0.8\textwidth]{1loop_1c.pdf}
 \end{minipage}
 \noindent\begin{minipage}{0.7\textwidth}
-There is also a counter-term contribution, with amplitude
+There is also a counter-term contribution, in the Figure on the left, with amplitude
 \begin{align}
- \int \frac{\d^4k}{(2\pi)^4} \delta_{M_{\tilde{\chi}}} + \slashed{p}\delta_{Z_{\tilde{\chi}}}
+ \int \frac{\d^4k}{(2\pi)^4}\left(\slashed{p}\,\delta_{Z_{\tilde{\chi}}}-\delta_{M_{\tilde{\chi}}}\right)
  \end{align}
  \end{minipage}
+\vspace{0.3cm}
 
-Evaluating these amplitudes gives the self energy $\Sigma_{\cn}= \Sigma_{M, 0}^{(1)}+\slashed{p}\Sigma_{K, 0}^{(1)}$ where
+The sum of these amplitudes gives the self energy $\Sigma_{\cn}= \Sigma_{M, 0}^{(1)}+\slashed{p}\Sigma_{K, 0}^{(1)}$ where
 \begin{eqnarray}
 \Sigma_{K, 0}^{(1)} &=&
 -\frac{\hat{g}^2}{16\pi^2}
@@ -857,9 +869,9 @@ Evaluating these amplitudes gives the self energy $\Sigma_{\cn}= \Sigma_{M, 0}^{
 \left[ 8 B_0(p^2, \hat{M}_2^2, \hat{m}_W^2) - 4 \right]
 -\delta_{M_{\tilde{\chi}}}\ . \label{eq: Neu_M}
 \end{eqnarray}
+Because we have used (\ref{eqn:B0_def}) and (\ref{eqn:B1_def}) to define $B_0$ and $B_1$ this result contains divergent terms and is only finite with the correct choice of the counter-term couplings which we will determine in section \ref{sec:ew_ct}.
 
-
-\subsection{One-loop self energy -- charged component}
+\subsubsection{Triplet charged component}
 
 \noindent\begin{minipage}{0.3\textwidth}
 \includegraphics[width=0.8\textwidth]{F1_1_a.pdf}\\
@@ -872,9 +884,9 @@ The charged component has three one-loop corrections with diagrams given on the 
 \begin{align}
 \begin{split}
 i\Sigma_{\cm}(\slashed{p})=
-&+(-is_wg)^2 \int \frac{\d^4k}{(2\pi)^4} \gamma^{\mu}\frac{(\slashed{p}-\slashed{k}+M)\gamma^{\nu}\left(-g_{\mu\nu}\right)}{((p-k)^2-M^2)(k^2)}\\
-&+(-ig)^2 \int \frac{\d^4k}{(2\pi)^4} \gamma^{\mu}\frac{(\slashed{p}-\slashed{k}+M)\gamma^{\nu}\left(-g_{\mu\nu}\right)}{((p-k)^2-M^2)(k^2-m_{\text{w}}^2)}\\
-&+(-ic_wg)^2 \int \frac{\d^4k}{(2\pi)^4} \gamma^{\mu}\frac{(\slashed{p}-\slashed{k}+M)\gamma^{\nu}\left(-g_{\mu\nu}\right)}{((p-k)^2-M^2)(k^2-m_{\text{z}}^2)}.
+&+(s_Wg)^2 \int \frac{\d^4k}{(2\pi)^4} \gamma^{\mu}\frac{(\slashed{p}-\slashed{k}+M)\gamma^{\nu}\left(-g_{\mu\nu}\right)}{((p-k)^2-M^2)(k^2)}\\
+&+(g)^2 \int \frac{\d^4k}{(2\pi)^4} \gamma^{\mu}\frac{(\slashed{p}-\slashed{k}+M)\gamma^{\nu}\left(-g_{\mu\nu}\right)}{((p-k)^2-M^2)(k^2-m_{\text{w}}^2)}\\
+&+(c_Wg)^2 \int \frac{\d^4k}{(2\pi)^4} \gamma^{\mu}\frac{(\slashed{p}-\slashed{k}+M)\gamma^{\nu}\left(-g_{\mu\nu}\right)}{((p-k)^2-M^2)(k^2-m_{\text{z}}^2)}.
 \end{split}
 \end{align}
 The calculation of these amplitudes is very similar to that for the neutral component, so we will not repeat the calculation. 
@@ -902,25 +914,10 @@ The result, obtained either using \mb or by hand is
 where we have also included a counter-term contribution analogous to that in the neutral component calculation.  These counter-terms $\delta_{Z_{\tilde{\chi}}}$ and $\delta_{M_{\tilde{\chi}}}$, are given in a later section.
 
 
-\subsection{One-loop boson self energies}
-
-To compute the counter-terms for the gauge boson propagators we must compute the one-loop self energies and demand that these are free of UV divergences.  The computation of these one-loop self energies, which involve all the ghost and pre-EWSB scalar states, is a good opportunity to check the model is consistent.  The analytic form for these amplitudes is presented in Ibe et al. along with the counter-term which we can make a direct comparison.\\
-
-In this section we give the details of the one-loop contributions to this amplitude
-,$\Pi(p^2)$, appearing in the gauge boson propagator, (\ref{eqn:gauge_boson_propagator}), from all particles in our simplified EW triplet model.  These contributions are given by
-{\small
-\begin{eqnarray}
-\Pi_{V_1 V_2}
-= \Pi_{V_1 V_2}^{(V, h)}
-+ \Pi_{V_1 V_2}^{(\tilde{\chi})}
-+ p^2 \delta_{Z_{V_1 V_2}}
-+ \delta_{m^2_{V_1 V_2}}\ ,
-\end{eqnarray}
-}where $V_1 V_2 =$ $\gamma \gamma$, $\gamma Z$, $ZZ$, and $WW$. The first term in the right-hand side is the contributions from the gauge-Higgs sector of the SM and the second term is from the electroweak triplet.  The third and fourth terms are the one-loop counter-terms which are determined by demanding no UV divergences in the total $\Pi_{V_1 V_2}$.
 
 
 
-\subsubsection{Photon self energy}
+\subsubsection{Photon}
 
 Consider the contributions to the photon self energy from Higgs and boson sector. 
 
@@ -937,11 +934,11 @@ From Ibe et al. we have
 \left[ \tilde{B}_{22}(p^2, \hat{m}_W^2, \hat{m}_W^2) + \frac{p^2}{18} \right]
 -\frac{\hat{e}^2 p^2}{4\pi^2} B_0(p^2, \hat{m}_W^2, \hat{m}_W^2) \label{eqn:gammagamma}
 \end{align}
-where this includes all contributions from the 9 diagrams in Figure \ref{fig:gammagamma}.  We find the self energy contribution from \mb i a fully reduced scheme is
+where this includes all contributions from the 9 diagrams in Figure \ref{fig:gammagamma}.  We find the self energy contribution from \mb in a fully reduced scheme is
 \begin{align}
 \Pi_{\gamma \gamma}^{(V, h)}(p^2) = \frac{\alpha}{32\pi^2} \left( \left(4m_W^2-6(2m_W^2+p^2)\right)B_0(m_W^2,m_W^2)+8 A_0(m_W^2)-8m_W^2\right)
 \end{align}
-which is equivalent to (\ref{eqn:gammagamma}) after using the tensor integral reduction relationships given in section \ref{app:reduction}.
+which is equivalent to (\ref{eqn:gammagamma}) after using the tensor integral reduction relationships given in Appendix \ref{app:reduction}.
 
 \begin{figure}[b!]
 \center
@@ -949,9 +946,9 @@ which is equivalent to (\ref{eqn:gammagamma}) after using the tensor integral re
 \caption{The one-loop corrections to the Z boson propagator.}\label{fig:ZZ}
 \end{figure}
 
-\subsubsection{Z boson self energy}
+\subsubsection{Z boson}
 
-The Z boson self energy as given by Ibe et al. is
+The Z boson self energy as given by Ibe et al. \cite{Ibe2013a} is
 {
 \begin{eqnarray}
 \Pi_{ZZ}^{(V,h)}(p^2) &=& 
@@ -992,8 +989,8 @@ which is equivalent to (\ref{eqn:ZZ}) after using the appropriate reduction rela
 \caption{The one-loop corrections to the W boson propagator.}\label{fig:WW}
 \end{figure}
 
-\subsubsection{W boson self energy}
-The W boson self energy is given by Ibe et al. to be
+\subsubsection{W boson}
+The W boson self energy is given by Ibe et al. \cite{Ibe2013a} to be
 {\small
 \begin{eqnarray}
 \Pi_{WW}^{(V, h)}(p^2) &=&
@@ -1010,7 +1007,7 @@ The W boson self energy is given by Ibe et al. to be
 \end{eqnarray}
 }
 
-We compute the self energy using \mb and find a consistent result if $m_{\gamma}=0$.  
+We compute the self energy using \mb and obtain
 {
 \begin{eqnarray}
 \Pi_{WW}^{(V,h)}(p^2) &=& 
@@ -1039,38 +1036,38 @@ which after performing the reduction on (\ref{eqn:WW}) but before setting $m_{\g
 \begin{align}
 \Pi_{WW}^{\text{\mb}}  - \Pi_{WW}^{\text{Ibe}}  =\frac{g_2^2 m_{\gamma}^2 s_W^2 B_0(p^2,m_{\gamma}^2,m_W^2)}{16 \pi^2}
 \end{align}
-which is zero for $m_{\gamma}=0$.  This is the only difference between our working and that of Ibe et al. where they have clearly just set $m_{\gamma}=0$ in the published result.
+which is zero for $m_{\gamma}=0$.  This is the only difference between our working and that of Ibe et al. \cite{Ibe2013a} where they have clearly set $m_{\gamma}=0$.
 
 
 
-\subsection{1-loop counter-terms}
+\subsection{One-loop counter-terms}\label{sec:ew_ct}
 
-We determine the one-loop counter-term couplings using the inbuilt Mass Builder feature.  After all diagrams have been computed, Mass Builder collects all amplitudes together and extracts the coefficient of $1/\epsilon$ and simplifies this to give the one-loop counter term coupling\footnote{This is straightforward as the problem is reduced to a linear algebraic equation, at the two-loop level the problem involves solving a well choosen set of simultaneous equations so is currently not supported.}.  It also prints out the coefficients of $1/\epsilon^2$ and $1/\epsilon^3$ as a check that higher order divergences do not exist in the one-loop amplitude.  With this method we determine the following counter-terms
+We determine the one-loop counter-term couplings using the inbuilt \mb feature.  After all diagrams have been computed, \mb collects all amplitudes together and extracts the coefficient of $1/\epsilon$ and simplifies this to give the one-loop counter term coupling\footnote{This is straightforward as the problem is reduced to a linear algebraic equation, at the two-loop level the problem involves solving a well chosen set of independent simultaneous equations so is currently not supported.}.  It also prints out the coefficients of $1/\epsilon^2$ and $1/\epsilon^3$ as a check that higher order divergences do not exist in the one-loop amplitude.  With this method we determine the following counter-terms
 \begin{eqnarray}
-\delta_{Z_{WW}} &=&- \frac{g_2^2}{16 \pi^2}\left(-\frac{11}{6}\right),\\
-\delta_{m^2_{WW}}&=&- \frac{g_2^2}{16 \pi^2} \left( m^2_Z(-1+2s_W^2)     -m_{\gamma}^2s_W^2\right),\\
-\delta_{Z_{\gamma\gamma}} &=&-\frac{g_2^2s_W^2}{16 \pi^2}\left(-\frac{5}{3}\right) = \frac{\hat{e}^2}{16\pi^2}\left(-\frac{5}{3}\right) , \\
+\delta_{Z_{WW}} &=&- \frac{g_2^2}{16 \pi^2}\left(-\frac{11}{6}\right)\Delta,\\
+\delta_{m^2_{WW}}&=&- \frac{g_2^2}{16 \pi^2} \left( m^2_Z(-1+2s_W^2)     -m_{\gamma}^2s_W^2\right)\Delta,\\
+\delta_{Z_{\gamma\gamma}} &=&-\frac{g_2^2s_W^2}{16 \pi^2}\left(-\frac{5}{3}\right) = \frac{\hat{e}^2}{16\pi^2}\left(-\frac{5}{3}\right)\Delta , \\
 %%%%%
 \delta_{m^2_{\gamma\gamma}} &=& 0\, ,\\
-\delta_{Z_{ZZ}} &=&-\frac{g_2^2}{16 \pi^2 c_W^2} \left(-\frac{11}{6}+\frac{11}{3}s_W^2-\frac{5}{3}s_W^4  \right),\\
-\delta_{m^2_{ZZ}} &=& -\frac{g_2^2m_Z^2}{16 \pi^2c_W^2} \left(-1+6s_W^2-4s_W^4  \right),\\
-\delta_{m^2_{Z\gamma}} &=& -\frac{g_2^2s_W}{16 \pi^2c_W} \left( m_Z^2(2-2s_W^2)  \right),\\
-\delta_{Z_{Z\gamma}} &=& -\frac{g_2^2s_W}{16 \pi^2c_W} \left( \frac{11}{6}-\frac{5s_W^2}{3}  \right)
+\delta_{Z_{ZZ}} &=&-\frac{g_2^2}{16 \pi^2 c_W^2} \left(-\frac{11}{6}+\frac{11}{3}s_W^2-\frac{5}{3}s_W^4  \right)\Delta,\\
+\delta_{m^2_{ZZ}} &=& -\frac{g_2^2m_Z^2}{16 \pi^2c_W^2} \left(-1+6s_W^2-4s_W^4  \right)\Delta,\\
+\delta_{m^2_{Z\gamma}} &=& -\frac{g_2^2s_W}{16 \pi^2c_W} \left( m_Z^2(2-2s_W^2)  \right)\Delta,\\
+\delta_{Z_{Z\gamma}} &=& -\frac{g_2^2s_W}{16 \pi^2c_W} \left( \frac{11}{6}-\frac{5s_W^2}{3}  \right)\Delta.
 \end{eqnarray}
 
 These match those of Ibe et al. (if we neglect the terms which obviously come from the SM fermionic and leptonic interactions -- which our model does not contain) for the case of $m_{\gamma}=0$.  As there is mixing between the Z boson and the photon we also computed a counter-term coupling for the two point propagator $Z\rightarrow\gamma$.  This mixing calculation is fully supported in \mb by using the additional \lstinline{-q <particle>} option.
 
 The one-loop counter-term couplings for the fermionic triplet are computed in the same way to give
 \begin{eqnarray}
-\delta_{Z_{\chi^0\chi^0}} &=&-\frac{g_2^2}{8 \pi^2}\\
-\delta_{M_{\chi^0\chi^0}} &=&-\frac{g_2^2 M}{2 \pi^2}
+\delta_{Z_{\chi^0\chi^0}} &=&-\frac{g_2^2}{8 \pi^2}\Delta,\\
+\delta_{M_{\chi^0\chi^0}} &=&-\frac{g_2^2 M}{2 \pi^2}\Delta
 \end{eqnarray}
 which agree with that of Ibe et al.
 
 
 \subsubsection{Gauge interaction of the triplet}
 
-Finally we need the counter-term for the interaction between the triplet and the gauge sector.  This is given by Ibe et al. in the following direct quote:\\
+Finally we need the counter-term for the interaction between the triplet and the gauge sector.  This is given by Ibe et al. \cite{Ibe2013a} in the following direct quote:\\
 
 \textcolor{blue}{
 The neutral and charged winos have the SU(2)$_L$ gauge interaction which is described by the term, ${\cal L}_{\rm int} = i\epsilon_{abc}(\hat{g} + \delta_{\tilde{\chi} \tilde{\chi} W}) \tilde{\chi}^{a \dagger} \slashed{W}^b \tilde{\chi}^c$, and the counter-term is given by
@@ -1093,7 +1090,7 @@ The notation that has been used here is not clear.  From an understanding of the
 
 so the resultant counter-terms we need to add into the calculation are $\delta_{\tilde{\chi} \tilde{\chi} W}$, $s_W\,\delta_{\tilde{\chi} \tilde{\chi} W}$ and $c_W\,\delta_{\tilde{\chi} \tilde{\chi} W}$ for the $W\chi\chi^{\dagger}$, $A\chi\chi$ and $Z\chi\chi$ vertices respectively.
 \newpage
-\subsection{2-loop self energy}
+\subsection{Two-loop self energy}
 
 We are finally ready to compute the two-loop self energy for the electroweak triplet.  For the neutral (charged) component there are 48 (75) two-loop diagrams and eight (10) counter-term diagrams of two-loop order.\\
 
@@ -1141,8 +1138,8 @@ Figures \ref{fig:chi1chi1_2}, \ref{fig:chi1chi1_1}, \ref{fig:chi0chi0} and \ref{
 We expect there to be IR divergences arising from a specific set of diagrams, as described by Ibe et al. in the following direct quote \cite{Ibe2013a}:\\
 
 \textcolor{blue}{
-For the charged wino, the amplitude in [ \cite{Ibe2013a} -- Figure 2(i) ] in which a photon is circulating
-in the outer loop and the one in [the counter-term diagram] [ \cite{Ibe2013a} -- Figure 3(b) ] with the photon loop behave as
+For the charged wino, the amplitude in [ ref. \cite{Ibe2013a} -- Figure 2(i) ] in which a photon is circulating
+in the outer loop and the one in [the counter-term diagram] [ ref. \cite{Ibe2013a} -- Figure 3(b) ] with the photon loop behave as
 \begin{eqnarray}
 \Sigma_{K,M}^{(2)}(p^2=\hat{M}_2^2) \sim
 \int \frac{d^4 k}{(2\pi)^4} \frac{1}{(k\cdot p)^2} \frac{1}{k^2} \ ,
@@ -1163,7 +1160,7 @@ So we find that for the neutral component of the triplet, every diagram which in
 
 \subsubsection{Numerical results}
 
-The most powerful feature of \mb is to automatically generate an interface to \tsil for the resultant self energy amplitudes.  This provides a fast and more importantly free-from-errors method of obtaining a numerical result for the self energies at one and two-loop order.\\
+The most powerful feature of \mb is the automatic generation of an interface to \tsils.  This provides a fast and reliable method of obtaining a numerical result for the self energies at one and two-loop order.  The only alternative would be a semi-automatic process at best, with the possibility of missing a contribution or making a minor error being left to chance.\\
 
 The input parameters and resultant self energies and pole masses are given in Table \ref{table:input_params}.
 
@@ -1179,7 +1176,7 @@ $m_W$ & $80.385$ GeV \\
 $m_Z$ & $91.1876$ GeV \\
 $m_H$ & 125.6 GeV\\
 $M$ & 100 GeV\\
-$m_{\gamma}$ & 0 \\
+$m_{\gamma}$ & $-$ \\
 $v$ & 246 GeV \\
 $Q$ & 100 GeV \\
 $c_W^2$ & $m^2_W/m^2_Z$ \\
@@ -1215,24 +1212,24 @@ $\gamma$ & $-$\\
 
 
 \newpage
-\section{Appendix -- Definitions}
+\appendix
+\section{Definitions}\label{sec:definitions}
 
-We will make use of tools and literature sources which use slightly different definitions for the same mathematical objects.  In this section we make it clear what these differences are and how these differences alter the important relationships between these objects.
+We will make use of tools and literature sources which use slightly different definitions for the same mathematical objects.  In this section we make it clear what these differences are and how these differences alter the important relationships between these objects.\\
 
+In the following I use bold-face for the divergent integrals and normal type for the finite pieces, as defined in the \tsil manual \cite{Martin2006}.  I use $\tt{TAI}$ to refer to \tarcer notation and $A$ for \tsil notation as there is a different normalisation between such integrals.  We define $\kappa = 1/16\pi^2$.
 
-In the following I use bold-face for the divergent integrals and normal type for the finite pieces, as defined in the TSIL manual.  I use $\tt{TAI}$ to refer to TARCER notation and $A$ for TSIL notation as there is a different normalisation between such integrals.  We define $\kappa = 1/16\pi^2$.
-
-We begin with $B_0$ and $B_1$.  These are defined by Ibe at al. as
+We begin with $B_0$ and $B_1$.  These are defined by Ibe at al. \cite{Ibe2013a} as
 \begin{eqnarray}
 B_0(p^2, m_1^2, m_2^2) &=& \Delta
-- \int_0^1 dx ~\log \frac{ (1-x)m_1^2 + x m_2^2 - x(1-x)p^2 -i\epsilon }{Q^2}\ , \\
+- \int_0^1 dx ~\log \frac{ (1-x)m_1^2 + x m_2^2 - x(1-x)p^2 -i\epsilon }{Q^2}\ ,\label{eqn:B0_def} \\
 B_1(p^2, m_1^2, m_2^2) &=& -\frac{\Delta}{2}
-+ \int_0^1 dx ~x\log \frac{ (1-x)m_1^2 + x m_2^2 - x(1-x)p^2 -i\epsilon }{Q^2}\ , \\
++ \int_0^1 dx ~x\log \frac{ (1-x)m_1^2 + x m_2^2 - x(1-x)p^2 -i\epsilon }{Q^2}\ ,\label{eqn:B1_def} \\
 B_{21}(p^2, m_1^2, m_2^2) &=& \frac{\Delta}{3}
 - \int_0^1 dx ~x^2\log \frac{ (1-x)m_1^2 + x m_2^2 - x(1-x)p^2 -i\epsilon }{Q^2}\ ,
 \end{eqnarray}
 
-while BMPZ defines these as
+while Pierce, Bagger, Matchev and Zhang \cite{Pierce1996} (henceforth BMPZ) defines these as
 \begin{eqnarray}
 A_0(m) &=& 16\pi^2Q^{4-n}\int{d^nq\over i\,(2\pi)^n}{1\over
 q^2-m^2+i\varepsilon}\\
@@ -1250,10 +1247,10 @@ B_{21}(p,m_1,m_2) &+& g_{\mu\nu}B_{22}(p,m_1,m_2)
 q_\nu\over\biggl[q^2-m^2_1+i\varepsilon\biggr]\biggl[
 (q-p)^2-m_2^2+i\varepsilon\biggr]}\ , \nonumber
 \end{eqnarray}
-where we deal with $B_{22}$ later.  
+where we deal with $B_{22}$ later.\\  
 
 The above definitions are not equivalent, first we need to set $\Delta = 2/(4-D)-\gamma_E+\log(4\pi)$ and $n=D$.  However, there is an important sign difference from the way the denominator is written.  BMPZ use $(p-k)$ while other sources, including Ibe et al. use $(p+k)$.  Therefore when doing the Feynman integration and introducing the step, we end up shifting the integration measure, $k$, by either $k+px$ or $k-px$.  This difference introduces a sign difference in the integrated form of $B_1$.  (need to check the validity of the relationship given in B.9 in BMPZ for the case of $(k+p)$.  \textcolor{red}{Therefore when we compare with the results stated in Ibe et al. we must be careful with the sign of the $B_1$ integral and make sure to introduce a negative.}
-TSIL defines
+\tsil defines
 \begin{eqnarray}
 {\bf A}(x) &=&  
 C \int d^d k \frac{1}{[k^2 +x]}  %,
@@ -1268,7 +1265,7 @@ where
 C = (16 \pi^2) \frac{\mu^{2\epsilon}}{(2 \pi)^d}
   = (2 \pi \mu)^{2 \epsilon}/\pi^2 .
 \end{equation}
-and TARCER uses
+and \tarcer uses
 
 \begin{eqnarray}
 {\bf A}(x) &=& i \cTarasov \mbox{{\tt TAI$[$d,s,$\{\{1,\sqrt{x}\}\}]$}},
@@ -1280,7 +1277,7 @@ where
 $
 \cTarasov = (4 \pi \mu^2)^{2-d/2}.
 $
-So we make the identification that $n=D=4-2\epsilon$ and achieve equivalent pre-factors.  There is an important sign difference attached to the $m^2=x$ quantity between the different definitions of $A_0$ and $B_0$.  The effects the form of the finite plus divergent expansion of the basis integrals.  From the TSIL manual we have
+So we make the identification that $d=4-2\epsilon$ and achieve equivalent pre-factors.  There is an important sign difference attached to the $m^2=x$ quantity between the different definitions of $A_0$ and $B_0$.  The effects the form of the finite plus divergent expansion of the basis integrals.  From the \tsil manual we have
 \begin{eqnarray}
 {\bf A}(x) &=& -x/\epsilon + A(x) + \epsilon A_\epsilon(x) + 
 {\cal O}(\epsilon^2) 
@@ -1288,7 +1285,7 @@ So we make the identification that $n=D=4-2\epsilon$ and achieve equivalent pre-
 {\bf B}(x,y) &=& 1/\epsilon + B(x,y) + \epsilon B_\epsilon(x,y) 
 + {\cal O}(\epsilon^2) ,
 \end{eqnarray}
-so to make use of these with TARCER functions we must make the conversion to the form
+so to make use of these with \tarcer functions we must make the conversion to the form
 
 \begin{eqnarray}
 {\bf A}(x) &=& -x/\epsilon + A(x) + \epsilon A_\epsilon(x) + 
@@ -1302,9 +1299,9 @@ so to make use of these with TARCER functions we must make the conversion to the
 So Ibe et al. do not define an $A_0$ function, instead using only $B_1$ which we can reduce down to a function of $B_0$ and $A_0$.  This relationship is essential for our calculations, and we will present it shortly.  First we need to draw a direct comparison between the above function definitions.
 
 
-\section{Appendix -- Tensor integral reduction}\label{app:reduction}
+\section{Tensor integral reduction}\label{app:reduction}
 
-We need to compare self energies calculated with Mass Builder and those in the existing literature.  Comparing with Ibe et al. we need to understand the definitions used.
+We need to compare self energies calculated with \mb and those in the existing literature.  Comparing with Ibe et al. we need to understand the definitions used.
 
 Ibe et al. make the following definitions:	
 
@@ -1324,7 +1321,7 @@ B_{\mu\nu}&=g_{\mu\nu}B_{00}+p_{\mu}p_{\nu}B_{11}\\
 \end{split}
 \end{align}
 
-using FeynCalc to reduce the following (note that in FeynCalc notation $B_{22}$ is denoated $B_{00}$)
+using \feyncalc to reduce the following (note that in \feyncalc notation $B_{22}$ is denoted $B_{00}$)
  
 \begin{mmaCell}[functionlocal=y]{Code}
 B22 = PaVe[0, 0, {p^2}, {m1^2,m2^2}]
@@ -1355,7 +1352,7 @@ B22finite =
 \end{mmaCell}
 
 
-we first want to check that this is consistent with the definition given in BMPZ (arXiv:hep-ph/9606211v3), which is
+we first want to check that this is consistent with the definition given in BMPZ \cite{Pierce1996}, which is
 
 \begin{eqnarray}
 B_{22}(p, m_1,m_2) &=& {1\over 6}\ \Bigg\{\,
@@ -1366,7 +1363,7 @@ B_0(p,m_1,m_2)\,\biggr] \nonumber\\ &+&\ m_1^2 + m_2^2
 -{1\over3}p^2\,\Bigg\}~.
 \end{eqnarray}
 
-and we find that these expressions do indeed agree.  This confirms that the FeynCalc definition of $B_{00}$ does indeed agree with the alternative used in the literature which is $B_{22}$.\\
+and we find that these expressions do indeed agree.  This confirms that the \feyncalc definition of $B_{00}$ does indeed agree with the alternative used in the literature which is $B_{22}$.\\
 
 We now need to determine exactly what the notation used in Ibe et al. is.  From BMPZ we have
 \begin{align}
@@ -1385,7 +1382,7 @@ so we have one undefined term here, $B_{21}$.  This is given in Ibe et al. in it
 B_{21}(p^2, m_1^2, m_2^2)  = \frac{1}{18 p^2} \left( 6 (p^2-m_1^2)B_0(p^2, m_1^2, m_2^2) +6A_0(m_1^2)-6m_1^2+p^2\right)
 \end{align}
 
-Now we calculate the contribution of the electroweak triplet state to the W boson self energy to double check if this definition of $B_{21}$ is consistent.  Calculating the required amplitude using Mass Builder (and associated tools) we find
+Now we calculate the contribution of the electroweak triplet state to the W boson self energy to double check if this definition of $B_{21}$ is consistent.  Calculating the required amplitude using \mb we find
 \begin{align}
 \Pi_{WW}^{(\tilde{\chi})}(p^2) =
 \frac{\hat{g}^2}{36\pi^2} \left( 3 (2M^2+p^2)B_0(p^2,M^2,M^2)-6A_0(M^2)+6M^2-p^2\right)
@@ -1399,7 +1396,9 @@ which is consistent with the Ibe at al. calculation
 \end{align}
 which after using $B_1 = -B_0/2$ (since $m_1=m_2$) we obtain a consistent result.
 
-\section{Appendix -- Electroweak triplet SARAH model}
+\section{Electroweak triplet SARAH model}\label{sec:EW_triplet_sarah_model}
+We use \sarah \cite{Staub2014} to generate the \feynarts model file for the electroweak triplet model.  The \sarah input model file is presented below.
+
 \begin{mmaCell}[functionlocal=y]{Code}
 Off[General::spell]
 Model`Name = "EW_triplet";
