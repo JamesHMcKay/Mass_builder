@@ -59,6 +59,9 @@
 \newcommand{\feyncalc}{\textsf{FeynCalc} }
 \newcommand{\feyncalcs}{\textsf{FeynCalc}}
 
+\newcommand{\mathematica}{\textsf{Mathematica} }
+\newcommand{\CC}{C\nolinebreak\hspace{-.05em}\raisebox{.4ex}{\tiny\bf +}\nolinebreak\hspace{-.10em}\raisebox{.4ex}{\tiny\bf +} }
+
 \usepackage{braket}
 
 \begin{document}
@@ -70,36 +73,36 @@
 
 In this document we present a detailed calculation of radiative corrections up to two-loop order in the perturbative couplings for two quantum field theories.  For the purposes of a clear and explanatory presentation we work through a scalar field theory example using all the tools available.  This is followed by a more complicated calculation of the two-loop mass corrections in a triplet extended electroweak model.\\
 
-The physical mass of a particle observed in experiments is not the \mbox{\footnotesize$\overline{\rm MS}~$} mass appearing in a renormalised Lagrangian.  Instead it is given by the \textit{pole mass}, which is defined as the pole of the two-point propagator.  The form of the propagator, and thus the pole mass, depends on the field in question.  For a scalar field, $\phi(x)$, the two-point propagator is given by
+The physical mass of a particle observed in experiments is not the \mbox{\footnotesize$\overline{\rm MS}~$} mass appearing in a renormalised Lagrangian.  Instead it is given by the \textit{pole mass}, which is defined as the pole of the two-point propagator after finite renormalisation effects are taken into account.  The form of the propagator, and thus the pole mass, depends on the field in question.  For a scalar field, $\phi(x)$, the two-point propagator is given by
 \begin{align}
-\braket{\Omega |T\phi(x)\phi(y) | \Omega} = \frac{i}{p^2-m^2+i\epsilon} + \frac{i}{p^2-m^2+i\epsilon}\left[-i\Sigma_2(p)\right]\frac{i}{p^2-m^2+i\epsilon}+ \ . \ . \ . 
+\braket{\Omega |T\phi(x)\phi(y) | \Omega} = \frac{i}{p^2-m^2+i\epsilon} + \frac{i}{p^2-m^2+i\epsilon}\left[-i\Sigma^{(1)}(p)\right]\frac{i}{p^2-m^2+i\epsilon}+ \ . \ . \ . \label{eqn:scalar_two_point}
 \end{align}
-where the first term is the free field propagator, the second term is all the diagrams with one-loop and two external legs and the dots represent terms with two-loops, three-loops and so on.  So $\Sigma_2$ is the sum of the amplitudes of all one particle irreducible processes (1PI) $\phi\rightarrow\phi$ that contain one-loop between the incoming and outgoing propagators.  Here a 1PI process is a diagram with two external scalar legs, which can not be split into a sum of such diagrams.  Once we have evaluated $\Sigma_2$ we must include an infinite series of these 1PI diagrams.  If one loop precision is required then one can set $\Sigma_2=\Sigma$, otherwise it may be left to represent all higher order loop processes.  After taking this infinite series of 1PI diagrams we end up with the Fourier transform of the two-point function
+where the first term is the free field propagator, the second term is all the diagrams with two external legs and one-loop between them and the dots represent terms with two-loops, three-loops and so on.  So $\Sigma^{(1)}$ is the sum of the amplitudes of all one particle irreducible processes (1PI) $\phi\rightarrow\phi$ that contain one-loop between the incoming and outgoing propagators.  In this case a 1PI process is a diagram with two external scalar legs, which can not be split into a sum of such diagrams.  Once we have evaluated $\Sigma^{(1)}$ we must include an infinite series of these 1PI diagrams.  If one loop precision is required then one can set $\Sigma^{(1)}=\Sigma$, otherwise it may be left to represent higher order loop processes.  After taking this infinite series of 1PI diagrams we end up with the Fourier transform of the two-point function
 \begin{align}
 \begin{split}
 \int \d^4x\braket{\Omega |T\phi(x)\phi(0) | \Omega} e^{-p\cdot x}=& \frac{i}{p^2-m^2} + \frac{i}{p^2-m^2}\left[-i\Sigma(p)\right]\frac{i}{p^2-m^2} \\
 & + \frac{i}{p^2-m^2}\left[-i\Sigma(p)\right]\frac{i}{p^2-m^2}\left[-i\Sigma(p)\right]\frac{i}{p^2-m^2}+ \ . \ . \ . 
 \end{split}
 \end{align}
-Since $\Sigma(p)$ clearly commutes with $i$ we are able to express this sum as a convergent geometric series (this case is true for other propagators with momentum dependent numerators, since $\Sigma(p)$ is a function of $\slashed{p}$ and pure numbers only)
+Since $\Sigma(p)$ clearly commutes with $i$ we are able to express this sum as a geometric series (this case is true for other propagators with momentum dependent numerators, since $\Sigma(p)$ is a function of $\slashed{p}$ and numbers only)
 \begin{align}
 \begin{split}
 \int \d^4x\braket{\Omega |T\phi(x)\phi(y) | \Omega} e^{-p\cdot x}&=\frac{i}{p^2-m^2}\left(1 +\left(\frac{\Sigma(p)}{p^2-m^2}\right)+\left(\frac{\Sigma(p)}{p^2-m^2}\right)^2+\ . \ . \ .\right)\\
 &=\frac{i}{p^2-m^2-\Sigma(p)}
 \end{split}
 \end{align}
-so the pole of the propagator is given by $p^2 = m^2+\Sigma(p)$.  The pole mass of a scalar field is defined as $m_{\text{pole}}=p$ such that $p=\sqrt{m^2+\Sigma(p)}$, where $\Sigma(p)$ is known as the \textit{self energy}.\\
+so the pole of the propagator is given by $p^2 = m^2+\Sigma(p)$.  The pole mass of a scalar field is therefore defined as $m_{\text{pole}}=p$ such that $p=\sqrt{m^2+\Sigma(p)}$, where $\Sigma(p)$ is known as the \textit{self energy}.\\
 
-The above processes can be repeated for other types of fields.  For a Dirac fermion the free-field part of the propagator is given by
+The above procedure can be repeated for other types of fields.  For a Dirac fermion the free-field part of the propagator (equivalent to the first term in (\ref{eqn:scalar_two_point})) is
 \begin{align}
-S_F(p) = \frac{i}{\slashed{p}-m+i\epsilon}
+S_F(p) = \frac{i}{\slashed{p}-m+i\epsilon}.
 \end{align}
-and after working through the same steps we arrive at a pole mass $m_{\text{pole}}=p$ for $p=m+\Sigma(p)$.\\
+After working through the same steps as for the scalar field theory we arrive at a Dirac fermion pole mass $m_{\text{pole}}=p$ for $p=m+\Sigma(p)$.\\
 
 Finally we will need the self energy of gauge-bosons.  The self energy of gauge-bosons can be separated into a transverse and a longitudinal piece as
 \begin{equation}
-\Pi^{\mu\nu}_{ZZ}(p^2) \ =\ \Pi_{ZZ}^T(p^2)\biggl[g^{\mu\nu}
--{p^{\mu}p^{\nu}\over p^2}\biggr] \ +\ \Pi_{ZZ}^L(p^2)\,
+\Sigma^{\mu\nu}_{ZZ}(p^2) \ =\ \Sigma_{ZZ}^T(p^2)\biggl[g^{\mu\nu}
+-{p^{\mu}p^{\nu}\over p^2}\biggr] \ +\ \Sigma_{ZZ}^L(p^2)\,
 {p^{\mu}p^{\nu}\over p^2}\ .
 \end{equation}
 
@@ -109,23 +112,23 @@ self-energy,
 %
 \begin{eqnarray}
 && M_V^2 \ =\ \hat M_V^2 \ -\ {\cal
-R}e\,\Pi^T_{VV}(M_Z^2)~,\label{mz}
+R}e\,\Sigma^T_{VV}(M_Z^2)~,\label{mz}
 \end{eqnarray}
 %
 where $\hat M_V$ and $\hat M_V$ denote the
 \mbox{\footnotesize$\overline{\rm MS}~$} mass of the gauge boson $V\in\{W,Z,\gamma, ... \}$.\\
 
-The self-energies and \mbox{\footnotesize$\overline{\rm MS}~$} masses are evaluated at the renormalization scale $Q$.  We have omitted the explicit dependance of these quantities on $Q$ throughout as it only has relevance when we wish to numerically evaluate the self energies.\\
+The self-energies and \mbox{\footnotesize$\overline{\rm MS}~$} masses are evaluated at a particular renormalization scale, $\mu^2$.  When possible, we have omitted the explicit dependance of these quantities on $\mu^2$ as it only has relevance when we wish to numerically evaluate the self energies.\\
 
-Determining the value of the self energy, $\Sigma(p)$, is the focus of this work.  The value of $\Sigma(p)$ depends on what order of perturbation theory one requires, in general we have
+Determining the value of the self energy, $\Sigma(p)$, is the focus of this work.  As $\Sigma(p)$ is a perturbative quantity, we have in general
 \begin{align}
 \Sigma(p) = \frac{1}{16\pi^2}\Sigma^{(1)}(p)+\frac{1}{\left(16\pi^2\right)^2}\Sigma^{(2)}(p)+\ . \ . \ .
 \end{align}
-where $\Sigma^{(1)}(p)$ is the sum of all 1PI diagrams involving one-loop, $\Sigma^{(2)}(p)$ is all 1PI diagrams involving two loops and so on.  In a valid perturbation theory the magnitude of the corrections will decrease with order such that the geometric series above does properly converge.  Typically one or two-loop corrections are considered sufficient when comparing to the precision of modern experimental measurements.\\
+where $\Sigma^{(1)}(p)$ is the sum of all 1PI diagrams involving one-loop, $\Sigma^{(2)}(p)$ is all 1PI diagrams involving two loops and so on.  In a valid perturbation theory the magnitude of the corrections will decrease with order such that the geometric series is convergent.  Typically one or two-loop corrections are considered sufficient when comparing to the precision of modern experimental measurements.\\
 
-The main purpose of this document is to make clear how we employ the computational tools available to calculate the radiative corrections in a manner consistent with existing results in the literature.  We will make use of \feynarts \cite{Hahn2000} for generating amplitudes, \feyncalc \cite{Mertig1991,Shtabovenko2016} for reducing these to integrals, \tarcer \cite{Mertig1998} to further reduce these integrals to basis integrals and \tsil \cite{Martin2006} to numerically evaluate these integrals.\\
+The main purpose of this document is to make clear how we employ the computational tools available to calculate the radiative corrections in a manner consistent with existing results in the literature.  In particular, we compare with results for a scalar field theory from Martin 2006 \cite{Martin2006} and for the electroweak model with Ibe, Matsumoto and Sato 2013 \cite{Ibe2013a}.  We will make use of \feynarts \cite{Hahn2000} for generating amplitudes, \feyncalc \cite{Mertig1991,Shtabovenko2016} for reducing these to integrals, \tarcer \cite{Mertig1998} to further reduce these integrals to basis integrals and \tsil \cite{Martin2006} to numerically evaluate these integrals.\\
 
-The final step of converting \tarcer output into an interface with \tsil is non-trivial in that it requires organisation and sorting of massive amounts of symbolic expressions.  The amplitude produced by \tarcer is written in terms of divergent basis integrals which we must also seperate into a divergent and finite piece.  For this purpose, and for organising the entire calculation, we make use of the \mb program (see attached program manual) which generates Mathematica scripts to perform the symbolic calculations, right from the initial amplitude generation with \feynartss, through to generating C++ code to perform the numerical evaluation of the amplitudes.
+The final step of converting \tarcer output into an interface with \tsil is non-trivial in that it requires organisation and sorting of massive amounts of symbolic expressions.  The amplitude produced by \tarcer is written in terms of divergent basis integrals which we must also seperate into a divergent and finite piece.  For this purpose, and for organising the entire calculation, we make use of the \mb program (see attached program manual) which generates \mathematica scripts to perform the symbolic calculations, right from the initial amplitude generation with \feynartss, through to generating a \CC interface to the \tsil libraries to perform the numerical evaluation of the amplitudes.
 
 
 \section{Scalar field theory}
@@ -135,7 +138,7 @@ The field theory we will deal with here is that with Lagrangian
 \begin{align}
 \mathcal{L} = \frac{1}{2}(\partial_{\mu} s)^2-\frac{1}{2}m^2s^2-\frac{g}{3!}s^3-\frac{\lambda}{4!}s^4
 \end{align}
-where $m$ is the Lagrangian mass parameter of the field and we have two couplings, $g$ and $\lambda$, for the cubic and quartic interactions respectively.  We now need to redefine the field and couplings in terms of renormalised $\overline{MS}$ parameters,
+where $m$ is the Lagrangian mass parameter of the field and we have two couplings, $g$ and $\lambda$, for the cubic and quartic interactions respectively.  We now need to redefine the field and couplings in terms of renormalised \mbox{\footnotesize$\overline{\rm MS}~$}parameters,
 
 \begin{align}
 s\rightarrow Z^{1/2}_ss, \ \ \ m^2\rightarrow\frac{1}{Z_s}(m^2+\delta m^2),  \ \ \ g\rightarrow \frac{1}{Z_s^{3/2}}(g+\delta_g), \ \ \ \lambda\rightarrow \frac{1}{Z_s^2}(\lambda+\delta\lambda)
@@ -544,7 +547,7 @@ where $x=m^2$.  This result contains only finite basis integrals and note that a
 \section{The electroweak triplet model}
 \subsection{Introduction}
 
-The extension of the standard model by an electroweak multiplet is a popular dark matter candidate theory.  At the lowest order in perturbation theory all components of the multiplet have the same mass, which would result in charged dark matter, contrary to what is observed.  However when one goes to the next order in perturbation theory by computing the radiatively corrected mass, then the charged component(s) will obtain a slightly larger mass correction than the neutral component, resulting in a sufficient mass splitting to render the charged components to have a lifetime much shorter than the age of the universe.  The exact value of this mass splitting at the two-loop level is of interest.  We will work with the most simple multiplet, a triplet, to determine the value of this mass splitting at the two-loop order in perturbation theory.\\
+The extension of the standard model by an electroweak multiplet is a popular dark matter candidate theory.  At the lowest order in perturbation theory all components of the multiplet have the same mass, which would result in charged dark matter, contrary to what is observed.  However when one goes to the next order in perturbation theory by computing the radiatively corrected mass, then the charged component(s) will obtain a slightly larger mass correction than the neutral component, resulting in a sufficient mass splitting to render the charged components to have a lifetime much shorter than the age of the universe.  The exact value of this mass splitting at the two-loop level is of interest.  We will work with the most simple multiplet, an $SU(2)$ triplet, to determine the value of this mass splitting at the two-loop order in perturbation theory.\\
 
 To further reduce the number of interactions we need to consider we will use a simplified standard model with the most minimal components to achieve a mass splitting.  This model consists of the $U(1)$ and $SU(2)$ gauge sectors but no SM fermions or leptons.  The particle content of the model is given in Table \ref{tab:particles}.  The triplet sector of the Lagrangian is
 \begin{align}

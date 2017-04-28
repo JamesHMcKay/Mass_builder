@@ -466,35 +466,7 @@ void Generate_code::generate_particle_src(std::string particle,int subgroup)
   
   functions << "  void SE_"<<particle_name << " (Data data, Integrals integral)\n";
   functions << "  {\n";
-/*
-  for (int i=0;i<nc;i++)
-  {
-    if (i!=(nc-1)) functions << "    " << couplings[i] << " = data."<<couplings[i]<<", ";
-    else functions << "    " << couplings[i] << " = data."<<couplings[i]<< " ";
-  }
-  functions<<";\n"
-  << "\n"
-  << "    Q2 = data.Q;\n"
-  //<< "    Q = pow(Q2,0.5);\n"
-  << "    p=data.P;\n";
-  
 
-  
-  
-  
-  functions<<"    dcomp ii=-1;ii=sqrt(ii);i=ii;\n"
-  <<"    Pi=PI;\n";
-  
-  if (relationships.size()!=0)
-  {
-    for (unsigned int i=0;i<relationships.size();i++)
-    {
-      functions << "    " << couplings[i] << " = " << relationships[i] << ";"<<endl;
-    }
-  }
-  */
-  
-  // set values of couplings
   functions<<"    dcomp ii=-1;ii=sqrt(ii);i=ii;\n"
   <<"    Pi=PI;\n";
 
@@ -609,6 +581,29 @@ void Generate_code::generate_particle_src(std::string particle,int subgroup)
         if (get_loop_order(levels[d]) == 1 )
         {
         functions<< "  cout << \""<< levels[d] << "-loop diagram"<<" "<< particle_name << "_" <<  tags[d] << " = \" << TSIL_POW(PI,2)*real(diagram" <<"_"<< particle_name << "_" << tags[d] << "_" << levels[d] << "())<<endl;"<<endl;
+        }
+      }
+    }
+  }
+  
+  // Print out value of each amplitude to LaTeX style
+  
+
+  if (options.latex_output)
+  {
+    functions << "  ofstream table;" << endl;
+    functions << "  table.open (\"LaTeX_table.tex\");" << endl;
+    for (int d = 0; d<nd;d++)
+    {
+      if (particle_names[d] == particle && subgroup==subgrouplist[d])
+      {
+        if (get_loop_order(levels[d]) == 2 )
+        {
+        functions<< "  table << \""<< levels[d] << "-loop diagram"<<" "<< particle_name << "_" <<  tags[d] << " & \" << TSIL_POW(PI,4)*real(diagram" <<"_"<< particle_name << "_" << tags[d] << "_" << levels[d] << "())<<endl;"<<endl;
+        }
+        if (get_loop_order(levels[d]) == 1 )
+        {
+        functions<< "  table << \""<< levels[d] << "-loop diagram"<<" "<< particle_name << "_" <<  tags[d] << " & \" << TSIL_POW(PI,2)*real(diagram" <<"_"<< particle_name << "_" << tags[d] << "_" << levels[d] << "())<<endl;"<<endl;
         }
       }
     }
@@ -739,7 +734,7 @@ void Generate_code::generate_code()
   main_output<< "   TSIL_REAL Q2 = data.Q;\n";
   //main_output<< "   TSIL_REAL Q = pow(Q2,0.5);\n";
   main_output<< "   TSIL_REAL s = pow(data.P,2);\n";
-  main_output<< "   TSIL_REAL p = data.P;\n";
+  //main_output<< "   TSIL_REAL p = data.P;\n";
   
   
   for (int i=0;i<nm;i++)
