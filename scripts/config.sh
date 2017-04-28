@@ -50,8 +50,10 @@ sed -i '' -e "s|.*LINK_DIRECTORIES(.*|LINK_DIRECTORIES($TSIL_PATH) |g" CMakeList
 cp src/self_energy_bak.cpp src/self_energy.cpp
 cp include/self_energy_backup.hpp include/self_energy.hpp
 cp include/data_bak.hpp include/data.hpp
-rm src/amp_*.cpp
+#rm src/amp_*.cpp
 # create working directories and build directory
 mkdir build
 mkdir output
+mkdir models/EW_triplet/output
+mkdir models/Scalar/output
 

@@ -37,4 +37,6 @@ cp include/data_bak.hpp include/data.hpp
 # create working directories and build directory
 mkdir build
 mkdir output
+mkdir models/EW_triplet/output
+mkdir models/Scalar/output
 

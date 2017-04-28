@@ -543,7 +543,7 @@ void Generate_code::generate_particle_src(std::string particle,int subgroup)
   <<"  }\n"
   << "\n"
   << "\n"
-  << "  double SE_2()\n"
+  << "  double SE_2(ofstream &table)\n"
   << "  {\n";
   
   /* Two loop */
@@ -588,23 +588,17 @@ void Generate_code::generate_particle_src(std::string particle,int subgroup)
   
   // Print out value of each amplitude to LaTeX style
   
-
-  if (options.latex_output)
+  for (int d = 0; d<nd;d++)
   {
-    functions << "  ofstream table;" << endl;
-    functions << "  table.open (\"LaTeX_table.tex\");" << endl;
-    for (int d = 0; d<nd;d++)
+    if (particle_names[d] == particle && subgroup==subgrouplist[d])
     {
-      if (particle_names[d] == particle && subgroup==subgrouplist[d])
+      if (get_loop_order(levels[d]) == 2 )
       {
-        if (get_loop_order(levels[d]) == 2 )
-        {
-        functions<< "  table << \""<< levels[d] << "-loop diagram"<<" "<< particle_name << "_" <<  tags[d] << " & \" << TSIL_POW(PI,4)*real(diagram" <<"_"<< particle_name << "_" << tags[d] << "_" << levels[d] << "())<<endl;"<<endl;
-        }
-        if (get_loop_order(levels[d]) == 1 )
-        {
-        functions<< "  table << \""<< levels[d] << "-loop diagram"<<" "<< particle_name << "_" <<  tags[d] << " & \" << TSIL_POW(PI,2)*real(diagram" <<"_"<< particle_name << "_" << tags[d] << "_" << levels[d] << "())<<endl;"<<endl;
-        }
+      functions<< "  table << \""<< particle_name  << " & "<<" "<< levels[d] << " & " <<  tags[d] << " & \" << TSIL_POW(PI,4)*real(diagram" <<"_"<< particle_name << "_" << tags[d] << "_" << levels[d] << "())<<endl;"<<endl;
+      }
+      if (get_loop_order(levels[d]) == 1 )
+      {
+      functions<< "  table << \""<< particle_name << " & "<<" "<< levels[d] << " & " <<  tags[d] << " & \" << TSIL_POW(PI,2)*real(diagram" <<"_"<< particle_name << "_" << tags[d] << "_" << levels[d] << "())<<endl;"<<endl;
       }
     }
   }
@@ -627,7 +621,7 @@ void Generate_code::generate_particle_src(std::string particle,int subgroup)
   <<"void  SE_"<<particle_name <<"(Data data, tsil::Integrals integral);\n"
   <<"\n"
   <<"double SE_1();"
-  <<"double SE_2();"
+  <<"double SE_2(ofstream &table);"
   <<"\n"
   <<"}\n";
   
@@ -811,6 +805,10 @@ void Generate_code::generate_code()
   <<"  tsil::Integrals integrals;\n"
   <<"  integrals.DoTSIL(data);\n";
   
+  
+  main_output << "  ofstream table;\n"
+  <<"  table.open (\"LaTeX_table.tex\");\n";
+  
   // sort list into groups
   // for each particle, call function which will generate the source file
   // can soon split this into smaller subgroups
@@ -847,7 +845,7 @@ void Generate_code::generate_code()
       generate_particle_src(particle_names_reduced[i],j);
       main_output<< "  " << particle_name_tmp_short <<"_"<<std::to_string(j)<<"::SE_"<<particle_name_tmp_short<<"(data,integrals);\n";
       main_output << "  "<<  particle_name_tmp_short << "_1 = " << particle_name_tmp_short << "_1 + " << particle_name_tmp_short <<"_"<<std::to_string(j)<<"::SE_1();\n";
-      main_output << "  "<<  particle_name_tmp_short << "_2 = " << particle_name_tmp_short << "_2 + " << particle_name_tmp_short <<"_"<<std::to_string(j)<<"::SE_2();\n";
+      main_output << "  "<<  particle_name_tmp_short << "_2 = " << particle_name_tmp_short << "_2 + " << particle_name_tmp_short <<"_"<<std::to_string(j)<<"::SE_2(table);\n";
     }
   
     
