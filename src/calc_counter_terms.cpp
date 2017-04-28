@@ -76,7 +76,6 @@ bool Calc_counter_terms::calc_counter_terms(Options options_in)
 {
   
   bool success=0;
-  bool sum_integrals=1;
   options = options_in;
   
   // need to read in the list of available diagrams and then select the 1-loop ones for

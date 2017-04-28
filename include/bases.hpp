@@ -79,7 +79,7 @@ void format_coeff(std::string dimension, std::map <std::string, Bases > &base_ma
 
 void format_coeff(std::string &coefficient);
 
-void format_coeff_brackets(std::map <std::string, Bases > &base_map, std::vector<std::string> bases_names,std::vector<std::string> masses, std::vector<std::string> id);
+void format_coeff_brackets(std::map <std::string, Bases > &base_map, std::vector<std::string> bases_names,std::vector<std::string> masses);
 
 std::map <std::string, Bases > products_container(vector<string> bases_names);
 

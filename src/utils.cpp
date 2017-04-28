@@ -766,7 +766,7 @@ void print_math_body(ofstream &file,Options options,string cwd,std::vector<std::
     
   }
   
-  void finite_T(ofstream &myfile, string x, string y, string z, string id)
+  void finite_T(ofstream &myfile, string x, string id)
   {
     myfile << id << " = " <<  id << "4 + ( ";
     
@@ -811,7 +811,7 @@ void print_math_body(ofstream &file,Options options,string cwd,std::vector<std::
   }
   
   
-  void finite_V(ofstream &myfile, string x, string y, string z, string u, string id)
+  void finite_V(ofstream &myfile, string y, string u, string id)
   {
     myfile << id << " = " <<  id << "4 + ( ";
     
@@ -854,12 +854,12 @@ void print_math_body(ofstream &file,Options options,string cwd,std::vector<std::
     if (type == "V")
     {
       myfile << id << "4 = " << "TVI[4, Pair[Momentum[p],Momentum[p]], {{1, " << base.e1 << "}, {1, " << base.e2 << "}, {1, " << base.e3 << "}, {1, " << base.e4 << "}}];" << endl;
-      finite_V(myfile, base.e1,base.e2,base.e3,base.e4,id);
+      finite_V(myfile, base.e2,base.e4,id);
     }
     if (type == "T")
     {
       myfile << id << "4 = " << "TJI[4, Pair[Momentum[p],Momentum[p]], {{2, " << base.e1 << "}, {1, " << base.e2 << "}, {1, " << base.e3 << "}}];" << endl;
-      finite_T(myfile,base.e1,base.e2,base.e3,id);
+      finite_T(myfile,base.e1,id);
     }
     if (type == "J")
     {

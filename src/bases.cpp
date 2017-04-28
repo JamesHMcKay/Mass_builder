@@ -366,7 +366,7 @@ void format_coeff(std::string &coefficient)
 // format coefficients for use in Mathematica input
 // change bracket type and remove decimal after integers
 // to avoid numerical computation
-void format_coeff_brackets(std::map <std::string, Bases > &base_map, std::vector<std::string> bases_names,std::vector<std::string> masses, std::vector<std::string> id)
+void format_coeff_brackets(std::map <std::string, Bases > &base_map, std::vector<std::string> bases_names,std::vector<std::string> masses)
 {
   int nb = bases_names.size();
   int nm = masses.size();
