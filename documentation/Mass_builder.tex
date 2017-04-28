@@ -1,4 +1,4 @@
-c\input{R1_template}
+\input{R1_template}
 
 \begin{document}
 
@@ -78,8 +78,7 @@ The easiest way to install \feyncalc, \feynarts and \tarcer is via the automated
 Import["https://raw.githubusercontent.com/FeynCalc/feyncalc/master/install.m"]
 InstallFeynCalc[]
 \end{lstterm}
-
-when requested to install the latest version of \feynarts say yes, as this will automatically patch the \feynarts installation.  If you do not follow this method then it is not possible to run \feynarts and \feyncalc in the same session (as we need to do) as many function names are identical between the packages, so to avoid name shadowing follow the recommend method.  For more information see the \feyncalc wiki \lstinline{https://github.com/FeynCalc/feyncalc/wiki}.
+(being careful to avoid any spaces which appear in the link when copy-pasting this) when requested to install the latest version of \feynarts say yes, as this will automatically patch the \feynarts installation.  If you do not follow this method then it is not possible to run \feynarts and \feyncalc in the same session (as we need to do) as many function names are identical between the packages, so to avoid name shadowing follow the recommend method.  For more information see the \feyncalc wiki \lstinline{https://github.com/FeynCalc/feyncalc/wiki}.
 
 Check if \tarcer has been loaded with the following input
 \begin{lstterm}
@@ -191,6 +190,8 @@ Two loop self energy of particle S1 = 2.91938e-05
 \end{lstterm}
 where the particle name has been converted to a simplified form, this is the form of the particle name which appears in the generated output files.
 
+Finally we provide detailed output in the file \lstinline{LaTeX_table.tex} written to the root directory.  The columns of this file are particle name, loop order (with a ``c" suffix if a counter-term diagram), diagram number and amplitude in GeV.
+
 \section{Full user guide}\label{sec:user_guide}
 \subsection{Command line interface}
 
@@ -288,12 +289,17 @@ Between computing the amplitudes and generating the code \mb stores the necessar
 \item \lstinline{coeff_products_tag.txt} list of coefficients of the products in \CC form
 \item \lstinline{summation_tag.txt} the amplitude as a sum of basis integrals and coefficients
 \end{itemize}
+and a \mathematica data file
+\begin{itemize}
+\item \lstinline{math_data_tag.mx} stores full divergent amplitude for later recall within \mathematica
+\end{itemize}
 where \lstinline{tag} encodes the particle name, diagram and loop order (and if this is a counter-term diagram).  When necessary the output is written in \CC style for simple implementation into the final code.
+
+The \mathematica data file is essential if one wishes to repeat a calculation using the full divergent amplitude.  This is necessary for the computation of the tree-level counter-term, where \mb collects all relevant amplitudes for the particle in question and then sums these together before extracting the divergent piece.  By keeping this file we loose no information from the original calculation.
 
 \subsection{Tree-level counter-term coupling calculation}\label{sec:ct}
 
 It is possible to compute the tree-level counter-term coupling given the sum of the loop corrections at one-loop.  Since the tree-level counter-term is the only counter-term of one-loop order, we only need to solve one equation to demand no divergences of order $1/\epsilon$.  To automatically compute this coupling one first needs to compute all the one-loop amplitudes, and then use the \lstinline{-b} flag followed by the model and particle identifier, along with the \lstinline{-v} flag to display the Mathematica output which will print the result to the terminal.
-
 
 \section{Algorithm details and code structure}
 
