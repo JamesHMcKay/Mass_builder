@@ -13,6 +13,7 @@
 \setlength{\parindent}{0pt}
 
 \usepackage{lmodern}
+\usepackage{colortbl}
 
 \usepackage{mmacells}
 \usepackage{longtable}
@@ -22,7 +23,8 @@
 
 
 \newcommand{\newc}{\newcommand}
-\newcommand{\mychi}{\raisebox{0pt}[1ex][1ex]{$\chi$}}
+\newcommand{\mychi}{\raisebox{0pt}[1ex][1ex]{\tiny$\chi$}}
+\newcommand{\mychibig}{\raisebox{0pt}[1ex][1ex]{$\chi$}}
 \def\sp{\slashed{p}}
 \def\sk{\slashed{k}}
 \def\cn{\chi^0}
@@ -45,6 +47,8 @@
 \def\Mpb{M_{\text{pole},B}}
 \def\kmpm{k^{\mu}p_{\mu}}
 \def\he{\frac{\epsilon}{2}}
+
+\def\mc{m_{\mychi}}
 
 \newcommand{\mb}{\textsf{Mass Builder} }
 \newcommand{\mbs}{\textsf{Mass Builder}}
@@ -552,9 +556,9 @@ The extension of the standard model by an electroweak multiplet is a popular dar
 To further reduce the number of interactions we need to consider we will use a simplified standard model with the most minimal components to achieve a mass splitting.  This model consists of the $U(1)$ and $SU(2)$ gauge sectors but no SM fermions or leptons.  The particle content of the model is given in Table \ref{tab:particles}.  The triplet sector of the Lagrangian is
 \begin{align}
 \begin{split}
-\mathcal{L}_{\chi}=&\frac{1}{2}\overline{\mychi^0}(i\slashed{\partial}-M)\mychi^0+\frac{1}{2}\overline{\mychi^+}(i\slashed{\partial}-M)\mychi^{+}\\
-&+g\left(\overline{\mychi^+}\gamma_{\mu}\mychi^+\right)\left(s_wA_{\mu}+c_wZ_{\mu}\right)\\
-&+g\left(\overline{\mychi^+}\gamma_{\mu}\mychi^0 \right)W_{\mu}^++\text{h.c.}
+\mathcal{L}_{\chi}=&\frac{1}{2}\overline{\mychibig^0}(i\slashed{\partial}-\mc)\mychibig^0+\frac{1}{2}\overline{\mychibig^+}(i\slashed{\partial}-\mc)\mychibig^{+}\\
+&+g\left(\overline{\mychibig^+}\gamma_{\mu}\mychibig^+\right)\left(s_WA_{\mu}+c_WZ_{\mu}\right)\\
+&+g\left(\overline{\mychibig^+}\gamma_{\mu}\mychibig^0 \right)W_{\mu}^++\text{h.c.}
 \end{split}
 \end{align}
 where $s_W=\sin(\theta_W)$ and $c_W=\cos(\theta_W)$ are the sine and cosine of the Weinberg angle respectively.\\
@@ -626,8 +630,8 @@ Name & Type & complex/real & Mass  \\
  \(A^0\) & Scalar &real & $m_Z$\\
  \(h\) & Scalar &real & $m_H$\\
  \hline 
-\(\chi^{+}\) & Fermion &Dirac & $M$\\
- \(\chi_0\) & Fermion &Majorana & $M$\\
+\(\chi^{+}\) & Fermion &Dirac & $\mc$\\
+ \(\chi_0\) & Fermion &Majorana & $\mc$\\
  \hline 
 \(\gamma\) & Vector &real & $m_{\gamma}$\\
  \(Z\) & Vector &real & $m_Z$\\
@@ -644,7 +648,7 @@ The momentum dependent contribution to the triplet mass, the self energy, is giv
 \chi^{\pm\pm}$, $W^{\pm}$ and the $A$ and $Z$ bosons.  The propagators we will use are (in the Feynman gauge)
 \begin{align}
 i\Pi^{V}_{\mu\nu}&=-i\frac{-g_{\mu\nu}}{k^2-m_{\text{V}}^2- \Pi(k^2)}\label{eqn:gauge_boson_propagator}\\ 
-i\Pi^{\chi}_{\mu\nu}&=-i\frac{\slashed{k}-m}{k^2-m^2- \Pi(k^2)}
+i\Pi^{\chi}_{\mu\nu}&=-i\frac{\slashed{k}-\mc}{k^2-\mc^2- \Pi(k^2)}
 \end{align}
 for the vector bosons ($V\in\{W^{\pm},\gamma,Z\}$) and the components of the fermionic triplet ($\chi\in\{\chi^0,\chi^{\pm}\}$).\\
 
@@ -772,20 +776,20 @@ We do not need to consider the one-loop self energies of the Higgs, ghosts, or p
 
 The neutral component only has two possible radiative corrections, due to the processes $\chi_0\rightarrow W^{\pm} + \chi^{\mp}$.  The corresponding Feynman diagrams are given on the left.  The loop integral we need to evaluate is
 \begin{align}
-i\Sigma_{\cn}(\slashed{p})&= 2 (g)^2 \int \frac{\d^4k}{(2\pi)^4} \gamma^{\mu}\frac{(\slashed{p}+\slashed{k}+m)\gamma^{\nu}\left(-g_{\mu\nu}\right)}{((p+k)^2-m^2)(k^2-m_{\text{w}}^2)}\label{eqn:cn_loop}
+i\Sigma_{\cn}(\slashed{p})&= 2 (g)^2 \int \frac{\d^4k}{(2\pi)^4} \gamma^{\mu}\frac{(\slashed{p}+\slashed{k}+\mc)\gamma^{\nu}\left(-g_{\mu\nu}\right)}{((p+k)^2-\mc^2)(k^2-m_W^2)}\label{eqn:cn_loop}
 \end{align}
 where we have included a factor of two since this process can occur via either $\chi_0\rightarrow W^+ + \chi^-$ or $\chi_0\rightarrow W^- + \chi^+$.  
 \end{minipage}
 
 We will calculate the neutral component self energy by hand for the purposes of illustration and leave the rest of the calculations to the tools we have available.  The loop integral is expressed as
 \begin{align}
-i\Sigma_{\cn}(\slashed{p})&=2 (g)^2 \int \frac{\d^4k}{(2\pi)^4} \frac{N}{((p+k)^2-m^2)(k^2-m_{\text{w}}^2)}
+i\Sigma_{\cn}(\slashed{p})&=2 (g)^2 \int \frac{\d^4k}{(2\pi)^4} \frac{N}{((p+k)^2-\mc^2)(k^2-m_W^2)}
 \end{align}
 where we simplify $N$ by
 \begin{align*}
-N&=-\gm(\sk+\sp+m)\gn g_{\mu\nu}\\
-&=-\gm(\sk+\sp+m)\gamma_{\mu}\\
-&=(D-2)(\sk+\sp)-Dm
+N&=-\gm(\sk+\sp+\mc)\gn g_{\mu\nu}\\
+&=-\gm(\sk+\sp+\mc)\gamma_{\mu}\\
+&=(D-2)(\sk+\sp)-D\mc
 \end{align*}
 
 using the identities
@@ -803,22 +807,22 @@ Now we use the Feynman parameter integral
 \end{align}
 to simplify the denominator
 \begin{align*}
- \frac{1}{((p+k)^2-m^2)(k^2-m_{\text{w}}^2)}&=\int_0^1\frac{\d x}{[k^2-m_{\text{w}}^2+(p^2+2kp+k^2-(k^2-m_{\text{w}}^2))x]^2}\\
-&=\int_0^1\frac{\d x}{[ k^2+2kpx+p^2x+x(m_{\text{w}}^2-m^2)-m_{\text{w}}^2]^2}\\
-&=\int_0^1\frac{\d x}{[ (k+px)^2+x(1-x)p^2+x(m_{\text{w}}^2-m^2)-m_{\text{w}}^2]^2}\\
+ \frac{1}{((p+k)^2-\mc^2)(k^2-m_W^2)}&=\int_0^1\frac{\d x}{[k^2-m_W^2+(p^2+2kp+k^2-(k^2-m_W^2))x]^2}\\
+&=\int_0^1\frac{\d x}{[ k^2+2kpx+p^2x+x(m_W^2-\mc^2)-m_W^2]^2}\\
+&=\int_0^1\frac{\d x}{[ (k+px)^2+x(1-x)p^2+x(m_W^2-\mc^2)-m_W^2]^2}\\
 &=\int_0^1\frac{\d x}{[ k'-\xi]^2}
 \end{align*}
-where $k'=k+px$ and we have defined $\xi\equiv-x(1-x)p^2-x(m_{\text{w}}^2-m^2)+m_{\text{w}}^2$.  Note that we choose $(p+k)$ for the momentum in the $\chi$ internal propagator, this is to match the convention used by Ibe et al. \cite{Ibe2013a} and thus the definitions for the Passarino-Veltman integrals we will make use of shortly.\\
+where $k'=k+px$ and we have defined $\xi\equiv-x(1-x)p^2-x(m_W^2-m^2)+m_W^2$.  Note that we choose $(p+k)$ for the momentum in the $\chi$ internal propagator, this is to match the convention used by Ibe et al. \cite{Ibe2013a} and thus the definitions for the Passarino-Veltman integrals we will make use of shortly.\\
 
 
 We now translate the integration measure $\int \d^4k\rightarrow\int \d^4k'$ (and henceforth omitting the prime on $k'$) to obtain (after substituting $k\rightarrow k-px$ in the numerator)
 \begin{align}
-i\Sigma_{\cn}(\slashed{p})&= 2(g)^2 \int \frac{\d^4k}{(2\pi)^4}\int_0^1 \d x \frac{(D-2)(\sk+\sp(1-x) )-Dm}{[ k^2-\Delta]^2}.
+i\Sigma_{\cn}(\slashed{p})&= 2(g)^2 \int \frac{\d^4k}{(2\pi)^4}\int_0^1 \d x \frac{(D-2)(\sk+\sp(1-x) )-D\mc}{[ k^2-\Delta]^2}.
 \end{align}
 
 Since the denominator of the loop integral is now symmetric with respect to $k$ we can discard all terms here of odd order in $k$ to give
 \begin{align}
-i\Sigma_{\cn}(\slashed{p})&= 2(g)^2 \int \frac{\d^4k}{(2\pi)^4}\int_0^1 \d x \frac{(D-2)(1-x)\sp-Dm}{[ k^2-\Delta]^2}.
+i\Sigma_{\cn}(\slashed{p})&= 2(g)^2 \int \frac{\d^4k}{(2\pi)^4}\int_0^1 \d x \frac{(D-2)(1-x)\sp-D\mc}{[ k^2-\Delta]^2}.
 \end{align}
 Next we apply dimensional regularisation, letting $D=4-2\epsilon$, such that in the limit of small $\epsilon$ we have
 \begin{align*}
@@ -831,20 +835,20 @@ Next we apply dimensional regularisation, letting $D=4-2\epsilon$, such that in 
 
 We are now ready to calculate the integral for $i\Sigma_{\cn}(\slashed{p})$.  Setting $D=4-2\epsilon$ in the numerator we have
 \begin{align}
-i\Sigma_{\cn}(\slashed{p})&= 2 (g)^2 \frac{i}{(4\pi)^2}  \int_0^1 \d x \left( (2-2\epsilon)(1-x)\sp-(4-2\epsilon)m  \right) \left(\frac{1}{\epsilon}+\log\frac{4\pi\mu^2e^{-\gamma}}{\Delta}\right).
+i\Sigma_{\cn}(\slashed{p})&= 2 (g)^2 \frac{i}{(4\pi)^2}  \int_0^1 \d x \left( (2-2\epsilon)(1-x)\sp-(4-2\epsilon)\mc  \right) \left(\frac{1}{\epsilon}+\log\frac{4\pi\mu^2e^{-\gamma}}{\Delta}\right).
 \end{align}
 After some simplification and evaluation of the straight forward integrals over $x$ we find
 \begin{align}
-i\Sigma_{\cn}(\slashed{p})=& 2 (g)^2 \frac{i}{(4\pi)^2} \left[ 2m-\sp + 2\sp\left(-\frac{\Delta}{2}+\int_0^1\d x \, x \log\frac{\xi}{\mu^2}\right)\right. \\
-&\left. + (2\sp-4m)\left(\Delta-\int_0^1\d x\, \log\frac{\xi}{\mu^2}\right)\right]
+i\Sigma_{\cn}(\slashed{p})=& 2 (g)^2 \frac{i}{(4\pi)^2} \left[ 2\mc-\sp + 2\sp\left(-\frac{\Delta}{2}+\int_0^1\d x \, x \log\frac{\xi}{\mu^2}\right)\right. \\
+&\left. + (2\sp-4\mc)\left(\Delta-\int_0^1\d x\, \log\frac{\xi}{\mu^2}\right)\right]
 \end{align}
 where we let $\Delta = 1/\epsilon-\gamma_E+\log(4\pi)$.  Now using (\ref{eqn:B0_def}) and (\ref{eqn:B1_def}), following the definitions of Ibe et al. \cite{Ibe2013a}, we express this result in terms of Passarino-Veltman functions
 \begin{align}
-i\Sigma_{\cn}(\slashed{p})=& \frac{-2i (g)^2}{(4\pi)^2} \left[ 2m-\sp + 2\sp\left(B_1(p^2,m_{\text{w}}^2,m^2)\right) + (2\sp-4m)\left(B_0(p^2,m_{\text{w}}^2,m^2)\right)\right]
+i\Sigma_{\cn}(\slashed{p})=& \frac{-2i (g)^2}{(4\pi)^2} \left[ 2m-\sp + 2\sp\left(B_1(p^2,m_W^2,\mc^2)\right) + (2\sp-4\mc)\left(B_0(p^2,m_W^2,\mc^2)\right)\right]
 \end{align}
 To bring this into the same form as given by Ibe et al. \cite{Ibe2013a} we use the identities $B_1(p^2,m_1^2,m_2^2)=-B_1(p^2,m_2^2,m_1^2)-B_0(p^2,m_2^2,m_1^2)$ and $B_0(p^2,m_1^2,m_2^2)=B_0(p^2,m_2^2,m_1^2)$  such that
 \begin{align}
-\Sigma_{\cn}(m)&= \frac{g^2}{16\pi^2}   \left[ -m\left(8 B_0(p^2,m^2,m_{\text{w}}^2)-4\right)-\slashed{p}\left(4 B_1(p^2,m^2,m_{\text{w}}^2)+2\right)\right]
+\Sigma_{\cn}(m)&= \frac{g^2}{16\pi^2}   \left[ -m\left(8 B_0(p^2,\mc^2,m_W^2)-4\right)-\slashed{p}\left(4 B_1(p^2,\mc^2,m_W^2)+2\right)\right]
 \end{align}
 
 \vspace{0.5cm}
@@ -855,22 +859,22 @@ To bring this into the same form as given by Ibe et al. \cite{Ibe2013a} we use t
 \noindent\begin{minipage}{0.7\textwidth}
 There is also a counter-term contribution, in the Figure on the left, with amplitude
 \begin{align}
- \int \frac{\d^4k}{(2\pi)^4}\left(\slashed{p}\,\delta_{Z_{\tilde{\chi}}}-\delta_{M_{\tilde{\chi}}}\right)
+ \int \frac{\d^4k}{(2\pi)^4}\left(\slashed{p}\,\delta_{Z_{\tilde{\chi}}}-\delta_{m_{\tilde{\chi}}}\right)
  \end{align}
  \end{minipage}
 \vspace{0.3cm}
 
-The sum of these amplitudes gives the self energy $\Sigma_{\cn}= \Sigma_{M, 0}^{(1)}+\slashed{p}\Sigma_{K, 0}^{(1)}$ where
+The sum of these amplitudes gives the self energy $\Sigma_{\cn}= \Sigma_{\mc, 0}^{(1)}+\slashed{p}\Sigma_{K, 0}^{(1)}$ where
 \begin{eqnarray}
 \Sigma_{K, 0}^{(1)} &=&
--\frac{\hat{g}^2}{16\pi^2}
-\left[ 4 B_1(p^2, \hat{M}_2^2, \hat{m}_W^2) + 2 \right]
+-\frac{g^2}{16\pi^2}
+\left[ 4 B_1(p^2, \mc^2, m_W^2) + 2 \right]
 +\delta_{Z_{\tilde{\chi}}}\ , \label{eq: Neu_K} \\
 %%%%%
-\Sigma_{M, 0}^{(1)} &=&
--\frac{\hat{g}^2 \hat{M}_2}{16\pi^2}
-\left[ 8 B_0(p^2, \hat{M}_2^2, \hat{m}_W^2) - 4 \right]
--\delta_{M_{\tilde{\chi}}}\ . \label{eq: Neu_M}
+\Sigma_{\mc, 0}^{(1)} &=&
+-\frac{g^2 \mc}{16\pi^2}
+\left[ 8 B_0(p^2, \mc^2, m_W^2) - 4 \right]
+-\delta_{\mc}\ . \label{eq: Neu_M}
 \end{eqnarray}
 Because we have used (\ref{eqn:B0_def}) and (\ref{eqn:B1_def}) to define $B_0$ and $B_1$ this result contains divergent terms and is only finite with the correct choice of the counter-term couplings which we will determine in section \ref{sec:ew_ct}.
 
@@ -887,9 +891,9 @@ The charged component has three one-loop corrections with diagrams given on the 
 \begin{align}
 \begin{split}
 i\Sigma_{\cm}(\slashed{p})=
-&+(s_Wg)^2 \int \frac{\d^4k}{(2\pi)^4} \gamma^{\mu}\frac{(\slashed{p}-\slashed{k}+M)\gamma^{\nu}\left(-g_{\mu\nu}\right)}{((p-k)^2-M^2)(k^2)}\\
-&+(g)^2 \int \frac{\d^4k}{(2\pi)^4} \gamma^{\mu}\frac{(\slashed{p}-\slashed{k}+M)\gamma^{\nu}\left(-g_{\mu\nu}\right)}{((p-k)^2-M^2)(k^2-m_{\text{w}}^2)}\\
-&+(c_Wg)^2 \int \frac{\d^4k}{(2\pi)^4} \gamma^{\mu}\frac{(\slashed{p}-\slashed{k}+M)\gamma^{\nu}\left(-g_{\mu\nu}\right)}{((p-k)^2-M^2)(k^2-m_{\text{z}}^2)}.
+&+(s_Wg)^2 \int \frac{\d^4k}{(2\pi)^4} \gamma^{\mu}\frac{(\slashed{p}-\slashed{k}+\mc)\gamma^{\nu}\left(-g_{\mu\nu}\right)}{((p-k)^2-\mc^2)(k^2)}\\
+&+(g)^2 \int \frac{\d^4k}{(2\pi)^4} \gamma^{\mu}\frac{(\slashed{p}-\slashed{k}+\mc)\gamma^{\nu}\left(-g_{\mu\nu}\right)}{((p-k)^2-\mc^2)(k^2-m_W^2)}\\
+&+(c_Wg)^2 \int \frac{\d^4k}{(2\pi)^4} \gamma^{\mu}\frac{(\slashed{p}-\slashed{k}+\mc)\gamma^{\nu}\left(-g_{\mu\nu}\right)}{((p-k)^2-\mc^2)(k^2-m_W^2)}.
 \end{split}
 \end{align}
 The calculation of these amplitudes is very similar to that for the neutral component, so we will not repeat the calculation. 
@@ -899,17 +903,17 @@ The result, obtained either using \mb or by hand is
 {
 \begin{eqnarray}
 \Sigma_{K, \pm}^{(1)} =
--\frac{\hat{g}^2}{8\pi^2}
-\left[ \hat{s}_W^2 B_1(p^2,\hat{M}_2^2,0)
-+\hat{c}_W^2 B_1(p^2,\hat{M}_2^2, \hat m_Z^2)
-+B_1(p^2, \hat{M}_2^2, \hat{m}_W^2) + 1  \right]
+-\frac{g^2}{8\pi^2}
+\left[ s_W^2 B_1(p^2,\mc^2,0)
++c_W^2 B_1(p^2,\mc^2, m_Z^2)
++B_1(p^2, \mc^2, m_W^2) + 1  \right]
 + \delta_{Z_{\tilde{\chi}}}\ , \label{eq: Cha_K} \\
 %%%%%
 \Sigma_{M, \pm}^{(1)} =
--\frac{\hat{g}^2 \hat{M}_2}{4\pi^2}
-\left[ \hat{s}_W^2 B_0(p^2, \hat{M}_2^2,0)
-+\hat{c}_W^2 B_0(p^2, \hat{M}_2^2, \hat{m}_Z^2)
-+B_0(p^2, \hat{M}_2^2, \hat{m}_W^2) - 1 \right]
+-\frac{g^2 \mc}{4\pi^2}
+\left[ s_W^2 B_0(p^2, \mc^2,0)
++c_W^2 B_0(p^2, \mc^2, m_Z^2)
++B_0(p^2, \mc^2, m_W^2) - 1 \right]
 -\delta_{M_{\tilde{\chi}}}\ ,
  \label{eq: Cha_M}
 \end{eqnarray}
@@ -933,9 +937,9 @@ Consider the contributions to the photon self energy from Higgs and boson sector
 From Ibe et al. we have
 \begin{align}
 \Pi_{\gamma \gamma}^{(V, h)}(p^2) =
--\frac{3 \hat{e}^2}{4\pi^2}
-\left[ \tilde{B}_{22}(p^2, \hat{m}_W^2, \hat{m}_W^2) + \frac{p^2}{18} \right]
--\frac{\hat{e}^2 p^2}{4\pi^2} B_0(p^2, \hat{m}_W^2, \hat{m}_W^2) \label{eqn:gammagamma}
+-\frac{3 e^2}{4\pi^2}
+\left[ \tilde{B}_{22}(p^2, m_W^2, m_W^2) + \frac{p^2}{18} \right]
+-\frac{e^2 p^2}{4\pi^2} B_0(p^2, m_W^2, m_W^2) \label{eqn:gammagamma}
 \end{align}
 where this includes all contributions from the 9 diagrams in Figure \ref{fig:gammagamma}.  We find the self energy contribution from \mb in a fully reduced scheme is
 \begin{align}
@@ -955,26 +959,26 @@ The Z boson self energy as given by Ibe et al. \cite{Ibe2013a} is
 {
 \begin{eqnarray}
 \Pi_{ZZ}^{(V,h)}(p^2) &=& 
--\frac{ \hat{g}^2 (12\hat{c}_W^4 - 4\hat{c}_W^2 + 1) }{16\pi^2 \hat{c}_W^2}
-\tilde B_{22}(p^2, \hat{m}_W^2, \hat{m}_W^2) 
--\frac{ \hat{g}^2 \hat{c}_W^2 p^2 }{24\pi^2} \nonumber \\
-&& -\frac{2\hat{g}^2}{16\pi^2}(2\hat{c}_W^2 p^2 + 2\hat{m}_W^2 - \hat{m}_Z^2)
-B_0(p^2, \hat{m}_W^2, \hat{m}_W^2) \nonumber \\
-&& -\frac{ \hat{g}^2 }{16\pi^2 \hat{c}_W^2}
-[\tilde B_{22}(p^2, \hat{m}_Z^2, \hat{m}_h^2)\label{eqn:ZZ}
--\hat{m}_Z^2 B_0(p^2, \hat{m}_Z^2, \hat{m}_h^2) ]
+-\frac{ g^2 (12c_W^4 - 4c_W^2 + 1) }{16\pi^2 c_W^2}
+\tilde B_{22}(p^2, m_W^2, m_W^2) 
+-\frac{ g^2 c_W^2 p^2 }{24\pi^2} \nonumber \\
+&& -\frac{2g^2}{16\pi^2}(2c_W^2 p^2 + 2m_W^2 - m_Z^2)
+B_0(p^2, m_W^2, m_W^2) \nonumber \\
+&& -\frac{ g^2 }{16\pi^2 c_W^2}
+[\tilde B_{22}(p^2, m_Z^2, m_H^2)\label{eqn:ZZ}
+-m_Z^2 B_0(p^2, m_Z^2, m_H^2) ]
 \end{eqnarray}
 }
 the result from \mb is
 {
 \begin{eqnarray}
 \Pi_{ZZ}^{(V,h)}(p^2) &=& 
--\frac{ \hat{g}^2} {576 c_W^4 p^2 \pi^2}\left\{
+-\frac{ g^2} {576 c_W^4 p^2 \pi^2}\left\{
 2 p^2 \left[-3 m_H^2 (-1 + s_W^2) + 2 p^2 (1 - 3 s_W^2 + 2 s_W^4) \right. \right.\nonumber\\
 && \left.+ 3 m_W^2 (19 - 58 s_W^2 + 64 s_W^4 - 24 s_W^6)\right] \nonumber\\
-&&- 3 (m_W^2 + m_H^2 (-1 + s_W^2) - 2 p^2 (-1 + s_W^2)) A0\left(m_H^2\right)  \nonumber\\
+&&- 3 (m_W^2 + m_H^2 (-1 + s_W^2) - 2 p^2 (-1 + s_W^2)) A_0\left(m_H^2\right)  \nonumber\\
  &&  + 12 p^2 (-9 + 29 s_W^2 - 32 s_W^4 + 12 s_W^6) A_0\left(m_W^2\right)  \nonumber\\
-   && +3 ((m_W^2 + m_H^2 (-1 + s_W^2) + 2 p^2 (-1 + s_W^2)) A0\left(m_Z^2\right)  \nonumber\\
+   && +3 ((m_W^2 + m_H^2 (-1 + s_W^2) + 2 p^2 (-1 + s_W^2)) A_0\left(m_Z^2\right)  \nonumber\\
    &&+ \left[-m_W^2 (m_Z^2 + 10 p^2) + m_H^4 (-1 + s_W^2)\right.  \nonumber\\
    && \left. +     p^4 (-1 + s_W^2) + 2 m_H^2 (m_W^2 - p^2 (-1 + s_W^2))\right] B_0\left(p^2, m_H^2, m_Z^2\right)  \nonumber\\
 &&   -    p^2 (-1 + s_W^2) \left[4 m_W^2 (15 - 32 s_W^2 + 12 s_W^4)\right.  \nonumber\\
@@ -997,16 +1001,16 @@ The W boson self energy is given by Ibe et al. \cite{Ibe2013a} to be
 {\small
 \begin{eqnarray}
 \Pi_{WW}^{(V, h)}(p^2) &=&
--\frac{8\hat{e}^2}{16\pi^2} \tilde B_{22}(p^2, 0, \hat{m}_W^2)
--\frac{\hat{e}^2 p^2}{24\pi^2}
--\frac{4\hat{e}^2 p^2}{16\pi^2} B_0(p^2, 0, \hat{m}_W^2) \nonumber \\
-&& -\frac{\hat{g}^2}{16\pi^2}(1 + 8\hat{c}_W^2)
-\tilde{B}_{22}(p^2, \hat{m}_W^2, \hat{m}_Z^2)
--\frac{\hat{g}^2 \hat{c}_W^2 p^2}{24\pi^2} \nonumber \\
-&& -\frac{\hat g^2}{16\pi^2}( 4 \hat c_W^2 p^2 + 3 \hat m_W^2 - \hat m_Z^2) B_0( p^2, \hat m_W^2, \hat m_Z^2) \nonumber\\
-&& -\frac{\hat{g}^2}{16\pi^2}
-[ \tilde{B}_{22}(p^2, \hat{m}_W^2, \hat{m}_h^2)
--\hat{m}_W^2 B_0(p^2, \hat{m}_W^2, \hat{m}_h^2) ]\ .\label{eqn:WW}
+-\frac{8e^2}{16\pi^2} \tilde B_{22}(p^2, 0, m_W^2)
+-\frac{e^2 p^2}{24\pi^2}
+-\frac{4e^2 p^2}{16\pi^2} B_0(p^2, 0, m_W^2) \nonumber \\
+&& -\frac{g^2}{16\pi^2}(1 + 8c_W^2)
+\tilde{B}_{22}(p^2, m_W^2, m_Z^2)
+-\frac{g^2 c_W^2 p^2}{24\pi^2} \nonumber \\
+&& -\frac{ g^2}{16\pi^2}( 4  c_W^2 p^2 + 3 m_W^2 -  m_Z^2) B_0( p^2,m_W^2, m_Z^2) \nonumber\\
+&& -\frac{g^2}{16\pi^2}
+[ \tilde{B}_{22}(p^2, m_W^2, m_H^2)
+-m_W^2 B_0(p^2, m_W^2, m_H^2) ]\ .\label{eqn:WW}
 \end{eqnarray}
 }
 
@@ -1014,7 +1018,7 @@ We compute the self energy using \mb and obtain
 {
 \begin{eqnarray}
 \Pi_{WW}^{(V,h)}(p^2) &=& 
--\frac{ \hat{g}^2} {576 c_W^4 p^2 \pi^2}\left\{ -6 m_H^2 p^2 - 4 p^4 \right.+  24 (m_{\gamma}^2 - m_W^2 - 2 p^2) s_W^2 (-1 + s_W^2) A_0(m_{\gamma}^2) -  \nonumber\\
+-\frac{ g^2} {576 c_W^4 p^2 \pi^2}\left\{ -6 m_H^2 p^2 - 4 p^4 \right.+  24 (m_{\gamma}^2 - m_W^2 - 2 p^2) s_W^2 (-1 + s_W^2) A_0(m_{\gamma}^2) -  \nonumber\\
 &&   3 m_H^2 A_0(m_H^2) + 6 p^2 A_0(m_H^2) + 3 m_H^2 A_0(m_W^2) + 60 p^2 A_0(m_W^2) + 54 p^2 A_0(m_Z^2)\nonumber \\
 &&   + 3 m_H^4 B_0(p^2, m_H^2, m_W^2) -6 m_H^2 p^2 B_0(p^2, m_H^2, m_W^2) + 3 p^4 B_0(p^2, m_H^2, m_W^2) + \nonumber\\
 &&   3 m_W^4 (B_0(p^2, m_H^2, m_W^2) - B_0(p^2, m_W^2, m_Z^2))\nonumber \\
@@ -1062,8 +1066,8 @@ These match those of Ibe et al. (if we neglect the terms which obviously come fr
 
 The one-loop counter-term couplings for the fermionic triplet are computed in the same way to give
 \begin{eqnarray}
-\delta_{Z_{\chi^0\chi^0}} &=&-\frac{g_2^2}{8 \pi^2}\Delta,\\
-\delta_{M_{\chi^0\chi^0}} &=&-\frac{g_2^2 M}{2 \pi^2}\Delta
+\delta_{Z_{\chi\chi}} &=&-\frac{g_2^2}{8 \pi^2}\Delta,\\
+\delta_{m_{\chi\chi}} &=&-\frac{g_2^2 \mc}{2 \pi^2}\Delta
 \end{eqnarray}
 which agree with that of Ibe et al.
 
@@ -1073,9 +1077,9 @@ which agree with that of Ibe et al.
 Finally we need the counter-term for the interaction between the triplet and the gauge sector.  This is given by Ibe et al. \cite{Ibe2013a} in the following direct quote:\\
 
 \textcolor{blue}{
-The neutral and charged winos have the SU(2)$_L$ gauge interaction which is described by the term, ${\cal L}_{\rm int} = i\epsilon_{abc}(\hat{g} + \delta_{\tilde{\chi} \tilde{\chi} W}) \tilde{\chi}^{a \dagger} \slashed{W}^b \tilde{\chi}^c$, and the counter-term is given by
+The neutral and charged winos have the SU(2)$_L$ gauge interaction which is described by the term, ${\cal L}_{\rm int} = i\epsilon_{abc}(g + \delta_{\tilde{\chi} \tilde{\chi} W}) \tilde{\chi}^{a \dagger} \slashed{W}^b \tilde{\chi}^c$, and the counter-term is given by
 \begin{eqnarray}
-\delta_{\tilde{\chi} \tilde{\chi} W} = \frac{\hat{g}^3}{4\pi^2} \Delta\ .
+\delta_{\tilde{\chi} \tilde{\chi} W} = \frac{g^3}{4\pi^2} \Delta\ .
 \end{eqnarray}
 }
 
@@ -1154,9 +1158,9 @@ are also IR divergent due to the diagram including a photon propagator.
 
 In our approach we wish to set a finite mass for the photon, as this still gives the same phenomenology for the mass splittings at the one-loop level.  Therefore any interesting effects at the two-loop level should be able to be studied with a small but finite photon mass.  The cancellation between IR divergences mentioned above should also occur numerically if we set a small photon mass, resulting in a still reasonable total amplitude.\\
 
-However, we find that there are significantly more diagrams which are ill-defined in the limit of $m_{\gamma}\rightarrow 0$ than suggested by Ibe et al. \cite{Ibe2013a}.  We have two options when computing these.  First, we can either set $m_{\gamma}=0$ from the outset, then we will end up with an amplitude proportional to $(p^2-M^2)^{-1}$, which is ill-defined for the important case of $p^2=M^2$ (either in the implicit or explicit calculation of the pole mass, the amplitudes must be finite here).  The second option is to leave a finite $m_{\gamma}$ throughout the calculation and subsequent basis integral reduction, and substitute $m_{\gamma}\rightarrow 0$ at the end.  This results in an amplitude proportional to $m_{\gamma}^{-2}$ or in a basis integral which is not defined at $m_{\gamma}=0$, so again this is ill-defined.\\
+However, we find that there are significantly more diagrams which are ill-defined in the limit of $m_{\gamma}\rightarrow 0$ than suggested by Ibe et al. \cite{Ibe2013a}.  We have two options when computing these.  First, we can either set $m_{\gamma}=0$ from the outset, then we will end up with an amplitude proportional to $(p^2-\mc^2)^{-1}$, which is ill-defined for the important case of $p^2=\mc^2$ (either in the implicit or explicit calculation of the pole mass, the amplitudes must be finite here).  The second option is to leave a finite $m_{\gamma}$ throughout the calculation and subsequent basis integral reduction, and substitute $m_{\gamma}\rightarrow 0$ at the end.  This results in an amplitude proportional to $m_{\gamma}^{-2}$ or in a basis integral which is not defined at $m_{\gamma}=0$, so again this is ill-defined.\\
 
-One possibility is that our diagram by diagram approach is flawed because of missing cancellations between diagrams.  To investigate this we compute the diagrams with a finite $m_{\gamma}$ throughout and then attempt to evaluate the result with $m_{\gamma}=0$.  The IR divergence is not always evident from a $m_{\gamma}^{-2}$ factor as it may be that one of the basis integrals is ill-defined, so we check that a diagram is finite by numerical evaluation.  We then compose a list of diagrams which are undefined (in this case all returning an \lstinline{inf} result) and sum these together.  If there is any important cancellation that would solve the problem, it would occur between these ill-defined diagrams, and not from any other finite diagram.  So we only have a handful of amplitudes to sum together, which is an achievable yet still cumbersome task for an analytical simplifier.  We find that the resultant sum still contains integrals which are ill-defined at $m_{\gamma}=0$, such as $T(m_{\gamma},M,m_W)$.\\
+One possibility is that our diagram by diagram approach is flawed because of missing cancellations between diagrams.  To investigate this we compute the diagrams with a finite $m_{\gamma}$ throughout and then attempt to evaluate the result with $m_{\gamma}=0$.  The IR divergence is not always evident from a $m_{\gamma}^{-2}$ factor as it may be that one of the basis integrals is ill-defined, so we check that a diagram is finite by numerical evaluation.  We then compose a list of diagrams which are undefined (in this case all returning an \lstinline{inf} result) and sum these together.  If there is any important cancellation that would solve the problem, it would occur between these ill-defined diagrams, and not from any other finite diagram.  So we only have a handful of amplitudes to sum together, which is an achievable yet still cumbersome task for an analytical simplifier.  We find that the resultant sum still contains integrals which are ill-defined at $m_{\gamma}=0$, such as $T(m_{\gamma},\mc,m_W)$.\\
 
 So we find that for the neutral component of the triplet, every diagram which includes a photon propagator, in any leg, is IR divergent, and the sum of these is also IR divergent.
 
@@ -1178,7 +1182,7 @@ Parameter & Value\\
 $m_W$ & $80.385$ GeV \\
 $m_Z$ & $91.1876$ GeV \\
 $m_H$ & 125.6 GeV\\
-$M$ & 100 GeV\\
+$\mc$ & 100 GeV\\
 $m_{\gamma}$ & $-$ \\
 $v$ & 246 GeV \\
 $Q$ & 100 GeV \\
@@ -1186,6 +1190,36 @@ $c_W^2$ & $m^2_W/m^2_Z$ \\
 $s_W^2$ & $1-c^2_W$ \\
 $g_2$ & $2m_W/v$\\
 $g_1$ & $g_2 s_W/c_W$\\
+\hline\end{tabular}
+\end{table}
+
+
+\begin{table}[h!]
+\caption{The total self energies for $p=\mc=5\times10^3$ GeV, $m_{\gamma}=0$ (\textit{left}), $m_{\gamma}=10$ GeV (\textit{right}), and the remaining parameters as given in Table \ref{table:input_params}.}\label{table:output_params}
+\centering
+\vspace{0.5cm}
+\begin{tabular}{l l}
+\hline
+Field & 1-loop self energy (GeV)\\
+\hline
+$W$ & $-$ \\
+$Z$ & $-$  \\
+$\gamma$ & $-$ \\
+$\chi^+$ & $-$ \\
+$\chi^0$ & $-$ \\
+&\\
+\hline
+Field & 2-loop self energy (GeV)\\
+\hline
+$\chi^+$ & $-$ \\
+$\chi^0$ & $-$ \\
+&\\
+\hline
+Field & Physical mass (GeV)\\
+\hline
+$W$ & $-$ \\
+$Z$ & $-$  \\
+$\gamma$ & $-$\\
 \hline\end{tabular}
 \hspace{3cm}
 \begin{tabular}{l l}
@@ -1213,90 +1247,398 @@ $\gamma$ & $-$\\
 \hline\end{tabular}
 \end{table}
 
+\begin{table}[h!]
+\caption{The finite amplitudes of each one-loop diagram for $p=\mc=5\times10^3$ GeV, $m_{\gamma}=0$ (\textit{left}), $m_{\gamma}=10$ GeV (\textit{right}), and the remaining parameters as given in Table \ref{table:input_params}.}\label{table:diagram_amp}
+\centering
+\vspace{0.2cm}
+\begin{tabular}{c c c c}
+Particle & Diagram & Amplitude (GeV) \\
+\hline
+$\chi^+$ & 1 & 100.379\\
+$\chi^+$ & 2 & 351.02\\
+$\chi^+$ & 3 & 451.522\\
+$\chi^0$ & 1 & 451.522\\
+$\chi^0$ & 2 & 451.522\\
+\hline\end{tabular}
+\begin{tabular}{c c c c}
+Particle & Diagram & Amplitude (GeV) \\
+\hline
+$\chi^+$ & 1 & 100.379\\
+$\chi^+$ & 2 & 351.02\\
+$\chi^+$ & 3 & 451.522\\
+$\chi^0$ & 1 & 451.522\\
+$\chi^0$ & 2 & 451.522\\
+\hline\end{tabular}
+\end{table}
+
 
 \begin{table}[h!]
-\caption{The amplitude of each diagram.}\label{table:diagram_amp}
+\caption{The finite amplitudes of each two-loop diagram for $p=\mc=5\times10^3$ GeV, $m_{\gamma}=0$ (\textit{left}), $m_{\gamma}=10$ GeV (\textit{right}), and the remaining parameters as given in Table \ref{table:input_params}.}\label{table:diagram_amp_2_a}
 \centering
-\vspace{0.5cm}
+\vspace{0.2cm}
 \begin{tabular}{c c c c}
-F1 &  1 & 1 & 100.379\\
-F1 &  1 & 2 & 351.02\\
-F1 &  1 & 3 & 451.522\\
-F1 &  2 & 1 & 0.733985\\
-F1 &  2 & 2 & 0.409273\\
-F1 &  2 & 3 & 0.409273\\
-F1 &  2 & 4 & 1.16585\\
-F1 &  2 & 5 & 0.614187\\
-F1 &  2 & 6 & 0.293129\\
-F1 &  2 & 7 & 1.49846\\
-F1 &  2 & 8 & 0.789463\\
-F1 &  2 & 9 & 1.22676\\
-F1 &  2 & 10 & -0.222797\\
-F1 &  2 & 11 & 3.57161\\
-F1 &  2 & 12 & 3.57161\\
-F1 &  2 & 13 & 6.91987\\
-F1 &  2 & 14 & 0.0253242\\
-F1 &  2 & 15 & 7.36556\\
-F1 &  2 & 16 & 7.36419\\
-F1 &  2 & 17 & -0.838939\\
-F1 &  2 & 18 & -2.36083\\
-F1 &  2 & 19 & -2.36083\\
-F1 &  2 & 20 & -16.3858\\
-F1 &  2 & 21 & -27.1077\\
-F1 &  2 & 22 & -11.3453\\
-F1 &  2 & 23 & -11.3453\\
-F1 &  2 & 24 & -50.1025\\
-F1 &  2 & 25 & -50.1025\\
-F1 &  2 & 26 & 28501.9\\
-F1 &  2 & 27 & -6248.66\\
-F1 &  2 & 28 & -6248.66\\
-F1 &  2 & 29 & 10.1439\\
-F1 &  2 & 30 & 16.7793\\
-F1 &  2 & 31 & -2.82652\\
-F1 &  2 & 32 & -10.7346\\
-F1 &  2 & 33 & -9.74724\\
-F1 &  2 & 34 & -37.4303\\
-F1 &  2 & 35 & -12.5502\\
-F1 &  2 & 36 & -48.1651\\
-F1 &  2 & 37 & -62.6267\\
-F1 &  2 & 38 & -62.6267\\
-F1 &  2 & 39 & -1.6302\\
-F1 &  2 & 40 & 0.0653375\\
-F1 &  2 & 41 & 0.0653375\\
-F1 &  2 & 42 & -0.76785\\
-F1 &  2 & 43 & 0.0179657\\
-F1 &  2 & 44 & -1.10023\\
-F1 &  2 & 45 & -0.390827\\
-F1 &  2 & 46 & 0.407549\\
-F1 &  2 & 47 & 0.407549\\
-F1 &  2 & 48 & -0.0458078\\
-F1 &  2 & 49 & -0.0458078\\
-F1 &  2 & 50 & -0.0458078\\
-F1 &  2 & 51 & -0.0458078\\
-F1 &  2 & 52 & -0.0353232\\
-F1 &  2 & 53 & -0.0353232\\
-F1 &  2 & 54 & -0.0869555\\
-F1 &  2 & 55 & 0.303712\\
-F1 &  2 & 56 & -0.0869555\\
-F1 &  2 & 57 & 0.303712\\
-F1 &  2 & 58 & 2.46149\\
-F1 &  2 & 59 & 0.712412\\
-F1 &  2 & 60 & 0.712412\\
-F1 &  2 & 61 & -0.00132902\\
-F1 &  2 & 62 & -0.00132902\\
-F1 &  2 & 63 & -0.00132902\\
-F1 &  2 & 64 & -0.00132902\\
-F1 &  2 & 65 & 0.0950094\\
-F1 &  2 & 66 & 0.0950094\\
-F1 &  2 & 67 & 0.547568\\
-F1 &  2 & 68 & 0.157117\\
+Particle & Diagram & Amplitude (GeV) \\
+\hline
+$\mychibig^+$ & 1 & 0.733985 \\ 
+$\mychibig^+$ & 2 & 0.409273 \\ 
+$\mychibig^+$ & 3 & 0.409273 \\ 
+$\mychibig^+$ & 4 & 1.16585 \\ 
+$\mychibig^+$ & 5 & 0.614187 \\ 
+$\mychibig^+$ & 6 & 0.293129 \\ 
+$\mychibig^+$ & 7 & 1.49846 \\ 
+$\mychibig^+$ & 8 & 0.789463 \\ 
+$\mychibig^+$ & 9 & 1.22676 \\ 
+$\mychibig^+$ & 10 & -0.222797 \\ 
+$\mychibig^+$ & 11 & 3.57161 \\ 
+$\mychibig^+$ & 12 & 3.57161 \\ 
+$\mychibig^+$ & 13 & 6.91987 \\ 
+$\mychibig^+$ & 14 & 0.0253242 \\ 
+$\mychibig^+$ & 15 & 7.36556 \\ 
+$\mychibig^+$ & 16 & 7.36419 \\ 
+$\mychibig^+$ & 17 & -0.838939 \\ 
+$\mychibig^+$ & 18 & -2.36083 \\ 
+$\mychibig^+$ & 19 & -2.36083 \\ 
+$\mychibig^+$ & 20 & -16.3858 \\ 
+$\mychibig^+$ & 21 & -27.1077 \\ 
+$\mychibig^+$ & 22 & -11.3453 \\ 
+$\mychibig^+$ & 23 & -11.3453 \\ 
+$\mychibig^+$ & 24 & -50.1025 \\ 
+$\mychibig^+$ & 25 & -50.1025 \\ 
+\rowcolor{green}$\mychibig^+$ & 26 & 28501.9 \\ 
+\rowcolor{green}$\mychibig^+$ & 27 & -6248.66 \\ 
+\rowcolor{green}$\mychibig^+$ & 28 & -6248.66 \\ 
+$\mychibig^+$ & 29 & 10.1439 \\ 
+$\mychibig^+$ & 30 & 16.7793 \\ 
+$\mychibig^+$ & 31 & -2.82652 \\ 
+$\mychibig^+$ & 32 & -10.7346 \\ 
+$\mychibig^+$ & 33 & -9.74724 \\ 
+$\mychibig^+$ & 34 & -37.4303 \\ 
+$\mychibig^+$ & 35 & -12.5502 \\ 
+\hline\end{tabular}
+\begin{tabular}{c c c c}
+Particle & Diagram & Amplitude (GeV) \\
+\hline
+$\mychibig^+$ & 1 & $-$ \\
+$\mychibig^+$ & 2 & 0.40449 \\ 
+$\mychibig^+$ & 3 & 0.40449 \\ 
+$\mychibig^+$ & 4 & 1.16585 \\ 
+$\mychibig^+$ & 5 & 0.614187 \\ 
+$\mychibig^+$ & 6 & 0.293129 \\ 
+$\mychibig^+$ & 7 & 1.49846 \\ 
+$\mychibig^+$ & 8 & 0.789463 \\ 
+$\mychibig^+$ & 9 & 1.22676 \\ 
+$\mychibig^+$ & 10 & $-$ \\ 
+$\mychibig^+$ & 11 & 3.53008 \\ 
+$\mychibig^+$ & 12 & 3.53008 \\ 
+$\mychibig^+$ & 13 & 6.91987 \\ 
+$\mychibig^+$ & 14 & 0 \\ 
+$\mychibig^+$ & 15 & 7.36556 \\ 
+$\mychibig^+$ & 16 & 7.36419 \\ 
+$\mychibig^+$ & 17 & -0.837416 \\ 
+$\mychibig^+$ & 18 & -2.35887 \\ 
+$\mychibig^+$ & 19 & -2.35887 \\ 
+$\mychibig^+$ & 20 & -16.3858 \\ 
+$\mychibig^+$ & 21 & -27.1077 \\ 
+$\mychibig^+$ & 22 & $-$ \\ 
+$\mychibig^+$ & 23 & $-$ \\ 
+$\mychibig^+$ & 24 & -50.1025 \\ 
+$\mychibig^+$ & 25 & -50.1025 \\ 
+$\mychibig^+$ & 26 & $-$ \\ 
+$\mychibig^+$ & 27 & $-$ \\ 
+$\mychibig^+$ & 28 & $-$ \\ 
+$\mychibig^+$ & 29 & 10.1439 \\ 
+$\mychibig^+$ & 30 & 16.7793 \\ 
+$\mychibig^+$ & 31 & $-$ \\ 
+$\mychibig^+$ & 32 & $-$ \\ 
+$\mychibig^+$ & 33 & $-$ \\ 
+$\mychibig^+$ & 34 & -37.4303 \\ 
+$\mychibig^+$ & 35 & $-$ \\ 
+
 \hline\end{tabular}
 \end{table}
 
 
 
+\begin{table}[h!]
+\caption{\textit{Continued from Table \ref{table:diagram_amp_2_a} ... } The finite amplitudes of each two-loop diagram for $p=\mc=5\times10^3$ GeV, $m_{\gamma}=0$ (\textit{left}), $m_{\gamma}=10$ GeV (\textit{right}), and the remaining parameters as given in Table \ref{table:input_params}.}\label{table:diagram_amp_2_b}
+\centering
+\vspace{0.2cm}
+\begin{tabular}{c c c c}
+Particle & Diagram & Amplitude (GeV) \\
+\hline
+$\mychibig^+$ & 36 & -48.1651 \\ 
+$\mychibig^+$ & 37 & -62.6267 \\ 
+$\mychibig^+$ & 38 & -62.6267 \\ 
+$\mychibig^+$ & 39 & -1.6302 \\ 
+$\mychibig^+$ & 40 & 0.0653375 \\ 
+$\mychibig^+$ & 41 & 0.0653375 \\ 
+$\mychibig^+$ & 42 & -0.76785 \\ 
+$\mychibig^+$ & 43 & 0.0179657 \\ 
+$\mychibig^+$ & 44 & -1.10023 \\ 
+$\mychibig^+$ & 45 & -0.390827 \\ 
+$\mychibig^+$ & 46 & 0.407549 \\ 
+$\mychibig^+$ & 47 & 0.407549 \\ 
+$\mychibig^+$ & 48 & -0.0458078 \\ 
+$\mychibig^+$ & 49 & -0.0458078 \\ 
+$\mychibig^+$ & 50 & -0.0458078 \\ 
+$\mychibig^+$ & 51 & -0.0458078 \\ 
+$\mychibig^+$ & 52 & -0.0353232 \\ 
+$\mychibig^+$ & 53 & -0.0353232 \\ 
+$\mychibig^+$ & 54 & -0.0869555 \\ 
+$\mychibig^+$ & 55 & 0.303712 \\ 
+$\mychibig^+$ & 56 & -0.0869555 \\ 
+$\mychibig^+$ & 57 & 0.303712 \\ 
+$\mychibig^+$ & 58 & 2.46149 \\ 
+$\mychibig^+$ & 59 & 0.712412 \\ 
+$\mychibig^+$ & 60 & 0.712412 \\ 
+$\mychibig^+$ & 61 & -0.00132902 \\ 
+$\mychibig^+$ & 62 & -0.00132902 \\ 
+$\mychibig^+$ & 63 & -0.00132902 \\ 
+$\mychibig^+$ & 64 & -0.00132902 \\ 
+$\mychibig^+$ & 65 & 0.0950094 \\ 
+$\mychibig^+$ & 66 & 0.0950094 \\ 
+$\mychibig^+$ & 67 & 0.547568 \\ 
+$\mychibig^+$ & 68 & 0.157117 \\ 
+$\mychibig^+$ & 69 & 2.4579 \\ 
+$\mychibig^+$ & 70 & -6.51295 \\ 
+\hline\end{tabular}
+\begin{tabular}{c c c c}
+Particle & Diagram & Amplitude (GeV) \\
+\hline
+$\mychibig^+$ & 36 & -48.1651 \\ 
+$\mychibig^+$ & 37 & -62.6267 \\ 
+$\mychibig^+$ & 38 & -62.6267 \\ 
+$\mychibig^+$ & 39 & $-$ \\ 
+$\mychibig^+$ & 40 & $-$ \\ 
+$\mychibig^+$ & 41 & $-$ \\ 
+$\mychibig^+$ & 42 & -0.76785 \\ 
+$\mychibig^+$ & 43 & 0.0179657 \\ 
+$\mychibig^+$ & 44 & -1.10023 \\ 
+$\mychibig^+$ & 45 & -0.390827 \\ 
+$\mychibig^+$ & 46 & $-$ \\ 
+$\mychibig^+$ & 47 & $-$ \\ 
+$\mychibig^+$ & 48 & $-$ \\ 
+$\mychibig^+$ & 49 & $-$ \\ 
+$\mychibig^+$ & 50 & $-$ \\ 
+$\mychibig^+$ & 51 & $-$ \\ 
+$\mychibig^+$ & 52 & -0.0353232 \\ 
+$\mychibig^+$ & 53 & -0.0353232 \\ 
+$\mychibig^+$ & 54 & $-$ \\ 
+$\mychibig^+$ & 55 & 0.303712 \\ 
+$\mychibig^+$ & 56 & $-$ \\ 
+$\mychibig^+$ & 57 & 0.303712 \\ 
+$\mychibig^+$ & 58 & 2.46149 \\ 
+$\mychibig^+$ & 59 & $-$ \\ 
+$\mychibig^+$ & 60 & $-$ \\ 
+$\mychibig^+$ & 61 & -0.0013774 \\ 
+$\mychibig^+$ & 62 & -0.0013774 \\ 
+$\mychibig^+$ & 63 & -0.0013774 \\ 
+$\mychibig^+$ & 64 & -0.0013774 \\ 
+$\mychibig^+$ & 65 & 0.0950094 \\ 
+$\mychibig^+$ & 66 & 0.0950094 \\ 
+$\mychibig^+$ & 67 & $-$ \\ 
+$\mychibig^+$ & 68 & 0.157117 \\ 
+$\mychibig^+$ & 69 & 2.4579 \\ 
+$\mychibig^+$ & 70 & $-$ \\ 
+\hline\end{tabular}
+\end{table}
 
-\newpage
+
+
+\begin{table}[h!]
+\caption{\textit{Continued from Table \ref{table:diagram_amp_2_b} ... } The finite amplitudes of each two-loop diagram for $p=\mc=5\times10^3$ GeV, $m_{\gamma}=0$ (\textit{left}), $m_{\gamma}=10$ GeV (\textit{right}), and the remaining parameters as given in Table \ref{table:input_params}.}\label{table:diagram_amp_2_c}
+\centering
+\vspace{0.2cm}
+\begin{tabular}{c c c c}
+Particle & Diagram & Amplitude (GeV) \\
+\hline
+$\mychibig^+$ & 71 & -7.84551 \\ 
+$\mychibig^+$ & 72 & -7.84551 \\ 
+$\mychibig^+$ & 73 & -35.0007 \\ 
+$\mychibig^+$ & 74 & -11.5835 \\ 
+$\mychibig^+$ & 75 & -51.2921 \\ 
+$\mychibig^0$ & 1 & 1.49846 \\ 
+$\mychibig^0$ & 2 & 1.49846 \\ 
+$\mychibig^0$ & 3 & 0.789463 \\ 
+$\mychibig^0$ & 4 & 0.789463 \\ 
+$\mychibig^0$ & 5 & 1.22676 \\ 
+$\mychibig^0$ & 6 & 1.22676 \\ 
+$\mychibig^0$ & 7 & 0.0253242 \\ 
+$\mychibig^0$ & 8 & 0.0253242 \\ 
+$\mychibig^0$ & 9 & 7.36556 \\ 
+$\mychibig^0$ & 10 & 7.36556 \\ 
+$\mychibig^0$ & 11 & 7.36419 \\ 
+$\mychibig^0$ & 12 & 7.36419 \\ 
+$\mychibig^0$ & 13 & -27.1077 \\ 
+$\mychibig^0$ & 14 & -27.1077 \\ 
+$\mychibig^0$ & 15 & -14.3658 \\ 
+$\mychibig^0$ & 16 & -14.3658 \\ 
+$\mychibig^0$ & 17 & -50.0832 \\ 
+$\mychibig^0$ & 18 & -50.0832 \\ 
+$\mychibig^0$ & 19 & 16.7793 \\ 
+$\mychibig^0$ & 20 & 16.7793 \\ 
+$\mychibig^0$ & 21 & -13.9575 \\ 
+$\mychibig^0$ & 22 & -13.9575 \\ 
+$\mychibig^0$ & 23 & -48.6688 \\ 
+$\mychibig^0$ & 24 & -48.6688 \\ 
+$\mychibig^0$ & 25 & -62.6267 \\ 
+$\mychibig^0$ & 26 & -62.6267 \\ 
+$\mychibig^0$ & 27 & -1.10023 \\ 
+$\mychibig^0$ & 28 & -1.10023 \\ 
+$\mychibig^0$ & 29 & -0.390827 \\ 
+$\mychibig^0$ & 30 & -0.390827 \\ 
+\hline\end{tabular}
+\begin{tabular}{c c c c}
+Particle & Diagram & Amplitude (GeV) \\
+\hline
+$\mychibig^+$ & 71 & $-$ \\ 
+$\mychibig^+$ & 72 & $-$ \\ 
+$\mychibig^+$ & 73 & -35.0007 \\ 
+$\mychibig^+$ & 74 & $-$ \\ 
+$\mychibig^+$ & 75 & -51.2921 \\ 
+$\mychibig^0$ & 1 & 1.49846 \\ 
+$\mychibig^0$ & 2 & 1.49846 \\ 
+$\mychibig^0$ & 3 & 0.789463 \\ 
+$\mychibig^0$ & 4 & 0.789463 \\ 
+$\mychibig^0$ & 5 & 1.22676 \\ 
+$\mychibig^0$ & 6 & 1.22676 \\ 
+$\mychibig^0$ & 7 & 0 \\ 
+$\mychibig^0$ & 8 & 0 \\ 
+$\mychibig^0$ & 9 & 7.36556 \\ 
+$\mychibig^0$ & 10 & 7.36556 \\ 
+$\mychibig^0$ & 11 & 7.36419 \\ 
+$\mychibig^0$ & 12 & 7.36419 \\ 
+$\mychibig^0$ & 13 & -27.1077 \\ 
+$\mychibig^0$ & 14 & -27.1077 \\ 
+$\mychibig^0$ & 15 & $-$ \\ 
+$\mychibig^0$ & 16 & $-$ \\ 
+$\mychibig^0$ & 17 & -50.0832 \\ 
+$\mychibig^0$ & 18 & -50.0832 \\ 
+$\mychibig^0$ & 19 & 16.7793 \\ 
+$\mychibig^0$ & 20 & 16.7793 \\ 
+$\mychibig^0$ & 21 & $-$ \\ 
+$\mychibig^0$ & 22 & $-$ \\ 
+$\mychibig^0$ & 23 & -48.6688 \\ 
+$\mychibig^0$ & 24 & -48.6688 \\ 
+$\mychibig^0$ & 25 & -62.6267 \\ 
+$\mychibig^0$ & 26 & -62.6267 \\ 
+$\mychibig^0$ & 27 & -1.10023 \\ 
+$\mychibig^0$ & 28 & -1.10023 \\ 
+$\mychibig^0$ & 29 & -0.390827 \\ 
+$\mychibig^0$ & 30 & -0.390827 \\ 
+\hline\end{tabular}
+\end{table}
+
+\begin{table}[h!]
+\caption{\textit{Continued from Table \ref{table:diagram_amp_2_c} ... } The finite amplitudes of each two-loop diagram for $p=\mc=5\times10^3$ GeV, $m_{\gamma}=0$ (\textit{left}), $m_{\gamma}=10$ GeV (\textit{right}), and the remaining parameters as given in Table \ref{table:input_params}.}\label{table:diagram_amp_2_d}
+\centering
+\vspace{0.2cm}
+\begin{tabular}{c c c c}
+Particle & Diagram & Amplitude (GeV) \\
+\hline
+$\mychibig^0$ & 31 & -0.0869555 \\ 
+$\mychibig^0$ & 32 & -0.0869555 \\ 
+$\mychibig^0$ & 33 & 0.303712 \\ 
+$\mychibig^0$ & 34 & 0.303712 \\ 
+$\mychibig^0$ & 35 & -0.0869555 \\ 
+$\mychibig^0$ & 36 & -0.0869555 \\ 
+$\mychibig^0$ & 37 & 0.303712 \\ 
+$\mychibig^0$ & 38 & 0.303712 \\ 
+$\mychibig^0$ & 39 & 0.547568 \\ 
+$\mychibig^0$ & 40 & 0.547568 \\ 
+$\mychibig^0$ & 41 & 0.157117 \\ 
+$\mychibig^0$ & 42 & 0.157117 \\ 
+$\mychibig^0$ & 43 & 2.4579 \\ 
+$\mychibig^0$ & 44 & 2.4579 \\ 
+$\mychibig^0$ & 45 & -11.5835 \\ 
+$\mychibig^0$ & 46 & -11.5835 \\ 
+$\mychibig^0$ & 47 & -51.2921 \\ 
+$\mychibig^0$ & 48 & -51.2921 \\ 
+\hline\end{tabular}
+\begin{tabular}{c c c c}
+Particle & Diagram & Amplitude (GeV) \\
+\hline
+$\mychibig^0$ & 31 & $-$ \\ 
+$\mychibig^0$ & 32 & $-$ \\ 
+$\mychibig^0$ & 33 & 0.303712 \\ 
+$\mychibig^0$ & 34 & 0.303712 \\ 
+$\mychibig^0$ & 35 & $-$ \\ 
+$\mychibig^0$ & 36 & $-$ \\ 
+$\mychibig^0$ & 37 & 0.303712 \\ 
+$\mychibig^0$ & 38 & 0.303712 \\ 
+$\mychibig^0$ & 39 & $-$ \\ 
+$\mychibig^0$ & 40 & $-$ \\ 
+$\mychibig^0$ & 41 & 0.157117 \\ 
+$\mychibig^0$ & 42 & 0.157117 \\ 
+$\mychibig^0$ & 43 & 2.4579 \\ 
+$\mychibig^0$ & 44 & 2.4579 \\ 
+$\mychibig^0$ & 45 & $-$ \\ 
+$\mychibig^0$ & 46 & $-$ \\ 
+$\mychibig^0$ & 47 & -51.2921 \\ 
+$\mychibig^0$ & 48 & -51.2921 \\ 
+\hline\end{tabular}
+\end{table}
+
+
+\begin{table}[h!]
+\caption{The finite amplitudes of each two-loop counter-term diagram for $p=\mc=5\times10^3$ GeV, $m_{\gamma}=0$ (\textit{left}), $m_{\gamma}=10$ GeV (\textit{right}), and the remaining parameters as given in Table \ref{table:input_params}.}\label{table:diagram_amp_2_d}
+\centering
+\vspace{0.2cm}
+\begin{tabular}{c c c c}
+Particle & Diagram & Amplitude (GeV) \\
+\hline
+$\mychibig^+$ & 1 & 22.7298 \\ 
+$\mychibig^+$ & 2 & 76.9668 \\ 
+$\mychibig^+$ & 3 & 99.1773 \\ 
+$\mychibig^+$ & 4 & 0.582979 \\ 
+$\mychibig^+$ & 5 & -1.49941 \\ 
+$\mychibig^+$ & 6 & -1.49941 \\ 
+$\mychibig^+$ & 7 & 8.10658 \\ 
+$\mychibig^+$ & 8 & 11.1957 \\ 
+$\mychibig^+$ & 9 & -18.4632 \\ 
+$\mychibig^+$ & 10 & -18.4632 \\ 
+$\mychibig^+$ & 11 & -18.4632 \\ 
+$\mychibig^+$ & 12 & -4.1037 \\ 
+$\mychibig^+$ & 13 & -14.3563 \\ 
+$\mychibig^+$ & 14 & -18.4632 \\ 
+$\mychibig^0$ & 1 & 99.1773 \\ 
+$\mychibig^0$ & 2 & 99.1773 \\ 
+$\mychibig^0$ & 3 & 11.1957 \\ 
+$\mychibig^0$ & 4 & 11.1957 \\ 
+$\mychibig^0$ & 5 & -18.4632 \\ 
+$\mychibig^0$ & 6 & -18.4632 \\ 
+$\mychibig^0$ & 7 & -18.4632 \\ 
+$\mychibig^0$ & 8 & -18.4632 \\ 
+\hline\end{tabular}
+\begin{tabular}{c c c c}
+Particle & Diagram & Amplitude (GeV) \\
+\hline
+$\mychibig^+$ & 1 & -- \\ 
+$\mychibig^+$ & 2 & 76.9668 \\ 
+$\mychibig^+$ & 3 & 99.1773 \\ 
+$\mychibig^+$ & 4 & -- \\ 
+$\mychibig^+$ & 5 & -1.49951 \\ 
+$\mychibig^+$ & 6 & -1.49951 \\ 
+$\mychibig^+$ & 7 & 8.10658 \\ 
+$\mychibig^+$ & 8 & 11.2042 \\ 
+$\mychibig^+$ & 9 & -18.4632 \\ 
+$\mychibig^+$ & 10 & -18.4632 \\ 
+$\mychibig^+$ & 11 & -18.4632 \\ 
+$\mychibig^+$ & 12 & -4.10396 \\ 
+$\mychibig^+$ & 13 & -14.3563 \\ 
+$\mychibig^+$ & 14 & -18.4632 \\ 
+$\mychibig^0$ & 1 & 99.1773 \\ 
+$\mychibig^0$ & 2 & 99.1773 \\ 
+$\mychibig^0$ & 3 & 11.2042 \\ 
+$\mychibig^0$ & 4 & 11.2042 \\ 
+$\mychibig^0$ & 5 & -18.4632 \\ 
+$\mychibig^0$ & 6 & -18.4632 \\ 
+$\mychibig^0$ & 7 & -18.4632 \\ 
+$\mychibig^0$ & 8 & -18.4632 \\ 
+\hline\end{tabular}
+\end{table}
+
+\clearpage
 \appendix
 \section{Definitions}\label{sec:definitions}
 
@@ -1470,14 +1812,14 @@ B_{21}(p^2, m_1^2, m_2^2)  = \frac{1}{18 p^2} \left( 6 (p^2-m_1^2)B_0(p^2, m_1^2
 Now we calculate the contribution of the electroweak triplet state to the W boson self energy to double check if this definition of $B_{21}$ is consistent.  Calculating the required amplitude using \mb we find
 \begin{align}
 \Pi_{WW}^{(\tilde{\chi})}(p^2) =
-\frac{\hat{g}^2}{36\pi^2} \left( 3 (2M^2+p^2)B_0(p^2,M^2,M^2)-6A_0(M^2)+6M^2-p^2\right)
+\frac{g^2}{36\pi^2} \left( 3 (2M^2+p^2)B_0(p^2,M^2,M^2)-6A_0(M^2)+6M^2-p^2\right)
 \end{align}
 which is consistent with the Ibe at al. calculation
 \begin{align}
 \Pi_{WW}^{(\tilde{\chi})}(p^2) = &
-\frac{\hat{g}^2}{2\pi^2}
+\frac{g^2}{2\pi^2}
 \Pi_V(p^2, \hat{M}_2^2, \hat{M}_2^2)\\
-=& \frac{\hat{g}^2}{2\pi^2} \left\{-p^2 \left[ B_1(p^2,m_1^2,m_2^2)+B_{21}(p^2,m_1^2,m_2^2)\right]\right\}
+=& \frac{g^2}{2\pi^2} \left\{-p^2 \left[ B_1(p^2,m_1^2,m_2^2)+B_{21}(p^2,m_1^2,m_2^2)\right]\right\}
 \end{align}
 which after using $B_1 = -B_0/2$ (since $m_1=m_2$) we obtain a consistent result.
 
