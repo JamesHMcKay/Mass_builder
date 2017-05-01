@@ -334,11 +334,11 @@ void format_coeff(std::string &coefficient)
 {
   string from="",to="";
   from = "DiracGamma(6)";
-  to = "1.0L";
+  to = "0.5L";
   ReplaceAll(coefficient,from, to);
   
   from = "DiracGamma(7)";
-  to = "1.0L";
+  to = "0.5L";
   ReplaceAll(coefficient,from, to);
   
   from = "Pair(Momentum(p),Momentum(p))";

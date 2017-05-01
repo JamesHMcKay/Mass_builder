@@ -25,6 +25,9 @@
 \newcommand{\newc}{\newcommand}
 \newcommand{\mychi}{\raisebox{0pt}[1ex][1ex]{\tiny$\chi$}}
 \newcommand{\mychibig}{\raisebox{0pt}[1ex][1ex]{$\chi$}}
+
+\newcommand{\chiinline}{\raisebox{1.7pt}[1ex][1ex]{$\chi$}}
+
 \def\sp{\slashed{p}}
 \def\sk{\slashed{k}}
 \def\cn{\chi^0}
@@ -550,15 +553,14 @@ where $x=m^2$.  This result contains only finite basis integrals and note that a
 
 \section{The electroweak triplet model}
 \subsection{Introduction}
-
 The extension of the standard model by an electroweak multiplet is a popular dark matter candidate theory.  At the lowest order in perturbation theory all components of the multiplet have the same mass, which would result in charged dark matter, contrary to what is observed.  However when one goes to the next order in perturbation theory by computing the radiatively corrected mass, then the charged component(s) will obtain a slightly larger mass correction than the neutral component, resulting in a sufficient mass splitting to render the charged components to have a lifetime much shorter than the age of the universe.  The exact value of this mass splitting at the two-loop level is of interest.  We will work with the most simple multiplet, an $SU(2)$ triplet, to determine the value of this mass splitting at the two-loop order in perturbation theory.\\
 
 To further reduce the number of interactions we need to consider we will use a simplified standard model with the most minimal components to achieve a mass splitting.  This model consists of the $U(1)$ and $SU(2)$ gauge sectors but no SM fermions or leptons.  The particle content of the model is given in Table \ref{tab:particles}.  The triplet sector of the Lagrangian is
 \begin{align}
 \begin{split}
-\mathcal{L}_{\chi}=&\frac{1}{2}\overline{\mychibig^0}(i\slashed{\partial}-\mc)\mychibig^0+\frac{1}{2}\overline{\mychibig^+}(i\slashed{\partial}-\mc)\mychibig^{+}\\
-&+g\left(\overline{\mychibig^+}\gamma_{\mu}\mychibig^+\right)\left(s_WA_{\mu}+c_WZ_{\mu}\right)\\
-&+g\left(\overline{\mychibig^+}\gamma_{\mu}\mychibig^0 \right)W_{\mu}^++\text{h.c.}
+\mathcal{L}_{\chi}=&\frac{1}{2}\overline{\chiinline^0}(i\slashed{\partial}-\mc)\chiinline^0+\frac{1}{2}\overline{\chiinline^+}(i\slashed{\partial}-\mc)\chiinline^{+}\\
+&+g\left(\overline{\chiinline^+}\gamma_{\mu}\chiinline^+\right)\left(s_WA_{\mu}+c_WZ_{\mu}\right)\\
+&+g\left(\overline{\chiinline^+}\gamma_{\mu}\chiinline^0 \right)W_{\mu}^++\text{h.c.}
 \end{split}
 \end{align}
 where $s_W=\sin(\theta_W)$ and $c_W=\cos(\theta_W)$ are the sine and cosine of the Weinberg angle respectively.\\
@@ -607,7 +609,15 @@ and in the EWSB eigenstate
 \begin{align} 
 L_{GF} = \, & -\frac{1}{2} A^0 v \xi_{Z} \Big(g_1 \sin\Theta_W   + g_2 \cos\Theta_W  \Big) + \partial_{\mu}Z|^2 \xi_{Z}^{-1}  -\frac{1}{2} |\partial_{\mu}\gamma|^2 \xi_{\gamma}^{-1} \\&-\frac{i}{2} g_2 H^+ v \xi_{W^+}  + \partial_{\mu}W^+|^2 \xi_{W^+}^{-1}.
 \end{align} 
-In our choice of gauge the ghost fields take on the same mass as their respective field, such that $m_{\eta_{\gamma}} = m_{\gamma}$, $m_{\eta_Z}=m_{Z}$, $m_{\eta^+}=m_{W}$.  The fields $A_0$ and $H^+$ from the pre-EWSB theory are also given the respective masses of $m_{A_0}=m_Z$ and $m_{H^+}=m_W$.\\
+In our choice of gauge the ghost fields take on the same mass as their respective field, such that $m_{\eta_{\gamma}} = m_{\gamma}$, $m_{\eta_Z}=m_{Z}$, $m_{\eta^+}=m_{W}$.   \href{https://en.wikipedia.org/wiki/Faddeev\%E2\%80\%93Popov_ghost}{\textcolor{blue}{This is true only in the Feynman-'t Hooft gauge, see here.}}\\
+
+The fields $A_0$ and $H^+$ are also given masses of $m_{A_0}=m_Z$ and $m_{H^+}=m_W$.\\
+\textcolor{red}{
+I don't understand how the Goldstone bosons can have the same mass as the physical gauge bosons.  From what I can understand, initially when we write the theory down the Goldstone bosons are scalar fields and the gauge bosons are massless vector fields.  Then the degree of freedom from the Goldstone bosons can be used as a mass degree of freedom for the gauge bosons.  So the Goldstone bosons are no longer a degree of freedom, they disappear.
+So I don't understand how we can have massive Goldstone bosons and massive gauge bosons.  Even if somehow this works, these are the gauge bosons before we do the mixing to obtain Z and A, rather than B and $W_3$, so I don't get how the masses can correspond so nicely.
+Obviously it does work, because the 1-loop gauge boson self energies I have calculated come out exactly as expected, and there are diagrams containing these Goldstone bosons involved.  However, I have no idea how this works.}\\
+
+
 
 We use the following relationships in the input to \mbs, to reduce the number of free variables required at run time
 \begin{eqnarray}
@@ -644,8 +654,8 @@ Name & Type & complex/real & Mass  \\
 \end{tabular}
  \end{table}
 The momentum dependent contribution to the triplet mass, the self energy, is given by calculating the 1PI loop process.  For the $
-\chi^0$ at one loop level this involves a loop with a W boson and $\chi^{\pm}$ particle, for $\chi^{\pm}$ we also have loops involving $
-\chi^{\pm\pm}$, $W^{\pm}$ and the $A$ and $Z$ bosons.  The propagators we will use are (in the Feynman gauge)
+\chiinline^0$ at one loop level this involves a loop with a W boson and $\chiinline^{\pm}$ particle, for $\chiinline^{\pm}$ we also have loops involving $
+\chiinline^{\pm\pm}$, $W^{\pm}$ and the $A$ and $Z$ bosons.  The propagators we will use are (in the Feynman gauge)
 \begin{align}
 i\Pi^{V}_{\mu\nu}&=-i\frac{-g_{\mu\nu}}{k^2-m_{\text{V}}^2- \Pi(k^2)}\label{eqn:gauge_boson_propagator}\\ 
 i\Pi^{\chi}_{\mu\nu}&=-i\frac{\slashed{k}-\mc}{k^2-\mc^2- \Pi(k^2)}
@@ -654,7 +664,7 @@ for the vector bosons ($V\in\{W^{\pm},\gamma,Z\}$) and the components of the fer
 
 Because there is a large number of possible couplings and particles in this theory we use \sarah \cite{Staub2014} to generate the \feynarts \cite{Hahn2000} model file rather than listing these by hand.  The \sarah model file is given in section \ref{sec:EW_triplet_sarah_model}.\\
 
-The aim of this section is to the compute the full two-loop self energy of the charged and neutral components of the electroweak triplet, $\chi$.  For this we will require the one-loop self energy, the derivative of the one-loop self energy and the two-loop self energy.  To obtain the necessary contributions from the two-loop order counter-terms we will also require the counter-term couplings involved.  For this theory, these are limited to the tree-level counter-term couplings for the gauge bosons and the triplet, along with a single vertex correction.  All these quantities will be presented in the remainder of this section.
+The aim of this section is to the compute the full two-loop self energy of the charged and neutral components of the electroweak triplet, $\chiinline$.  For this we will require the one-loop self energy, the derivative of the one-loop self energy and the two-loop self energy.  To obtain the necessary contributions from the two-loop order counter-terms we will also require the counter-term couplings involved.  For this theory, these are limited to the tree-level counter-term couplings for the gauge bosons and the triplet, along with a single vertex correction.  All these quantities will be presented in the remainder of this section.
 
 
 \subsubsection{Pole mass calculation}
@@ -1139,6 +1149,12 @@ Figures \ref{fig:chi1chi1_2}, \ref{fig:chi1chi1_1}, \ref{fig:chi0chi0} and \ref{
 \end{figure}
 
 \clearpage
+
+\subsubsection{Cancellation of diagrams}
+
+Referring again to \href{https://en.wikipedia.org/wiki/Faddeev\%E2\%80\%93Popov_ghost}{\textcolor{blue}{this Wikipedia article which cites an old book}} we have the following direct quote:\\
+
+\textcolor{blue}{In Feynman diagrams the ghosts appear as closed loops wholly composed of 3-vertices, attached to the rest of the diagram via a gauge particle at each 3-vertex. Their contribution to the S-matrix is exactly cancelled (in the Feynman-'t Hooft gauge) by a contribution from a similar loop of gauge particles with only 3-vertex couplings or gauge attachments to the rest of the diagram.[4] (A loop of gauge particles not wholly composed of 3-vertex couplings is not cancelled by ghosts.) The opposite sign of the contribution of the ghost and gauge loops is due to them having opposite fermionic/bosonic natures. (Closed fermion loops have an extra -1 associated with them; bosonic loops don't.)}\\
 
 \subsubsection{IR divergences}
 
@@ -1824,7 +1840,14 @@ which is consistent with the Ibe at al. calculation
 which after using $B_1 = -B_0/2$ (since $m_1=m_2$) we obtain a consistent result.
 
 \section{Electroweak triplet SARAH model}\label{sec:EW_triplet_sarah_model}
-We use \sarah \cite{Staub2014} to generate the \feynarts model file for the electroweak triplet model.  The \sarah input model file is presented below.
+We use \sarah \cite{Staub2014} to generate the \feynarts model file for the electroweak triplet model.  The \sarah input model file is presented below.\\
+
+This is generated using the following commands
+\begin{mmaCell}[functionlocal=y]{Code}
+Import["/Users/jamesmckay/Documents/Programs/SARAH-4.7.0/SARAH.m"]
+Start["EW_triplet"] 
+ModelOutput[EWSB, WriteFeynArts -> True,WriteTex->True];   
+\end{mmaCell}
 
 \begin{mmaCell}[functionlocal=y]{Code}
 Off[General::spell]

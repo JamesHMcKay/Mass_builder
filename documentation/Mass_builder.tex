@@ -259,6 +259,14 @@ MChi	       c
 \end{lstterm}
 where for even more readable output code one could choose unique one character identifiers for \lstinline{wm} and \lstinline{wp} instead.
 
+If a mass is set to zero in the FeynArts model file, with the line \lstinline{Mass -> 0}, and the user does not wish to replace this with a finite mass for the purposes of the calculation, then the following line must be used in \lstinline{masses.txt}
+\begin{lstterm}
+# masses.txt
+null n
+\end{lstterm}
+where \lstinline{n} can be any identifier as long as it is unique in the list.  No further reference to \lstinline{null} or \lstinline{n} is required in input file at the numerical evaluation step as \mb will automatically assign zero to any \lstinline{null} terms appearing in the \tsil interface code.
+
+
 The file \lstinline{couplings.txt} is a list of couplings and constants exactly as they appear in the \feynarts model file.  This is essential for the generated code to compile and for the user input header to contain options for setting these couplings at runtime via an input file.  There is also the option to specify derived couplings and the corresponding analytic expression.  All derived couplings and the corresponding relationships must be specified first in the list, as in the example below.  The couplings file would typically look like
 \begin{lstterm}
 # couplings.txt
