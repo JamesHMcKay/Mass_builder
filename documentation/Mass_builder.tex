@@ -78,7 +78,7 @@ The easiest way to install \feyncalc, \feynarts and \tarcer is via the automated
 Import["https://raw.githubusercontent.com/FeynCalc/feyncalc/master/install.m"]
 InstallFeynCalc[]
 \end{lstterm}
-(being careful to avoid any spaces which appear in the link when copy-pasting this) when requested to install the latest version of \feynarts say yes, as this will automatically patch the \feynarts installation.  If you do not follow this method then it is not possible to run \feynarts and \feyncalc in the same session (as we need to do) as many function names are identical between the packages, so to avoid name shadowing follow the recommend method.  For more information see the \feyncalc wiki \lstinline{https://github.com/FeynCalc/feyncalc/wiki}.
+(being careful to avoid any spaces which appear in the link when copy-pasting this) when requested to install the latest version of \feynarts say yes, as this will automatically patch the \feynarts installation.  If you do not follow this method then it is not possible to run \feynarts and \feyncalc in the same session (as we need to do) as many function names are identical between the packages, so to avoid name shadowing follow the recommend method.  For more information see the \feyncalc wiki \href{https://github.com/FeynCalc/feyncalc/wiki}{\lstinline{https://github.com/FeynCalc/feyncalc/wiki}}.
 
 Check if \tarcer has been loaded with the following input
 \begin{lstterm}
@@ -95,16 +95,10 @@ GenerateTarcerMX
 which will generate the required files.  All packages within Mathematica are now set up.
 
 \subsection{\tsil}
-The Two-loop Self-energy Integral Library can be downloaded from \lstinline{http://www.niu.edu/spmartin/TSIL/}.  \mb has been tested with version 1.3. It may installed anywhere (as \mb will request the path at configuration).
+The Two-loop Self-energy Integral Library can be downloaded from \href{http://www.niu.edu/spmartin/TSIL/}{\lstinline{http://www.niu.edu/spmartin/TSIL/}}.  \mb has been tested with version 1.3. It may installed anywhere (as \mb will request the path at configuration).
 
 \subsection{\mb}
-\mb can be obtained from
-
-\begin{lstterm}
-https://github.com/JamesHMcKay/Mass_builder.git
-\end{lstterm}
-
-The first step is to run the configuration script to tell the program where your Mathematica kernel and \tsil installations are located, if using Linux this is
+\mb can be downloaded from \href{https://github.com/JamesHMcKay/Mass_builder.git}{\lstinline{https://github.com/JamesHMcKay/Mass_builder.git}}.  The first step is to run the configuration script to tell the program where your Mathematica kernel and \tsil installations are located, if using Linux this is
 \begin{lstterm}
 ./scripts/config_linux.sh
 \end{lstterm}
@@ -424,13 +418,14 @@ The diagrams available to be included in the generated \tsil interface are regis
 
 \subsection{Subtraction of divergences}
 
-The integrals obtained from the \tarcer output are in terms of divergent basis integrals.  In a consistent field theory these divergences should be accounted for by divergent counter-term diagrams.  \mb offers the ability to compute counter-term diagrams and also compute the analytical form of the two-point tree-level counter-term coupling.  The determination of higher order counter-terms and those with more vertices are left to the user to determine via other means.  Once we are assured the divergent terms can be accounted for by appropriate counter-term couplings, we may limit our consideration to only the finite part of the basis integrals.
+The amplitudes produced by \tarcer are expressed in terms of divergent basis integrals.  In a consistent field theory these divergences should be accounted for by divergent counter-term diagrams.  \mb offers the ability to compute counter-term diagrams and also compute the analytical form of the two-point tree-level counter-term coupling.  The determination of higher order counter-terms and those with more vertices are left to the user to determine via other means.  However, in most two-loop calculations only the tree-level counter couplings are required, as these are the only counter-terms which appear in the two-loop order counter-term diagrams.  Once we are assured divergences are accounted for, and we have the necessary counter-term couplings, we need to seperate the amplitude into finite and divergent pieces.
 
-The \tsil package provides the finite basis integrals, with the divergences subtracted, which is convenient in most cases.  However, if the divergent term is of order $1/\epsilon$ and the basis integral had a coefficient of the form $D = 4-2\epsilon$, then this leading divergence becomes a finite contribution that must be accounted.  Thus we must appropriately take $D=4-2\epsilon$ when converting from a divergent integral as output by \tarcer into the finite integral evaluated in \tsil.  This non-trivial step requires an additional repetition of the algorithm to deconstruct the new, finite, amplitude into a coefficient and basis integral form.
+The \tsil package provides the evaluation of the finite parts of the basis integrals.  However, these basis integrals are not the only finite contributions to the amplitude.  For example, if the divergent piece of the basis integral is of order $1/\epsilon$ and the basis integral had a coefficient containing a term linear in $\epsilon$, then this leading divergence becomes a finite contribution that must be included.  Thus we must appropriately take $D=4-2\epsilon$ and be careful not to loose any finite contributions.  This non-trivial step requires an additional repetition of the algorithm described in Section \ref{sec:amplitudes} to deconstruct the new, finite, amplitude into a coefficient and basis integral form.
 
-In this section we give details of the leading divergences included from the \tsil documentation and how these are adjusted for sign conventions between the \tarcer and \tsil packages.  In the following bold face and standard face characters denote the divergent and finite basis integrals respectively.  We use $A$, $B$ and so on to denote the \tsil definitions and $\mathtt{TAI}$, $\mathtt{TBI}$ and so on to denote the \tarcer definitions.
+In this section we give details of the leading divergences included from the \tsil documentation and how these are adjusted for sign conventions between the \tarcer and \tsil packages.  We also present our own notation which the generated \tsil interface is written in terms of.  In the following bold face and standard face characters denote the divergent and finite basis integrals respectively.  We use $A$, $B$ and so on to denote the \tsil definitions and $\mathtt{TAI}$, $\mathtt{TBI}$ and so on to denote the \tarcer definitions.  
 
-For the divergent integrals we have \cite{Martin2006}
+
+In \tsil notation we can express the divergent basis integrals as \cite{Martin2006}
 \begin{align*}
 &\vec{A}(x) = A(x) -\frac{x}{\epsilon} +\epsilon A(x) +\mathcal{O}(\epsilon^2) \\
 &\vec{B}(x,y)= B(x,y) +\frac{1}{\epsilon} +\epsilon B_{\epsilon}(x,y) +\mathcal{O}(\epsilon^2) \\
@@ -439,7 +434,7 @@ For the divergent integrals we have \cite{Martin2006}
 &\vec{T}(x,y,z)= T(x,y) +\frac{1}{2\epsilon^2} -\left[A(x)/x +1/2\right]/\epsilon\\ &+ (A(x)- A_{\epsilon}(x))/x+\mathcal{O}(\epsilon) \\
 &\vec{U}(x,y,z,u)= U(x,y,z,u) +\frac{1}{2\epsilon^2} +\left[B(x,y) +1/2\right]/\epsilon\\ &+ B_{\epsilon}(x,y)+\mathcal{O}(\epsilon)
 \end{align*}
-so using the relations:
+where $A_{\epsilon}(x)$ and $B_{\epsilon}(x,y)$ are finite functions defined in (2.30) and (2.31) of Martin (2006) \cite{Martin2006}.  We need the equivalent expressions for the basis integrals in \tarcer notation, as this is what we initially work with.  Using the relationships between \tsil and \tarcer notation \cite{Martin2006}
 \begin{eqnarray*}
 &\vec{A}(x) &=i \mathtt{\mathbf{TAI}}(x)\\
 &\vec{B}(x,y) &=-i \mathtt{\mathbf{TBI}}(x,y)\\
@@ -448,18 +443,32 @@ so using the relations:
 &\vec{T}(x,y,z)&=\mathtt{\mathbf{TJI}}_{s,2}(x,y,z)\\
 &\vec{U}(x,y,z,u)&=-\mathtt{\mathbf{TVI}}(u,x,z,y)
 \end{eqnarray*}
-we find the relationships that are used in the code to convert from divergent to finite integrals
+where we have defined
+\begin{align*}
+\mathtt{\mathbf{TJI}}_{s,2}&= \mathtt{TJI[D,s,\{\{2,x\}, \{1,y\}, \{1,z\}\}]}\\
+\mathtt{\mathbf{TJI}}_{s}&= \mathtt{TJI[D,s,\{\{1,x\}, \{1,y\}, \{1,z\}\}]}\\
+\mathtt{\mathbf{TJI}}_{0}&= \mathtt{TJI[D,0,\{\{1,x\}, \{1,y\}, \{1,z\}\}]}
+\end{align*}
+we find the relationships
 \begin{align*}
 &\mathtt{\mathbf{TAI} }(x)= \mathtt{TAI}(x)+\frac{ix}{\epsilon} -i\epsilon A_{\epsilon}(x) + \mathcal{O}(\epsilon)\\
 &\mathtt{\mathbf{TBI} }(x,y)= \mathtt{TBI}(x,y)+\frac{i}{\epsilon} + i\epsilon B_{\epsilon}(x,y) + \mathcal{O}(\epsilon)\\
 &\mathtt{\mathbf{TJI}_0 }(x,y,z)= \mathtt{TJI}_0(x,y,z)+\frac{(x+y+z)}{2\epsilon^2}  \\ & -\left[i\mathtt{TAI}(x)+i\mathtt{TAI}(y)+i\mathtt{TAI}(z)-(x+y+z)/2\right]/\epsilon\\&+ \epsilon A_{\epsilon}(x)+\epsilon A_{\epsilon}(y)+\epsilon A_{\epsilon}(z) +  \mathcal{O}(\epsilon)\\
 &\mathtt{\mathbf{TJI}_s }(x,y,z)= \mathtt{TJI}_s(x,y,z)+\frac{(x+y+z)}{2\epsilon^2}  \\ & -\left[i\mathtt{TAI}(x)+i\mathtt{TAI}(y)+i\mathtt{TAI}(z)-(x+y+z)/2+s/4\right]/\epsilon\\&+ \epsilon A_{\epsilon}(x)+\epsilon A_{\epsilon}(y)+\epsilon A_{\epsilon}(z) + \mathcal{O}(\epsilon)\\
 &\mathtt{\mathbf{TJI}}_{s,2}(x,y,z)= \mathtt{TJI}_{s,2}(x,y,z) -\frac{1}{2\epsilon^2} +\left[A(x)/x +1/2\right]/\epsilon\\ &- (A(x)- A_{\epsilon}(x))/x)+\mathcal{O}(\epsilon) \\
-&\mathtt{\mathbf{TVI}}(x,y,z,u)= \mathtt{TVI}(x,y,z,u) +\frac{1}{2\epsilon^2} +\left[B(x,y) +1/2\right]/\epsilon\\ &+ B_{\epsilon}(x,y)+\mathcal{O}(\epsilon)
+&\mathtt{\mathbf{TVI}}(x,y,z,u)= \mathtt{TVI}(x,y,z,u) +\frac{1}{2\epsilon^2} +\left[B(x,y) +1/2\right]/\epsilon\\ &+ B_{\epsilon}(x,y)+\mathcal{O}(\epsilon).
 \end{align*}
 
-where $\mathtt{\mathbf{TJI}}_{s,2}= \mathtt{TJI[D,s,\{\{2,x\}, \{1,y\}, \{1,z\}\}]}$, $\mathtt{\mathbf{TJI}}_{s}= \mathtt{TJI[D,s,\{\{1,x\}, \{1,y\}, \{1,z\}\}]}$ and $\mathtt{\mathbf{TJI}}_{0}= \mathtt{TJI[D,0,\{\{1,x\}, \{1,y\}, \{1,z\}\}]}$
-
+These relationships are used to obtain the finite amplitude as an intermediate step in the \mb algorithm.  The resultant finite amplitude appearing in the generated \tsil interface is written in terms of \tarcer basis integrals, which we express in our own convenient notation, which is related to the \tsil integrals as
+\begin{eqnarray*}
+&\mathcal{A}(x)      &\equiv   -i A(x)\\
+&\mathcal{B}(x,y)    &\equiv   \ i B(x,y)\\
+&\mathcal{K}(x,y,z) &\equiv   \ I(x,y,z)\\   
+&\mathcal{J}(x,y,z)  &\equiv    \ S(x,y,z) \\
+&\mathcal{T}(x,y,z)  &\equiv  - T(x,y,z)\\
+&\mathcal{V}(u,x,z,y)&\equiv  - U(x,y,z,u).
+\end{eqnarray*}
+These relationships are used to convert the numerical result from the \tsil integrals, which we evaluate in the \lstinline{DoTSIL} routine, into the form appearing the amplitudes.
 
 
 
@@ -489,23 +498,17 @@ where this list contains all one-loop diagrams.  After building the example exec
 \begin{lstterm}
 ./example -i models/EW_triplet/input.txt
 \end{lstterm}
-where the input list here contains the required standard model couplings and masses.  This will produce a data file in the model output directory called \lstinline{mass_splittings.txt}.  If you have Python installed this can be plotted simply by running
+where the input list here contains the required Standard Model couplings and masses.  This will produce a file in the model output directory called \lstinline{mass_splittings.txt}.  If you have Python installed this can be plotted simply by running
 \begin{lstterm}
 python src/plot_example.py
 \end{lstterm}
-
+which will produce a figure called \lstinline{mass_splittings.eps} in the \mb root directory.
 \begin{figure}
 \centering
 \includegraphics[width=0.5\textwidth]{mass_splittings.eps}
 %\includegraphics[width=0.5\textwidth]{mass_splittings_2p.eps}
 \caption{The mass splittings in an electroweak triplet model with a massive photon resulting from one-loop radiative corrections.}\label{fig:1_loop}
 \end{figure}
-
-
-
-\subsection{Two Higgs doublet model}
-
-
 
 
 
