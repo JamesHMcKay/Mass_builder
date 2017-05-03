@@ -366,10 +366,9 @@ void Calc_amplitudes::initial_trial(string dimension)
   //<<"SEn = DiracSimplify[SEn];\n"
   //<<"SEn = DiracTrace[SEn];\n"
   <<"SEn = SEn /. DiracGamma[Momentum[p, D], D] -> p ;\n"
-  
   <<"SEn = SEn /. Pair[Momentum[Polarization[p, -I, Transversality -> True], D], Momentum[Polarization[p, I, Transversality -> True], D]] -> -1 ;\n"
-  
-  
+  // uncomment the following line if using a different gauge choice
+  //<<"SEn = SEn /. GaugeXi[Z] -> 0 /. GaugeXi[P] -> 0 /. GaugeXi[Wp] -> 0  /. GaugeXi[S[1]] -> 0 /. GaugeXi[S[2]] -> 0 /. GaugeXi[S[3]] -> 0 ;\n"
   <<"DumpSave[\""<<s_cwd<<"/output/math_1.mx\", SEn];\n"
   <<"Print[\"----------- The self energy is ---------- = \"]\n"
   <<"Print[SEn]\n"

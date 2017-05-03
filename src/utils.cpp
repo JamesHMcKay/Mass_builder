@@ -316,6 +316,7 @@ void print_math_body(ofstream &file,Options options,string cwd,std::vector<std::
     file <<"alldiags = InsertFields[t12, {"<<particle_1<<"} -> {"<<particle_2<<"},InsertionLevel -> {Particles}, GenericModel -> Lorentz,Model -> \""<<cwd<<"/models/"<<model<<"/"<<model<<"\"];\n"
     <<"subdiags0 =   DiagramExtract[alldiags, "<<diagram<<"]\n"
     <<"amp0 = FCFAConvert[CreateFeynAmp[subdiags0], IncomingMomenta -> {p}, OutgoingMomenta -> {p}, LoopMomenta -> {k1, k2} ,UndoChiralSplittings -> True,TransversePolarizationVectors -> {p},DropSumOver -> True, List -> False,ChangeDimension -> D] // Contract\n";
+    // GaugeRules -> {GaugeXi[Z] -> 0, GaugeXi[A] -> 0, GaugeXi[W] -> 0, GaugeXi[P] -> 0,GaugeXi[Wp] -> 0} // add as option to CreateFeynAmp for Landau gauge
     for (unsigned int i=0; i < masses.size();i++)
     {
       file<<"amp0 = amp0 /. MajoranaSpinor[Momentum[p, D], "<<masses[i]<<"] -> 1 /.Spinor[Momentum[p, D], "<<masses[i]<<", 1] -> 1;"<<endl;
