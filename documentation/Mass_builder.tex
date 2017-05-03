@@ -48,9 +48,7 @@
 
 \begin{abstract}
 
-This program is designed to organise and simplify the calculation of two loop self energy amplitudes by creating a user friendly interface between the existing available programs.  Using the \CC language we generate the appropriate Mathematica scripts to run \feynartss, \feyncalc and \tarcer to determine and evaluate the necessary two loop amplitudes.  We automatically determine the required basis integrals and generate \CC code to evaluate these using \tsil.  In this way the user may go from a \feynarts model file to an evaluated self energy with the ability to select amplitudes on a diagram by diagram basis.
-
-The computation of $\mathcal{O}(10)$ amplitudes simultaneously using tools such as \feyncalc results in extremely long run times as simplifications are being attempted at the symbolic level.  On the other hand, keeping track of all terms on a diagram by diagram basis is a serious task by any manual or even semi automated method.  We offer an alternative; by completely automating this process we are able to keep track of all terms and evaluate them numerically, which on a modest computing set up is the only way to achieve this task without additional user intervention.
+\mb is designed to \textit{build}, up from the level of a \feynarts model file, a \CC computer code to evaluate renormalised masses.  This is achieved by generating the necessary \mathematica and \CC scripts to interface with the existing tools, along with sophisticated intermediary sorting.  In doing so it provides a new interface between the symbolic amplitudes provided by \feynarts \cite{Hahn2000}, \feyncalc \cite{Mertig1991,Shtabovenko2016} and \tarcer \cite{Mertig1998} and the numerical evaluation of these amplitudes using \tsil \cite{Martin2006}.  
 
 \end{abstract}
 
@@ -58,7 +56,14 @@ The computation of $\mathcal{O}(10)$ amplitudes simultaneously using tools such 
 
 \section{Introduction}
 
-The calculation of radiative corrections at the two-loop level is a computationally challenging task which has been significantly simplified with the introduction of modern tools.  Even at the most rudimentary level, determining all possible topologies is a non-trivial task, let alone the simplification of the resulting integral expressions, and finally the evaluation of these integrals.  Fortunately, \feynarts \cite{Hahn2000}, \feyncalc \cite{Mertig1991,Shtabovenko2016}, \tarcer \cite{Mertig1998} and \tsil \cite{Martin2006} have made each step of this process far more achievable for a wide range of users.
+The calculation of radiative corrections at the two-loop level is a computationally challenging task which has been significantly simplified with the introduction of modern tools.  Even at the most rudimentary level, determining all possible topologies is non-trivial, let alone the simplification of the resulting integral expressions, and finally the evaluation of these integrals.  Fortunately, \feynarts \cite{Hahn2000}, \feyncalc \cite{Mertig1991,Shtabovenko2016}, \tarcer \cite{Mertig1998} and \tsil \cite{Martin2006} have made each step of this process far more achievable for a wide range of users.
+
+The interface between the tools available for generic two-loop calculations is only complete up to the stage of a symbolic amplitude.   Between \feynartss, \feyncalc and \tarcer exists the necessary conversions, yet the final step of numerical evaluation requires significant user intervention.  However, for one-loop calculations this process is available with various existing tools.  The recently released \textsf{FeynHelpers} \cite{Shtabovenko} serves this purpose by providing analytic one-loop amplitudes, and other existing codes have been able to do this by making use of the \textsf{LoopTools} package \cite{LoopTools}, such as \sarah \cite{Staub2014,Staub2015} interfaced to either \textsf{SPheno} \cite{Porod2003} or \textsf{FlexibleSUSY} \cite{Athron2015}.
+
+The \tsil libraries provide numerical, and in some cases analytical, evaluation of the basis integrals which appear in a two-loop self energy.  However, in order to make use of these one must construct a \CC interface to call the \tsil libraries and then evaluate their amplitude.  Although the \tsil functions are extremely user-friendly, making use of them from a symbolic \mathematica expression is extremely non-trivial.  Therefore we provide \mb which is designed to automate this task by generating the \CC interface.
+
+In addition to providing an automated framework we are also able to split the calculation of many loop diagrams into manageable pieces.  The computation of $\mathcal{O}(10)$ amplitudes simultaneously using tools such as \feyncalc results in extremely long run times as simplifications are being attempted at the symbolic level.  On the other hand, keeping track of all terms on a diagram by diagram basis is a serious task by any manual or even semi-automated method.  We offer an alternative; by completely automating this process we are able to keep track of all terms and evaluate them numerically, which on a modest computing set up is the only way to achieve this task without additional user intervention.
+
 
 \section{Installation}
 
@@ -309,13 +314,15 @@ It is possible to compute the tree-level counter-term coupling given the sum of 
 
 The amplitudes are calculated one diagram at a time using \feynartss, \feyncalc and \tarcer which is run externally to \CC using the Mathematica kernel with automatically generated scripts.  The goal in this part of the process is to determine the basis integrals which have non-zero coefficients, and what these coefficients are.  This separation into \textit{basis integrals} and \textit{coefficients} is the best way to determine which integrals are required in the final numerical calculation and to produce readable and tidy code.
 
-The algorithm begins by evaluating the amplitude $\A$, I then compute the coefficient of every possible basis integral $\{\B_1,\B_2,.\ .\ .\ \}$.  For the non-zero coefficients, $\{\C_1,\C_2, .\ .\ .\  \}$ I then construct a trail amplitude of the form $\A_{trial} = \C_1 * \B_1 + \C_2 * \B_2 + .\ .\ .\ $ .  I then take the difference $\A - \A_{trial}$ and check for basis integrals with non-zero coefficients, this will find cross terms that have been double counted in the first step.  From within the set of basis integrals with a non-zero coefficient at this stage, $\{\B_i,\B_j,.\ .\ .\ \}$ , I create new ``basis integrals" $\B_{ij}  B_i*B_j$ which appears to Mathematica as one object.  The final amplitude is constructed as
+The algorithm begins by evaluating the amplitude $\A$, it then computes the coefficient of every possible basis integral $\{\B_1,\B_2,.\ .\ .\ \}$.  For the non-zero coefficients, $\{\C_1,\C_2, .\ .\ .\  \}$ it then constructs a trail amplitude of the form $\A_{trial} = \C_1 * \B_1 + \C_2 * \B_2 + .\ .\ .\ $ . The difference $\A - \A_{trial}$ is then evaluated and checked for basis integrals with non-zero coefficients, this will find cross terms that have been double counted in the first step.  From within the set of basis integrals with a non-zero coefficient at this stage, $\{\B_i,\B_j,.\ .\ .\ \}$ , it then creates new ``basis integrals" $\B_{ij} =  \B_i*\B_j$ which appears to \mathematica as one object, for which coefficients $\C_{ij}$ are evaluated.  The final amplitude is then constructed as
 \begin{align*}
  \A_{trial}\ = \ & \ \ \C_1 * \B_1 + \C_2 * \B_2 + .\ .\ .\ \\ 
-  &-\frac{1}{2} \C_{12} * B_1*B_2  -\frac{1}{2} \C_{21} * B_2*B_1 - .\ .\ .\ \\
-  & + C_{11} B_1*B_1 + C_{22}*B_2*B_2 + .\ .\ .\ 
+  &-\frac{1}{2} \C_{12} * \B_1*\B_2  -\frac{1}{2} \C_{21} * \B_2*\B_1 - .\ .\ .\ \\
+  & + C_{11} \B_1*\B_1 + C_{22}*\B_2*\B_2 + .\ .\ .\ 
 \end{align*}
-where $ \C_{ij}$ is the coefficient of  $\B_i*\B_j$ in the original amplitude $\A$.  If this does not equal the original amplitude then the program will throw and error and inform the user, see section \ref{errors} for details on possible causes of this scenario.  All calculations up to this point are symbolic within the generated Mathematica scripts
+where $ \C_{ij}$ is the coefficient of  $\B_i*\B_j$ in the original amplitude $\A$.  If this does not equal the original amplitude then the program will throw and error and inform the user, see section \ref{errors} for details on possible causes of this scenario.  All calculations up to this point are symbolic within the generated \mathematica scripts.
+
+The basis integrals are then expanded into divergent and finite pieces (see Section \ref{sec:divergences}) and the above steps are repeated.  It is then possible that the difference $\A - \A_{trial}$ is non-zero, yet contains no basis integrals.  In this case this remainder is retained and added to final amplitude as the coefficient \lstinline{C0} which is simply added to the final sum.
 
 \subsubsection{Basis integral labelling}
 
@@ -416,7 +423,7 @@ Before code is generated \lstinline{self_energy.cpp} is a skeleton necessary for
 
 The diagrams available to be included in the generated \tsil interface are registered in \lstinline{models/<model>/output/avail_diagrams.txt} which is updated each time a new diagram is computed (it is also checked for duplicate entries, so no diagram, particle, and type combination appears twice).  However, if using the \lstinline{-i} option with the generate code mode, then it is possible for duplicate diagrams to appear (we choose not to override this possibility to avoid unnecessary interference with user input).
 
-\subsection{Subtraction of divergences}
+\subsection{Subtraction of divergences}\label{sec:divergences}
 
 The amplitudes produced by \tarcer are expressed in terms of divergent basis integrals.  In a consistent field theory these divergences should be accounted for by divergent counter-term diagrams.  \mb offers the ability to compute counter-term diagrams and also compute the analytical form of the two-point tree-level counter-term coupling.  The determination of higher order counter-terms and those with more vertices are left to the user to determine via other means.  However, in most two-loop calculations only the tree-level counter couplings are required, as these are the only counter-terms which appear in the two-loop order counter-term diagrams.  Once we are assured divergences are accounted for, and we have the necessary counter-term couplings, we need to seperate the amplitude into finite and divergent pieces.
 
@@ -507,7 +514,7 @@ which will produce a figure called \lstinline{mass_splittings.eps} in the \mb ro
 \centering
 \includegraphics[width=0.5\textwidth]{mass_splittings.eps}
 %\includegraphics[width=0.5\textwidth]{mass_splittings_2p.eps}
-\caption{The mass splittings in an electroweak triplet model with a massive photon resulting from one-loop radiative corrections.}\label{fig:1_loop}
+\caption{The mass splittings in an electroweak triplet model with a massive photon resulting from one-loop radiative corrections.  The red vertical line (and green one sigma confidence interval) indicates the physically relevant mass scale which would produce the observed relic abundance of dark matter.}\label{fig:1_loop}
 \end{figure}
 
 
