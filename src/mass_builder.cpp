@@ -15,6 +15,7 @@
 #include "calc_counter_terms.hpp"
 #include "generate_code.hpp"
 #include "self_energy.hpp"
+#include "print_vertices.hpp"
 //#include "supplements.hpp"
 //#include "write_tsil_ini.hpp"
 
@@ -216,5 +217,13 @@ int main(int argc, char *argv[])
     if (options.input_list == "" ) { cout << "missing input data" << endl; return 0;}
     run_mass_builder_mode_7(options);
   }
+  
+  if (options.run_mode == 8 )
+  {
+    if (options.model == "" ) { cout << "please specify a model to work with" << endl; return 0;}
+    print_vertices(options);
+  }
+  
+  
   
 }

@@ -14,8 +14,8 @@ set(HEADER_TRIPLET include/supplements.hpp)
 set(SRC_TRIPLET src/example_triplet.cpp src/supplements.cpp)
 
 
-set(HEADER_FILES_GEN include/calc_amplitudes.hpp include/calc_counter_terms.hpp include/utils.hpp include/write_tsil_ini.hpp)
-set(SRC_FILES_GEN src/calc_amplitudes.cpp src/calc_counter_terms.cpp src/generate_code.cpp src/utils.cpp src/write_tsil_ini.cpp)
+set(HEADER_FILES_GEN include/calc_amplitudes.hpp include/calc_counter_terms.hpp include/utils.hpp include/write_tsil_ini.hpp include/print_vertices.hpp)
+set(SRC_FILES_GEN src/calc_amplitudes.cpp src/calc_counter_terms.cpp src/generate_code.cpp src/utils.cpp src/write_tsil_ini.cpp src/print_vertices.cpp)
 
 include(src/CMakeLists.txt)
 
