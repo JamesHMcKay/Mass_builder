@@ -61,6 +61,10 @@ namespace utils
   
   void print_math_header(ofstream &myfile);
   
+  void assign_FCGV(ofstream &file,Options options);
+  
+  void assign_variables(ofstream &file,Options options);
+  
   void print_math_body(ofstream &file,Options options,string cwd,std::vector<std::string> masses);
   
   void print_base(ofstream &myfile, Bases base, string id, string SEn,string D);

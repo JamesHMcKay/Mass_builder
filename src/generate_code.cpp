@@ -367,6 +367,7 @@ void Generate_code::generate_particle_src(std::string particle,int subgroup)
   << "  TSIL_REAL Sin(TSIL_REAL a){return sin(a);}\n"
   << "  TSIL_REAL Cos(TSIL_REAL a){return cos(a);}\n"
   << "  TSIL_REAL Dot(TSIL_REAL a, TSIL_REAL b){return a*b;}\n"
+  << "  TSIL_REAL Sqrt(TSIL_REAL a){return TSIL_POW(a,0.5);}\n"
   << "  TSIL_REAL Zeta2 = 1.6449340668482;\n"
   << "  TSIL_COMPLEXCPP Ae(TSIL_REAL a) { return TSIL_Aeps_(TSIL_POW(a,2),Q2);}\n"
   << "  TSIL_COMPLEXCPP Be(TSIL_REAL a, TSIL_REAL b) { return TSIL_Beps_(TSIL_POW(a,2),TSIL_POW(b,2), TSIL_POW(p,2), Q2);}\n"

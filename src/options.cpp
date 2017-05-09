@@ -59,6 +59,12 @@ void User_input::user_interface()
   {
     string input = "model name";
     if (find_and_read_string("-m",input)){options.model = input;}
+    
+    if (options.model == "MSSM")
+    {
+      options.restrictions = "WinoLimit,WinoCouplings";
+    }
+
   }
 
   if (find_string("-p"))
@@ -92,6 +98,13 @@ void User_input::user_interface()
     string input = "a diagram list";
     if (find_and_read_string("-i",input)){options.input_list = input;}
   }
+
+  if (find_string("-r"))
+  {
+    string input = "restrictions";
+    if (find_and_read_string("-r",input)){options.restrictions = input;}
+  }
+
 
   if (find_string("-g"))
   {

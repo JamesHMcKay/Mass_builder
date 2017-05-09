@@ -60,7 +60,7 @@ void Calc_amplitudes::compute_amp(string prevb,string dimension)
   math_2 << "SEnTrial = 0 ";
   for (int i = 0; i<nbr;i++)
   {
-    math_2 << " + "<<reduced_basis_id[i]<< " * C"<<reduced_basis_id[i]; // use the terms we no are non-zero
+    math_2 << " + "<<reduced_basis_id[i]<< " * C"<<reduced_basis_id[i]; // use the terms we know are non-zero
   }
   math_2 << ";"<<endl;
   
@@ -622,11 +622,13 @@ void draw_all_diagrams(Options options)
   
   string type="";
   utils::print_math_header(myfile);
+  utils::assign_FCGV(myfile,options);
+  utils::assign_variables(myfile,options);
   if (options.counter_terms){myfile<<"t12 = CreateCTTopologies["<<options.loop_order<<", 1 -> 1, ExcludeTopologies -> Internal];"<<endl;
     type = to_string(options.loop_order) +"c";}
   else {myfile<<"t12 = CreateTopologies["<<options.loop_order<<", 1 -> "<< n_final_states << ", ExcludeTopologies -> Internal];"<<endl;
     type = to_string(options.loop_order);}
-  myfile<<"alldiags = InsertFields[t12, {"<<particle_1<<"} -> {"<<particle_2<<"},InsertionLevel -> {Particles}, GenericModel -> Lorentz,Model -> \""<<s_cwd<<"/models/"<<model<<"/"<<model<<"\"];\n"
+  myfile<<"alldiags = InsertFields[t12, {"<<particle_1<<"} -> {"<<particle_2<<"},InsertionLevel -> {Particles}, GenericModel -> Lorentz,Restrictions-> {" << options.restrictions << "}, Model -> \""<<s_cwd<<"/models/"<<model<<"/"<<model<<"\"];\n"
   <<"Export[\""<<s_cwd<<"/models/"<<options.model<<"/FA_diagrams/diagrams_"<<tag<< "_" << type <<".pdf\",Paint[alldiags,Numbering->Simple]];\n"  // print the FA diagram to pdf in local directory
   <<endl;
   

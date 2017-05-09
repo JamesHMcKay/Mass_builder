@@ -29,6 +29,7 @@ string model;
 string diagram;
 string particle_safe;
 string input_list="";
+string restrictions = "";
 
 int run_mode = 0;
 /* options are:  

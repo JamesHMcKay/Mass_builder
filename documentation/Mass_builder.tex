@@ -54,6 +54,15 @@
 
 \tableofcontents
 
+
+% TODO LIST
+
+%  Need to make sure that the FeynCalc or FeynArts symbols don't accidentally get used as masses or couplings
+%  use ?"FeynCalc`*" to show this list
+%  Currently can't set a mass identifier to be "e" because we end up with recursive relationship for the basis integral Ae = stuff + Ae[ ]
+%  so need to rename Ae[] to Aepsilon[] in math_4.m
+
+
 \section{Introduction}
 
 The calculation of radiative corrections at the two-loop level is a computationally challenging task which has been significantly simplified with the introduction of modern tools.  Even at the most rudimentary level, determining all possible topologies is non-trivial, let alone the simplification of the resulting integral expressions, and finally the evaluation of these integrals.  Fortunately, \feynarts \cite{Hahn2000}, \feyncalc \cite{Mertig1991,Shtabovenko2016}, \tarcer \cite{Mertig1998} and \tsil \cite{Martin2006} have made each step of this process far more achievable for a wide range of users.
@@ -232,8 +241,11 @@ Optional switches
 -w		generate code with detailed terminal output
 -s		maximal file splitting of TSIL interface
 -0		calculate physical mass of spin zero field
+-r		specify restrictions for FeynArts model
 \end{lstterm}
 where \lstinline{-o} will be explained in section \ref{sec:tsil_interface} and \lstinline{-w} will put a \cpp{std::cout} statement for every two-loop amplitude computed at runtime for detailed inspection of each contribution to the total self energy, as may be useful for identifying large contributions.
+
+The \lstinline{-r} flag will add the text following the flag exactly as is into the line \lstinline|InsertFields[ . . . Restrictions -> { <input> }  . . . ]|.
 
 
 \subsection{Input}
@@ -284,6 +296,9 @@ F[5]   1   1
 F[6]   2   2c
 \end{lstterm}
 which will tell \mb to compute the first diagram for the particle \lstinline{F[5]} at one and two loop level, and the second two loop counter term diagram for particle \lstinline{F[6]}.  All numbers are in reference to the numbers given with the diagrams as listed in the \lstinline{pdf} output from \lstinline{./mass_builder -f -p <particle> -m <model>}.
+
+There are two additional input files one may place in the model directory when a \feynarts contains notation for the couplings and masses that is not supported by \mb by default.  The types of notation not supported are functions, that have not been defined in the generated code, such as \lstinline{Mass[i]} where $i$ is an index.  Another common function appears in patched \feynarts model files, during the patching by \feyncalc many symbols are wrapped to avoid clashes with symbols from \feyncalc and will appear as \lstinline{FCGV["x"]}.  
+
 
 \subsection{Output}
 

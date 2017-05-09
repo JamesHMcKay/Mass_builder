@@ -297,13 +297,56 @@ namespace utils
     <<"null=0;\n";
   }
  
-void print_math_body(ofstream &file,Options options,string cwd,std::vector<std::string> masses)
+  // function to assign FCGV variables in default patched FeynArts models
+  void assign_FCGV(ofstream &file,Options options)
+  {
+    // open file with conversion list
+    const char* file_FCGV_tmp = "models/";
+    string c_file_FCGV = file_FCGV_tmp + options.model + "/FCGV.txt";
+    const char *file_FCGV = c_file_FCGV.c_str();
+    
+    vector<string> variable,replacement;
+    int n;
+    get_data(variable,replacement,n,file_FCGV);
+    
+    for (int i = 0; i < n ;i++)
+    {
+      file << "FCGV[\"" <<variable[i] << "\"] = " << replacement[i] << ";";
+    }
+  }
+  
+  // function to reassign variable names, such as mixing matrices
+  void assign_variables(ofstream &file,Options options)
+  {
+    // open file with conversion list
+    const char* file_var_tmp = "models/";
+    string c_file_var = file_var_tmp + options.model + "/reassign_variables.txt";
+    const char *file_var = c_file_var.c_str();
+    
+    vector<string> variable,replacement;
+    int n;
+    get_data(variable,replacement,n,file_var);
+    
+    for (int i = 0; i < n ;i++)
+    {
+      file <<  variable[i] << " = " << replacement[i] << ";";
+    }
+  
+  }
+ 
+ 
+  void print_math_body(ofstream &file,Options options,string cwd,std::vector<std::string> masses)
   {
     int loop_order = options.loop_order;
     string particle_1 = options.particle_1;
     string particle_2 = options.particle_2;
     string diagram = options.diagram;
     string model = options.model;
+    
+    assign_FCGV(file,options);
+    
+    assign_variables(file,options);
+    
     if (options.counter_terms)
     {
       file<<"t12 = CreateCTTopologies["<< loop_order<<", 1 ->  " << options.n_final_states << ", ExcludeTopologies -> Internal];"<<endl;
@@ -312,8 +355,7 @@ void print_math_body(ofstream &file,Options options,string cwd,std::vector<std::
     {
       file<<"t12 = CreateTopologies["<< loop_order<<", 1 -> " << options.n_final_states << ", ExcludeTopologies -> Internal];"<<endl;
     }
-    
-    file <<"alldiags = InsertFields[t12, {"<<particle_1<<"} -> {"<<particle_2<<"},InsertionLevel -> {Particles}, GenericModel -> Lorentz,Model -> \""<<cwd<<"/models/"<<model<<"/"<<model<<"\"];\n"
+    file <<"alldiags = InsertFields[t12, {"<<particle_1<<"} -> {"<<particle_2<<"},InsertionLevel -> {Particles}, GenericModel -> Lorentz,Restrictions -> {" << options.restrictions << "},Model -> \""<<cwd<<"/models/"<<model<<"/"<<model<<"\"];\n"
     <<"subdiags0 =   DiagramExtract[alldiags, "<<diagram<<"]\n"
     <<"amp0 = FCFAConvert[CreateFeynAmp[subdiags0], IncomingMomenta -> {p}, OutgoingMomenta -> {p}, LoopMomenta -> {k1, k2} ,UndoChiralSplittings -> True,TransversePolarizationVectors -> {p},DropSumOver -> True, List -> False,ChangeDimension -> D] // Contract\n";
     // GaugeRules -> {GaugeXi[Z] -> 0, GaugeXi[A] -> 0, GaugeXi[W] -> 0, GaugeXi[P] -> 0,GaugeXi[Wp] -> 0} // add as option to CreateFeynAmp for Landau gauge
@@ -405,18 +447,43 @@ void print_math_body(ofstream &file,Options options,string cwd,std::vector<std::
     return success;
   }
   
-  
+  // TODO: make this routine more generic for any kind of particle name and number
   std::string part_name_simple(std::string particle_name_full)
   {
     stringstream _part_1,_part_2;
     string part_1,part_2;
     
-    _part_1 << particle_name_full[0];
-    _part_1 >> part_1;
-    _part_2 << particle_name_full[2];
-    _part_2 >> part_2;
+    if (particle_name_full.size() == 4)
+    {
+      _part_1 << particle_name_full[0];
+      _part_1 >> part_1;
+      _part_2 << particle_name_full[2];
+      _part_2 >> part_2;
+      return part_1+part_2;
+    }
+    else if (particle_name_full.size() == 9)
+    {
+       stringstream _part_3,_part_4;
+       string part_3,part_4;
+      
+      _part_1 << particle_name_full[0];
+      _part_1 >> part_1;
+      _part_2 << particle_name_full[2];
+      _part_2 >> part_2;
+      _part_3 << particle_name_full[3];
+      _part_3 >> part_3;
+      
+      _part_4 << particle_name_full[6];
+      _part_4 >> part_4;
+      
+      return part_1+part_2+part_3+"_g"+part_4;
+    }
+    else
+    {
+      cout << "An error has occured in determing a safe name for the particles, only particle names X[n] or X[nn,{n}] are currently supported, please add required case" << endl;
+      return particle_name_full;
+    }
     
-    return part_1+part_2;
   }
   
   std::string part_name_simple(std::string particle_name_full_1,std::string particle_name_full_2)

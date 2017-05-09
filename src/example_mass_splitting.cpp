@@ -42,7 +42,7 @@ double iterative_mass_F5(Data data)
     Self_energy se;
     se.run_tsil(data);
     
-    double M_1loop=M_tree + (data.SE_1["F1"]+data.SE_2["F1"]);
+    double M_1loop=M_tree + (data.SE_1["F12_g1"]+data.SE_2["F12_g1"]);
     MFn=M_1loop;
     new_MFn=MFn;
     diff=abs(new_MFn-old_MFn);
@@ -82,7 +82,7 @@ double iterative_mass_F6(Data data)
     Self_energy se;
     se.run_tsil(data);
     
-    double M_1loop=M_tree +(data.SE_1["F2"]+data.SE_2["F2"]);
+    double M_1loop=M_tree +(data.SE_1["F11_g1"]+data.SE_2["F11_g1"]);
     MFn=M_1loop;
     new_MFn=MFn;
     diff=abs(new_MFn-old_MFn);
@@ -109,7 +109,7 @@ double pole_mass_F5(Data data)
   se.run_tsil(data);
   //Supplements supp(data);
   //supp.add_derivatives(data);
-  double Mp = data.MChi + (data.SE_1["F1"]+data.SE_2["F1"]);
+  double Mp = data.MChi + (data.SE_1["F12_g1"]+data.SE_2["F12_g1"]);
   return Mp;
 }
 
@@ -119,7 +119,7 @@ double pole_mass_F6(Data data)
   se.run_tsil(data);
   //Supplements supp(data);
   //supp.add_derivatives(data);
-  double Mp = data.MChi + (data.SE_1["F2"]+data.SE_2["F2"]);
+  double Mp = data.MChi + (data.SE_1["F11_g1"]+data.SE_2["F11_g1"]);
   return Mp;
 }
 
