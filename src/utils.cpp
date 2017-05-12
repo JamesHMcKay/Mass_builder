@@ -143,7 +143,7 @@ namespace utils
   void user_input_guide()
   {
     cout << " Welcome to Mass Builder \n"
-    << " ---------------------------------------------------------------------------------------------------- \n"
+    << " ------------------------------------------------------------------------------------------------------------ \n"
     << " to use call ./mass_builder <flags> where required flags for each mode are given below:\n"
     << "                                                                                                      \n"
     << " -a -m <model>                                           -  compute all diagrams in models/<model>/diagrams.txt\n"
@@ -153,7 +153,12 @@ namespace utils
     << " -g -m <model>                               -i <file>   -  generate code for diagrams listed in file\n"
     << " -f -m <model>  -p <particle>                            -  draw all FeynArts diagrams for particle\n"
     << " -e                                          -i <file>   -  evaluate self energy with values for masses and couplings in file\n"
-    << " ---------------------------------------------------------------------------------------------------- " <<endl;
+    << " -x -m <model>                                           -  draw vertices listed in models/<model>/vertices\n"
+    << " ------------------------------------- other additional flags ------------------------------------------------ \n"
+    << " -z   -  use models/<model>/model.gen as the generic FeynArts model\n"
+    << " -0   -  iteratively compute 1-loop pole masses for vector particles\n"
+    << " -r   -  specify model restrictions, for example -r WinoLimit,WinoCouplings\n"
+    << " ------------------------------------------------------------------------------------------------------------- " <<endl;
   }
   
   
@@ -272,6 +277,37 @@ namespace utils
         continue;
       std::istringstream iss2(line2);
       iss2>> A[n] >> B[n] >> C[n];
+      n=n+1;
+    }
+    input2.close();
+  }
+  
+  void get_data(vector<std::string> &A,vector<std::string> &B,vector<std::string> &C,vector<std::string> &D,int &n, string file_name_temp)
+  {
+    n=0;
+    std::ifstream input(file_name_temp.c_str());
+    std::string line;
+    while(getline(input, line))
+    {
+      if (!line.length() || line[0] == '#')
+        continue;
+      std::istringstream iss(line);
+      n=n+1;
+    }
+    input.close();
+    A.resize(n);
+    B.resize(n);
+    C.resize(n);
+    D.resize(n);
+    n=0;
+    std::ifstream input2(file_name_temp.c_str());
+    std::string line2;
+    while(getline(input2, line2))
+    {
+      if (!line2.length() || line2[0] == '#')
+        continue;
+      std::istringstream iss2(line2);
+      iss2>> A[n] >> B[n] >> C[n] >> D[n];
       n=n+1;
     }
     input2.close();

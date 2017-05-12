@@ -142,7 +142,7 @@ M$ClassesDescription = {
 	Mass -> MCha,
 	QuantumNumbers -> {-1 Charge},
 	PropagatorLabel ->
-	  ComposedChar["\\chi", Index[Chargino], Null, "\\tilde"],
+	  ComposedChar["\\chi", Index[Chargino],"+", "\\tilde"],
 	PropagatorType -> Straight,
 	PropagatorArrow -> Forward },
 
@@ -169,7 +169,7 @@ M$ClassesDescription = {
 	Indices -> {},
 	Mass -> FCGV["MW"],
 	QuantumNumbers -> {-1 Charge},
-	PropagatorLabel -> "W",
+	PropagatorLabel->ComposedChar["W",Null,"+"],
 	PropagatorType -> Sine,
 	PropagatorArrow -> Forward },
 
@@ -222,7 +222,7 @@ M$ClassesDescription = {
 	Indices -> {},
 	Mass -> FCGV["MW"],
 	QuantumNumbers -> {-1 Charge},
-	PropagatorLabel -> "G",
+	PropagatorLabel -> ComposedChar["G", Null, "+"],
 	PropagatorType -> ScalarDash,
 	PropagatorArrow -> Forward },
 
@@ -272,7 +272,7 @@ M$ClassesDescription = {
 	Indices -> {},
 	Mass -> ma,
 	QuantumNumbers -> GhostNumber,
-	PropagatorLabel -> ComposedChar["u", "\\gamma"],
+	PropagatorLabel -> ComposedChar["\\eta", "\\gamma"],
 	PropagatorType -> GhostDash,
 	PropagatorArrow -> Forward },
 
@@ -281,7 +281,7 @@ M$ClassesDescription = {
 	Indices -> {},
 	Mass -> FCGV["MZ"],
 	QuantumNumbers -> GhostNumber,
-	PropagatorLabel -> ComposedChar["u", "Z"],
+	PropagatorLabel -> ComposedChar["\\eta", "Z"],
 	PropagatorType -> GhostDash,
 	PropagatorArrow -> Forward },
 
@@ -291,7 +291,7 @@ M$ClassesDescription = {
 	Indices -> {},
 	Mass -> FCGV["MW"],
 	QuantumNumbers -> {-1 Charge, GhostNumber},
-	PropagatorLabel -> ComposedChar["u", "-"],
+	PropagatorLabel -> ComposedChar["\\eta",Null, "-"],
 	PropagatorType -> GhostDash,
 	PropagatorArrow -> Forward },
 
@@ -300,7 +300,7 @@ M$ClassesDescription = {
 	Indices -> {},
 	Mass -> FCGV["MW"],
 	QuantumNumbers -> {1 Charge, GhostNumber},
-	PropagatorLabel -> ComposedChar["u", "+"],
+	PropagatorLabel -> ComposedChar["\\eta",Null, "+"],
 	PropagatorType -> GhostDash,
 	PropagatorArrow -> Forward }
 }

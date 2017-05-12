@@ -17,7 +17,7 @@ using namespace utils;
 string s_cwd__(getcwd(NULL,0));
 
 
-void print_vertex(ofstream &myfile, std::string particle_1,std::string particle_2,std::string particle_3,Options options)
+void print_3_vertex(ofstream &myfile, std::string particle_1,std::string particle_2,std::string particle_3,Options options)
 {
   std::string type;
   if (options.counter_terms){myfile<<"t12 = CreateCTTopologies[1, 1 -> 2, ExcludeTopologies -> Internal];"<<endl;
@@ -37,8 +37,28 @@ void print_vertex(ofstream &myfile, std::string particle_1,std::string particle_
   
 }
 
+void print_4_vertex(ofstream &myfile, std::string particle_1,std::string particle_2,std::string particle_3,std::string particle_4,Options options)
+{
+  std::string type;
+  if (options.counter_terms){myfile<<"t12 = CreateCTTopologies[1, 2 -> 2, ExcludeTopologies -> Internal];"<<endl;
+    type = "c";}
+  else {myfile<<"t12 = CreateTopologies[0, 2 -> 2, ExcludeTopologies -> Internal];"<<endl;
+    type = "";}
+  
+  myfile<<"alldiags = InsertFields[t12, {"<<particle_1<<","<<particle_2<<"} -> {"<<particle_3<<","<<particle_4<<"},InsertionLevel -> {Particles}, GenericModel -> Lorentz,Restrictions-> {" << options.restrictions << "}, Model -> \""<<s_cwd__<<"/models/"<<options.model<<"/"<<options.model<<"\"];\n";
+  myfile<<"amp0 = FCFAConvert[CreateFeynAmp[alldiags], IncomingMomenta -> {Subscript[p, 1],Subscript[p,2]},OutgoingMomenta -> {Subscript[p, 3], Subscript[p, 4]},UndoChiralSplittings -> True, TransversePolarizationVectors -> {p},DropSumOver -> True, List -> False, ChangeDimension -> D] //Contract\n";
+  
+  myfile<<"Export[\""<<s_cwd__<<"/models/"<<options.model<<"/LaTeX/vertex_"<<particle_1<< "_"<<particle_2<< "_"<<particle_3<< "_"<<particle_4 << type <<".txt\",TeXForm[amp0]];\n"
+  
+  <<"Export[\""<<s_cwd__<<"/models/"<<options.model<<"/LaTeX/vertex_"<<particle_1<< "_"<<particle_2<< "_"<<particle_3<< "_"<<particle_4 << type <<".pdf\",Paint[alldiags, Numbering -> None, ColumnsXRows -> 1]];\n"
+  
+  
+  <<endl;
+  
+}
 
-void print_vertex_tex(ofstream &myfile, std::string particle_1,std::string particle_2,std::string particle_3,Options options)
+
+void print_vertex_tex(ofstream &myfile, std::string particle_1,std::string particle_2,std::string particle_3,std::string particle_4,Options options,int number)
 {
   std::string type;
   if (options.counter_terms){ type = "c";}
@@ -48,7 +68,7 @@ void print_vertex_tex(ofstream &myfile, std::string particle_1,std::string parti
   
   
   const char* file_vertices_tmp = "models/";
-  string c_file_vertices = file_vertices_tmp + options.model + "/LaTeX/vertex_" + particle_1 +  "_" + particle_2 + "_" + particle_3 + "_" + type + ".txt";
+  string c_file_vertices = file_vertices_tmp + options.model + "/LaTeX/vertex_" + particle_1 +  "_" + particle_2 + "_" + particle_3 + "_" + particle_4 + type + ".txt";
   const char *file_vertices = c_file_vertices.c_str();
   
   
@@ -189,6 +209,14 @@ void print_vertex_tex(ofstream &myfile, std::string particle_1,std::string parti
   to = "\\lambda";
   ReplaceAll(content,from, to);
   
+    
+  from = "\\text{g1}";
+  to = "g_1";
+  ReplaceAll(content,from, to);
+  
+  from = "\\text{g2}";
+  to = "g_2";
+  ReplaceAll(content,from, to);
 
   
 
@@ -196,15 +224,14 @@ void print_vertex_tex(ofstream &myfile, std::string particle_1,std::string parti
   
   if (success)
   {
-    
-    myfile << "\\begin{minipage}{0.2\\textwidth}\n"
-    <<"\\includegraphics[width=1\\textwidth]{"<<s_cwd__<<"/models/"<<options.model<<"/LaTeX/vertex_"<<particle_1<< "_"<<particle_2<< "_"<<particle_3<< "_" << type <<".pdf}\n"
+    myfile << number << ".\n"
+    << "\\begin{minipage}{0.2\\textwidth}\n"
+    <<"\\includegraphics[width=1\\textwidth]{"<<s_cwd__<<"/models/"<<options.model<<"/LaTeX/vertex_"<<particle_1<< "_"<<particle_2<< "_"<<particle_3<< "_"<<particle_4 << type <<".pdf}\n"
     <<"\\end{minipage}\n"
     <<"\\hspace{2cm}\n"
     <<"\\begin{minipage}{0.7\\textwidth}\n"
     <<"\\begin{math}\n"
     << content
-    //<<"\\input{"<<s_cwd__<<"/models/"<<options.model<<"/LaTeX/vertex_"<<particle_1<< "_"<<particle_2<< "_"<<particle_3<< "_" << type <<".txt}\n"
     <<"\\end{math}\n"
     <<"\\end{minipage}\n"
     <<"\n"
@@ -214,9 +241,17 @@ void print_vertex_tex(ofstream &myfile, std::string particle_1,std::string parti
   }
   else
   {
-    myfile << "\\begin{minipage}{0.29\\textwidth}\n"
-    <<"\\small{\\lstinline{"<<particle_1<< "} $\\rightarrow$ \\lstinline{"<<particle_2<< "} $+$ \\lstinline{"<<particle_3<< "}} \n"
-    <<"\\end{minipage}\n"
+    myfile << number << ".\n"
+    <<"\\begin{minipage}{0.29\\textwidth}\n";
+    if (particle_4=="")
+    {
+      myfile<<"\\small{\\lstinline{"<<particle_1<< "} $\\rightarrow$ \\lstinline{"<<particle_2<< "} $+$ \\lstinline{"<<particle_3<< "}} \n";
+    }
+    else
+    {
+      myfile<<"\\small{\\lstinline{"<<particle_1<< "} $+$ \\lstinline{"<<particle_2<< "} $\\rightarrow$ \\lstinline{"<<particle_3<< "} $+$ \\lstinline{"<<particle_4<< "}} \n";
+    }
+    myfile<<"\\end{minipage}\n"
     <<"\\begin{minipage}{0.7\\textwidth}\n";
     if (type == "c" )
     {
@@ -250,7 +285,7 @@ void print_vertices(Options options)
   
   // read in a list of 3-particle vertices from file
   
-  vector<string> particle_1,particle_2,particle_3;
+  vector<string> particle_1,particle_2,particle_3,particle_4;
   int np;
   
   const char* file_vertices_tmp = "models/";
@@ -258,7 +293,7 @@ void print_vertices(Options options)
   const char *file_vertices = c_file_vertices.c_str();
   
   
-  get_data(particle_1,particle_2,particle_3,np, file_vertices);
+  get_data(particle_1, particle_2, particle_3, particle_4, np, file_vertices);
   
   
   // create Mathematica script to print a pdf for each vertex and record the amplitude in a text file
@@ -274,7 +309,14 @@ void print_vertices(Options options)
   
   for (int i = 0; i < np; i++)
   {
-    print_vertex(myfile,particle_1[i],particle_2[i],particle_3[i],options);
+    if (particle_4[i] == "")
+    {
+      print_3_vertex(myfile,particle_1[i],particle_2[i],particle_3[i],options);
+    }
+    else
+    {
+      print_4_vertex(myfile,particle_1[i],particle_2[i],particle_3[i],particle_4[i],options);
+    }
   }
   
   // run Mathematica script
@@ -323,7 +365,7 @@ void print_vertices(Options options)
   
   for (int i = 0; i < np; i++)
   {
-    print_vertex_tex(texfile,particle_1[i],particle_2[i],particle_3[i],options);
+    print_vertex_tex(texfile,particle_1[i],particle_2[i],particle_3[i],particle_4[i],options,i);
   }
   
   
