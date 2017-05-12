@@ -4,5 +4,5 @@ sw TSIL_POW(1.-cw2,0.5)
 g2 2.*mw/v
 sw2 TSIL_POW(sw,2)
 g1 g2*sw/cw
-el g1*g2/TSIL_POW( g1*g1+g2*g2, 0.5)
+e g1*g2/TSIL_POW( g1*g1+g2*g2, 0.5)
 v
