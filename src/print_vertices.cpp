@@ -224,7 +224,7 @@ void print_vertex_tex(ofstream &myfile, std::string particle_1,std::string parti
   
   if (success)
   {
-    myfile << number << ".\n"
+    myfile << number + 1 << ".\n"
     << "\\begin{minipage}{0.2\\textwidth}\n"
     <<"\\includegraphics[width=1\\textwidth]{"<<s_cwd__<<"/models/"<<options.model<<"/LaTeX/vertex_"<<particle_1<< "_"<<particle_2<< "_"<<particle_3<< "_"<<particle_4 << type <<".pdf}\n"
     <<"\\end{minipage}\n"
@@ -241,7 +241,7 @@ void print_vertex_tex(ofstream &myfile, std::string particle_1,std::string parti
   }
   else
   {
-    myfile << number << ".\n"
+    myfile << number + 1 << ".\n"
     <<"\\begin{minipage}{0.29\\textwidth}\n";
     if (particle_4=="")
     {
