@@ -19,6 +19,7 @@ bool verbose = false;
 bool optimise = false;
 bool detailed_output = false;
 bool latex_output = false;
+bool use_lorentz = true;
 int loop_order = 2;
 int n_group = 10;
 int n_final_states = 1;

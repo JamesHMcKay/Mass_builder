@@ -1,4 +1,4 @@
-EL el
+EL e
 SW sw
 CW cw
 MW mw

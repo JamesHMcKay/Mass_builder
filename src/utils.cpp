@@ -355,8 +355,17 @@ namespace utils
     {
       file<<"t12 = CreateTopologies["<< loop_order<<", 1 -> " << options.n_final_states << ", ExcludeTopologies -> Internal];"<<endl;
     }
-    file <<"alldiags = InsertFields[t12, {"<<particle_1<<"} -> {"<<particle_2<<"},InsertionLevel -> {Particles}, GenericModel -> Lorentz,Restrictions -> {" << options.restrictions << "},Model -> \""<<cwd<<"/models/"<<model<<"/"<<model<<"\"];\n"
-    <<"subdiags0 =   DiagramExtract[alldiags, "<<diagram<<"]\n"
+    
+    if (options.use_lorentz)
+    {
+      file <<"alldiags = InsertFields[t12, {"<<particle_1<<"} -> {"<<particle_2<<"},InsertionLevel -> {Particles}, GenericModel -> Lorentz,Restrictions -> {" << options.restrictions << "},Model -> \""<<cwd<<"/models/"<<model<<"/"<<model<<"\"];\n";
+    }
+    else
+    {
+      file <<"alldiags = InsertFields[t12, {"<<particle_1<<"} -> {"<<particle_2<<"},InsertionLevel -> {Particles}, GenericModel -> \""<<cwd<<"/models/"<<model<<"/"<<model<<"\",Restrictions -> {" << options.restrictions << "},Model -> \""<<cwd<<"/models/"<<model<<"/"<<model<<"\"];\n";
+    }
+    
+    file<<"subdiags0 =   DiagramExtract[alldiags, "<<diagram<<"]\n"
     <<"amp0 = FCFAConvert[CreateFeynAmp[subdiags0], IncomingMomenta -> {p}, OutgoingMomenta -> {p}, LoopMomenta -> {k1, k2} ,UndoChiralSplittings -> True,TransversePolarizationVectors -> {p},DropSumOver -> True, List -> False,ChangeDimension -> D] // Contract\n";
     // GaugeRules -> {GaugeXi[Z] -> 0, GaugeXi[A] -> 0, GaugeXi[W] -> 0, GaugeXi[P] -> 0,GaugeXi[Wp] -> 0} // add as option to CreateFeynAmp for Landau gauge
     for (unsigned int i=0; i < masses.size();i++)

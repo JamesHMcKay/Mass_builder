@@ -628,8 +628,22 @@ void draw_all_diagrams(Options options)
     type = to_string(options.loop_order) +"c";}
   else {myfile<<"t12 = CreateTopologies["<<options.loop_order<<", 1 -> "<< n_final_states << ", ExcludeTopologies -> Internal];"<<endl;
     type = to_string(options.loop_order);}
-  myfile<<"alldiags = InsertFields[t12, {"<<particle_1<<"} -> {"<<particle_2<<"},InsertionLevel -> {Particles}, GenericModel -> Lorentz,Restrictions-> {" << options.restrictions << "}, Model -> \""<<s_cwd<<"/models/"<<model<<"/"<<model<<"\"];\n"
-  <<"Export[\""<<s_cwd<<"/models/"<<options.model<<"/FA_diagrams/diagrams_"<<tag<< "_" << type <<".pdf\",Paint[alldiags,Numbering->Simple]];\n"  // print the FA diagram to pdf in local directory
+  
+  
+  if (options.use_lorentz)
+  {
+    myfile <<"alldiags = InsertFields[t12, {"<<particle_1<<"} -> {"<<particle_2<<"},InsertionLevel -> {Particles}, GenericModel -> Lorentz,Restrictions -> {" << options.restrictions << "},Model -> \""<<s_cwd<<"/models/"<<model<<"/"<<model<<"\"];\n";
+  }
+  else
+  {
+    myfile <<"alldiags = InsertFields[t12, {"<<particle_1<<"} -> {"<<particle_2<<"},InsertionLevel -> {Particles}, GenericModel -> \""<<s_cwd<<"/models/"<<model<<"/"<<model<<"\",Restrictions -> {" << options.restrictions << "},Model -> \""<<s_cwd<<"/models/"<<model<<"/"<<model<<"\"];\n";
+  }
+
+
+  
+  
+  //myfile<<"alldiags = InsertFields[t12, {"<<particle_1<<"} -> {"<<particle_2<<"},InsertionLevel -> {Particles}, GenericModel -> Lorentz,Restrictions-> {" << options.restrictions << "}, Model -> \""<<s_cwd<<"/models/"<<model<<"/"<<model<<"\"];\n"
+  myfile<<"Export[\""<<s_cwd<<"/models/"<<options.model<<"/FA_diagrams/diagrams_"<<tag<< "_" << type <<".pdf\",Paint[alldiags,Numbering->Simple]];\n"  // print the FA diagram to pdf in local directory
   <<endl;
   
 #ifdef RUN_ALL

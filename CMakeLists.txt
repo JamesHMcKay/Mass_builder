@@ -8,6 +8,8 @@ set(HEADER_FILES include/options.hpp include/bases.hpp include/data.hpp include/
 set(SRC_FILES src/options.cpp src/bases.cpp src/self_energy.cpp )
 
 set(SRC_example src/example_mass_splitting.cpp)
+set(SRC_VDM src/VDM.cpp)
+
 set(SRC_MB src/mass_builder.cpp)
 
 set(HEADER_TRIPLET include/supplements.hpp)
@@ -28,6 +30,8 @@ add_executable(mass_builder ${SRC_MB} ${SRC_FILES_GEN} ${HEADER_FILES_GEN} ${TSI
 
 add_executable(example EXCLUDE_FROM_ALL ${SRC_example} ${SRC_FILES_GEN} ${HEADER_FILES_GEN} ${TSIL_HEADER_FILE} ${SRC_FILES} ${HEADER_FILES} ${GENERATED_SRC_FILES})
 
+add_executable(VDM EXCLUDE_FROM_ALL ${SRC_VDM} ${SRC_FILES_GEN} ${HEADER_FILES_GEN} ${TSIL_HEADER_FILE} ${SRC_FILES} ${HEADER_FILES} ${GENERATED_SRC_FILES})
+
 add_executable(triplet EXCLUDE_FROM_ALL ${SRC_TRIPLET} ${HEADER_TRIPLET} ${SRC_FILES_GEN} ${HEADER_FILES_GEN} ${TSIL_HEADER_FILE} ${SRC_FILES} ${HEADER_FILES} ${GENERATED_SRC_FILES})
 
 TARGET_LINK_LIBRARIES(mass_builder libtsil.a)
@@ -35,6 +39,8 @@ TARGET_LINK_LIBRARIES(mass_builder libtsil.a)
 TARGET_LINK_LIBRARIES(example libtsil.a)
 
 TARGET_LINK_LIBRARIES(triplet libtsil.a)
+
+TARGET_LINK_LIBRARIES(VDM libtsil.a)
 
 if (CMAKE_COMPILER_IS_GNUCXX)
     message(status "Setting GCC flags")
