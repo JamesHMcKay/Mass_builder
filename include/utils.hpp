@@ -23,6 +23,8 @@ namespace utils
   
   int get_loop_order(string type);
   
+  const char * add_mpi_ext(std::string name, int process, std::string ext);
+  
   string char_to_string(char c);
   
   vector<string> extract_keys(map<string, Bases> const& input_map);
@@ -31,9 +33,9 @@ namespace utils
   
   void user_input_guide();
   
-  bool check_done(std::string &result);
+  bool check_done(std::string &result, int mpi_process);
   
-  bool check_done_quiet();
+  bool check_done_quiet(int mpi_process);
   
   string part_name_simple(string particle_name_full);
   
@@ -81,6 +83,8 @@ namespace utils
   void print_finite_base(ofstream &myfile, Bases base, string id);
   
   void print_finite_basis(std::map<std::string, Bases> base_map, ofstream &myfile);
+  
+  void timestamp();
   
 }
 

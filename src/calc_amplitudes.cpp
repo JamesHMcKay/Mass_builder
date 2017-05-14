@@ -29,8 +29,8 @@ void Calc_amplitudes::compute_amp(string prevb,string dimension)
   vector<std::string> output_string, coeff_new;
   int temp_int = 0; // this should always equal nb in this case
   
-  const char* file_integrals2_tmp = "output/output";
-  string c_file_integrals2 = file_integrals2_tmp + blank + ext;
+  const char* file_integrals2_tmp = "output/output_";
+  string c_file_integrals2 = file_integrals2_tmp + std::to_string(options.mpi_process) + ext;
   const char *file_integrals2 = c_file_integrals2.c_str();
   
   get_data(output_string, coeff_new, temp_int,file_integrals2, true);
@@ -49,7 +49,7 @@ void Calc_amplitudes::compute_amp(string prevb,string dimension)
   // second run is an attempt to construct the trial amplitude using the reduced list of required integrals
   
   ofstream math_2;
-  math_2.open ("output/math_2.m");
+  math_2.open (add_mpi_ext("output/math_2", options.mpi_process, "m"));
   
   utils::print_math_header(math_2);
   
@@ -69,12 +69,12 @@ void Calc_amplitudes::compute_amp(string prevb,string dimension)
   math_2 << "Print[\" The difference between trial and actual SE is:\"]" <<endl;
   math_2 << "Print[\" --------------------------------------- \"]" <<endl;
   math_2 << "Print[difference]"<<endl;
-  math_2 << "Export[\""<<s_cwd<<"/output/result.txt\", difference]" << endl;
+  math_2 << "Export[\""<<s_cwd<<"/output/result_"<< options.mpi_process << ".txt\", difference]" << endl;
   
   print_math_basis(full_basis,math_2, "difference",dimension);
 
   
-  math_2 << "Export[\""<<s_cwd<<"/output/output2.txt\", {" << endl;
+  math_2 << "Export[\""<<s_cwd<<"/output/output2_"<< options.mpi_process << ".txt\", {" << endl;
   for (int i = 0; i < nb-1;i++)
   {
     math_2 << "{\""<<full_basis_id[i]<<" \", CForm[C"<<full_basis_id[i]<<" + C" <<full_basis_id[i] <<"2 /. Pair[Momentum[p], Momentum[p]] -> p^2 /. DiracGamma[Momentum[p]] -> p], \"\"}," << endl;
@@ -84,10 +84,13 @@ void Calc_amplitudes::compute_amp(string prevb,string dimension)
   
   math_2.close();
   
+  
+  
+  
 #ifdef RUN_ALL
-  system("chmod +x output/math_2.m ");
-  if(options.verbose) system("./output/math_2.m ");
-  else system("./output/math_2.m  >/dev/null ");
+  system(add_mpi_ext("chmod +x output/math_2", options.mpi_process, "m"));
+  if(options.verbose) system(add_mpi_ext("./output/math_2", options.mpi_process, "m"));
+  else system(add_mpi_ext("./output/math_2", options.mpi_process, "m  >/dev/null"));
 #endif
   
   
@@ -95,8 +98,8 @@ void Calc_amplitudes::compute_amp(string prevb,string dimension)
   
   
   temp_int = 0;  // this should be equal to nb always
-  const char* file_integrals4_tmp = "output/output2";
-  string c_file_integrals4 = file_integrals4_tmp + blank + ext;
+  const char* file_integrals4_tmp = "output/output2_";
+  string c_file_integrals4 = file_integrals4_tmp + std::to_string(options.mpi_process) + ext;
   const char *file_integrals4 = c_file_integrals4.c_str();
   vector<std::string> coeff_new_prod;
   prod_basis.clear();
@@ -123,7 +126,7 @@ void Calc_amplitudes::compute_amp(string prevb,string dimension)
     prod_id = extract_keys(prod_basis);
   }
   
-  if (prod_basis.size()==0 && !check_done_quiet())
+  if (prod_basis.size()==0 && !check_done_quiet(options.mpi_process))
   {
     prod_basis = reduced_basis;//full_basis;
     prod_id = extract_keys(prod_basis);
@@ -138,7 +141,9 @@ void Calc_amplitudes::make_full_trial(string prevb,string dimension,bool cform)
 {
 
   ofstream math_3;
-  math_3.open ("output/math_3.m");
+  
+  
+  math_3.open (add_mpi_ext("output/math_3", options.mpi_process, "m"));
   
   utils::print_math_header(math_3);
   math_3<<"Get[\"" << s_cwd <<"/output/"<< prevb << "]\n";
@@ -175,15 +180,15 @@ void Calc_amplitudes::make_full_trial(string prevb,string dimension,bool cform)
   math_3 << "Print[\" --------------------------------------- \"]" <<endl;
   math_3 << "Print[diff]"<<endl;
   
-  math_3 << "Export[\""<<s_cwd<<"/output/result.txt\", CForm[diff/. DiracGamma[Momentum[p]] -> p] ]" << endl;
+  math_3 << "Export[\""<<s_cwd<<"/output/result_"<< options.mpi_process << ".txt\", CForm[diff/. DiracGamma[Momentum[p]] -> p] ]" << endl;
   
   math_3<<"remainder = diff;"<<endl;
   
-  math_3<<"DumpSave[\""<<s_cwd<<"/output/remainder.mx\", remainder];"<<endl;
+  math_3<<"DumpSave[\""<<s_cwd<<"/output/remainder_"<< options.mpi_process << ".mx\", remainder];"<<endl;
   
   // print out coefficients of products -- this is for the purposes of passing as final output to TSIL
   
-  math_3 << "Export[\""<<s_cwd<<"/output/output_products.txt\", {" << endl;
+  math_3 << "Export[\""<<s_cwd<<"/output/output_products_"<< options.mpi_process << ".txt\", {" << endl;
   
   
   products_map.clear();
@@ -231,11 +236,12 @@ void Calc_amplitudes::make_full_trial(string prevb,string dimension,bool cform)
   
   math_3 << " }, \"Table\", \"FieldSeparators\" -> \" \", \"TextDelimiters\" -> \"\"];" << endl;
   math_3.close();
-  
+
+
 #ifdef RUN_ALL
-  system("chmod +x output/math_3.m ");
-  if(options.verbose) system("./output/math_3.m");
-  else system("./output/math_3.m  >/dev/null ");
+  system(add_mpi_ext("chmod +x output/math_3", options.mpi_process, "m"));
+  if(options.verbose) system(add_mpi_ext("./output/math_3", options.mpi_process, "m"));
+  else system(add_mpi_ext("./output/math_3", options.mpi_process, "m  >/dev/null"));
 #endif
 
 
@@ -244,10 +250,10 @@ void Calc_amplitudes::make_full_trial(string prevb,string dimension,bool cform)
 void Calc_amplitudes::make_finite_amp(bool counter_terms)
 {
 
-  string prevb = "math_1.mx\"";
+  string prevb = "math_1_" + std::to_string(options.mpi_process) + ".mx\"";
   string dimension = "D";
   ofstream math_4;
-  math_4.open ("output/math_4.m");
+  math_4.open (add_mpi_ext("output/math_4", options.mpi_process, "m"));
   
   utils::print_math_header(math_4);
  // math_4<<"Get[\"" << s_cwd <<"/output/"<< prevb << "]\n";
@@ -268,8 +274,8 @@ void Calc_amplitudes::make_finite_amp(bool counter_terms)
   
   // PRODUCTS COEFFICIENTS //
   
-  const char* file_integrals3_tmp = "output/output_products";
-  string c_file_integrals3 = file_integrals3_tmp + blank + ext;
+  const char* file_integrals3_tmp = "output/output_products_";
+  string c_file_integrals3 = file_integrals3_tmp + std::to_string(options.mpi_process) + ext;
   const char *file_integrals3 = c_file_integrals3.c_str();
   vector<string> name_products,coeff_products_new;
   int temp_int;
@@ -306,7 +312,7 @@ void Calc_amplitudes::make_finite_amp(bool counter_terms)
   
 
   math_4<<"SEnFinite = SEnFinite /. D-> 4-2*epsilon;\n";
-  math_4<<"Get[\"" << s_cwd <<"/output/remainder.mx\"]\n";
+  math_4<<"Get[\"" << s_cwd <<"/output/remainder_"<< options.mpi_process << ".mx\"]\n";
   math_4<<"SEn = SEnFinite + remainder;\n";
   
   if (counter_terms)
@@ -317,27 +323,29 @@ void Calc_amplitudes::make_finite_amp(bool counter_terms)
   math_4<<"SEn = Coefficient[SEn,epsilon,0]; \n";
   math_4<<"SEn = Simplify[SEn /. epsilon->0];\n"; // some integrals come through as D = 4-epsilon so fix these
   
-  math_4<<"DumpSave[\""<<s_cwd<<"/output/math_2.mx\", SEn];\n";
-  math_4<<"DumpSave[\""<<s_cwd<<"/output/math_ct.mx\", SEnFinite];\n";
+  math_4<<"DumpSave[\""<<s_cwd<<"/output/math_2_"<< options.mpi_process << ".mx\", SEn];\n";
+  math_4<<"DumpSave[\""<<s_cwd<<"/output/math_ct_"<< options.mpi_process << ".mx\", SEnFinite];\n";
   
   math_4.close();
-  
+
 #ifdef RUN_ALL
-  system("chmod +x output/math_4.m ");
-  if(options.verbose) system("./output/math_4.m");
-  else system("./output/math_4.m  >/dev/null ");
+  system(add_mpi_ext("chmod +x output/math_4", options.mpi_process, "m"));
+  if(options.verbose) system(add_mpi_ext("./output/math_4", options.mpi_process, "m"));
+  else system(add_mpi_ext("./output/math_4", options.mpi_process, "m  >/dev/null"));
 #endif
+
+
 }
 
 
 void Calc_amplitudes::second_initial_trial(string prevb,string dimension)
 {
   ofstream math_1;
-  math_1.open ("output/math_1b.m");
+  math_1.open (add_mpi_ext("output/math_1b", options.mpi_process, "m"));
   utils::print_math_header(math_1);
   math_1<<"Get[\"" << s_cwd <<"/output/"<< prevb << "]\n";
   print_math_basis(full_basis,math_1,"SEn",dimension);
-  math_1 << "Export[\""<<s_cwd<<"/output/output.txt\", {" << endl;
+  math_1 << "Export[\""<<s_cwd<<"/output/output_"<< options.mpi_process << ".txt\", {" << endl;
   for (int i = 0; i < nb-1;i++)
   {
     math_1 << "{\""<<full_basis_id[i]<<" \", CForm[C"<<full_basis_id[i]<<" /. Pair[Momentum[p], Momentum[p]] -> p^2 /. DiracGamma[Momentum[p]] -> p], \"\"}," << endl;
@@ -345,12 +353,13 @@ void Calc_amplitudes::second_initial_trial(string prevb,string dimension)
   math_1 << "{\""<<full_basis_id[nb-1]<<" \", CForm[C"<<full_basis_id[nb-1]<<" /. Pair[Momentum[p], Momentum[p]] -> p^2 /. DiracGamma[Momentum[p]] -> p], \"\"}" << endl;
   math_1 << " }, \"Table\", \"FieldSeparators\" -> \" \", \"TextDelimiters\" -> \"\"];" << endl;
   math_1.close();
-  
+
 #ifdef RUN_ALL
-  system("chmod +x output/math_1b.m ");
-  if (options.verbose) system("./output/math_1b.m");
-  else system("./output/math_1b.m  >/dev/null");
+  system(add_mpi_ext("chmod +x output/math_1b", options.mpi_process, "m"));
+  if(options.verbose) system(add_mpi_ext("./output/math_1b", options.mpi_process, "m"));
+  else system(add_mpi_ext("./output/math_1b", options.mpi_process, "m  >/dev/null"));
 #endif
+
   
 }
 
@@ -358,7 +367,7 @@ void Calc_amplitudes::second_initial_trial(string prevb,string dimension)
 void Calc_amplitudes::initial_trial(string dimension)
 {
   ofstream math_1;
-  math_1.open ("output/math_1.m");
+  math_1.open (add_mpi_ext("output/math_1", options.mpi_process, "m"));
   utils::print_math_header(math_1);
   utils::print_math_body(math_1,options,s_cwd,masses_input);
   math_1<<"Print[tfiamp0]\n"
@@ -369,14 +378,14 @@ void Calc_amplitudes::initial_trial(string dimension)
   <<"SEn = SEn /. Pair[Momentum[Polarization[p, -I, Transversality -> True], D], Momentum[Polarization[p, I, Transversality -> True], D]] -> -1 ;\n"
   // uncomment the following line if using a different gauge choice
   //<<"SEn = SEn /. GaugeXi[Z] -> 0 /. GaugeXi[P] -> 0 /. GaugeXi[Wp] -> 0  /. GaugeXi[S[1]] -> 0 /. GaugeXi[S[2]] -> 0 /. GaugeXi[S[3]] -> 0 ;\n"
-  <<"DumpSave[\""<<s_cwd<<"/output/math_1.mx\", SEn];\n"
+  <<"DumpSave[\""<<s_cwd<<"/output/math_1_" << std::to_string(options.mpi_process) << ".mx\", SEn];\n"
   <<"Print[\"----------- The self energy is ---------- = \"]\n"
   <<"Print[SEn]\n"
   <<"Print[\"-------------------- = \"]"<< endl;
   
   print_math_basis(full_basis,math_1,"SEn",dimension);
   
-  math_1 << "Export[\""<<s_cwd<<"/output/output.txt\", {" << endl;
+  math_1 << "Export[\""<<s_cwd<<"/output/output_"<< options.mpi_process << ".txt\", {" << endl;
   for (int i = 0; i < nb-1;i++)
   {
     //math_1 << "{\""<<full_basis_id[i]<<" \", CForm[C"<<full_basis_id[i]<<" /. Pair[Momentum[p], Momentum[p]] -> p^2 /. DiracGamma[Momentum[p]] -> p], \"\"}," << endl;
@@ -388,9 +397,9 @@ void Calc_amplitudes::initial_trial(string dimension)
   math_1.close();
   
 #ifdef RUN_ALL
-  system("chmod +x output/math_1.m ");
-  if (options.verbose) system("./output/math_1.m");
-  else system("./output/math_1.m  >/dev/null");
+  system(add_mpi_ext("chmod +x output/math_1", options.mpi_process, "m"));
+  if(options.verbose) system(add_mpi_ext("./output/math_1", options.mpi_process, "m"));
+  else system(add_mpi_ext("./output/math_1", options.mpi_process, "m  >/dev/null"));
 #endif
   
 }
@@ -448,7 +457,7 @@ bool Calc_amplitudes::calc_diagram(Options options_in)
   if (options.counter_terms) {tag = particle_tag + "_" + diagram + "_" + to_string(loop_order)+"c";}
   else {tag = particle_tag + "_" + diagram + "_" + to_string(loop_order);}
   
-   const char* file_masses_tmp = "models/";
+  const char* file_masses_tmp = "models/";
   string c_file_masses = file_masses_tmp + model + "/masses" + ext;
   const char *file_masses = c_file_masses.c_str();
   int na;
@@ -461,24 +470,24 @@ bool Calc_amplitudes::calc_diagram(Options options_in)
   
   // subroutine to generate and call Mathematica scripts
   initial_trial("D");
-  compute_amp("math_1.mx\"","D");
-  make_full_trial("math_1.mx\"","D",false);
+  compute_amp("math_1_" + std::to_string(options.mpi_process) + ".mx\"","D");
+  make_full_trial("math_1_" + std::to_string(options.mpi_process) + ".mx\"","D",false);
   
   
   make_finite_amp(options.counter_terms);
-  second_initial_trial("math_2.mx\"","4");
-  compute_amp("math_2.mx\"","4");
-  make_full_trial("math_2.mx\"","4",true);
+  second_initial_trial("math_2_" + std::to_string(options.mpi_process) + ".mx\"","4");
+  compute_amp("math_2_" + std::to_string(options.mpi_process) + ".mx\"","4");
+  make_full_trial("math_2_" + std::to_string(options.mpi_process) + ".mx\"","4",true);
   
   
   string remainder;
-  success = check_done(remainder);
+  success = check_done(remainder,options.mpi_process);
   
   
   // copy the Mathematica data file containing the full divergent amplitude
   const char *mx_ext = ".mx";
   const char* copy_tmp = "/output/math_data_";
-  string c_copy = "cp output/math_ct.mx models/" + model +copy_tmp + tag + mx_ext;
+  string c_copy = "cp output/math_ct_" + std::to_string(options.mpi_process) + ".mx models/" + model +copy_tmp + tag + mx_ext;
   const char *copy_cmd = c_copy.c_str();
   system(copy_cmd);
   
@@ -509,8 +518,8 @@ bool Calc_amplitudes::calc_diagram(Options options_in)
   
   // PRODUCTS COEFFICIENTS //
   
-  const char* file_integrals3_tmp = "output/output_products";
-  string c_file_integrals3 = file_integrals3_tmp + blank + ext;
+  const char* file_integrals3_tmp = "output/output_products_";
+  string c_file_integrals3 = file_integrals3_tmp + std::to_string(options.mpi_process) + ext;
   const char *file_integrals3 = c_file_integrals3.c_str();
   vector<string> name_products,coeff_products_new;
   int temp_int;

@@ -32,6 +32,15 @@ namespace utils
     return loop_order;
   }
   
+  const char * add_mpi_ext(std::string name, int process, std::string ext)
+  {
+    const char* file_tmp = "_";
+    string c_file = name + file_tmp + std::to_string(process) + "." + ext;
+    const char *file = c_file.c_str();
+    return file;
+  }
+  
+  
   const char * output_file_name(std::string model, std::string tag, std::string file)
   {
     const char *ext = ".txt";
@@ -332,7 +341,7 @@ namespace utils
     <<"$GenericMixing = True;\n"
     <<"null=0;\n";
   }
- 
+  
   // function to assign FCGV variables in default patched FeynArts models
   void assign_FCGV(ofstream &file,Options options)
   {
@@ -367,10 +376,10 @@ namespace utils
     {
       file <<  variable[i] << " = " << replacement[i] << ";";
     }
-  
+    
   }
- 
- 
+  
+  
   void print_math_body(ofstream &file,Options options,string cwd,std::vector<std::string> masses)
   {
     int loop_order = options.loop_order;
@@ -436,9 +445,9 @@ namespace utils
   }
   
   
-  bool check_done_quiet()
+  bool check_done_quiet(int mpi_process)
   {
-    std::ifstream file("output/result.txt");
+    std::ifstream file(add_mpi_ext("output/result",mpi_process,"txt"));
     std::string str;
     std::string result;
     std::getline(file, str);
@@ -455,14 +464,14 @@ namespace utils
         success = false;
       }
     }
-
-
+    
+    
     return success;
   }
   
-  bool check_done(string &result)
+  bool check_done(string &result, int mpi_process)
   {
-    std::ifstream file("output/result.txt");
+    std::ifstream file(add_mpi_ext("output/result",mpi_process,"txt"));
     std::string str;
     std::getline(file, str);
     result += str;
@@ -478,8 +487,8 @@ namespace utils
         success = false;
       }
     }
-
-
+    
+    
     if (success)
     {
       cout << "Successful!!!" << endl;
@@ -508,8 +517,8 @@ namespace utils
     }
     else if (particle_name_full.size() == 9)
     {
-       stringstream _part_3,_part_4;
-       string part_3,part_4;
+      stringstream _part_3,_part_4;
+      string part_3,part_4;
       
       _part_1 << particle_name_full[0];
       _part_1 >> part_1;
@@ -943,7 +952,7 @@ namespace utils
     
     
   }
-
+  
   
   void print_finite_base(ofstream &myfile, Bases base, string id)
   {
@@ -997,6 +1006,26 @@ namespace utils
       base_temp = base_map[bases_names[i]];
       print_finite_base(myfile, base_temp, bases_names[i]);
     }
+  }
+  
+  void timestamp ( )
+  {
+# define TIME_SIZE 40
+    
+    static char time_buffer[TIME_SIZE];
+    const struct std::tm *tm_ptr;
+    size_t len;
+    std::time_t now;
+    
+    now = std::time ( NULL );
+    tm_ptr = std::localtime ( &now );
+    
+    len = std::strftime ( time_buffer, TIME_SIZE, "%d %B %Y %I:%M:%S %p", tm_ptr );
+    
+    std::cout << time_buffer << "\n";
+    
+    return;
+# undef TIME_SIZE
   }
   
   

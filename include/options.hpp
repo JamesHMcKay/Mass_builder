@@ -23,6 +23,7 @@ bool use_lorentz = true;
 int loop_order = 2;
 int n_group = 10;
 int n_final_states = 1;
+int mpi_process = 0;
 string particle;
 string particle_1;
 string particle_2;

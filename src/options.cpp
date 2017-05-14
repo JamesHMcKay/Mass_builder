@@ -132,6 +132,8 @@ void User_input::user_interface()
   
   if (find_string("-x")){ options.run_mode = 8;}
   
+  if (find_string("-h")){ options.run_mode = 9;}
+  
   if (find_string("-z")){ options.use_lorentz = false;}
   
   
