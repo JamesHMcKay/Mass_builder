@@ -31,6 +31,53 @@ using namespace utils;
 
 
 
+bool check_task_done(int number_of_processes, int task_number)
+{
+  for (int i = 0; i<number_of_processes ; i++)
+  {
+  
+  const char* file_tmp = "output/tasks_";
+  string c_file = file_tmp + std::to_string(i) + ".txt";
+  const char *file = c_file.c_str();
+  vector<string> completed_tasks;
+  int length;
+  get_data(completed_tasks, length, file );
+  for (int j = 0; j<length ; j++)
+  {
+    if (completed_tasks[j] == std::to_string(task_number))
+    {
+      return true;
+    }
+  }
+  }
+
+  return false;
+}
+
+void inform_task_started(int processes_number, int task)
+{
+  const char* file_tmp = "output/tasks_";
+  string c_file = file_tmp + std::to_string(processes_number) + ".txt";
+  const char *file = c_file.c_str();
+  vector<string> completed_tasks;
+  int length;
+  get_data(completed_tasks, length, file );
+  
+  ofstream outfile;
+  outfile.open (file);
+  
+  for (int j = 0; j<length ; j++)
+  {
+    outfile << completed_tasks[j] << endl;
+  }
+  
+  outfile << task;
+  
+  outfile.close();
+}
+
+
+
 
 void run_mass_builder_mode_1a(Options options)
 {
@@ -149,51 +196,6 @@ void run_mass_builder_mode_7(Options options)
   
 }
 
-
-bool check_task_done(int number_of_processes, int task_number)
-{
-  for (int i = 0; i<number_of_processes ; i++)
-  {
-  
-  const char* file_tmp = "output/tasks_";
-  string c_file = file_tmp + std::to_string(i) + ".txt";
-  const char *file = c_file.c_str();
-  vector<string> completed_tasks;
-  int length;
-  get_data(completed_tasks, length, file );
-  for (int j = 0; j<length ; j++)
-  {
-    if (completed_tasks[j] == std::to_string(task_number))
-    {
-      return true;
-    }
-  }
-  }
-
-  return false;
-}
-
-void inform_task_started(int processes_number, int task)
-{
-  const char* file_tmp = "output/tasks_";
-  string c_file = file_tmp + std::to_string(processes_number) + ".txt";
-  const char *file = c_file.c_str();
-  vector<string> completed_tasks;
-  int length;
-  get_data(completed_tasks, length, file );
-  
-  ofstream outfile;
-  outfile.open (file);
-  
-  for (int j = 0; j<length ; j++)
-  {
-    outfile << completed_tasks[j] << endl;
-  }
-  
-  outfile << task;
-  
-  outfile.close();
-}
 
 
 
