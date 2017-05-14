@@ -425,11 +425,25 @@ bool Calc_amplitudes::calc_diagram(Options options_in)
   
   if (multi_particle)
   {
-    cout << "calculating diagram " << diagram << " for particle " << particle_1 << " to " << particle_2 << " in model ";
+    if (options.counter_terms == true)
+    {
+      cout << "calculating counter-term diagram " << diagram << " for particle " << particle_1 << " to " << particle_2 << " in model ";
+    }
+    else
+    {
+      cout << "calculating diagram " << diagram << " for particle " << particle_1 << " to " << particle_2 << " in model ";
+    }
   }
   else
   {
-    cout << "calculating diagram " << diagram << " for particle " << particle_1 << " in model ";
+    if (options.counter_terms == true)
+    {
+      cout << "calculating counter-term diagram " << diagram << " for particle " << particle_1 << " in model ";
+    }
+    else
+    {
+      cout << "calculating diagram " << diagram << " for particle " << particle_1 << " in model ";
+    }
   }
   
   cout << model << " at " << options.loop_order << "-loop order" << endl;
