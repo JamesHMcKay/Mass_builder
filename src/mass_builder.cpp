@@ -165,7 +165,7 @@ void run_mass_builder_mode_1a(Options options,int argc, char *argv[])
       if (!(task<i) )
       {
         task = (task + 1) % (p) ; // reset num to be offset from original task id and start again
-        cout << "reseting task number to " << task << endl;
+        //cout << "reseting task number to " << task << endl;
         if (task == original_task)
         {
           done = true;

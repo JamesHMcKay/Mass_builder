@@ -320,8 +320,14 @@ void Calc_amplitudes::initial_trial(string dimension)
   templates::print_math_header(math_1);
   utils::print_math_body(math_1,options,s_cwd,masses_input);
   math_1<<"Print[tfiamp0]\n"
-  <<"SEn = Simplify[TarcerRecurse[tfiamp0] ];\n"
-  <<"SEn = SEn /. DiracGamma[Momentum[p, D], D] -> p ;\n"
+  <<"SE = Simplify[TarcerRecurse[tfiamp0] ];\n"
+  //<<"SEn = SEn /. DiracGamma[Momentum[p, D], D] -> p ;\n"
+  
+  //<<"SEk = Coefficient[SEn,DiracGamma[Momentum[p, D], D],1]; \n"
+  //<<"SEm = Coefficient[SEn,DiracGamma[Momentum[p, D], D],0]; \n"
+  <<"SEk = (1/(4 Pair[Momentum[p, D],Momentum[p, D]])) DiracTrace[ DiracGamma[Momentum[p, D], D] * SE ]; \n"
+  <<"SEm = (1/4) DiracTrace[ SE ]; \n"
+  <<"SEn = p*SEk+SEm;\n"
   <<"SEn = SEn /. Pair[Momentum[Polarization[p, -I, Transversality -> True], D], Momentum[Polarization[p, I, Transversality -> True], D]] -> -1 ;\n"
   // uncomment the following line if using a different gauge choice
   //<<"SEn = SEn /. GaugeXi[Z] -> 0 /. GaugeXi[P] -> 0 /. GaugeXi[Wp] -> 0  /. GaugeXi[S[1]] -> 0 /. GaugeXi[S[2]] -> 0 /. GaugeXi[S[3]] -> 0 ;\n"
