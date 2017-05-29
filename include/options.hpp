@@ -95,6 +95,8 @@ n = argc;
 
 }
 
+User_input(){}
+
 
 bool find_string(string input)
 {

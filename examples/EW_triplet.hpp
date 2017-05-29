@@ -16,30 +16,27 @@
 #include "data.hpp"
 
 
-namespace supplementary_code {
+namespace extra_TSIL_interface {
 
 
 using namespace std;
 typedef complex<double> dcomp;
 
-class Supplements
+class One_loop_derivatives
 {
   private:
     
   public:
   Data data;
-  Supplements (){}  // defualt constructor
-  Supplements(Data _data)
+  One_loop_derivatives (){}
+  One_loop_derivatives(Data _data)
   {
       data=_data;
-   } //constructor
+   }
   
   
    void add_derivatives(Data &data);
   
-  
-  
-   
 };
 }
 

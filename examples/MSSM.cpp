@@ -1,24 +1,19 @@
 /*
- Mass Builder 
+ Mass Builder
  
- James McKay
- Sep 2016
+ -- MSSM.cpp --
  
- -- example_mass_splitting.cpp --
+ example application, determing mass splitting between neutral and charged winos in MSSM
  
- example application, determing mass splitting in for an electroweak triplet
- 
- requires an input list flag at runtime: ./example -i models/MDM/input.txt
+ requires an input list flag at runtime: ./MSSM -i models/MSSM/input.txt
  */
 
 #include "data.hpp"
 #include "calc_amplitudes.hpp"
 #include "generate_code.hpp"
 #include "self_energy.hpp"
-//#include "supplements.hpp"
 
 using namespace std;
-//using namespace supplementary_code;
 using namespace utils;
 
 
@@ -34,7 +29,6 @@ double iterative_mass_F5(Data data)
   double precision = 0.0001;
   int iteration =0;
   
-  //cout << "calculating iterative pole mass F5 " << endl;
   do{
     p=old_MFn;
     
@@ -167,7 +161,7 @@ int main(int argc, char *argv[])
   
   cout << "example mass splitting routine complete" << endl;
   cout << "now run: "<< endl;
-  cout << "          python src/plot_example.py "<< endl;
+  cout << "          python examples/plot_example.py "<< endl;
   cout << "to make plot in this directory "<< endl;
   
   

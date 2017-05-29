@@ -17,10 +17,11 @@ set(SRC_MB src/mass_builder.cpp)
 
 
 # set example source and header files here
-set(SRC_example examples/example_mass_splitting.cpp)
+set(SRC_Scalar examples/Scalar.cpp)
+set(SRC_MSSM examples/MSSM.cpp)
 set(SRC_VDM examples/VDM.cpp)
-set(SRC_TRIPLET examples/example_triplet.cpp examples/supplements.cpp)
-set(HEADER_TRIPLET include/supplements.hpp)
+set(SRC_TRIPLET examples/EW_triplet.cpp)
+set(HEADER_TRIPLET examples/EW_triplet.hpp)
 
 # include generated source files
 include(src/CMakeLists.txt)
@@ -42,19 +43,23 @@ endif()
 
 add_executable(mass_builder ${SRC_MB} ${SRC_FILES_GEN} ${HEADER_FILES_GEN} ${TSIL_HEADER_FILE} ${SRC_FILES} ${HEADER_FILES} ${GENERATED_SRC_FILES})
 
-add_executable(example EXCLUDE_FROM_ALL ${SRC_example} ${SRC_FILES_GEN} ${HEADER_FILES_GEN} ${TSIL_HEADER_FILE} ${SRC_FILES} ${HEADER_FILES} ${GENERATED_SRC_FILES})
+add_executable(Scalar EXCLUDE_FROM_ALL ${SRC_Scalar} ${SRC_FILES_GEN} ${HEADER_FILES_GEN} ${TSIL_HEADER_FILE} ${SRC_FILES} ${HEADER_FILES} ${GENERATED_SRC_FILES})
+
+add_executable(MSSM EXCLUDE_FROM_ALL ${SRC_MSSM} ${SRC_FILES_GEN} ${HEADER_FILES_GEN} ${TSIL_HEADER_FILE} ${SRC_FILES} ${HEADER_FILES} ${GENERATED_SRC_FILES})
 
 add_executable(VDM EXCLUDE_FROM_ALL ${SRC_VDM} ${SRC_FILES_GEN} ${HEADER_FILES_GEN} ${TSIL_HEADER_FILE} ${SRC_FILES} ${HEADER_FILES} ${GENERATED_SRC_FILES})
 
-add_executable(triplet EXCLUDE_FROM_ALL ${SRC_TRIPLET} ${HEADER_TRIPLET} ${SRC_FILES_GEN} ${HEADER_FILES_GEN} ${TSIL_HEADER_FILE} ${SRC_FILES} ${HEADER_FILES} ${GENERATED_SRC_FILES})
+add_executable(EW_triplet EXCLUDE_FROM_ALL ${SRC_TRIPLET} ${HEADER_TRIPLET} ${SRC_FILES_GEN} ${HEADER_FILES_GEN} ${TSIL_HEADER_FILE} ${SRC_FILES} ${HEADER_FILES} ${GENERATED_SRC_FILES})
 
 TARGET_LINK_LIBRARIES(mass_builder libtsil.a ${MPI_LIBRARIES})
 
-TARGET_LINK_LIBRARIES(example libtsil.a)
+TARGET_LINK_LIBRARIES(MSSM libtsil.a)
 
-TARGET_LINK_LIBRARIES(triplet libtsil.a)
+TARGET_LINK_LIBRARIES(EW_triplet libtsil.a)
 
 TARGET_LINK_LIBRARIES(VDM libtsil.a)
+
+TARGET_LINK_LIBRARIES(Scalar libtsil.a)
 
 if (CMAKE_COMPILER_IS_GNUCXX)
     message(status "Setting GCC flags")

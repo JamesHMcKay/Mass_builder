@@ -25,10 +25,9 @@ string s_cwd(getcwd(NULL,0));
 
 void Calc_amplitudes::compute_amp(string prevb,string dimension)
 {
-  //  read in data from first run and reduce the basis of non-product terms //
-  
+
   vector<std::string> output_string, coeff_new;
-  int temp_int = 0; // this should always equal nb in this case
+  int temp_int = 0;
   
   const char* file_integrals2_tmp = "output/output_";
   string c_file_integrals2 = file_integrals2_tmp + std::to_string(options.mpi_process) + ext;
@@ -66,10 +65,7 @@ void Calc_amplitudes::compute_amp(string prevb,string dimension)
   math_2 << ";"<<endl;
   
   math_2 << "difference = Simplify[SEn-SEnTrial]"<<endl;
-  math_2 << "Print[\" --------------------------------------- \"]" <<endl;
-  math_2 << "Print[\" The difference between trial and actual SE is:\"]" <<endl;
-  math_2 << "Print[\" --------------------------------------- \"]" <<endl;
-  math_2 << "Print[difference]"<<endl;
+
   math_2 << "Export[\""<<s_cwd<<"/output/result_"<< options.mpi_process << ".txt\", difference]" << endl;
   
   print_math_basis(full_basis,math_2, "difference",dimension);
@@ -86,8 +82,6 @@ void Calc_amplitudes::compute_amp(string prevb,string dimension)
   math_2.close();
   
   
-  
-  
 #ifdef RUN_ALL
   system(add_mpi_ext("chmod +x output/math_2", options.mpi_process, "m"));
   if(options.verbose) system(add_mpi_ext("./output/math_2", options.mpi_process, "m"));
@@ -95,10 +89,7 @@ void Calc_amplitudes::compute_amp(string prevb,string dimension)
 #endif
   
   
-  // part 2 complete //
-  
-  
-  temp_int = 0;  // this should be equal to nb always
+  temp_int = 0;
   const char* file_integrals4_tmp = "output/output2_";
   string c_file_integrals4 = file_integrals4_tmp + std::to_string(options.mpi_process) + ext;
   const char *file_integrals4 = c_file_integrals4.c_str();
@@ -109,7 +100,7 @@ void Calc_amplitudes::compute_amp(string prevb,string dimension)
   
   prod_basis = remove_type_F(full_basis,full_basis_id);
   
-  if (temp_int == 0)  // this case should be redundant now
+  if (temp_int == 0)
   {
     cout << "ERROR THIS CASE SHOULD BE REDUNDANT" << endl;
   }
@@ -129,7 +120,7 @@ void Calc_amplitudes::compute_amp(string prevb,string dimension)
   
   if (prod_basis.size()==0 && !check_done_quiet(options.mpi_process))
   {
-    prod_basis = reduced_basis;//full_basis;
+    prod_basis = reduced_basis;
     prod_id = extract_keys(prod_basis);
     prod_basis = remove_type_F(prod_basis, prod_id);
     prod_id = extract_keys(prod_basis);
@@ -143,7 +134,6 @@ void Calc_amplitudes::make_full_trial(string prevb,string dimension,bool cform)
 
   ofstream math_3;
   
-  
   math_3.open (add_mpi_ext("output/math_3", options.mpi_process, "m"));
   
   templates::print_math_header(math_3);
@@ -152,7 +142,6 @@ void Calc_amplitudes::make_full_trial(string prevb,string dimension,bool cform)
   print_math_basis(reduced_basis,math_3,"SEn",dimension);
   print_math_basis(prod_basis,math_3,"SEn",dimension);
   print_math_products(prod_basis,math_3,"SEn",dimension);
-  
   
   math_3 << "SEnTrial = 0 ";
   for (int i = 0; i<nbr;i++)
@@ -179,42 +168,28 @@ void Calc_amplitudes::make_full_trial(string prevb,string dimension,bool cform)
   math_3 << "Export[\""<<s_cwd<<"/output/output_products_"<< options.mpi_process << ".txt\", {" << endl;
   
   products_map.clear();
-  
-  if (cform)
+
+  for (int i = 0; i<np;i++)
   {
-    for (int i = 0; i<np;i++)
+    for (int j = 0; j<np;j++)
     {
-      for (int j = 0; j<np;j++)
-      {
-        if ((i==np-1) && (j==np-1)){ math_3 << "{\""<<prod_id[i] << prod_id[j] <<" \",CForm[C"<<prod_id[i] << prod_id[j] <<" /. Pair[Momentum[p], Momentum[p]] -> p^2 /. DiracGamma[Momentum[p]] -> p], \"\"}" << endl;}
-        else {math_3 << "{\""<<prod_id[i] << prod_id[j] <<" \",CForm[C"<<prod_id[i] << prod_id[j] <<" /. Pair[Momentum[p], Momentum[p]] -> p^2 /. DiracGamma[Momentum[p]] -> p], \"\"}," << endl;}
-        
-        // need to store information regarding the integrals involved in each product
-        Bases_product product(prod_basis[prod_id[i]],prod_basis[prod_id[j]],prod_id[i],prod_id[j]);
-        products_map[prod_id[i] + prod_id[j]] = product;
-      }
-    }
-  }
-  else
-  {
-    for (int i = 0; i<np;i++)
-    {
-      for (int j = 0; j<np;j++)
+      if (cform)
       {
         if ((i==np-1) && (j==np-1)){ math_3 << "{\""<<prod_id[i] << prod_id[j] <<" \",C"<<prod_id[i] << prod_id[j] <<" /. Pair[Momentum[p], Momentum[p]] -> p^2 /. DiracGamma[Momentum[p]] -> p, \"\"}" << endl;}
         else {math_3 << "{\""<<prod_id[i] << prod_id[j] <<" \",C"<<prod_id[i] << prod_id[j] <<" /. Pair[Momentum[p], Momentum[p]] -> p^2 /. DiracGamma[Momentum[p]] -> p, \"\"}," << endl;}
-        
-        // need to store information regarding the integrals involved in each product
-        Bases_product product(prod_basis[prod_id[i]],prod_basis[prod_id[j]],prod_id[i],prod_id[j]);
-        products_map[prod_id[i] + prod_id[j]] = product;
       }
+      else
+      {
+        if ((i==np-1) && (j==np-1)){ math_3 << "{\""<<prod_id[i] << prod_id[j] <<" \",CForm[C"<<prod_id[i] << prod_id[j] <<" /. Pair[Momentum[p], Momentum[p]] -> p^2 /. DiracGamma[Momentum[p]] -> p], \"\"}" << endl;}
+        else {math_3 << "{\""<<prod_id[i] << prod_id[j] <<" \",CForm[C"<<prod_id[i] << prod_id[j] <<" /. Pair[Momentum[p], Momentum[p]] -> p^2 /. DiracGamma[Momentum[p]] -> p], \"\"}," << endl;}
+      }
+      Bases_product product(prod_basis[prod_id[i]],prod_basis[prod_id[j]],prod_id[i],prod_id[j]);
+      products_map[prod_id[i] + prod_id[j]] = product;
     }
-  
   }
-  
+
   math_3 << " }, \"Table\", \"FieldSeparators\" -> \" \", \"TextDelimiters\" -> \"\"];" << endl;
   math_3.close();
-
 
 #ifdef RUN_ALL
   system(add_mpi_ext("chmod +x output/math_3", options.mpi_process, "m"));
@@ -416,10 +391,6 @@ bool Calc_amplitudes::calc_diagram(Options options_in)
   }
   
   cout << model << " at " << options.loop_order << "-loop order" << endl;
-
-  
-  
-  
   
   particle_1 =  part_name_simple(particle_1);
   particle_2 =  part_name_simple(particle_2);
@@ -449,7 +420,7 @@ bool Calc_amplitudes::calc_diagram(Options options_in)
   full_basis_id = extract_keys(full_basis);
   nb = full_basis_id.size();
   
-  // subroutine to generate and call Mathematica scripts
+  // subroutines to generate and call Mathematica scripts
   initial_trial("D");
   compute_amp("math_1_" + std::to_string(options.mpi_process) + ".mx\"","D");
   make_full_trial("math_1_" + std::to_string(options.mpi_process) + ".mx\"","D",false);
@@ -471,7 +442,6 @@ bool Calc_amplitudes::calc_diagram(Options options_in)
   string c_copy = "cp output/math_ct_" + std::to_string(options.mpi_process) + ".mx models/" + model +copy_tmp + tag + mx_ext;
   const char *copy_cmd = c_copy.c_str();
   system(copy_cmd);
-  
   
   ReplaceAll(remainder,"Pair(Momentum(p),Momentum(p))", "Power(p,2)");
   
@@ -636,7 +606,6 @@ void draw_all_diagrams(Options options)
   else system("./output/make_figures.m  >/dev/null");
 #endif
 }
-
 
 
 void Calc_amplitudes::generate_figures(Options options_in)

@@ -1,19 +1,32 @@
-#include <iostream>
-#include <iomanip>
-#include <string>
-#include <fstream>
-#include <sstream>
-#include <complex>
-#include <vector>
-#include <cmath>
-#include <cfloat>
-#include <cstdlib>
-#include <ctime>
+/*
+ Mass Builder 
+ 
+ James McKay
+ Sep 2016
+ 
+ -- EW_triplet.cpp --
+ 
+ compute full two-loop self energy including derivative of 1-loop functions
+ 
+ requires an input list flag at runtime: ./EW_triplet -i models/EW_triplet/input.txt
+ */
 
-#include "supplements.hpp"
+#include "data.hpp"
+#include "calc_amplitudes.hpp"
+#include "generate_code.hpp"
+#include "self_energy.hpp"
+#include "EW_triplet.hpp"
 
 
-namespace supplementary_code
+using namespace std;
+
+using namespace utils;
+
+
+// extra TSIL interface for manually entered derivatives
+// of one-loop self energies
+
+namespace extra_TSIL_interface
 {
   /*TSIL_INCLUDE_PATH */#include "/Users/jamesmckay/Documents/Programs/tsil-1.3/tsil_cpp.h"  // Required TSIL header file
   using namespace std;
@@ -49,10 +62,6 @@ namespace supplementary_code
     return (1.0/m)+ (1.0/(2.0*m))*log( ma/m );
   }
   
-  
-  
-  
-  
   void DoTSIL_2(TSIL_REAL s,TSIL_REAL Q2)
   {
     Aa = -i*TSIL_A_ (ma2 , Q2);
@@ -75,7 +84,7 @@ namespace supplementary_code
     
     dBwc = i*TSIL_dBds_(mw2,mc2,s,Q2);
     dBzc = i*TSIL_dBds_(mz2,mc2,s,Q2);
-    dBca = i*TSIL_dBds_(ma2,mc2,s,Q2);//dBds(mc2,ma2,s);
+    dBca = i*TSIL_dBds_(ma2,mc2,s,Q2);
   }
   
   int init(Data data)
@@ -148,7 +157,7 @@ namespace supplementary_code
   }
   
   
-  void Supplements::add_derivatives(Data &data)
+  void One_loop_derivatives::add_derivatives(Data &data)
   {
     TSIL_REAL p = data.P, M = data.MChi;
     init(data);
@@ -161,3 +170,46 @@ namespace supplementary_code
   }
 }
 
+
+
+Self_energy self_energy;
+
+double pole_mass_F1(Data data)
+{
+  double Mp = data.MChi + (data.SE_1["F1"]+data.SE_2["F1"]);
+  return Mp;
+}
+
+double pole_mass_F2(Data data)
+{
+  double Mp = data.MChi + (data.SE_1["F2"]+data.SE_2["F2"]);
+  return Mp;
+}
+
+using namespace extra_TSIL_interface;
+
+
+int main(int argc, char *argv[])
+{
+  User_input user(argc,argv);
+  user.user_interface();
+  Options options = user.options;
+  
+  if (options.input_list == "") {cout << "please enter an input list" << endl; return 0;}
+  
+  Self_energy self_energy;
+  Data data(options);
+
+  self_energy.run_tsil(data);
+  
+  cout << "one-loop mass splitting = " << data.SE_1["F2"] - data.SE_1["F1"] << endl;
+
+  cout << "two-loop mass splitting = " << data.SE_2["F2"] - data.SE_2["F1"] << endl;
+  
+  One_loop_derivatives one_loop_derivatives(data);
+  one_loop_derivatives.add_derivatives(data);
+
+  cout << "two-loop mass splitting including derivative terms = " << data.SE_2["F2"] - data.SE_2["F1"] << endl;
+  
+  return 0;
+}
