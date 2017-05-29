@@ -7,13 +7,13 @@ set(TSIL_HEADER_FILE /Users/jamesmckay/Documents/Programs/tsil-1.3/tsil_cpp.h )
 set(HEADER_FILES include/options.hpp include/bases.hpp include/data.hpp include/self_energy.hpp)
 set(SRC_FILES src/options.cpp src/bases.cpp src/self_energy.cpp )
 
-set(SRC_example src/example_mass_splitting.cpp)
-set(SRC_VDM src/VDM.cpp)
+set(SRC_example examples/example_mass_splitting.cpp)
+set(SRC_VDM examples/VDM.cpp)
 
 set(SRC_MB src/mass_builder.cpp)
 
 set(HEADER_TRIPLET include/supplements.hpp)
-set(SRC_TRIPLET src/example_triplet.cpp src/supplements.cpp)
+set(SRC_TRIPLET examples/example_triplet.cpp examples/supplements.cpp)
 
 
 set(HEADER_FILES_GEN include/calc_amplitudes.hpp include/calc_counter_terms.hpp include/utils.hpp include/write_tsil_ini.hpp include/print_vertices.hpp)
