@@ -2,8 +2,7 @@
  Mass Builder 
  
  James McKay
- Aug - Sep 2016
- Jan 2017
+ Aug 2016 - May 2017
  
  --- calc_amplitudes.cpp ---
  
@@ -20,6 +19,8 @@
 //#define DEBUG
 using namespace std;
 using namespace utils;
+using namespace templates;
+
 string s_cwd(getcwd(NULL,0));
 
 void Calc_amplitudes::compute_amp(string prevb,string dimension)
@@ -51,7 +52,7 @@ void Calc_amplitudes::compute_amp(string prevb,string dimension)
   ofstream math_2;
   math_2.open (add_mpi_ext("output/math_2", options.mpi_process, "m"));
   
-  utils::print_math_header(math_2);
+  templates::print_math_header(math_2);
   
   math_2<<"Get[\"" << s_cwd <<"/output/"<< prevb << "]\n";
   
@@ -145,7 +146,7 @@ void Calc_amplitudes::make_full_trial(string prevb,string dimension,bool cform)
   
   math_3.open (add_mpi_ext("output/math_3", options.mpi_process, "m"));
   
-  utils::print_math_header(math_3);
+  templates::print_math_header(math_3);
   math_3<<"Get[\"" << s_cwd <<"/output/"<< prevb << "]\n";
   
   print_math_basis(reduced_basis,math_3,"SEn",dimension);
@@ -168,32 +169,16 @@ void Calc_amplitudes::make_full_trial(string prevb,string dimension,bool cform)
   }
   math_3 << ";"<<endl;
   
-  
-  math_3 << "Print[\" --------------------------------------- \"]" <<endl;
-  math_3 << "Print[\" The trial SE is:\"]" <<endl;
-  math_3 << "Print[\" --------------------------------------- \"]" <<endl;
-  math_3 << "Print[SEnTrial]"<<endl;
-  
-  math_3 << "diff = Simplify[SEn-SEnTrial]"<<endl;
-  math_3 << "Print[\" --------------------------------------- \"]" <<endl;
-  math_3 << "Print[\" The difference between trial and actual SE is:\"]" <<endl;
-  math_3 << "Print[\" --------------------------------------- \"]" <<endl;
-  math_3 << "Print[diff]"<<endl;
-  
+  status_update(math_3);
+
   math_3 << "Export[\""<<s_cwd<<"/output/result_"<< options.mpi_process << ".txt\", CForm[diff/. DiracGamma[Momentum[p]] -> p] ]" << endl;
   
-  math_3<<"remainder = diff;"<<endl;
-  
-  math_3<<"DumpSave[\""<<s_cwd<<"/output/remainder_"<< options.mpi_process << ".mx\", remainder];"<<endl;
-  
-  // print out coefficients of products -- this is for the purposes of passing as final output to TSIL
+  math_3<< "remainder = diff;"<<endl;
+  math_3<< "DumpSave[\""<<s_cwd<<"/output/remainder_"<< options.mpi_process << ".mx\", remainder];"<<endl;
   
   math_3 << "Export[\""<<s_cwd<<"/output/output_products_"<< options.mpi_process << ".txt\", {" << endl;
   
-  
   products_map.clear();
-  
-  
   
   if (cform)
   {
@@ -207,7 +192,6 @@ void Calc_amplitudes::make_full_trial(string prevb,string dimension,bool cform)
         // need to store information regarding the integrals involved in each product
         Bases_product product(prod_basis[prod_id[i]],prod_basis[prod_id[j]],prod_id[i],prod_id[j]);
         products_map[prod_id[i] + prod_id[j]] = product;
-      
       }
     }
   }
@@ -223,16 +207,10 @@ void Calc_amplitudes::make_full_trial(string prevb,string dimension,bool cform)
         // need to store information regarding the integrals involved in each product
         Bases_product product(prod_basis[prod_id[i]],prod_basis[prod_id[j]],prod_id[i],prod_id[j]);
         products_map[prod_id[i] + prod_id[j]] = product;
-      
       }
     }
   
   }
-  
-  
-  
-  
-  
   
   math_3 << " }, \"Table\", \"FieldSeparators\" -> \" \", \"TextDelimiters\" -> \"\"];" << endl;
   math_3.close();
@@ -255,17 +233,13 @@ void Calc_amplitudes::make_finite_amp(bool counter_terms)
   ofstream math_4;
   math_4.open (add_mpi_ext("output/math_4", options.mpi_process, "m"));
   
-  utils::print_math_header(math_4);
- // math_4<<"Get[\"" << s_cwd <<"/output/"<< prevb << "]\n";
+  templates::print_math_header(math_4);
   
   print_finite_basis(reduced_basis,math_4);
   print_finite_basis(prod_basis,math_4);
   
-  ////// new stuff below  //////
-  
    // BASIS INTEGRAL COEFFICIENTS //
   format_coeff("D",reduced_basis,  reduced_basis_id, masses_input, id_input);
-  //format_coeff_brackets(reduced_basis,  reduced_basis_id, masses_input, id_input);
 
   for (int i = 0; i < nbr;i++)
   {
@@ -342,7 +316,7 @@ void Calc_amplitudes::second_initial_trial(string prevb,string dimension)
 {
   ofstream math_1;
   math_1.open (add_mpi_ext("output/math_1b", options.mpi_process, "m"));
-  utils::print_math_header(math_1);
+  templates::print_math_header(math_1);
   math_1<<"Get[\"" << s_cwd <<"/output/"<< prevb << "]\n";
   print_math_basis(full_basis,math_1,"SEn",dimension);
   math_1 << "Export[\""<<s_cwd<<"/output/output_"<< options.mpi_process << ".txt\", {" << endl;
@@ -368,12 +342,10 @@ void Calc_amplitudes::initial_trial(string dimension)
 {
   ofstream math_1;
   math_1.open (add_mpi_ext("output/math_1", options.mpi_process, "m"));
-  utils::print_math_header(math_1);
+  templates::print_math_header(math_1);
   utils::print_math_body(math_1,options,s_cwd,masses_input);
   math_1<<"Print[tfiamp0]\n"
   <<"SEn = Simplify[TarcerRecurse[tfiamp0] ];\n"
-  //<<"SEn = DiracSimplify[SEn];\n"
-  //<<"SEn = DiracTrace[SEn];\n"
   <<"SEn = SEn /. DiracGamma[Momentum[p, D], D] -> p ;\n"
   <<"SEn = SEn /. Pair[Momentum[Polarization[p, -I, Transversality -> True], D], Momentum[Polarization[p, I, Transversality -> True], D]] -> -1 ;\n"
   // uncomment the following line if using a different gauge choice
@@ -388,10 +360,8 @@ void Calc_amplitudes::initial_trial(string dimension)
   math_1 << "Export[\""<<s_cwd<<"/output/output_"<< options.mpi_process << ".txt\", {" << endl;
   for (int i = 0; i < nb-1;i++)
   {
-    //math_1 << "{\""<<full_basis_id[i]<<" \", CForm[C"<<full_basis_id[i]<<" /. Pair[Momentum[p], Momentum[p]] -> p^2 /. DiracGamma[Momentum[p]] -> p], \"\"}," << endl;
     math_1 << "{\""<<full_basis_id[i]<<" \", C"<<full_basis_id[i]<<" /. Pair[Momentum[p], Momentum[p]] -> p^2 /. DiracGamma[Momentum[p]] -> p, \"\"}," << endl;
   }
-  //math_1 << "{\""<<full_basis_id[nb-1]<<" \", CForm[C"<<full_basis_id[nb-1]<<" /. Pair[Momentum[p], Momentum[p]] -> p^2 /. DiracGamma[Momentum[p]] -> p], \"\"}" << endl;
   math_1 << "{\""<<full_basis_id[nb-1]<<" \", C"<<full_basis_id[nb-1]<<" /. Pair[Momentum[p], Momentum[p]] -> p^2 /. DiracGamma[Momentum[p]] -> p, \"\"}" << endl;
   math_1 << " }, \"Table\", \"FieldSeparators\" -> \" \", \"TextDelimiters\" -> \"\"];" << endl;
   math_1.close();
@@ -415,7 +385,6 @@ bool Calc_amplitudes::calc_diagram(Options options_in)
   options = options_in;
   
   string diagram = options.diagram;
-  //string particle = options.particle;
   string particle_1 = options.particle_1;
   string particle_2 = options.particle_2;
   model = options.model;
@@ -449,12 +418,12 @@ bool Calc_amplitudes::calc_diagram(Options options_in)
   cout << model << " at " << options.loop_order << "-loop order" << endl;
 
   
-  //string particle_full = particle; // redundant now?
   
-  //particle =  part_name_simple(particle);
+  
+  
   particle_1 =  part_name_simple(particle_1);
   particle_2 =  part_name_simple(particle_2);
-  // edit particle name to a safe string
+  
   string particle_tag;
   if (multi_particle)
   {
@@ -480,7 +449,6 @@ bool Calc_amplitudes::calc_diagram(Options options_in)
   full_basis_id = extract_keys(full_basis);
   nb = full_basis_id.size();
   
-  
   // subroutine to generate and call Mathematica scripts
   initial_trial("D");
   compute_amp("math_1_" + std::to_string(options.mpi_process) + ".mx\"","D");
@@ -503,8 +471,6 @@ bool Calc_amplitudes::calc_diagram(Options options_in)
   string c_copy = "cp output/math_ct_" + std::to_string(options.mpi_process) + ".mx models/" + model +copy_tmp + tag + mx_ext;
   const char *copy_cmd = c_copy.c_str();
   system(copy_cmd);
-  
-  
   
   
   ReplaceAll(remainder,"Pair(Momentum(p),Momentum(p))", "Power(p,2)");
@@ -643,7 +609,7 @@ void draw_all_diagrams(Options options)
   myfile.open ("output/make_figures.m");
   
   string type="";
-  utils::print_math_header(myfile);
+  templates::print_math_header(myfile);
   utils::assign_FCGV(myfile,options);
   utils::assign_variables(myfile,options);
   if (options.counter_terms){myfile<<"t12 = CreateCTTopologies["<<options.loop_order<<", 1 -> 1, ExcludeTopologies -> Internal];"<<endl;
@@ -661,10 +627,6 @@ void draw_all_diagrams(Options options)
     myfile <<"alldiags = InsertFields[t12, {"<<particle_1<<"} -> {"<<particle_2<<"},InsertionLevel -> {Particles}, GenericModel -> \""<<s_cwd<<"/models/"<<model<<"/"<<model<<"\",Restrictions -> {" << options.restrictions << "},Model -> \""<<s_cwd<<"/models/"<<model<<"/"<<model<<"\"];\n";
   }
 
-
-  
-  
-  //myfile<<"alldiags = InsertFields[t12, {"<<particle_1<<"} -> {"<<particle_2<<"},InsertionLevel -> {Particles}, GenericModel -> Lorentz,Restrictions-> {" << options.restrictions << "}, Model -> \""<<s_cwd<<"/models/"<<model<<"/"<<model<<"\"];\n"
   myfile<<"Export[\""<<s_cwd<<"/models/"<<options.model<<"/FA_diagrams/diagrams_"<<tag<< "_" << type <<".pdf\",Paint[alldiags,Numbering->Simple]];\n"  // print the FA diagram to pdf in local directory
   <<endl;
   
@@ -677,56 +639,6 @@ void draw_all_diagrams(Options options)
 
 
 
-
-void draw_diagrams(vector<std::string> particles, vector<std::string> diagrams, int nd,string model)
-{
-  
-  string s_cwd(getcwd(NULL,0));
-  ofstream myfile;
-  myfile.open ("output/make_figures.m");
-  
-  Options options;
-  
-  utils::print_math_header(myfile);
-  
-  myfile <<"t12 = CreateTopologies[2, 1 -> 1, ExcludeTopologies -> Internal];\n"
-  <<endl;
-  
-  
-  vector<std::string> particle_names_short = particles;
-  
-  
-  sort(particle_names_short.begin(),particle_names_short.end());
-  particle_names_short.erase( unique( particle_names_short.begin(), particle_names_short.end() ), particle_names_short.end() );
-  
-  for (unsigned int i=0;i<particle_names_short.size();i++)
-  {
-    string particle_name_tmp = particle_names_short[i];
-    myfile<<particle_name_tmp<<" = InsertFields[t12, {"<<particle_name_tmp<<"} -> {"<<particle_name_tmp<<"},InsertionLevel -> {Particles}, GenericModel -> Lorentz,Model -> \""<<s_cwd<<"/models/"<<model<<"/"<<model<<"\"];\n";
-    myfile<< "subdiags" << particle_name_tmp <<" =   DiagramExtract["<<particle_name_tmp;
-    for (int d = 0; d<nd;d++)
-    {
-      if (particles[d] == particle_name_tmp)
-      {
-        myfile <<", "<<diagrams[d];
-      }
-    }
-    myfile <<"]\n";
-    myfile <<"Export[\""<<s_cwd<<"/FA_diagrams/subset_diagrams_"<<particle_name_tmp<<".pdf\",Paint[subdiags"<<particle_name_tmp<<"]];\n"  // print the FA diagram to pdf in local directory
-    <<endl;
-  }
-  
-#ifdef RUN_ALL
-  system("chmod +x output/make_figures.m ");
-  if (options.verbose) system("./output/make_figures.m");
-  else system("./output/make_figures.m  >/dev/null");
-#endif
-  
-  
-  
-}
-
-
 void Calc_amplitudes::generate_figures(Options options_in)
 {
   
@@ -734,42 +646,6 @@ void Calc_amplitudes::generate_figures(Options options_in)
   
   options = options_in;
   
-  
-  if (options.input_list!="")
-  {
-    std::string particles_in [1000];
-    std::string diagrams_in [1000]; int i=0;
-    std::ifstream input(options.input_list);
-    std::string line;
-    while(getline(input, line))
-    {
-      if (!line.length() || line[0] == '#')
-        continue;
-      std::istringstream iss(line);
-      if (i==0) iss >> model;
-      else iss>> particles_in[i] >> diagrams_in[i];
-      i=i+1;
-    }
-    
-    // run over all entries in the input file
-    cout << "drawing all diagrams specified in the input list" << endl;
-    
-    particles.resize(i);
-    diagrams.resize(i);
-    
-    for (int k=0;k<i;k++)
-    {
-      particles[k]=particles_in[k];
-      diagrams[k]=diagrams_in[k];
-    }
-    draw_diagrams(particles,diagrams,i,model);
-    
-    
-  }
-  else
-  {
-    draw_all_diagrams(options);
-  }
-  
+  draw_all_diagrams(options);
   
 }

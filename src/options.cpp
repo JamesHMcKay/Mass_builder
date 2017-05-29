@@ -13,6 +13,7 @@
 
 #include "options.hpp"
 #include "utils.hpp"
+#include "templates.hpp"
 
 void Options::set_type(std::string type)
 {
@@ -29,7 +30,7 @@ void Options::set_type(std::string type)
 
 void User_input::call_user_guide()
 {
-  utils::user_input_guide();
+  templates::user_input_guide();
 }
 
 void User_input::user_interface()

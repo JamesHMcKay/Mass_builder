@@ -301,7 +301,7 @@ void print_vertices(Options options)
   ofstream myfile;
   myfile.open("output/print_vertices.m");
   
-  utils::print_math_header(myfile);
+  templates::print_math_header(myfile);
   utils::assign_FCGV(myfile,options);
   utils::assign_variables(myfile,options);
   

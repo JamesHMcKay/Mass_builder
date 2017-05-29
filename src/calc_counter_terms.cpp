@@ -30,7 +30,7 @@ std::string Calc_counter_terms::solve_1loop(std::string particle,vector<std::str
   ofstream math_ct;
   math_ct.open ("output/math_ct.m");
   
-  utils::print_math_header(math_ct);
+  templates::print_math_header(math_ct);
   math_ct << "  SEtotal = 0 ;" << endl;
   
   for (int i=0;i<nd;i++)

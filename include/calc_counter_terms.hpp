@@ -4,6 +4,7 @@
 #include "utils.hpp"
 #include "bases.hpp"
 #include "options.hpp"
+#include "templates.hpp"
 
 using namespace utils;
 

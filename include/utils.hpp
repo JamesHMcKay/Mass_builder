@@ -31,8 +31,6 @@ namespace utils
   
   vector<int> find_string_lengths(vector<string> input);
   
-  void user_input_guide();
-  
   bool check_done(std::string &result, int mpi_process);
   
   bool check_done_quiet(int mpi_process);
@@ -62,8 +60,6 @@ namespace utils
   void get_data(vector<string> &A,vector<string> &B,vector<string> &C,int &n,string filename);
   
   void get_data(vector<std::string> &A,vector<std::string> &B,vector<std::string> &C,vector<std::string> &D,int &n, string filename);
-  
-  void print_math_header(ofstream &myfile);
   
   void assign_FCGV(ofstream &file,Options options);
   

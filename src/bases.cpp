@@ -2,13 +2,12 @@
  Mass Builder
  
  James McKay
- Sep 2016
+ Sep 2016 - May 2016
  
  --- bases.cpp ---
  
- The functions defined in this file deal with function related to the Bases object
- which holds all the required information for a basis integral and the corresponding
- coefficient
+ The functions defined in this file deal with the Bases objects which hold all
+ the required information for a basis integral and the corresponding coefficient
  */
 
 
@@ -103,7 +102,7 @@ void set_id(std::vector<string> &masses_input, std::vector<string> &identifiers_
     // create new list of identifiers
     for (unsigned int i = 0; i < identifiers.size(); i++)
     {
-      if (lengths[i] > 1)
+      if (lengths[i] > 2)
       {
         cout << "WARNING: identifier name " << identifiers[i] << " is long and will result in ugly code with long basis integral identifiers" << endl;
       }
@@ -253,25 +252,25 @@ void format_coeff(string dimension, std::map <std::string, Bases > &base_map, st
       for (int j = 0; j<nm; j++)
       {
         from = "TBI["+dimension+", p^2, {{1, "+masses[i]+"}, {1, " + masses[j] + "}}]";
-        to = "B"+id[j]+id[i]; // choice of i and j here is important TODO
+        to = "B"+id[j]+id[i];
         ReplaceAll(coefficient,from, to);
         
         from = "TBI("+dimension+",Power(p,2),List(List(1,"+masses[i]+"),List(1," + masses[j] + ")))";
-        to = "B"+id[j]+id[i]; // choice of i and j here is important TODO
+        to = "B"+id[j]+id[i];
         ReplaceAll(coefficient,from, to);
         
         from = "TBI["+dimension+", Pair[Momentum[p, D], Momentum[p, D]], {{1, "+masses[i]+"}, {1, " + masses[j] + "}}]";
-        to = "B"+id[j]+id[i]; // choice of i and j here is important TODO
+        to = "B"+id[j]+id[i];
         ReplaceAll(coefficient,from, to);
         
       }
       
       from = "TBI("+dimension+",Power(p,2),List(List(1,"+masses[i]+"),List(1,0)))";
-      to = "Bn"+id[i]; // choice of i and j here is important TODO
+      to = "Bn"+id[i];
       ReplaceAll(coefficient,from, to);
         
       from = "TBI["+dimension+", Pair[Momentum[p, D], Momentum[p, D]], {{1, "+masses[i]+"}, {1, 0}}]";
-      to = "Bn"+id[i]; // choice of i and j here is important TODO
+      to = "Bn"+id[i];
       ReplaceAll(coefficient,from, to);
       
       
@@ -279,8 +278,6 @@ void format_coeff(string dimension, std::map <std::string, Bases > &base_map, st
       to = "A"+id[i];
       ReplaceAll(coefficient,from, to);
       
-      
-      //TAI[D, 0, {{1, Ms}}]
       from = "TAI["+dimension+", 0, {{1, "+masses[i]+"}}]";
       to = "A"+id[i];
       ReplaceAll(coefficient,from, to);
@@ -306,15 +303,6 @@ void format_coeff(string dimension, std::map <std::string, Bases > &base_map, st
       to = "1.0L";
       ReplaceAll(coefficient,from, to);
     }
-    
-    /*from = "Pair[Momentum[Polarization[p, -I, Transversality -> True]], Momentum[Polarization[p, I, Transversality -> True]]]";
-    to = "1.0L";
-    ReplaceAll(coefficient,from, to);
-    
-    from = "Pair(Momentum(Polarization(p,Complex(0,-1),Rule(Transversality,True))),Momentum(Polarization(p,Complex(0,1),Rule(Transversality,True))))";
-    to = "1.0L";
-    ReplaceAll(coefficient,from, to);
-    */
     
     from = "DiracGamma(6)";
     to = "0.5L";
@@ -351,12 +339,6 @@ void format_coeff(std::string &coefficient)
   from = "Dot(1.0L,1.0L)";
   to = "1.0L";
   ReplaceAll(coefficient,from, to);
-  
-  
-  //from = "Pair(Momentum(Polarization(p,Complex(0,-1),Rule(Transversality,True))),Momentum(Polarization(p,Complex(0,1),Rule(Transversality,True))))";
-  //to = "1.0L";
-  //ReplaceAll(coefficient,from, to);
-  
   
 }
 

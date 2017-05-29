@@ -12,6 +12,7 @@
 #include <ctime>
 
 #include "options.hpp"
+#include "templates.hpp"
 
 
 using namespace std;
