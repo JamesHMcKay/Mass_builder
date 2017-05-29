@@ -447,7 +447,6 @@ bool Calc_amplitudes::calc_diagram(Options options_in)
   }
   
   cout << model << " at " << options.loop_order << "-loop order" << endl;
-  if (options.counter_terms == true) { cout << "calculating counter term diagram"<< endl;}
 
   
   //string particle_full = particle; // redundant now?

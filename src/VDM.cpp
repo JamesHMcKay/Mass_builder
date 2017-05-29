@@ -21,107 +21,82 @@ using namespace std;
 using namespace utils;
 
 
-double iterative_mass_F5(Data data)
+double iterative_mass_V5(Data data)
 {
   
   double M = data.MVp;
-  double Mp = data.MVp;
   
-  double M_tree=M,new_MFn,old_MFn=M,p;
+  double diff = 1, precision = 0.0001;
+  int iteration = 0, max_iterations = 500;
   
-  double diff = 1;
-  double precision = 0.0001;
-  int iteration =0;
-  
-  //cout << "calculating iterative pole mass F5 " << endl;
-  do{
-    p=old_MFn;
-    
-    data.P = p;
+  do
+  {
     Self_energy se;
     se.run_tsil(data);
     
     double self_energy = data.SE_1["V5"];
-    double mass_sqr = M_tree*M_tree + self_energy;
+    double mass_sqr = M*M + self_energy;
     
-    if (mass_sqr<0){cout << "mass_sqr < 0 " << endl;}
+    if (mass_sqr < 0){cout << " mass_sqr < 0 " << endl;}
       
     double mass = pow(abs(mass_sqr),0.5);
       
     diff = abs(mass - data.P);
 
     data.P = mass;
-    
-    new_MFn=mass;
-    
-    old_MFn=new_MFn;
+    data.Q = mass;
     
     iteration++;
-    
-  } while (diff > precision  && iteration < 500);
+  }
+  while (diff > precision  && iteration < max_iterations);
   
-  if (iteration == 500)
+  if (iteration == max_iterations)
   {
     cout << "pole mass did not converge" << endl;
   }
   
-  Mp = new_MFn;
-  
-  //cout << "----- done ----- " << endl;
-  return Mp;
+  return data.P;
 }
-double iterative_mass_F6(Data data)
+
+double iterative_mass_V6(Data data)
 {
   
   double M = data.MV0;
-  double Mp = data.MV0;
   
-  double M_tree=M,new_MFn,old_MFn=M,p;
+  double diff = 1, precision = 0.0001;
+  int iteration = 0, max_iterations = 500;
   
-  double diff = 1;
-  double precision = 0.0001;
-  int iteration =0;
-  
-  //cout << "calculating iterative pole mass F5 " << endl;
-  do{
-    p=old_MFn;
-    
-    data.P = p;
+  do
+  {
     Self_energy se;
     se.run_tsil(data);
     
     double self_energy = data.SE_1["V6"];
-    double mass_sqr = M_tree*M_tree + self_energy;
+    double mass_sqr = M*M + self_energy;
     
-    if (mass_sqr<0){cout << "mass_sqr < 0 " << endl;}
+    if (mass_sqr < 0){cout << " mass_sqr < 0 " << endl;}
       
     double mass = pow(abs(mass_sqr),0.5);
       
     diff = abs(mass - data.P);
 
     data.P = mass;
-    
-    new_MFn=mass;
-    
-    old_MFn=new_MFn;
+    data.Q = mass;
     
     iteration++;
-    
-  } while (diff > precision  && iteration < 500);
+  }
+  while (diff > precision  && iteration < max_iterations);
   
-  if (iteration == 500)
+  if (iteration == max_iterations)
   {
     cout << "pole mass did not converge" << endl;
   }
   
-  Mp = new_MFn;
-  
-  //cout << "----- done ----- " << endl;
-  return Mp;
+  return data.P;
 }
 
 
-double pole_mass_F5(Data data)
+double pole_mass_V5(Data data)
 {
   Self_energy se;
   se.run_tsil(data);
@@ -137,7 +112,7 @@ double pole_mass_F5(Data data)
   return Mp;
 }
 
-double pole_mass_F6(Data data)
+double pole_mass_V6(Data data)
 {
   Self_energy se;
   se.run_tsil(data);
@@ -163,27 +138,38 @@ int main(int argc, char *argv[])
   ofstream myfile2;
   myfile.open ("models/VDM/output/mass_splittings.txt");
   myfile2.open ("models/VDM/output/masses.txt");
-  int pts = 30;
+  int pts = 300;
   double n = 0;
   double M=0;
   int status = 0;
   for (int i = 0; i < pts ; i++)
   {
     n=(float(i)/float(pts))*5;
-    M= pow(10,n);
+    M= pow(10,n)+10;
+    data.MVp=M;
+    data.MV0=M;
+    data.P = M;
+    data.Q = pow(M,2);
+    
+    // calculate iterative deltaM with Q^2 = 100
+    double delta_m_it= iterative_mass_V5(data) - iterative_mass_V6(data);
     data.MVp=M;
     data.MV0=M;
     data.P = M;
     
-    double delta_m_it=iterative_mass_F5(data) - iterative_mass_F6(data);
-    data.MVp=M;
-    data.MV0=M;
-    data.P = M;
-    M= pow(10,n);
-    double delta_m=pole_mass_F5(data) - pole_mass_F6(data);
+    // calculate deltaM with Q^2 = 100
     
-    myfile << M << " " << delta_m_it << " " << delta_m << endl;
-    myfile2 << M << " " << pole_mass_F5(data) << " " << pole_mass_F6(data) << endl;
+    data.Q = 100;
+    double delta_m= pole_mass_V5(data) - pole_mass_V6(data);
+    
+    // calculate deltaM with Q^2 = M^2
+    data.Q = pow(M,2);
+    double delta_m2= pole_mass_V5(data) - pole_mass_V6(data);
+    
+    myfile << M << " " << delta_m_it << " " << delta_m << " " << delta_m2 << endl;
+    
+    
+    myfile2 << M << " " << pole_mass_V5(data) << " " << pole_mass_V6(data) << endl;
     status=(float(i)/pts)*100;
     cout<< "\r" << "computing mass splittings . . . " << status << "% complete ";
     std::cout << std::flush;

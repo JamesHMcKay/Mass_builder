@@ -1,15 +1,6 @@
-cw MW/MZ
-cw2 TSIL_POW(cw,2)
-sw TSIL_POW(1.-cw2,0.5)
-g2 2.*MW/v
-sw2 TSIL_POW(sw,2)
-g1 g2*sw/cw
-SW sw
-CW cw
-S2TW 2.*sw*cw
-C2TW cw2-sw2
-Lam MH/(2.*TSIL_POW(v,2))
+SW  TSIL_POW(SW2,0.5)
+CW2 1.0-SW2
+CW TSIL_POW(CW2,0.5)
+SW2
 EE
-GG
-v
 a

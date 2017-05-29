@@ -22,6 +22,21 @@ from matplotlib import ticker
 from matplotlib.ticker import ScalarFormatter
 
 
+
+e = 0.3134
+
+pi = 4.0*arctan(1.0)
+
+mw = 80.385
+mz = 91.1876
+
+CW = mw/mz
+CW2 = power(CW,2)
+sw2 = 1.0-CW2
+sw = power(sw2,0.5)
+
+c0 = (e**2) * (mw - CW2*mz) / (8. * pi * sw2)
+
 fig=plt.figure()
 
 ax = fig.add_subplot(1,1,1)
@@ -35,9 +50,14 @@ y1=A[:,1]*1000
 y2=A[:,2]*1000
 
 
+
+
+
 plt.plot(x,y2,'-',color='black',label='Explicit pole mass') #
 
 plt.plot(x,y1,'--',color='black',label='Implicit pole mass') #
+
+plt.plot(x,c0*1000.*ones(size(y1)),'--',color='black',label='Limit') #
 
 
 
