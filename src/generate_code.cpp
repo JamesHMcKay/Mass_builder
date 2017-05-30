@@ -655,7 +655,7 @@ void Generate_code::generate_code()
   
   
   main_output << "  ofstream table;\n"
-  <<"  table.open (\"LaTeX_table.tex\");\n";
+  <<"  table.open (\"models/" << model << "/output/LaTeX_table.tex\");\n";
   
   // sort list into groups
   // for each particle, call function which will generate the source file

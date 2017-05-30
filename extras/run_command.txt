@@ -1,0 +1,1 @@
+ nohup ./mass_builder -a -m MDM -i models/MDM/run_2.txt > run_2.out 2>run_2.err < /dev/null &
