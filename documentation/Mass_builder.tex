@@ -171,7 +171,7 @@ to compute diagram one, for example.  Additional flags may also be entered here,
 
 \subsection{Generate code and evaluate}
 
-Once the amplitudes have been computed and written into \mb readable format the next step is to generate the \tsil interface.  This is conveniently separate from the previous step because computing the amplitudes is time consuming, so this is only done once.  However, one may wish to switch on and off different radiative corrections without having to rerun Mathematica.
+Once the amplitudes have been computed and written into \mb readable format the next step is to generate the \tsil interface.  This is conveniently separate from the previous step because computing the amplitudes is time consuming, so this is only done once.  However, one may wish to switch on and off different radiative corrections without having to rerun the whole computation.
 
 \mb keeps track of all diagrams which have been computed so we can easily generate the code for every available diagram using the command
 \begin{lstterm}
@@ -196,7 +196,7 @@ where we must explicitly enter the path to an input file which contains values f
 One loop self energy of particle S1 = -0.0316688
 Two loop self energy of particle S1 = 2.91938e-05
 \end{lstterm}
-where the particle name has been converted to a simplified form, this is the form of the particle name which appears in the generated output files.
+where the particle name has been converted to a simplified form, this is the form of the particle name which appears in the generated output filenames.
 
 Finally we provide detailed output in the file \lstinline{LaTeX_table.tex} written to the root directory.  The columns of this file are particle name, loop order (with a ``c" suffix if a counter-term diagram), diagram number and amplitude in GeV.
 
@@ -205,7 +205,7 @@ Finally we provide detailed output in the file \lstinline{LaTeX_table.tex} writt
 
 The user interface to \mb is via the command line, where all modes of functionality are available depending on the chosen input flags.
 
-The four main modes of operation are determined by the flags \lstinline{-a} for computing the amplitudes symbolic expressions, \lstinline{-g} for generating the \tsil interface code, \lstinline{-e} for the numerical evaluation of the self energy and \lstinline{-d} to request \feynarts to draw the Feynman diagrams.  At least one of these flags is required and if more than one of these flags is given the program will not run.
+The four main modes of operation are determined by the flags \lstinline{-a} for computing the amplitudes symbolic expressions, \lstinline{-g} for generating the \tsil interface code, \lstinline{-e} for the numerical evaluation of the self energy and \lstinline{-f} to request \feynarts to draw the Feynman diagrams.  At least one of these flags is required and if more than one of these flags is given the program will not run.
 
 In addition to the run mode flag there are several additional flags, some optional and some required depending on the mode of operation.  All possible flags are
 \begin{table}
@@ -245,7 +245,7 @@ Optional switches
 \end{lstterm}
 where \lstinline{-o} will be explained in section \ref{sec:tsil_interface} and \lstinline{-w} will put a \cpp{std::cout} statement for every two-loop amplitude computed at runtime for detailed inspection of each contribution to the total self energy, as may be useful for identifying large contributions.
 
-The \lstinline{-r} flag will add the text following the flag exactly as is into the line \lstinline|InsertFields[ . . . Restrictions -> { <input> }  . . . ]|.
+The \lstinline{-r} flag will add the text following the flag exactly as is into the \feynarts function \lstinline|InsertFields[ . . . Restrictions -> { <input> }  . . . ]|.  This will imply the desired restriction onto the possible set of diagrams generated.  This should be used consistently across all commands as the number of allowed diagrams will change, and thus so will the numbering of each diagram.
 
 
 \subsection{Input}

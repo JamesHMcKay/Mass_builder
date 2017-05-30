@@ -131,7 +131,7 @@ int main(int argc, char *argv[])
   Data data(options);
   
   ofstream myfile;
-  myfile.open ("models/EW_triplet/output/mass_splittings.txt");
+  myfile.open ("models/MSSM/output/mass_splittings.txt");
   int pts = 30;
   double n = 0;
   double M=0;

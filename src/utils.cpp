@@ -372,10 +372,31 @@ namespace utils
     file<<"subdiags0 =   DiagramExtract[alldiags, "<<diagram<<"]\n"
     <<"amp0 = FCFAConvert[CreateFeynAmp[subdiags0], IncomingMomenta -> {p}, OutgoingMomenta -> {p}, LoopMomenta -> {k1, k2} ,UndoChiralSplittings -> True,TransversePolarizationVectors -> {p},DropSumOver -> True, List -> False,ChangeDimension -> D] // Contract\n";
     // GaugeRules -> {GaugeXi[Z] -> 0, GaugeXi[A] -> 0, GaugeXi[W] -> 0, GaugeXi[P] -> 0,GaugeXi[Wp] -> 0} // add as option to CreateFeynAmp for Landau gauge
+    
+    
+    file << "masses = List[" << masses[0];
+    if (masses.size()>1)
+    {
+      for (unsigned int i=1; i < ( masses.size() ) ;i++)
+      {
+      file << "," << masses[i];
+      }
+    }
+    file << "];\n";
+    
+    file << "Do [  amp0 = amp0 /. MajoranaSpinor[p, masses[[i]]] -> 1 /. Spinor[Momentum[p, D], masses[[i]], 1] -> 1;   , {i, Length[masses]}];\n";
+    
+    /*  // now replacement by function above
     for (unsigned int i=0; i < masses.size();i++)
     {
       file<<"amp0 = amp0 /. MajoranaSpinor[Momentum[p, D], "<<masses[i]<<"] -> 1 /.Spinor[Momentum[p, D], "<<masses[i]<<", 1] -> 1;"<<endl;
+      file<<"amp0 = amp0 /. MajoranaSpinor[p, "<<masses[i]<<"] -> 1 /.Spinor[Momentum[p], "<<masses[i]<<", 1] -> 1;"<<endl;
     }
+    */
+    
+    
+    
+    
     file<<"SetOptions[Eps, Dimension -> D];\n";
     
     if ( (loop_order == 2) && (!options.counter_terms) )
@@ -393,12 +414,6 @@ namespace utils
     {
       file<<" fullamp0 = (amp0) // DiracSimplify // TID[#, k1] & // DiracSimplify;\n"
       <<"tfiamp0 = fullamp0 // ToTFI[#, k1, p] & // ChangeDimension[#, D] &;\n";
-    }
-    
-    for (unsigned int i=0; i < masses.size();i++)
-    {
-      file<<"tfiamp0 = tfiamp0 /. MajoranaSpinor[Momentum[p,D], "<<masses[i]<<"] -> 1 /.Spinor[Momentum[p,D], "<<masses[i]<<", 1] -> 1;"<<endl;
-      file<<"tfiamp0 = tfiamp0 /. MajoranaSpinor[p, "<<masses[i]<<"] -> 1 /.Spinor[Momentum[p], "<<masses[i]<<", 1] -> 1;"<<endl;
     }
     
   }

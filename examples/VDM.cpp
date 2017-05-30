@@ -181,7 +181,7 @@ int main(int argc, char *argv[])
   
   cout << "VDM mass splitting routine complete" << endl;
   cout << "now run: "<< endl;
-  cout << "          python src/plot_VDM.py "<< endl;
+  cout << "          python examples/plot_VDM.py "<< endl;
   cout << "to make plot in this directory "<< endl;
   
   

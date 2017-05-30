@@ -173,7 +173,7 @@ void Calc_amplitudes::make_full_trial(string prevb,string dimension,bool cform)
   {
     for (int j = 0; j<np;j++)
     {
-      if (cform)
+      if (!cform)
       {
         if ((i==np-1) && (j==np-1)){ math_3 << "{\""<<prod_id[i] << prod_id[j] <<" \",C"<<prod_id[i] << prod_id[j] <<" /. Pair[Momentum[p], Momentum[p]] -> p^2 /. DiracGamma[Momentum[p]] -> p, \"\"}" << endl;}
         else {math_3 << "{\""<<prod_id[i] << prod_id[j] <<" \",C"<<prod_id[i] << prod_id[j] <<" /. Pair[Momentum[p], Momentum[p]] -> p^2 /. DiracGamma[Momentum[p]] -> p, \"\"}," << endl;}
@@ -320,18 +320,17 @@ void Calc_amplitudes::initial_trial(string dimension)
   templates::print_math_header(math_1);
   utils::print_math_body(math_1,options,s_cwd,masses_input);
   math_1<<"Print[tfiamp0]\n"
-  <<"SE = Simplify[TarcerRecurse[tfiamp0] ];\n"
-  //<<"SEn = SEn /. DiracGamma[Momentum[p, D], D] -> p ;\n"
   
-  //<<"SEk = Coefficient[SEn,DiracGamma[Momentum[p, D], D],1]; \n"
-  //<<"SEm = Coefficient[SEn,DiracGamma[Momentum[p, D], D],0]; \n"
-  <<"SEk = (1/(4 Pair[Momentum[p, D],Momentum[p, D]])) DiracTrace[ DiracGamma[Momentum[p, D], D] * SE ]; \n"
-  <<"SEm = (1/4) DiracTrace[ SE ]; \n"
+  <<"SEn = Simplify[TarcerRecurse[tfiamp0] ];\n"
+  
+  <<"SEk = (1/(4 Pair[Momentum[p, D],Momentum[p, D]])) DiracTrace[ DiracGamma[Momentum[p, D], D] * SEn ]; \n"
+  <<"SEm = (1/4) DiracTrace[ SEn ]; \n"
   <<"SEn = p*SEk+SEm;\n"
-  <<"SEn = SEn /. Pair[Momentum[Polarization[p, -I, Transversality -> True], D], Momentum[Polarization[p, I, Transversality -> True], D]] -> -1 ;\n"
+  <<"SEn = SEn /. Pair[Momentum[Polarization[p, -I, Transversality -> True], D], Momentum[Polarization[p, I, Transversality -> True], D]] -> -1 ;\n";
   // uncomment the following line if using a different gauge choice
   //<<"SEn = SEn /. GaugeXi[Z] -> 0 /. GaugeXi[P] -> 0 /. GaugeXi[Wp] -> 0  /. GaugeXi[S[1]] -> 0 /. GaugeXi[S[2]] -> 0 /. GaugeXi[S[3]] -> 0 ;\n"
-  <<"DumpSave[\""<<s_cwd<<"/output/math_1_" << std::to_string(options.mpi_process) << ".mx\", SEn];\n"
+  
+  math_1<<"DumpSave[\""<<s_cwd<<"/output/math_1_" << std::to_string(options.mpi_process) << ".mx\", SEn];\n"
   <<"Print[\"----------- The self energy is ---------- = \"]\n"
   <<"Print[SEn]\n"
   <<"Print[\"-------------------- = \"]"<< endl;

@@ -67,6 +67,8 @@ namespace utils
   
   void print_math_body(ofstream &file,Options options,string cwd,std::vector<std::string> masses);
   
+  void print_math_body(ofstream &file,std::vector<std::string> masses);
+  
   void print_base(ofstream &myfile, Bases base, string id, string SEn,string D);
   
   void print_math_basis(map<string, Bases> base_map, ofstream &myfile , string target, string D);
