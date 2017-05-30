@@ -1,7 +1,7 @@
 Mass Builder
 ======
 
-This program is designed to completely automate the process of two-loop self energy calculation taking an input of a FeynArts model file all the way through to a numerical result for the self energy.
+This program is designed to build, up from the level of a FeynArts model file, a C++ computer code to evaluate renormalised masses. This is achieved by generating the necessary Mathematica and C++ scripts to interface with the existing tools, along with sophisticated intermediary sorting.
 
 We make use of the following tools to complete this process:
 
@@ -14,7 +14,6 @@ We make use of the following tools to complete this process:
 Documentation
 --
 This is an interface tool making use of the existing Mathematica and C packages to compute a numerical self energy.  The process is separated into three main steps, although many other features are available.  1) Amplitude calculation — this is where we run FeynCalc and and decompose the amplitude into a list of basis integrals and corresponding coefficients. 2) Code Generation — in this step we used the stored output from step one to generate C++ code which can interface to the TSIL libraries.  3) Code evaluation — this is the numerical evaluation of the self energy using the TSIL libraries.
-
 
 
 Installation
@@ -99,4 +98,29 @@ This will build a new executable that demonstrates how one may call Mass Builder
 python examples/plot_example.py
 ```
 This will place a figure mass_splittings_MSSM.eps in the root directory.
+
+Supported models
+--
+We supply four models with Mass Builder, although implementing new models is straight forward.  The available models are
+
+- **Scalar:** a simple scalar field theory with a cubic and quartic interaction
+- **EW_triplet:** an electroweak triplet model consisting of the SU(2)xU(1) gauge sector and Higgs fields
+- **MSSM:** a modified version of the MSSM FeynArts model file shipped with FeynArts version 3.9
+- **VDM:** a vector multiplet extension of the SM
+
+Further information
+--
+
+Please see the documentation in documentaion/Mass_builder.pdf for detailed information on the algorithm structure and the many features available in code.  Some of these features are:
+
+- convenient printing of FeynArts diagrams
+- automatic computation of tree-level counter-term couplings
+- generation of LaTeX ready list of Feynman rules for requested vertices
+- use of parallel computing for many diagram computations
+- mixed particle interactions such as Z -> W at one-loop
+- optimisation of TSIL interface code by reducing function calls
+
+
+
+
 
