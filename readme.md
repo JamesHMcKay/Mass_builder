@@ -20,11 +20,28 @@ This is an interface tool making use of the existing Mathematica and C packages 
 Installation
 --
 
-This program requires Mathematica, FeynCalc, FeynArts (patched for use with FeynCalc) and TARCER to be installed.  For instructions on how to install these please see the user manual.  To install Mass Builder following the instructions below.
+This program requires Mathematica, FeynCalc, FeynArts (patched for use with FeynCalc) and TARCER to be installed.  For instructions on how to install these please see the user manual.  
+
+The easiest way to install FeynCalc, FeynArts and Tarcer is via the automated installation method.  Open a Mathematica notebook or kernel session and enter
+```
+Import["https://raw.githubusercontent.com/FeynCalc/feyncalc/master/install.m"]
+InstallFeynCalc[]
+```
+when requested to install the latest version of FeynArts say yes, as this will automatically patch the FeynArts installation.  If you do not follow this method then it is not possible to run FeynArts and FeynCalc in the same session (as we need to do) as many function names are identical between the packages, so to avoid name shadowing follow the recommend method.
+
+In the same notebook session run the following command to generate the Tarcer files
+```
+GenerateTarcerMX
+```
+All packages within Mathematica are now set up.
+
+To install the Two-loop Self-energy Integral Library (TSIL) downloaded the source from http://www.niu.edu/spmartin/TSIL/. It may installed anywhere (as Mass Builder will request the path at configuration).
+
+To install Mass Builder follow the instructions below.
 
 If using a Linux machine then first run the configure script
 ```
-./scripts/config_linux.sh or 
+./scripts/config_linux.sh
 ```
 or for OS X run
 ```
@@ -46,7 +63,6 @@ Quick start guide — basic example
 To test the program is functioning correctly run the following example.
 
 
-
 ```
 ./mass_builder -a -m Scalar
 ./mass_builder -g -m Scalar
@@ -63,4 +79,24 @@ One loop self energy of particle S1 = -0.0316688
 Two loop self energy of particle S1 = 2.91938e-05
 ```
 see the user manual for more details of this model and other usage examples.
+
+Advanced example
+--
+In this example we compute the one-loop self energies for an electroweak multiplet, in the context of the MSSM.  Following the commands below to generate a figure showing mass splittings as a function of the electroweak multiplet tree-level mass.
+
+```
+mkdir models/MSSM/output
+./mass_builder -a -m MSSM -i models/MSSM/lists/example_1.txt
+./mass_builder -g -m MSSM -i models/MSSM/lists/example_1.txt
+cd build
+cmake .
+make MSSM
+```
+This will build a new executable that demonstrates how one may call Mass Builder from external functions.  The source file is located in examples/MSSM.cpp.  Once this has build run the following to generate a figure.
+
+```
+./MSSM -i models/MSSM/input.txt
+python examples/plot_example.py
+```
+This will place a figure mass_splittings_MSSM.eps in the root directory.
 
