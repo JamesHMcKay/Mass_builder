@@ -109,7 +109,7 @@ GenerateTarcerMX
 which will generate the required files.  All packages within Mathematica are now set up.
 
 \subsection{\tsil}
-The Two-loop Self-energy Integral Library can be downloaded from \href{http://www.niu.edu/spmartin/TSIL/}{\lstinline{http://www.niu.edu/spmartin/TSIL/}}.  \mb has been tested with version 1.3. It may installed anywhere (as \mb will request the path at configuration).
+The Two-loop Self-energy Integral Library (\tsils) can be downloaded from \href{http://www.niu.edu/spmartin/TSIL/}{\lstinline{http://www.niu.edu/spmartin/TSIL/}}.  \mb has been tested with version 1.3. It may installed anywhere (as \mb will request the path at configuration).
 
 \subsection{\mb}
 \mb can be downloaded from \href{https://github.com/JamesHMcKay/Mass_builder.git}{\lstinline{https://github.com/JamesHMcKay/Mass_builder.git}}.  The first step is to run the configuration script to tell the program where your \mathematica Script and \tsil installations are located, if using Linux this is
@@ -142,7 +142,7 @@ for which I provide a \feynarts model file and the necessary \mb input files in 
 
 When first approaching a problem involving radiative loop corrections having a visual list of the involved corrections is helpful.  In \mb the number assigned to each radiative process, or \textit{diagram}, is useful information for the user to select which process to include in the calculation.  \feynarts has the capability to produce a Feynman diagram for each possible process given a model file, thus for a chosen model we call \feynarts and conveniently save this output into uniquely named Portable Document Format (\lstinline{.pdf}) files in the folder \lstinline{models/<model>/FA_diagrams/} (if this empty directory does not exist in your own model directory it must be created first).
 
-For this example I will produce all one and two loop radiative corrections and counter term diagrams.  For this run mode we need to use the \lstinline{-f} flag (figures) and specify both the model and particle we are interested in.  This particle name must be as it appears in the \feynarts model file.  First we generate all two loop diagrams
+For this example we will produce all one- and two-loop radiative corrections and counter-term diagrams.  For this run mode we need to use the \lstinline{-f} flag and specify both the model and particle we are interested in.  This particle name must be as it appears in the \feynarts model file.  First we generate all two loop diagrams
 \begin{lstterm}
 mkdir models/Scalar/FA_diagrams
 ./mass_builder -f -m Scalar -p S[1]
@@ -157,7 +157,7 @@ for the one-loop, one-loop counter-terms and two-loop counter terms respectively
 
 \subsection{Compute amplitudes}
 
-The first non-trivial task performed by \mb is taking the computed amplitude for each process and sorting it into a useful form for generating the \tsil interface.  That is, we must extract the required basis integrals and their non-zero coefficients.  The details of this algorithm are given in section \ref{sec:amplitudes}.  To set this calculation running we simply enter
+The first non-trivial task performed by \mb is taking the computed amplitude for each process and sorting it into a useful form for generating the \tsil interface.  That is, we must extract the required basis integrals and their non-zero coefficients.  The details of this algorithm are given in section \ref{sec:amplitudes}.  To perform this calculation we run
 \begin{lstterm}
 mkdir models/Scalar/output
 ./mass_builder -a -m Scalar
@@ -198,7 +198,7 @@ Two loop self energy of particle S1 = 2.91938e-05
 \end{lstterm}
 where the particle name has been converted to a simplified form, this is the form of the particle name which appears in the generated output filenames.
 
-Finally we provide detailed output in the file \lstinline{LaTeX_table.tex} written to the root directory.  The columns of this file are particle name, loop order (with a ``c" suffix if a counter-term diagram), diagram number and amplitude in GeV.
+Finally we provide detailed output in the file \lstinline{LaTeX_table.tex} written to the model's output directory.  The columns of this file are particle name, loop order (with a ``c" suffix if a counter-term diagram), diagram number and amplitude in GeV.
 
 \section{Full user guide}\label{sec:user_guide}
 \subsection{Command line interface}
@@ -513,13 +513,13 @@ The optimisation routine can take some time to complete, yet is only really ness
 
 \subsection{Electroweak mass splittings}
 
-With \mb we provide an optional executable to demonstrate more advanced use of the program.  This example calculates mass splitting in an electroweak triplet using one-loop (\textcolor{red}{two-loop soon!}) self energies.  Before making this executable the appropriate \tsil interface code must generated, as it relies on the \lstinline{Data} class containing particular masses and particle names.
+With \mb we provide an optional executable to demonstrate more advanced use of the program.  This example calculates mass splitting in an electroweak triplet using one-loop (\textcolor{red}{two-loop soon!}) self energies.  Before making this executable the appropriate \tsil interface code must generated, as it relies on the \lstinline{Data} class containing particular masses and particles.
 
 To build this example with 1-loop self energies run the following commands
 \begin{lstterm}
 mkdir models/MSSM/output
-./mass_builder -a -m MSSM -i models/MSSM/example_1.txt
-./mass_builder -g -m MSSM -i models/MSSM/example_1.txt
+./mass_builder -a -m MSSM -i models/MSSM/lists/example_1.txt
+./mass_builder -g -m MSSM -i models/MSSM/lists/example_1.txt
 cd build
 cmake .
 make example
@@ -536,49 +536,47 @@ which will produce a figure called \lstinline{mass_splittings.eps} in the \mb ro
 \begin{figure}
 \centering
 \includegraphics[width=0.5\textwidth]{mass_splittings.eps}
-%\includegraphics[width=0.5\textwidth]{mass_splittings_2p.eps}
 \caption{The mass splittings in an electroweak triplet model with a massive photon resulting from one-loop radiative corrections.  The red vertical line (and green one sigma confidence interval) indicates the physically relevant mass scale which would produce the observed relic abundance of dark matter.}\label{fig:1_loop}
 \end{figure}
 
-
-
-\section{Diagnosing errors}\label{errors}
-
-In this section I give a brief outline of the possible problems that can be encountered with trying to implement new models in to \mb, along with suggested solutions.
-
-\subsection{Amplitude computation errors}
-
-The most challenging part of the \mb algorithm is the careful extraction of coefficients and basis integrals to reconstruct a given amplitude.  If the Mathematica routines encounter computational problems themselves, then this step will either succeed trivially (which may not be immediately apparent to the user) or fail.  The first step in a case where a trivial success is suspected (such as empty output files) or an error message appears is to run the same calculation with the \lstinline{-v} flag to display all Mathematica output at runtime.
-
-The case of trivial success would primarily occur when the Mathematica script is not correctly located.  In this case using the \lstinline{-v} flag will make this immediately clear.  Subsequently if the Mathematica kernel has started successfully, it will be evident from this output if the \feyncalcs, \feynarts or \tarcer packages are not properly loaded.
-
-Once it is confirmed Mathematica is running the next step is to check that all the required masses are given in the \lstinline{<model>/masses.txt} file.  If Mathematica output is being printed to the terminal, then inspection of the final amplitude displayed for any missing masses is a good starting point.  If a mass is missing, the entire computation of this amplitude must be repeated\footnote{If an extremely long calculation has been run, and only at the end was it realised a mass was missing, then it \textit{is} possible to avoid repeating it as the amplitude is saved untouched in the Mathematica data file in \lstinline{output/stage_3.mx} until being overwritten when the next amplitude is computed.  However, restarting the algorithm using this requires hacking of the code and should only be a last resort, we do not support such a feature as checking masses before hand should always be done anyway.}.
-
-
-With the trivial case aside, there are unfortunately too many possible reasons why the calculation of the amplitudes might not succeed for reasons beyond what we can control in this interface program.  However in almost all cases these problems can be resolved by looking at the Mathematica output and working through the problems for the relevant Mathematica package.
-
-
-
-
-\subsection{Compilation errors for generated code}
-
-This type of error occurs when the amplitudes have supposedly been calculated correctly, the code generated, but either the generated source code \lstinline{self_energy.cpp} or data header \lstinline{data.hpp} are corrupted.
-
-The most likely cause of this type of error is an missing coupling or constant from the input files \lstinline{<model>/couplings.txt} or a mass from \lstinline{<model>/masses.txt}.  This should be easy to identify from the compile time error for an undefined parameter which appears in the generated amplitude but for which \mb has been instructed to create a declaration for.  This is rectified by adding the required parameter to the input list and regenerating the code, the amplitudes \textit{do not} need to be recomputed.
-
-In other instances an undefined function may appear in the generated amplitudes.  These functions may some Mathematica function associated with \feyncalc or \feynartss.  Take for example the CKM mixing matrix which may be written as \cpp{CKM[i,j]} in the \feynarts model file.  \mb is not yet able to deal with \textit{functions} as couplings, but these can be added by the user manually or removed from the \feynarts model file.  In the case of the CKM matrix if quark mixing is not required this can be set to the identiy with the line \lstinline{CKM = IndexDelta} to the \feynarts model file.
-
-Generally, one may add an undefined function into \lstinline{self_energy.cpp} after code generation, or directly into \lstinline{generate_code.cpp} if it is going to be used repeatedly.  For example, the Mathematica function \cpp{Complex[a,b]} is not handled properly by the CForm output, and appears as \cpp{Complex(a,b)} in our generated output.  Therefore we add the following line to the appropriate location in \lstinline{generate_code.cpp} 
-\begin{lstterm}
-<< "TSIL_COMPLEXCPP Complex(double a,double b){TSIL_COMPLEXCPP result = a + i*b; return result ;}\n"
-\end{lstterm}
-which will print this function definition into the header of \lstinline{self_energy.cpp}.  This solves the problem of this function ever being undefined if it does appear in the generated output, and a similar approach can be followed for any function which appears in the generated output.
-
-\subsection{Choice of basis integral representation}
-
-When all possible basis integrals are constructed in \mb only unique integrals are considered.  Integrals which are equal to others, but with a different representation, for example $B(x,y) = B(y,x)$ are not explicitly added to the list.  Therefore, if some user operation which requires one of these, but by chance not the one that is in our list, problems can occur if the situation is not handled properly.  One case where this may occur is the following.
-
-It is possible, although not recommend and tedious, to construct a \tsil interface without using Mathematica at all.  The input may be directly written into \lstinline{models/output/} in the required form.  However caution must be taken to ensure all basis integrals are considered.  When the amplitude calculation algorithm is run, only a certain set of basis integrals are considered due to symmetries.  When the code is generated, only these basis integrals are searched for in the input files, using the same procedure to construct a comparison set and thus correctly read the short name formats.  For example, \lstinline{Jxyz} may be expected by the code generation routine but \lstinline{Jxzy} may not be and thus would not be identified and handled correctly.
+%
+%\section{Diagnosing errors}\label{errors}
+%
+%In this section I give a brief outline of the possible problems that can be encountered with trying to implement new models in to \mb, along with suggested solutions.
+%
+%\subsection{Amplitude computation errors}
+%
+%The most challenging part of the \mb algorithm is the careful extraction of coefficients and basis integrals to reconstruct a given amplitude.  If the Mathematica routines encounter computational problems themselves, then this step will either succeed trivially (which may not be immediately apparent to the user) or fail.  The first step in a case where a trivial success is suspected (such as empty output files) or an error message appears is to run the same calculation with the \lstinline{-v} flag to display all Mathematica output at runtime.
+%
+%The case of trivial success would primarily occur when the Mathematica script is not correctly located.  In this case using the \lstinline{-v} flag will make this immediately clear.  Subsequently if the Mathematica kernel has started successfully, it will be evident from this output if the \feyncalcs, \feynarts or \tarcer packages are not properly loaded.
+%
+%Once it is confirmed Mathematica is running the next step is to check that all the required masses are given in the \lstinline{<model>/masses.txt} file.  If Mathematica output is being printed to the terminal, then inspection of the final amplitude displayed for any missing masses is a good starting point.  If a mass is missing, the entire computation of this amplitude must be repeated\footnote{If an extremely long calculation has been run, and only at the end was it realised a mass was missing, then it \textit{is} possible to avoid repeating it as the amplitude is saved untouched in the Mathematica data file in \lstinline{output/stage_3.mx} until being overwritten when the next amplitude is computed.  However, restarting the algorithm using this requires hacking of the code and should only be a last resort, we do not support such a feature as checking masses before hand should always be done anyway.}.
+%
+%
+%With the trivial case aside, there are unfortunately too many possible reasons why the calculation of the amplitudes might not succeed for reasons beyond what we can control in this interface program.  However in almost all cases these problems can be resolved by looking at the Mathematica output and working through the problems for the relevant Mathematica package.
+%
+%
+%
+%
+%\subsection{Compilation errors for generated code}
+%
+%This type of error occurs when the amplitudes have supposedly been calculated correctly, the code generated, but either the generated source code \lstinline{self_energy.cpp} or data header \lstinline{data.hpp} are corrupted.
+%
+%The most likely cause of this type of error is an missing coupling or constant from the input files \lstinline{<model>/couplings.txt} or a mass from \lstinline{<model>/masses.txt}.  This should be easy to identify from the compile time error for an undefined parameter which appears in the generated amplitude but for which \mb has been instructed to create a declaration for.  This is rectified by adding the required parameter to the input list and regenerating the code, the amplitudes \textit{do not} need to be recomputed.
+%
+%In other instances an undefined function may appear in the generated amplitudes.  These functions may some Mathematica function associated with \feyncalc or \feynartss.  Take for example the CKM mixing matrix which may be written as \cpp{CKM[i,j]} in the \feynarts model file.  \mb is not yet able to deal with \textit{functions} as couplings, but these can be added by the user manually or removed from the \feynarts model file.  In the case of the CKM matrix if quark mixing is not required this can be set to the identiy with the line \lstinline{CKM = IndexDelta} to the \feynarts model file.
+%
+%Generally, one may add an undefined function into \lstinline{self_energy.cpp} after code generation, or directly into \lstinline{generate_code.cpp} if it is going to be used repeatedly.  For example, the Mathematica function \cpp{Complex[a,b]} is not handled properly by the CForm output, and appears as \cpp{Complex(a,b)} in our generated output.  Therefore we add the following line to the appropriate location in \lstinline{generate_code.cpp} 
+%\begin{lstterm}
+%<< "TSIL_COMPLEXCPP Complex(double a,double b){TSIL_COMPLEXCPP result = a + i*b; return result ;}\n"
+%\end{lstterm}
+%which will print this function definition into the header of \lstinline{self_energy.cpp}.  This solves the problem of this function ever being undefined if it does appear in the generated output, and a similar approach can be followed for any function which appears in the generated output.
+%
+%\subsection{Choice of basis integral representation}
+%
+%When all possible basis integrals are constructed in \mb only unique integrals are considered.  Integrals which are equal to others, but with a different representation, for example $B(x,y) = B(y,x)$ are not explicitly added to the list.  Therefore, if some user operation which requires one of these, but by chance not the one that is in our list, problems can occur if the situation is not handled properly.  One case where this may occur is the following.
+%
+%It is possible, although not recommend and tedious, to construct a \tsil interface without using Mathematica at all.  The input may be directly written into \lstinline{models/output/} in the required form.  However caution must be taken to ensure all basis integrals are considered.  When the amplitude calculation algorithm is run, only a certain set of basis integrals are considered due to symmetries.  When the code is generated, only these basis integrals are searched for in the input files, using the same procedure to construct a comparison set and thus correctly read the short name formats.  For example, \lstinline{Jxyz} may be expected by the code generation routine but \lstinline{Jxzy} may not be and thus would not be identified and handled correctly.
 
 
 
