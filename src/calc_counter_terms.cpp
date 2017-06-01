@@ -38,15 +38,15 @@ std::string Calc_counter_terms::solve_1loop(std::string particle,vector<std::str
     
     math_ct<<"Get[\"" << s_cwd_ <<"/models/"<< options.model << "/output/math_data_" << particle << "_" << diagram[i] << "_1" << ".mx\"]\n";
     
-    math_ct<<"SEtotal = SEnFinite + SEtotal;"<<endl;
+    math_ct<<"SEtotal = SEtotal + SelfEnergyFinite;"<<endl;
   }
   
-  math_ct<<"SE = Coefficient[SEtotal,epsilon,-1]; \n";
-  math_ct<<"SE = Simplify[SE /. epsilon->0];\n"; // some integrals come through as D = 4-epsilon so fix these
+  math_ct<<"SE = Coefficient[SEtotal,MassBuilderEpsilon,-1]; \n";
+  math_ct<<"SE = Simplify[SE /. MassBuilderEpsilon->0];\n"; // some integrals come through as D = 4-epsilon so fix these
   
   
   // check for higher orders in 1/epsilon
-  math_ct<<"SEhot = Coefficient[SEtotal,epsilon,-2] + Coefficient[SEtotal,epsilon,-3]; \n"
+  math_ct<<"SEhot = Coefficient[SEtotal,MassBuilderEpsilon,-2] + Coefficient[SEtotal,MassBuilderEpsilon,-3]; \n"
   << "Print[\" ------------- higher order terms in 1/epsilon ------------- \"]\n"
   << "Print[SEhot]\n"
   << "ct = FullSimplify[-SE*Pi^2/.Pair[Momentum[p], Momentum[p]]->p^2, {v == (2 mw/g2), g1 == (g2 STW/CTW), CTW^2 + STW^2 == 1,CTW == mw/mz}];\n"

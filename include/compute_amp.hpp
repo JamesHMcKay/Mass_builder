@@ -66,7 +66,8 @@ public:
     
     std::stringstream WSTPflags;
     
-    WSTPflags << "-linkname " << "/Applications/Mathematica.app/Contents/MacOS/MathKernel" << " -mathlink";
+    
+    /*MATH_KERNEL_PATH */  WSTPflags << "-linkname " << "/Applications/Mathematica.app/Contents/MacOS/MathKernel" << " -mathlink";
     
     pHandle = WSOpenString(WSenv, WSTPflags.str().c_str(), &WSerrno);
     

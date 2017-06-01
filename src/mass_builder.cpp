@@ -199,7 +199,8 @@ void run_mass_builder_mode_1a(Options options,int argc, char *argv[])
 
 void run_mass_builder_mode_1b(Options options)
 {
-  Calc_amplitudes ca;
+  //Calc_amplitudes ca;
+  Compute_amp ca;
   ca.calc_diagram(options);
 }
 
@@ -330,13 +331,6 @@ int main(int argc, char *argv[])
     if (options.model == "" ) { cout << "please specify a model to work with" << endl; return 0;}
     print_vertices(options);
   }
-  
-  if (options.run_mode == 9 )
-  {
-    Compute_amp ca;
-    ca.calc_diagram(options);
-  }
-  
   
   
   return 0;
