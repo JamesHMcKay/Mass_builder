@@ -263,6 +263,10 @@ void format_coeff(string dimension, std::map <std::string, Bases > &base_map, st
         to = "B"+id[j]+id[i];
         ReplaceAll(coefficient,from, to);
         
+        from = "MassBuilderB("+masses[i]+","+masses[j]+")";
+        to = "B"+id[j]+id[i];
+        ReplaceAll(coefficient,from, to);
+        
       }
       
       from = "TBI("+dimension+",Power(p,2),List(List(1,"+masses[i]+"),List(1,0)))";
@@ -275,6 +279,10 @@ void format_coeff(string dimension, std::map <std::string, Bases > &base_map, st
       
       
       from = "TAI("+dimension+",0,List(List(1,"+masses[i]+")))";
+      to = "A"+id[i];
+      ReplaceAll(coefficient,from, to);
+      
+      from = "MassBuilderA(" + masses[i] + ")";
       to = "A"+id[i];
       ReplaceAll(coefficient,from, to);
       
@@ -312,15 +320,49 @@ void format_coeff(string dimension, std::map <std::string, Bases > &base_map, st
     to = "0.5L";
     ReplaceAll(coefficient,from, to);
     
+    
+    from = "MassBuilderAe";
+    to = "Ae";
+    ReplaceAll(coefficient,from, to);
+    
+        
+    from = "MassBuilderBe";
+    to = "Be";
+    ReplaceAll(coefficient,from, to);
+    
+    
+    from = "MassBuilderP";
+    to = "p";
+    ReplaceAll(coefficient,from, to);
+    
+    
+    
+    
     base_map[bases_names[k]].coefficient = coefficient;
   }
 }
 
 
-// use this to format the remainder, may need to scale this up to scanning over all the masses at some point too
-void format_coeff(std::string &coefficient)
+// use this to format the remainder
+void format_coeff(std::string &coefficient,std::vector<std::string> masses, std::vector<std::string> id)
 {
+  int nm = masses.size();
   string from="",to="";
+  
+  for (int i = 0; i<nm; i++)
+  {
+    for (int j = 0; j<nm; j++)
+    {
+      
+      from = "MassBuilderB("+masses[i]+","+masses[j]+")";
+      to = "B"+id[j]+id[i];
+      ReplaceAll(coefficient,from, to);
+      
+    }
+  }
+    
+
+  
   from = "DiracGamma(6)";
   to = "0.5L";
   ReplaceAll(coefficient,from, to);
@@ -331,6 +373,18 @@ void format_coeff(std::string &coefficient)
   
   from = "Pair(Momentum(p),Momentum(p))";
   to = "Power(p,2)";
+  ReplaceAll(coefficient,from, to);
+  
+  from = "MassBuilderP";
+  to = "p";
+  ReplaceAll(coefficient,from, to);
+  
+  from = "MassBuilderAe";
+  to = "Ae";
+  ReplaceAll(coefficient,from, to);
+  
+  from = "MassBuilderBe";
+  to = "Be";
   ReplaceAll(coefficient,from, to);
   
   from = "Dot(1.0,1.0)";

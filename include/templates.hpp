@@ -32,6 +32,8 @@ namespace templates
   
   void print_math_header(ofstream &file);
   
+  void print_math_header(std::string &input);
+  
 }
 
 #endif

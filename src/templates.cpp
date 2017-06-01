@@ -208,4 +208,24 @@ namespace templates
     <<"null=0;\n";
   }
   
+  void print_math_header(std::string &input)
+  {
+    input += "dm[mu_] := DiracMatrix[mu, Dimension -> D]";
+    input += "dm[5] := DiracMatrix[5]";
+    input += "ds[p_] := DiracSlash[p]";
+    input += "SetOptions[DiracSlash, Dimension -> D, FeynCalcInternal -> True];";
+    input += "SetOptions[DiracTrace, DiracTraceEvaluate -> True];";
+    input += "$GenericMixing = True;";
+    input += "null=0;";
+    input += "MassBuilderA[mass_, D_] := TAI[D, 0, {{1, mass}}];";
+    input += "MassBuilderB[mass1_, mass2_, D_] := TBI[D, Pair[Momentum[p, D],Momentum[p, D]], {{1, mass1}, {1, mass2}}];";
+    input += "MassBuilderJ[mass1_, mass2_, mass3_, D_] := TJI[D, Pair[Momentum[p, D],Momentum[p, D]], {{1, mass1}, {1, mass2}, {1, mass3}}];";
+    input += "MassBuilderT[mass1_, mass2_, mass3_, D_] := TJI[D, Pair[Momentum[p, D],Momentum[p, D]], {{2, mass1}, {1, mass2}, {1, mass3}}];";
+    input += "MassBuilderK[mass1_, mass2_, mass3_, D_] := TJI[D, 0, {{1, mass1}, {1, mass2}, {1, mass3}}];";
+    input += "MassBuilderV[mass1_, mass2_, mass3_, mass4_, D_] := TVI[D, Pair[Momentum[p, D],Momentum[p, D]], {{1, mass1}, {1, mass2}, {1, mass3}, {1, mass4}}];";
+    input += "MassBuilderF[mass1_, mass2_, mass3_, mass4_, D_] := TJI[D, Pair[Momentum[p, D],Momentum[p, D]], {{1, mass1}, {1, mass2}, {1, mass3}, {1,mass4}}];";
+  }
+  
+  
+  
 }

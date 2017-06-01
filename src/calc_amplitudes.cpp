@@ -460,7 +460,7 @@ bool Calc_amplitudes::calc_diagram(Options options_in)
   format_coeff("4",reduced_basis,  reduced_basis_id, masses_input, id_input);
   if (remainder != "0")
   {
-    format_coeff(remainder);
+    format_coeff(remainder,masses_input,id_input);
     coeff_integrals_out << "  TSIL_COMPLEXCPP C0 = " << remainder << ";" <<endl;
   }
   for (int i = 0; i < nbr;i++)

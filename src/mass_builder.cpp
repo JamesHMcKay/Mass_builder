@@ -22,6 +22,7 @@
 #include "generate_code.hpp"
 #include "self_energy.hpp"
 #include "print_vertices.hpp"
+#include "compute_amp.hpp"
 
 using namespace std;
 using namespace utils;
@@ -307,7 +308,7 @@ int main(int argc, char *argv[])
   if (options.run_mode == 5 )
   {
     if (options.model == "" || options.particle == "") { cout << "please specify a model and particle, at least one is missing" << endl; return 0;}
-    Calc_amplitudes ca;
+    Compute_amp ca;
     ca.generate_figures(options);
   }
   
@@ -328,6 +329,13 @@ int main(int argc, char *argv[])
     if (options.model == "" ) { cout << "please specify a model to work with" << endl; return 0;}
     print_vertices(options);
   }
+  
+  if (options.run_mode == 9 )
+  {
+    Compute_amp ca;
+    ca.calc_diagram(options);
+  }
+  
   
   
   return 0;

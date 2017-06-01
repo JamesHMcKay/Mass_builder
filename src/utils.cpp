@@ -319,6 +319,23 @@ namespace utils
     }
   }
   
+  void assign_FCGV(std::string &input,Options options)
+  {
+    // open file with conversion list
+    const char* file_FCGV_tmp = "models/";
+    string c_file_FCGV = file_FCGV_tmp + options.model + "/FCGV.txt";
+    const char *file_FCGV = c_file_FCGV.c_str();
+    
+    vector<string> variable,replacement;
+    int n;
+    get_data(variable,replacement,n,file_FCGV);
+    
+    for (int i = 0; i < n ;i++)
+    {
+      input+= "FCGV[\"" + variable[i] + "\"] = " + replacement[i] + ";";
+    }
+  }
+  
   // function to reassign variable names, such as mixing matrices
   void assign_variables(ofstream &file,Options options)
   {
@@ -334,6 +351,24 @@ namespace utils
     for (int i = 0; i < n ;i++)
     {
       file <<  variable[i] << " = " << replacement[i] << ";";
+    }
+    
+  }
+  
+  void assign_variables(std::string &input,Options options)
+  {
+    // open file with conversion list
+    const char* file_var_tmp = "models/";
+    string c_file_var = file_var_tmp + options.model + "/reassign_variables.txt";
+    const char *file_var = c_file_var.c_str();
+    
+    vector<string> variable,replacement;
+    int n;
+    get_data(variable,replacement,n,file_var);
+    
+    for (int i = 0; i < n ;i++)
+    {
+      input+=  variable[i] + " = " + replacement[i] + ";";
     }
     
   }
@@ -418,6 +453,86 @@ namespace utils
     
   }
   
+  
+  void print_math_body(std::string &input,Options options,string cwd,std::vector<std::string> masses)
+  {
+    int loop_order = options.loop_order;
+    string particle_1 = options.particle_1;
+    string particle_2 = options.particle_2;
+    string diagram = options.diagram;
+    string model = options.model;
+    
+    assign_FCGV(input,options);
+    
+    assign_variables(input,options);
+    
+    if (options.counter_terms)
+    {
+      input+="t12 = CreateCTTopologies[" + to_string(loop_order) + ", 1 ->  "  +  to_string(options.n_final_states) + ", ExcludeTopologies -> Internal];";
+    }
+    else
+    {
+      input+="t12 = CreateTopologies[" +  to_string(loop_order) + ", 1 -> "  +  to_string(options.n_final_states)  +  ", ExcludeTopologies -> Internal];";
+    }
+    
+    if (options.use_lorentz)
+    {
+      input+="alldiags = InsertFields[t12, {" + particle_1 + "} -> {" + particle_2 + "},InsertionLevel -> {Particles}, GenericModel -> Lorentz,Restrictions -> {"  +  options.restrictions  +  "},Model -> \"" + cwd + "/models/" + model + "/" + model + "\"];";
+    }
+    else
+    {
+      input+="alldiags = InsertFields[t12, {" + particle_1 + "} -> {" + particle_2 + "},InsertionLevel -> {Particles}, GenericModel -> \"" + cwd + "/models/" + model + "/" + model + "\",Restrictions -> {"  +  options.restrictions  +  "},Model -> \"" + cwd + "/models/" + model + "/" + model + "\"];";
+    }
+    
+    input+="subdiags0 =   DiagramExtract[alldiags, " + diagram + "];";
+    input+="amp0 = FCFAConvert[CreateFeynAmp[subdiags0], IncomingMomenta -> {p}, OutgoingMomenta -> {p}, LoopMomenta -> {k1, k2} ,UndoChiralSplittings -> True,TransversePolarizationVectors -> {p},DropSumOver -> True, List -> False,ChangeDimension -> D] // Contract;";
+    // GaugeRules -> {GaugeXi[Z] -> 0, GaugeXi[A] -> 0, GaugeXi[W] -> 0, GaugeXi[P] -> 0,GaugeXi[Wp] -> 0} // add as option to CreateFeynAmp for Landau gauge
+    
+    
+    input+= "masses = List["  +  masses[0];
+    if (masses.size()>1)
+    {
+      for (unsigned int i=1; i < ( masses.size() ) ;i++)
+      {
+      input+= ","  +  masses[i];
+      }
+    }
+    input+= "];";
+    
+    input+= "Do [  amp0 = amp0 /. MajoranaSpinor[p, masses[[i]]] -> 1 /. Spinor[Momentum[p, D], masses[[i]], 1] -> 1;   , {i, Length[masses]}];";
+
+    
+    input+="SetOptions[Eps, Dimension -> D];";
+    
+    if ( (loop_order == 2) && (!options.counter_terms) )
+    {
+      input+="fullamp0 = (amp0) // DiracSimplify // FCMultiLoopTID[#, {k1, k2}] & //DiracSimplify;";
+      input+="tfiamp0 = fullamp0 // ToTFI[#, k1, k2, p] & // ChangeDimension[#, D] &;";
+    }
+    
+    else if ( (loop_order == 1) && (options.counter_terms) )
+    {
+      input+=" fullamp0 = (amp0) // DiracSimplify;";
+      input+="tfiamp0 = fullamp0 // ChangeDimension[#, D] &;";
+    }
+    else
+    {
+      input+=" fullamp0 = (amp0) // DiracSimplify // TID[#, k1] & // DiracSimplify;";
+      input+="tfiamp0 = fullamp0 // ToTFI[#, k1, p] & // ChangeDimension[#, D] &;";
+    }
+    
+  }
+  
+  void print_tarcer_recurse(std::string &input)
+  {
+    input+="SE = Simplify[TarcerRecurse[tfiamp0] ];";
+    input+="SEk = (1/(4 Pair[Momentum[p, D],Momentum[p, D]])) DiracTrace[ DiracGamma[Momentum[p, D], D] * SE ];";
+    input+="SEm = (1/4) DiracTrace[ SE ];";
+    input+="SE = p*SEk+SEm;";
+    input+="SE = SE /. Pair[Momentum[Polarization[p, -I, Transversality -> True], D], Momentum[Polarization[p, I, Transversality -> True], D]] -> -1 ;";
+    // uncomment the following line if using a different gauge choice
+    //input+="SEn = SEn /. GaugeXi[Z] -> 0 /. GaugeXi[P] -> 0 /. GaugeXi[Wp] -> 0  /. GaugeXi[S[1]] -> 0 /. GaugeXi[S[2]] -> 0 /. GaugeXi[S[3]] -> 0 ;\n"
+  }
   
   bool check_done_quiet(int mpi_process)
   {
