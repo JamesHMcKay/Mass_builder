@@ -23,6 +23,10 @@ namespace utils
   
   bool add_epsilon_terms = true;
   
+  std::string get_cwd()
+  {
+    return getcwd(NULL,0);
+  }
   
   int get_loop_order(string type)
   {

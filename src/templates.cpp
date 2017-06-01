@@ -20,7 +20,7 @@ namespace templates
 {
   time_t t = time(0);   // get time now to print into generated files
   struct tm * now = localtime( & t );
-  /* TSIL_PATH */ std::string TSIL = "/Users/jamesmckay/Documents/Programs/tsil-1.3/tsil_cpp.h";
+    /* TSIL_PATH */ std::string TSIL = "/Users/jamesmckay/Documents/Programs/tsil-1.3/tsil_cpp.h";  
   
   void self_energy_hpp_header(ofstream &file)
   {

@@ -21,8 +21,6 @@ using namespace std;
 using namespace utils;
 using namespace templates;
 
-string _s_cwd(getcwd(NULL,0));
-
 bool Compute_amp::calc_diagram(Options options)
 {
   bool success=1;
@@ -91,12 +89,11 @@ bool Compute_amp::calc_diagram(Options options)
   
   std::string input;
   templates::print_math_header(input);
-  utils::print_math_body(input,options,_s_cwd,masses_input);
+  utils::print_math_body(input,options,get_cwd(),masses_input);
   send_to_math(input);
   
   
   utils::print_tarcer_recurse(input);
-  //input += "DumpSave[\"" + _s_cwd + "/output/math_1_" + std::to_string(options.mpi_process) + ".mx\", SE];";
   send_to_math(input);
   
   // expand basis integrals into finite plus divergent pieces
@@ -104,7 +101,7 @@ bool Compute_amp::calc_diagram(Options options)
   input += "SelfEnergyFinite = expandBasisIntegrals[SE, masses, MassBuilderA,";
   input += "MassBuilderB, MassBuilderJ, MassBuilderK, MassBuilderT, MassBuilderV, MassBuilderF];";
   
-  input += "DumpSave[\"" + _s_cwd + "/output/math_1_" + std::to_string(options.mpi_process) + ".mx\", SelfEnergyFinite];";
+  input += "DumpSave[\"" + get_cwd() + "/output/math_1_" + std::to_string(options.mpi_process) + ".mx\", SelfEnergyFinite];";
   
   
   if (options.counter_terms)
@@ -116,7 +113,7 @@ bool Compute_amp::calc_diagram(Options options)
     input += "SelfEnergyFinite = makeFiniteAmplitude[SelfEnergyFinite, 0, D];";
   }
   
-  input += "DumpSave[\"" + _s_cwd + "/output/math_11_" + std::to_string(options.mpi_process) + ".mx\", SelfEnergyFinite];";
+  input += "DumpSave[\"" + get_cwd() + "/output/math_11_" + std::to_string(options.mpi_process) + ".mx\", SelfEnergyFinite];";
   
   send_to_math(input);
   
@@ -130,7 +127,7 @@ bool Compute_amp::calc_diagram(Options options)
   ofstream math_1;
   math_1.open (add_mpi_ext("output/math_1", options.mpi_process, "m"));
   print_math_basis(full_basis,math_1,"SelfEnergyFinite","4");
-  math_1 << "Export[\""<<_s_cwd<<"/output/output_"<< options.mpi_process << ".txt\", {" << endl;
+  math_1 << "Export[\""<<get_cwd()<<"/output/output_"<< options.mpi_process << ".txt\", {" << endl;
   
   
   for (int i = 0; i < nb-1;i++)
@@ -142,7 +139,7 @@ bool Compute_amp::calc_diagram(Options options)
   math_1.close();
   
   
-  input += "AppendTo[$Path, \"/Users/jamesmckay/Documents/Programs/Mass_builder/output/\"];";
+  input+= "AppendTo[$Path, \"" + get_cwd() + "/output/\"];";
   string filename = add_mpi_ext("output/math_1", options.mpi_process, "m");
   input += "<< " + filename + ";";
   
@@ -189,12 +186,12 @@ bool Compute_amp::calc_diagram(Options options)
   
   math_2 << "difference = Simplify[SelfEnergyFinite-SelfEnergyTrial];"<<endl;
 
-  math_2 << "Export[\""<<_s_cwd<<"/output/result_"<< options.mpi_process << ".txt\", difference];" << endl;
+  math_2 << "Export[\""<<get_cwd()<<"/output/result_"<< options.mpi_process << ".txt\", difference];" << endl;
   
   print_math_basis(full_basis,math_2, "difference",dimension);
 
   
-  math_2 << "Export[\""<<_s_cwd<<"/output/output2_"<< options.mpi_process << ".txt\", {" << endl;
+  math_2 << "Export[\""<<get_cwd()<<"/output/output2_"<< options.mpi_process << ".txt\", {" << endl;
   for (int i = 0; i < nb-1;i++)
   {
     math_2 << "{\""<<full_basis_id[i]<<" \", CForm[C"<<full_basis_id[i]<<" + C" <<full_basis_id[i] <<"2 /. Pair[Momentum[p], Momentum[p]] -> p^2 /. DiracGamma[Momentum[p]] -> p], \"\"}," << endl;
@@ -279,12 +276,12 @@ bool Compute_amp::calc_diagram(Options options)
   
   math_3 << "diff = Simplify[SelfEnergyFinite-SelfEnergyTrial];\n";
 
-  math_3 << "Export[\""<<_s_cwd<<"/output/result_"<< options.mpi_process << ".txt\", CForm[diff/. DiracGamma[Momentum[p]] -> p] ]" << endl;
+  math_3 << "Export[\""<<get_cwd()<<"/output/result_"<< options.mpi_process << ".txt\", CForm[diff/. DiracGamma[Momentum[p]] -> p] ]" << endl;
   
   math_3<< "remainder = diff;"<<endl;
-  math_3<< "DumpSave[\""<<_s_cwd<<"/output/remainder_"<< options.mpi_process << ".mx\", remainder];"<<endl;
+  math_3<< "DumpSave[\""<<get_cwd()<<"/output/remainder_"<< options.mpi_process << ".mx\", remainder];"<<endl;
   
-  math_3 << "Export[\""<<_s_cwd<<"/output/output_products_"<< options.mpi_process << ".txt\", {" << endl;
+  math_3 << "Export[\""<<get_cwd()<<"/output/output_products_"<< options.mpi_process << ".txt\", {" << endl;
   
   products_map.clear();
   
@@ -457,7 +454,6 @@ bool Compute_amp::calc_diagram(Options options)
 
 std::string draw_all_diagrams(std::string &input, Options options)
 {
-  string _s_cwd(getcwd(NULL,0));
   string particle_1 = options.particle_1;
   string particle_2 = options.particle_2;
   string model = options.model;
@@ -489,14 +485,14 @@ std::string draw_all_diagrams(std::string &input, Options options)
   
   if (options.use_lorentz)
   {
-    input+= "alldiags = InsertFields[t12, {" + particle_1 + "} -> {" + particle_2 + "},InsertionLevel -> {Particles}, GenericModel -> Lorentz,Restrictions -> {"  +  options.restrictions  +  "},Model -> \"" + _s_cwd + "/models/" + model + "/" + model + "\"];\n";
+    input+= "alldiags = InsertFields[t12, {" + particle_1 + "} -> {" + particle_2 + "},InsertionLevel -> {Particles}, GenericModel -> Lorentz,Restrictions -> {"  +  options.restrictions  +  "},Model -> \"" + get_cwd() + "/models/" + model + "/" + model + "\"];\n";
   }
   else
   {
-    input+= "alldiags = InsertFields[t12, {" + particle_1 + "} -> {" + particle_2 + "},InsertionLevel -> {Particles}, GenericModel -> \"" + _s_cwd + "/models/" + model + "/" + model + "\",Restrictions -> {"  +  options.restrictions  +  "},Model -> \"" + _s_cwd + "/models/" + model + "/" + model + "\"];";
+    input+= "alldiags = InsertFields[t12, {" + particle_1 + "} -> {" + particle_2 + "},InsertionLevel -> {Particles}, GenericModel -> \"" + get_cwd() + "/models/" + model + "/" + model + "\",Restrictions -> {"  +  options.restrictions  +  "},Model -> \"" + get_cwd() + "/models/" + model + "/" + model + "\"];";
   }
   
-  input+= "Export[\"" + _s_cwd + "/models/" + options.model + "/FA_diagrams/diagrams_"+ tag + "_" + type + ".pdf\",Paint[alldiags,Numbering->Simple]];";  // print the FA diagram to pdf in local directory
+  input+= "Export[\"" + get_cwd() + "/models/" + options.model + "/FA_diagrams/diagrams_"+ tag + "_" + type + ".pdf\",Paint[alldiags,Numbering->Simple]];";  // print the FA diagram to pdf in local directory
   
   return input;
 }

@@ -93,12 +93,14 @@ public:
     WSNewPacket(link);
     WSPutFunction(link, "ToExpression", 1);
     
+    string cwd = getcwd(NULL,0);
+    
     std::string input;
     
     input = "$LoadTARCER = True;";
     input+= "$LoadFeynArts = True;";
     input+= "<< FeynCalc/FeynCalc.m;";
-    input+= "AppendTo[$Path, \"/Users/jamesmckay/Documents/Programs/Mass_builder/src/\"];";
+    input+= "AppendTo[$Path, \"" + cwd + "/src/\"];";
     input+= "<< MassBuilder.m;";
     
     WSPutString(link, input.c_str());

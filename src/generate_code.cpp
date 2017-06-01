@@ -261,7 +261,7 @@ void Generate_code::generate_particle_src(std::string particle,int subgroup)
   cout << "writing source file = " << src_file_name << endl;
   
   
-  /* TSIL_PATH */ std::string TSIL = "/Users/jamesmckay/Documents/Programs/tsil-1.3/tsil_cpp.h";
+    /* TSIL_PATH */ std::string TSIL = "/Users/jamesmckay/Documents/Programs/tsil-1.3/tsil_cpp.h";  
   
   self_energy_src_preamble(functions, particle_name, subgroup);
   
@@ -561,7 +561,7 @@ void Generate_code::generate_code()
   ofstream main_output;
   main_output.open (main_output_file);
   
-  /* TSIL_PATH */ std::string TSIL = "/Users/jamesmckay/Documents/Programs/tsil-1.3/tsil_cpp.h";
+    /* TSIL_PATH */ std::string TSIL = "/Users/jamesmckay/Documents/Programs/tsil-1.3/tsil_cpp.h";  
   
   amp_preamble(main_output);
   

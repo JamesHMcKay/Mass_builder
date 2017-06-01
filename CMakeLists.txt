@@ -32,7 +32,7 @@ endif()
 include_directories(src include ${Mathematica_WSTP_INCLUDE_DIR})
 
 # specify location of TSIL header file
-set(TSIL_HEADER_FILE /Users/jamesmckay/Documents/Programs/tsil-1.3/tsil_cpp.h )
+set(TSIL_HEADER_FILE /Users/jamesmckay/Documents/Programs/tsil-1.3/tsil_cpp.h ) 
 
 # set source and header files used in all executables
 set(HEADER_FILES  include/templates.hpp include/options.hpp include/bases.hpp include/data.hpp include/self_energy.hpp include/calc_amplitudes.hpp include/calc_counter_terms.hpp include/utils.hpp include/write_tsil_ini.hpp include/print_vertices.hpp)
