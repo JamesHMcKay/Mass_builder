@@ -3,17 +3,25 @@
 
 #cd <system_dependent>/Mass_builder/
 
-echo "Please enter path to the file MathematicaScript or the default option below by entering the corresponding shortcut"
-echo "path must include the script file, for example /PATH/MathematicaScript "
-echo "type \"math\" for default Mathematica installation ( /usr/local/bin/math/MathematicaScript )"
-read MATH_PATH
 
+
+
+echo "Please enter path to the folder containing MathematicaScript and MathKernel, use one of the default options below by entering the corresponding shortcut"
+echo "  "
+echo "osx    for OSX:/Applications/Mathematica.app/Contents/MacOS"
+echo "math   for most other systems which already have kernal from /usr/local/bin/math"
+read MATH_PATH
+if [ "$MATH_PATH" == "osx" ]; then
+  MATH_PATH="/Applications/Mathematica.app/Contents/MacOS"
+fi
 if [ "$MATH_PATH" == "math" ]; then
-  MATH_PATH="/usr/local/bin/math/MathematicaScript"
+  MATH_PATH="/usr/local/bin/math"
 fi
 
 # add the Mathematica path into the required locations in the source files
-sed -i -e "s|.*MATH_PATH.*|    /\*MATH_PATH \*/  file<< \"#!$MATH_PATH -script\"<<endl;|g" src/utils.cpp
+sed -i -e "s|.*MATH_PATH.*|    /\*MATH_PATH \*/  file<< \"#!$MATH_PATH/MathematicaScript -script\"<<endl;|g" src/templates.cpp
+
+sed -i -e "s|.*MATH_KERNEL_PATH.*|    /\*MATH_KERNEL_PATH \*/  WSTPflags << \"-linkname \" << \"$MATH_PATH/MathKernel\" << \" -mathlink\";|g" include/compute_amp.hpp
 
 echo "  "
 echo "Please enter path to the directory containing the TSIL header tsil_cpp.h"
