@@ -198,7 +198,18 @@ Two loop self energy of particle S1 = 2.91938e-05
 \end{lstterm}
 where the particle name has been converted to a simplified form, this is the form of the particle name which appears in the generated output filenames.
 
-Finally we provide detailed output in the file \lstinline{LaTeX_table.tex} written to the model's output directory.  The columns of this file are particle name, loop order (with a ``c" suffix if a counter-term diagram), diagram number and amplitude in GeV.
+ We also provide detailed output in the file \lstinline{LaTeX_table.tex} written to the model's output directory.  The columns of this file are particle name, loop order (with a ``c" suffix if a counter-term diagram), diagram number and amplitude in GeV.
+ 
+Finally, with the one-loop amplitudes computed we may determine the required one-loop counter-term coupling using the command
+
+\begin{lstterm}
+./mass_builder -b -m Scalar -p S[1]
+\end{lstterm}
+This will solve for the counter-term coupling to give the result
+\begin{lstterm}
+Counter-term coupling = -(Power(g,2) + lambda*Power(Ms,2))/(32.*Power(Pi,2))
+\end{lstterm}
+
 
 \section{Full user guide}\label{sec:user_guide}
 \subsection{Command line interface}

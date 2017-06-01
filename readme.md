@@ -19,7 +19,7 @@ This is an interface tool making use of the existing Mathematica and C packages 
 Installation
 --
 
-This program requires Mathematica, FeynCalc, FeynArts (patched for use with FeynCalc) and TARCER to be installed.  For instructions on how to install these please see the user manual.  
+This program requires Mathematica, FeynCalc, FeynArts (patched for use with FeynCalc) and TARCER to be installed.  
 
 The easiest way to install FeynCalc, FeynArts and Tarcer is via the automated installation method.  Open a Mathematica notebook or kernel session and enter
 ```
@@ -77,7 +77,14 @@ this will return the result for the self energy of the simple scalar field theor
 One loop self energy of particle S1 = -0.0316688
 Two loop self energy of particle S1 = 2.91938e-05
 ```
-see the user manual for more details of this model and other usage examples.
+
+Finally, we may compute the tree-level counter-term coupling with the command
+```
+./mass_builder -b -m Scalar -p S[1]
+```
+which will make use of the already computed one-loop amplitudes to solve for the required counter-term.  This is of particular help in problems with many complicated one-loop amplitudes.
+
+
 
 Advanced example
 --
