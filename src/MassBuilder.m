@@ -39,6 +39,7 @@ Do[amp = amp
             - (masses[[i]]^2 + masses[[j]]^2 + masses[[k]]^2 )/ (2* MassBuilderEpsilon^2)
             + (-(masses[[i]]^2 +masses[[j]]^2 +masses[[k]]^2)/2 + MassBuilderP^2/4 )/MassBuilderEpsilon
             + ( I*A[masses[[i]],4] + I*A[masses[[j]],4] + I*A[masses[[k]],4] )/MassBuilderEpsilon
+            + MassBuilderAe[masses[[i]]] + MassBuilderAe[masses[[j]]] + MassBuilderAe[masses[[k]]]
             )
     /.
     K[masses[[i]],masses[[j]],masses[[k]],D]  ->
@@ -89,7 +90,7 @@ Do[amp = amp
         B[masses[[i]],masses[[j]],D]  ->
         (
           B[masses[[i]],masses[[j]],4]
-          + I/MassBuilderEpsilon
+          + I / MassBuilderEpsilon
           + I * MassBuilderEpsilon * MassBuilderBe[ masses[[i]], masses[[j]] ]
         ),
 {i, Length[masses]},
@@ -104,7 +105,7 @@ amp = amp
       /. A[masses[[i]],D]  ->
       (
         A[masses[[i]],4]
-      + masses[[i]]^2/MassBuilderEpsilon
+      + I * masses[[i]]^2/MassBuilderEpsilon
       - I * MassBuilderEpsilon * MassBuilderAe[masses[[i]]]
       ),
 {i, Length[masses]}];
