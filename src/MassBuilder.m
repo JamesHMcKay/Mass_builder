@@ -121,7 +121,7 @@ makeFiniteAmplitude[amplitude_,order_,D_] := Module[{amp,result},amp = amplitude
                                                          ]
 
 makeFiniteCT[amplitude_,order_,D_] := Module[{amp,result},amp = amplitude*(1/MassBuilderEpsilon);
-                                                         amp = amplitude /. D-> (4 - 2*MassBuilderEpsilon);
+                                                         amp = amp /. D-> (4 - 2*MassBuilderEpsilon);
                                                          result = Coefficient[amp, MassBuilderEpsilon, order];
                                                          result = result /. MassBuilderEpsilon -> 0;
                                                          result

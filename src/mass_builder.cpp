@@ -152,7 +152,8 @@ void run_mass_builder_mode_1a(Options options,int argc, char *argv[])
         // write to file to inform other processes that this
         // task is being worked on
         inform_task_started(id, task);
-        Calc_amplitudes ca;
+        Compute_amp ca;
+        //Calc_amplitudes ca;
         options.particle_1 = particles[task];
         options.particle_2 = particles[task];
         options.particle = particles[task];

@@ -80,7 +80,7 @@ public:
     }
     else
     {
-      cout << "link started" << endl;
+      cout << "WSTP link started" << endl;
     }
     
     

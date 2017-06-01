@@ -25,8 +25,6 @@ string _s_cwd(getcwd(NULL,0));
 
 bool Compute_amp::calc_diagram(Options options)
 {
-
-  // preamble
   bool success=1;
   bool sum_integrals=1;
   string diagram = options.diagram;
@@ -84,10 +82,6 @@ bool Compute_amp::calc_diagram(Options options)
   int na;
   get_data(masses_input,id_input,na,file_masses);
   
-
-  
-  
-  
   // create WSTP link and compute amplitude
   
   
@@ -112,13 +106,19 @@ bool Compute_amp::calc_diagram(Options options)
   
   input += "DumpSave[\"" + _s_cwd + "/output/math_1_" + std::to_string(options.mpi_process) + ".mx\", SelfEnergyFinite];";
   
-  input += "SelfEnergyFinite = makeFiniteAmplitude[SelfEnergyFinite, 0, D];";
   
+  if (options.counter_terms)
+  {
+    input += "SelfEnergyFinite = makeFiniteCT[SelfEnergyFinite, 0, D];";
+  }
+  else
+  {
+    input += "SelfEnergyFinite = makeFiniteAmplitude[SelfEnergyFinite, 0, D];";
+  }
   
+  input += "DumpSave[\"" + _s_cwd + "/output/math_11_" + std::to_string(options.mpi_process) + ".mx\", SelfEnergyFinite];";
   
   send_to_math(input);
-  
-  
   
   // extract non-zero coefficients
   // send List of all possible basis integrals and get list back of coefficients
@@ -142,25 +142,14 @@ bool Compute_amp::calc_diagram(Options options)
   math_1.close();
   
   
-  /*
-  for (int i = 0; i < nb-1;i++)
-  {
-    math_1 << "{\""<<full_basis_id[i]<<" \", C"<<full_basis_id[i]<<" /. Pair[Momentum[p], Momentum[p]] -> p^2 /. DiracGamma[Momentum[p]] -> p, \"\"}," << endl;
-  }
-  math_1 << "{\""<<full_basis_id[nb-1]<<" \", C"<<full_basis_id[nb-1]<<" /. Pair[Momentum[p], Momentum[p]] -> p^2 /. DiracGamma[Momentum[p]] -> p, \"\"}" << endl;
-  math_1 << " }, \"Table\", \"FieldSeparators\" -> \" \", \"TextDelimiters\" -> \"\"];" << endl;
-  math_1.close();
-  */
-  
   input += "AppendTo[$Path, \"/Users/jamesmckay/Documents/Programs/Mass_builder/output/\"];";
   string filename = add_mpi_ext("output/math_1", options.mpi_process, "m");
   input += "<< " + filename + ";";
   
   send_to_math(input);
   
-  ////////////////////////////////////////
   // now attempt to construct amplitude //
-  ////////////////////////////////////////
+  
   
   string dimension = "4";
   
@@ -215,8 +204,6 @@ bool Compute_amp::calc_diagram(Options options)
   
   math_2.close();
   
-  
-  //input += "AppendTo[$Path, \"/Users/jamesmckay/Documents/Programs/Mass_builder/output/\"];";
   filename = add_mpi_ext("output/math_2", options.mpi_process, "m");
   input += "<< " + filename + ";";
   
@@ -237,7 +224,7 @@ bool Compute_amp::calc_diagram(Options options)
   
   if (temp_int == 0)
   {
-    cout << "ERROR THIS CASE SHOULD BE REDUNDANT" << endl;
+    cout << "ERROR LIST OF BASIS INTEGRALS IS EMPTY" << endl;
   }
   else
   {
@@ -330,12 +317,14 @@ bool Compute_amp::calc_diagram(Options options)
   
   send_to_math(input);
   
-  //////////////////////////////////
-  //////////////////////////////////
+  input += "Quit[]";
+  send_to_math(input);
+  
+  WSClose(link);
+  cout << "WSTP link closed successfully" << endl;
+  
+  
   ///// organise output data////////
-  //////////////////////////////////
-  //////////////////////////////////
-  //////////////////////////////////
   
   
   string remainder;
@@ -462,11 +451,6 @@ bool Compute_amp::calc_diagram(Options options)
   if (success) {update_avail_diagrams(options);}
   return success;
 }
-
-
-
-
-
 
 
 
