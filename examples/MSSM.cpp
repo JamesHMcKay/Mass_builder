@@ -161,7 +161,7 @@ int main(int argc, char *argv[])
   
   cout << "example mass splitting routine complete" << endl;
   cout << "now run: "<< endl;
-  cout << "          python examples/plot_example.py "<< endl;
+  cout << "          python examples/plot_MSSM.py "<< endl;
   cout << "to make plot in this directory "<< endl;
   
   
