@@ -515,3 +515,126 @@ void Compute_amp::generate_figures(Options options_in)
 }
 
 
+
+
+
+void Compute_amp::solve_1loop(std::string particle,vector<std::string> diagram)
+{
+  
+  
+  int nd = diagram.size();
+  
+  string dimension = "D";
+  
+  create_wstp_link();
+  load_libraries();
+  WSNewPacket(link);
+  
+  std::string input;
+  
+
+  
+  input += "  SEtotal = 0 ;";
+  
+  for (int i=0;i<nd;i++)
+  {
+    
+    input += "Get[\"" + get_cwd() + "/models/" + options.model + "/output/math_data_" + particle + "_" + diagram[i] + "_1" + ".mx\"];";
+    
+    input += "SEtotal = SEtotal + SelfEnergyFinite;";
+  }
+  
+  input +="SE = Coefficient[SEtotal,MassBuilderEpsilon,-1];";
+  input +="SE = Simplify[SE /. MassBuilderEpsilon->0];";
+  
+  
+  // check for higher orders in 1/epsilon
+  input += "SEhot = Coefficient[SEtotal,MassBuilderEpsilon,-2] + Coefficient[SEtotal,MassBuilderEpsilon,-3];";
+  
+  input += "ToString[SEhot,CForm];";
+  
+  send_to_math(input);
+  
+  const char* high_order_terms;
+  
+  if(!WSGetString((WSLINK)pHandle, &high_order_terms))
+  {
+    cout << "Error getting string from WSTP" << endl;
+  }
+  
+  
+  
+  cout << "Higher order divergences in (1/epsilon) are = " << high_order_terms << endl;
+  
+  input += "ct = FullSimplify[-SE*Pi^2/.Pair[Momentum[p], Momentum[p]]->p^2];";
+  
+  input += "ToString[ct,CForm]";
+  
+  send_to_math(input);
+  
+  const char* counter_term;
+  
+  if(!WSGetString((WSLINK)pHandle, &counter_term))
+  {
+    cout << "Error getting string from WSTP" << endl;
+  }
+  
+  cout << "Counter-term coupling = " << counter_term << endl;
+  
+  input += "Quit[]";
+  send_to_math(input);
+  
+  WSClose(link);
+  cout << "WSTP link closed successfully" << endl;
+  
+
+}
+
+
+
+
+
+void Compute_amp::calc_counter_terms(Options options_in)
+{
+  options = options_in;
+  
+  // need to read in the list of available diagrams and then select the 1-loop ones for
+  // adding up here
+  
+  // read in available diagrams
+  
+  const char *ext = ".txt";
+  const char* file_diagrams_tmp = "models/";
+  string c_file_diagrams = file_diagrams_tmp + options.model + "/output/avail_diagrams_" + ext;
+  const char *file_diagrams = c_file_diagrams.c_str();
+  
+  vector<std::string> tags;
+  vector<std::string> particle_names,levels;
+  string level;
+  int nd; // number of diagrams
+  
+  cout << "input list = " << file_diagrams << endl;
+  
+  get_data(particle_names,tags,levels, nd,file_diagrams);
+  
+  // one-loop corrections
+  vector<std::string> tags_1;
+  vector<std::string> particle_names_1,levels_1;
+  
+  for (int i=0;i<nd;i++)
+  {
+    if (levels[i]=="1" && particle_names[i]==options.particle)
+    {
+      particle_names_1.push_back(particle_names[i]);
+      tags_1.push_back(tags[i]);
+      levels_1.push_back(levels[i]);
+    }
+    
+  }
+  
+  string particle_simple = part_name_simple(options.particle_1,options.particle_2);
+  
+  solve_1loop(particle_simple,tags_1);
+  
+}
+

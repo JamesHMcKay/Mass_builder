@@ -134,6 +134,10 @@ public:
   
   void generate_figures(Options options_in);
   
+  void calc_counter_terms(Options options_in);
+  
+  void solve_1loop(std::string particle,vector<std::string> diagram);
+  
   
   
 };

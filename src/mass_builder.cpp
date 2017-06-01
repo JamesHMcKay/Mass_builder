@@ -18,7 +18,6 @@
 
 #include "data.hpp"
 #include "calc_amplitudes.hpp"
-#include "calc_counter_terms.hpp"
 #include "generate_code.hpp"
 #include "self_energy.hpp"
 #include "print_vertices.hpp"
@@ -206,7 +205,7 @@ void run_mass_builder_mode_1b(Options options)
 
 void run_mass_builder_mode_2(Options options)
 {
-  Calc_counter_terms ct;
+  Compute_amp ct;
   ct.calc_counter_terms(options);
 }
 
