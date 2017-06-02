@@ -94,6 +94,8 @@ namespace utils
   
   void timestamp();
   
+  void print_diagram_info(Options options);
+  
 }
 
 #endif

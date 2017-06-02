@@ -1,3 +1,8 @@
+(* MassBuilder Mathematica package *)
+(* Contains functions used during the sorting of amplitdes *)
+(* James McKay *)
+(* June 2017 *)
+
 BeginPackage["MassBuilder`"]
 
 expandBasisIntegrals::usage =
@@ -5,10 +10,10 @@ expandBasisIntegrals::usage =
 
 
 makeFiniteAmplitude::usage =
-  "makeFiniteAmplitude[amplitude_,order,D_] := <add description here> "
+  "makeFiniteAmplitude[amplitude_,order,D_] := extract the terms of specified order in epsilon "
 
 makeFiniteCT::usage =
-  "makeFiniteCT[amplitude_,order,D_] := <add description here> "
+  "makeFiniteCT[amplitude_,order,D_] := extract the terms of specified order in epsilon after multiplying by 1/epsilon "
 
 
 MassBuilderEpsilon;

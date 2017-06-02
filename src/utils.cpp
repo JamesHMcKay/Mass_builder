@@ -303,7 +303,7 @@ namespace utils
     input2.close();
   }
   
-
+  
   
   // function to assign FCGV variables in default patched FeynArts models
   void assign_FCGV(ofstream &file,Options options)
@@ -418,7 +418,7 @@ namespace utils
     {
       for (unsigned int i=1; i < ( masses.size() ) ;i++)
       {
-      file << "," << masses[i];
+        file << "," << masses[i];
       }
     }
     file << "];\n";
@@ -426,12 +426,12 @@ namespace utils
     file << "Do [  amp0 = amp0 /. MajoranaSpinor[p, masses[[i]]] -> 1 /. Spinor[Momentum[p, D], masses[[i]], 1] -> 1;   , {i, Length[masses]}];\n";
     
     /*  // now replacement by function above
-    for (unsigned int i=0; i < masses.size();i++)
-    {
-      file<<"amp0 = amp0 /. MajoranaSpinor[Momentum[p, D], "<<masses[i]<<"] -> 1 /.Spinor[Momentum[p, D], "<<masses[i]<<", 1] -> 1;"<<endl;
-      file<<"amp0 = amp0 /. MajoranaSpinor[p, "<<masses[i]<<"] -> 1 /.Spinor[Momentum[p], "<<masses[i]<<", 1] -> 1;"<<endl;
-    }
-    */
+     for (unsigned int i=0; i < masses.size();i++)
+     {
+     file<<"amp0 = amp0 /. MajoranaSpinor[Momentum[p, D], "<<masses[i]<<"] -> 1 /.Spinor[Momentum[p, D], "<<masses[i]<<", 1] -> 1;"<<endl;
+     file<<"amp0 = amp0 /. MajoranaSpinor[p, "<<masses[i]<<"] -> 1 /.Spinor[Momentum[p], "<<masses[i]<<", 1] -> 1;"<<endl;
+     }
+     */
     
     
     
@@ -498,13 +498,13 @@ namespace utils
     {
       for (unsigned int i=1; i < ( masses.size() ) ;i++)
       {
-      input+= ","  +  masses[i];
+        input+= ","  +  masses[i];
       }
     }
     input+= "];";
     
     input+= "Do [  amp0 = amp0 /. MajoranaSpinor[p, masses[[i]]] -> 1 /. Spinor[Momentum[p, D], masses[[i]], 1] -> 1;   , {i, Length[masses]}];";
-
+    
     
     input+="SetOptions[Eps, Dimension -> D];";
     
@@ -1121,6 +1121,34 @@ namespace utils
 # undef TIME_SIZE
   }
   
+  
+  void print_diagram_info(Options options)
+  {
+    if ((options.particle_1!=options.particle_2))
+    {
+      if (options.counter_terms == true)
+      {
+        cout << "calculating counter-term diagram " << options.diagram << " for particle " << options.particle_1 << " to " << options.particle_2 << " in model ";
+      }
+      else
+      {
+        cout << "calculating diagram " << options.diagram << " for particle " << options.particle_1 << " to " << options.particle_2 << " in model ";
+      }
+    }
+    else
+    {
+      if (options.counter_terms == true)
+      {
+        cout << "calculating counter-term diagram " << options.diagram << " for particle " << options.particle_1 << " in model ";
+      }
+      else
+      {
+        cout << "calculating diagram " << options.diagram << " for particle " << options.particle_1 << " in model ";
+      }
+    }
+    
+    cout << options.model << " at " << options.loop_order << "-loop order" << endl;
+  }
   
   
   

@@ -2,20 +2,21 @@
  Mass Builder
  
  James McKay
- Aug 2016 - May 2017
+ Aug 2016 - June 2017
  
  --- compute_amp.cpp ---
  
- This file contains the main routine for calling FeynArts, FeynCalc and TARCER via
- generated Mathematica scripts, followed by sorting this output and forming further output
- in the form of coefficient * basis_integral.
+ This file contains the main routine for calling FeynArts, FeynCalc and TARCER,
+ followed by sorting this output and storing it for later use in generated
+ TSIL interface.
  
  This file also includes functions for sending FeynArts diagrams directory to pdf in the folder FAdiagrams
+ and the functions for computing the tree-level counter-term coupling
+ 
  */
 
 #include "compute_amp.hpp"
 
-#define RUN_ALL
 //#define DEBUG
 using namespace std;
 using namespace utils;
@@ -23,46 +24,16 @@ using namespace templates;
 
 bool Compute_amp::calc_diagram(Options options)
 {
-  bool success=1;
-  bool sum_integrals=1;
-  string diagram = options.diagram;
-  string particle_1 = options.particle_1;
-  string particle_2 = options.particle_2;
-  model = options.model;
-  int loop_order = options.loop_order;
+  bool success = 0;
   
-  multi_particle = (particle_1!=particle_2);
+  // print information to terminal
+  print_diagram_info(options);
   
-  if (multi_particle)
-  {
-    if (options.counter_terms == true)
-    {
-      cout << "calculating counter-term diagram " << diagram << " for particle " << particle_1 << " to " << particle_2 << " in model ";
-    }
-    else
-    {
-      cout << "calculating diagram " << diagram << " for particle " << particle_1 << " to " << particle_2 << " in model ";
-    }
-  }
-  else
-  {
-    if (options.counter_terms == true)
-    {
-      cout << "calculating counter-term diagram " << diagram << " for particle " << particle_1 << " in model ";
-    }
-    else
-    {
-      cout << "calculating diagram " << diagram << " for particle " << particle_1 << " in model ";
-    }
-  }
-  
-  cout << model << " at " << options.loop_order << "-loop order" << endl;
-  
-  particle_1 =  part_name_simple(particle_1);
-  particle_2 =  part_name_simple(particle_2);
+  string particle_1 =  part_name_simple(options.particle_1);
+  string particle_2 =  part_name_simple(options.particle_2);
   
   string particle_tag;
-  if (multi_particle)
+  if ((options.particle_1!=options.particle_2))
   {
     particle_tag = particle_1 + "_" + particle_2;
   }
@@ -71,11 +42,18 @@ bool Compute_amp::calc_diagram(Options options)
     particle_tag = particle_1;
   }
   string tag="";
-  if (options.counter_terms) {tag = particle_tag + "_" + diagram + "_" + to_string(loop_order)+"c";}
-  else {tag = particle_tag + "_" + diagram + "_" + to_string(loop_order);}
+  
+  if (options.counter_terms)
+  {
+    tag = particle_tag + "_" + options.diagram + "_" + to_string(options.loop_order)+"c";
+  }
+  else
+  {
+    tag = particle_tag + "_" + options.diagram + "_" + to_string(options.loop_order);
+  }
   
   const char* file_masses_tmp = "models/";
-  string c_file_masses = file_masses_tmp + model + "/masses" + ext;
+  string c_file_masses = file_masses_tmp + options.model + "/masses" + ext;
   const char *file_masses = c_file_masses.c_str();
   int na;
   get_data(masses_input,id_input,na,file_masses);
@@ -112,8 +90,6 @@ bool Compute_amp::calc_diagram(Options options)
   {
     input += "SelfEnergyFinite = makeFiniteAmplitude[SelfEnergyFinite, 0, D];";
   }
-  
-  input += "DumpSave[\"" + get_cwd() + "/output/math_11_" + std::to_string(options.mpi_process) + ".mx\", SelfEnergyFinite];";
   
   send_to_math(input);
   
@@ -331,7 +307,7 @@ bool Compute_amp::calc_diagram(Options options)
   // copy the Mathematica data file to the output directory
   const char *mx_ext = ".mx";
   const char* copy_tmp = "/output/math_data_";
-  string c_copy = "cp output/math_1_" + std::to_string(options.mpi_process) + ".mx models/" + model +copy_tmp + tag + mx_ext;
+  string c_copy = "cp output/math_1_" + std::to_string(options.mpi_process) + ".mx models/" + options.model +copy_tmp + tag + mx_ext;
   const char *copy_cmd = c_copy.c_str();
   system(copy_cmd);
   
@@ -340,7 +316,7 @@ bool Compute_amp::calc_diagram(Options options)
   // BASIS INTEGRAL COEFFICIENTS //
   
   const char* coeff_integrals_tmp = "/output/coeff_integrals_";
-  string c_coeff_integrals = "models/" + model +coeff_integrals_tmp + tag + ext;
+  string c_coeff_integrals = "models/" + options.model +coeff_integrals_tmp + tag + ext;
   const char *coeff_integrals = c_coeff_integrals.c_str();
   ofstream coeff_integrals_out;
   coeff_integrals_out.open (coeff_integrals);
@@ -374,7 +350,7 @@ bool Compute_amp::calc_diagram(Options options)
   vector<string> reduced_prod_names = extract_keys(reduced_prod_map);
   
   const char* coeff_products_tmp = "/output/coeff_products_";
-  string c_coeff_products = "models/" + model +coeff_products_tmp + tag + ext;
+  string c_coeff_products = "models/" + options.model +coeff_products_tmp + tag + ext;
   const char *coeff_products = c_coeff_products.c_str();
   
   ofstream coeff_products_out;
@@ -391,7 +367,7 @@ bool Compute_amp::calc_diagram(Options options)
   
   
   const char* summation_tmp = "/output/summation_"; // vector containing file names
-  string c_summation = "models/" + model +summation_tmp + tag + ext;
+  string c_summation = "models/" + options.model +summation_tmp + tag + ext;
   const char *summation = c_summation.c_str();
   
   ofstream summation_out;
@@ -405,7 +381,7 @@ bool Compute_amp::calc_diagram(Options options)
   
   for (int i = 0; i<nbr;i++)
   {
-    if (sum_integrals != 0 ) summation_out  << " + "<<reduced_basis_id[i]<< " * C"<<reduced_basis_id[i];
+    summation_out  << " + "<<reduced_basis_id[i]<< " * C"<<reduced_basis_id[i];
   }
   for (unsigned int i = 0; i<reduced_prod_names.size();i++)
   {
@@ -434,7 +410,7 @@ bool Compute_amp::calc_diagram(Options options)
   reduced_basis_id.erase( unique( reduced_basis_id.begin(), reduced_basis_id.end() ), reduced_basis_id.end() );
   
   const char* basis_integrals_tmp = "/output/basis_integrals_"; // vector containing file names
-  string c_basis_integrals = "models/" + model + basis_integrals_tmp + tag + ext;
+  string c_basis_integrals = "models/" + options.model + basis_integrals_tmp + tag + ext;
   const char *basis_integrals = c_basis_integrals.c_str();
   
   ofstream basis_integral_out;
@@ -456,7 +432,6 @@ std::string draw_all_diagrams(std::string &input, Options options)
 {
   string particle_1 = options.particle_1;
   string particle_2 = options.particle_2;
-  string model = options.model;
   string tag = particle_1;
   
   if (particle_1 != particle_2)
@@ -485,11 +460,11 @@ std::string draw_all_diagrams(std::string &input, Options options)
   
   if (options.use_lorentz)
   {
-    input+= "alldiags = InsertFields[t12, {" + particle_1 + "} -> {" + particle_2 + "},InsertionLevel -> {Particles}, GenericModel -> Lorentz,Restrictions -> {"  +  options.restrictions  +  "},Model -> \"" + get_cwd() + "/models/" + model + "/" + model + "\"];\n";
+    input+= "alldiags = InsertFields[t12, {" + particle_1 + "} -> {" + particle_2 + "},InsertionLevel -> {Particles}, GenericModel -> Lorentz,Restrictions -> {"  +  options.restrictions  +  "},Model -> \"" + get_cwd() + "/models/" + options.model + "/" + options.model + "\"];\n";
   }
   else
   {
-    input+= "alldiags = InsertFields[t12, {" + particle_1 + "} -> {" + particle_2 + "},InsertionLevel -> {Particles}, GenericModel -> \"" + get_cwd() + "/models/" + model + "/" + model + "\",Restrictions -> {"  +  options.restrictions  +  "},Model -> \"" + get_cwd() + "/models/" + model + "/" + model + "\"];";
+    input+= "alldiags = InsertFields[t12, {" + particle_1 + "} -> {" + particle_2 + "},InsertionLevel -> {Particles}, GenericModel -> \"" + get_cwd() + "/models/" + options.model + "/" + options.model + "\",Restrictions -> {"  +  options.restrictions  +  "},Model -> \"" + get_cwd() + "/models/" + options.model + "/" + options.model + "\"];";
   }
   
   input+= "Export[\"" + get_cwd() + "/models/" + options.model + "/FA_diagrams/diagrams_"+ tag + "_" + type + ".pdf\",Paint[alldiags,Numbering->Simple]];";  // print the FA diagram to pdf in local directory
@@ -544,8 +519,9 @@ void Compute_amp::solve_1loop(std::string particle,vector<std::string> diagram)
     input += "SEtotal = SEtotal + SelfEnergyFinite;";
   }
   
-  input +="SE = Coefficient[SEtotal,MassBuilderEpsilon,-1];";
-  input +="SE = Simplify[SE /. MassBuilderEpsilon->0];";
+  input += "SEtotal = SEtotal /. D -> 4 - 2*MassBuilderEpsilon;";
+  input += "SE = Coefficient[SEtotal,MassBuilderEpsilon,-1];";
+  input += "SE = Simplify[SE /. MassBuilderEpsilon->0];";
   
   
   // check for higher orders in 1/epsilon
