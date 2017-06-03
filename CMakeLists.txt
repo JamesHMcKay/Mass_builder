@@ -26,8 +26,9 @@ if(Mathematica_FOUND AND Mathematica_WSTP_FOUND)
   set(LIBRARIES ${LIBRARIES} ${Mathematica_WSTP_LIBRARIES} ${Mathematica_MathLink_LIBRARY})
 endif()
 
+set(TSIL_PATH "" CACHE STRING "The path to the TSIL file")
 
-set(TSIL_PATH /Users/jamesmckay/Documents/Programs/tsil-1.3/)
+#set(TSIL_PATH /Users/jamesmckay/Documents/Programs/tsil-1.3/)
 
 
 # Configure cmake variables file
