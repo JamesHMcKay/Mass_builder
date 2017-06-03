@@ -38,23 +38,19 @@ To install the Two-loop Self-energy Integral Library (TSIL) downloaded the sourc
 
 To install Mass Builder follow the instructions below.
 
-If using a Linux machine then first run the configure script
-```
-./scripts/config_linux.sh
-```
-or for OS X run
+First run the config script, this just moves some files and creates output directories
 ```
 ./scripts/config.sh
 ```
-this will prompt for the location of the MathematicaScript, and the folder containing TSIL.
 
 Next to compile the code run
 
 ```
 cd build
-cmake ..
-make
+cmake -DTSIL_PATH=/path/to/tsil-1.4/ ..
+make -jn
 ```
+where you must specify the location of the TSIL directory as a flag to the cmake call , and n corresponds to the number of processes you have available.
 
 Quick start guide — basic example
 --
@@ -84,7 +80,7 @@ Finally, we may compute the tree-level counter-term coupling with the command
 ```
 which will make use of the already computed one-loop amplitudes to solve for the required counter-term.  This is of particular help in problems with many complicated one-loop amplitudes.
 
-
+Before generating further code it is important to run the scripts/config.sh again, as this will clean the previous generated files (such that cmake won't find these and try and compile them with the new, potentially inconsistent, code).
 
 Advanced example
 --
@@ -118,7 +114,7 @@ We supply four models with Mass Builder, although implementing new models is str
 Further information
 --
 
-Please see the documentation in documentaion/Mass_builder.pdf for detailed information on the algorithm structure and the many features available in code.  Some of these features are:
+Please see the documentation in documentation/Mass_builder.pdf for detailed information on the algorithm structure and the many features available in code.  Some of these features are:
 
 - convenient printing of FeynArts diagrams
 - automatic computation of tree-level counter-term couplings

@@ -109,26 +109,22 @@ GenerateTarcerMX
 which will generate the required files.  All packages within Mathematica are now set up.
 
 \subsection{\tsil}
-The Two-loop Self-energy Integral Library (\tsils) can be downloaded from \href{http://www.niu.edu/spmartin/TSIL/}{\lstinline{http://www.niu.edu/spmartin/TSIL/}}.  \mb has been tested with version 1.3. It may installed anywhere (as \mb will request the path at configuration).
+The Two-loop Self-energy Integral Library (\tsils) can be downloaded from \href{http://www.niu.edu/spmartin/TSIL/}{\lstinline{http://www.niu.edu/spmartin/TSIL/}}.  \mb has been tested with version 1.4. It may installed anywhere (as \mb will request the path at configuration).
 
 \subsection{\mb}
-\mb can be downloaded from \href{https://github.com/JamesHMcKay/Mass_builder.git}{\lstinline{https://github.com/JamesHMcKay/Mass_builder.git}}.  The first step is to run the configuration script to tell the program where your \mathematica Script and \tsil installations are located, if using Linux this is
-\begin{lstterm}
-./scripts/config_linux.sh
-\end{lstterm}
-or
+\mb can be downloaded from \href{https://github.com/JamesHMcKay/Mass_builder.git}{\lstinline{https://github.com/JamesHMcKay/Mass_builder.git}}.  The first step is to run the configuration script
 \begin{lstterm}
 ./scripts/config.sh
 \end{lstterm}
-for OS X users.  The configuration script will ask for the location of the \mathematica Script.  If using OSX the best option to try first is \lstinline{osx} (or in some rarer instances \lstinline{osx64}).  On a Linux system this is typically located in the path by default, so try the \lstinline{math} shorted cut at this prompt.  If this path is incorrect, \mb will compile but will not run as it can't access \mathematica.  The next prompt will ask for the folder in which the \tsil library and \lstinline{tsil_cpp.h} are located, this should be entered as the path to the folder without the \lstinline{/} at the end.  For example \lstinline{/Users/<user_name>/Programs/tsil-1.3}.
+which will arrange the files and make some required output directories.
 
-After configuration, build as normal using
+After configuration, build using cmake as follows
 \begin{lstterm}
 cd build
-cmake ..
+cmake -DTSIL_PATH=/path/to/tsil-1.4/ ..
 make
 \end{lstterm}
-to compile the program.  The \mb executable is now located in the root directory.
+where you must specify the location of the TSIL directory as a flag to the cmake call.  The \mb executable is now located in the root directory.
 
 \section{Quick start guide}
 
