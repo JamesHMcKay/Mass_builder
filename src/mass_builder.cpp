@@ -1,15 +1,19 @@
 /*
- Mass Builder - the missing link in automated two-loop self energy calculations
- Please refer to the documentation for details or the readme.txt for simple run instructions
+ Mass Builder
  
  James McKay
+ Aug 2016 - June 2017
  
- FeynArts (hep-ph/0012260) is used to generate the two-loop amplitudes
- FeynCalc (ArXiv:1601.01167) is used to reduce the amplitudes
- TARCER (hep-ph/9801383) is used to reduce the resulting amplitudes to basis integrals
- TSIL (hep-ph/0501132) is used to evaluate the basis integrals
+ --- mass_builder.cpp ---
  
- */
+ This file manages the execution of all possible tasks within the Mass Builder program
+ by passing the user input to the user interface routine and then interpreting the resultant
+ Options class that is returned.
+ 
+ In this file we manage the MPI execution of a many diagram calcuation.
+ 
+*/
+
 # include <cstdlib>
 # include <ctime>
 # include <iomanip>
@@ -17,15 +21,14 @@
 # include <mpi.h>
 
 #include "data.hpp"
-#include "calc_amplitudes.hpp"
 #include "generate_code.hpp"
 #include "self_energy.hpp"
-#include "print_vertices.hpp"
 #include "compute_amp.hpp"
 
 using namespace std;
 using namespace utils;
 
+// subroutine used by run_mass_builder_mode_1a to manage MPI tasks
 bool check_task_done(int number_of_processes, int task_number)
 {
   for (int i = 0; i<number_of_processes ; i++)
@@ -45,10 +48,10 @@ bool check_task_done(int number_of_processes, int task_number)
       }
     }
   }
-  
   return false;
 }
 
+// subroutine used by run_mass_builder_mode_1a to manage MPI tasks
 void inform_task_started(int processes_number, int task)
 {
   const char* file_tmp = "output/tasks_";
@@ -71,7 +74,7 @@ void inform_task_started(int processes_number, int task)
   outfile.close();
 }
 
-
+// compute a list of diagrams
 void run_mass_builder_mode_1a(Options options,int argc, char *argv[])
 {
   int id;
@@ -111,20 +114,17 @@ void run_mass_builder_mode_1a(Options options,int argc, char *argv[])
   MPI_Comm_size ( MPI_COMM_WORLD, &p );
   //  Get the individual process ID
   MPI_Comm_rank ( MPI_COMM_WORLD, &id );
-  //
-  //  Process 0 prints an introductory message.
-  //
+  
+  //  Process 0 prints initial message
   if ( id == 0 )
   {
     timestamp ( );
     cout << "\n";
-    cout << "Mass Builder is running with MPI enabled\n";
+    cout << "Mass Builder is running\n";
     cout << "\n";
     cout << "  The number of processes is " << p << "\n";
     cout << "\n";
   }
-  
-  // check that there are more diagrams to compute than processes
   
   if ( id == 0 )
   {
@@ -135,24 +135,22 @@ void run_mass_builder_mode_1a(Options options,int argc, char *argv[])
   int task = id;
   int original_task = id;
   
-  if (p>i)
+  if ( p > i )
   {
-    cout << "There are more processes running that tasks to complete, please rerun with less processes or request more diagrams" << endl;
+    cout << "There are more processes running than tasks to complete, please rerun with less processes or request more diagrams." << endl;
   }
   else
   {
-    while (done == false)
+    while ( done == false )
     {
-      
-      // if task not yet started or completed by
-      // another process then go ahead
-      if (!check_task_done(p,task))
+      // if task not yet started or completed by another process then go ahead
+      if ( !check_task_done(p,task) )
       {
-        // write to file to inform other processes that this
-        // task is being worked on
+        // write to file to inform other processes that this task has started
         inform_task_started(id, task);
+        
+        // execute calculation
         Compute_amp ca;
-        //Calc_amplitudes ca;
         options.particle_1 = particles[task];
         options.particle_2 = particles[task];
         options.particle = particles[task];
@@ -163,10 +161,11 @@ void run_mass_builder_mode_1a(Options options,int argc, char *argv[])
       }
       
       task = task + p;
-      if (!(task<i) )
+      if ( !( task < i ) )
       {
-        task = (task + 1) % (p) ; // reset num to be offset from original task id and start again
-        //cout << "reseting task number to " << task << endl;
+        // reset num to be offset from original task id and start again
+        task = (task + 1) % (p);
+        
         if (task == original_task)
         {
           done = true;
@@ -196,19 +195,23 @@ void run_mass_builder_mode_1a(Options options,int argc, char *argv[])
   
 }
 
+// compute one specified diagram
 void run_mass_builder_mode_1b(Options options)
 {
-  //Calc_amplitudes ca;
+  //Calc_amplitudes ca; // alternative method
   Compute_amp ca;
   ca.calc_diagram(options);
 }
 
+// Compute tree-level counter-term coupling
 void run_mass_builder_mode_2(Options options)
 {
   Compute_amp ct;
   ct.calc_counter_terms(options);
 }
 
+
+// Evaluate self energies of all available particles
 void run_mass_builder_mode_6(Options options)
 {
   Data data(options);
@@ -222,24 +225,21 @@ void run_mass_builder_mode_6(Options options)
   }
 }
 
+
+// iterate to determine physical mass of spin 0 particle
 void run_mass_builder_mode_7(Options options)
 {
-  
-  // iterate to determine physical mass of spin 0 particle
   Data data(options);
   for (unsigned int i = 0;i < data.avail_part.size();i++)
   {
-    
     double M_tree = pow(data.M_tree[data.avail_part[i]],2);
     
     double diff = 10;
     data.P = data.M_tree[data.avail_part[i]];
     double mass = 0;
-    
     while (diff>0.0001)
     {
       Self_energy se;
-      
       se.run_tsil(data);
       
       double self_energy = data.SE_1[data.avail_part[i]];
@@ -251,27 +251,25 @@ void run_mass_builder_mode_7(Options options)
       
       data.P = mass;
     }
-    
     cout << "physical one-loop mass of " << data.avail_part[i] << " = " << mass << endl;
-    
   }
-  
 }
-
 
 int main(int argc, char *argv[])
 {
-  
+  // pass input to user interface routine
   User_input user(argc,argv);
   
   user.user_interface();
   
+  // set options class with user input
   Options options = user.options;
   
   // read options and work through possibilities for each run mode and check requirements are met
   
   if (options.model=="" && (options.run_mode < 6)){ cout << "no model specified" << endl; return 0;}
   
+  // compute amplitudes using Mathematica tools
   if (options.run_mode == 1)
   {
     if ((options.particle == "") || (options.diagram == ""))
@@ -288,12 +286,14 @@ int main(int argc, char *argv[])
     }
   }
   
+  // compute tree-level counter-term coupling
   if (options.run_mode == 2)
   {
     if ((options.particle == "")) { cout << "please enter a particle" << endl; return 0;}
     else { run_mass_builder_mode_2(options);}
   }
   
+  // generate C++ interface to TSIL
   if (options.run_mode == 4 )
   {
     if (options.input_list == "")
@@ -306,6 +306,7 @@ int main(int argc, char *argv[])
     gen_code.generate_code();
   }
   
+  // create pdf of FeynArts generated Feynman diagrams
   if (options.run_mode == 5 )
   {
     if (options.model == "" || options.particle == "") { cout << "please specify a model and particle, at least one is missing" << endl; return 0;}
@@ -313,24 +314,27 @@ int main(int argc, char *argv[])
     ca.generate_figures(options);
   }
   
+  // Evaluate self energies via TSIL interface
   if (options.run_mode == 6 )
   {
     if (options.input_list == "" ) { cout << "missing input data" << endl; return 0;}
     run_mass_builder_mode_6(options);
   }
   
+  // Evaluate pole mass for a spin 0 field by iteration
   if (options.run_mode == 7 )
   {
     if (options.input_list == "" ) { cout << "missing input data" << endl; return 0;}
     run_mass_builder_mode_7(options);
   }
   
+  // Print Feynman rules for specified vertices to LaTeX format
   if (options.run_mode == 8 )
   {
     if (options.model == "" ) { cout << "please specify a model to work with" << endl; return 0;}
-    print_vertices(options);
+    Compute_amp ca;
+    ca.print_vertices(options);
   }
-  
   
   return 0;
 }

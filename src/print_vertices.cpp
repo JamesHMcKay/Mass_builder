@@ -10,56 +10,50 @@
 
 #include "utils.hpp"
 #include "templates.hpp"
+#include "compute_amp.hpp"
 
 #define RUN_ALL
 //#define DEBUG
 using namespace std;
 using namespace utils;
-string s_cwd__(getcwd(NULL,0));
 
 
-void print_3_vertex(ofstream &myfile, std::string particle_1,std::string particle_2,std::string particle_3,Options options)
+void Compute_amp::print_3_vertex(std::string &input, std::string particle_1,std::string particle_2,std::string particle_3,Options options)
 {
   std::string type;
-  if (options.counter_terms){myfile<<"t12 = CreateCTTopologies[1, 1 -> 2, ExcludeTopologies -> Internal];"<<endl;
+  if (options.counter_terms){input += "t12 = CreateCTTopologies[1, 1 -> 2, ExcludeTopologies -> Internal];";
     type = "c";}
-  else {myfile<<"t12 = CreateTopologies[0, 1 -> 2, ExcludeTopologies -> Internal];"<<endl;
+  else {input += "t12 = CreateTopologies[0, 1 -> 2, ExcludeTopologies -> Internal];";
     type = "";}
   
-  myfile<<"alldiags = InsertFields[t12, {"<<particle_1<<"} -> {"<<particle_2<<","<<particle_3<<"},InsertionLevel -> {Particles}, GenericModel -> Lorentz,Restrictions-> {" << options.restrictions << "}, Model -> \""<<s_cwd__<<"/models/"<<options.model<<"/"<<options.model<<"\"];\n";
-  myfile<<"amp0 = FCFAConvert[CreateFeynAmp[alldiags], IncomingMomenta -> {Subscript[p, 1]},OutgoingMomenta -> {Subscript[p, 2], Subscript[p, 3]},UndoChiralSplittings -> True, TransversePolarizationVectors -> {p},DropSumOver -> True, List -> False, ChangeDimension -> D] //Contract\n";
+  input += "alldiags = InsertFields[t12, {" + particle_1 + "} -> {" + particle_2 + "," + particle_3 + "},InsertionLevel -> {Particles}, GenericModel -> Lorentz,Restrictions-> {"  +  options.restrictions  +  "}, Model -> \"" + get_cwd() + "/models/" + options.model + "/" + options.model + "\"];";
+  input += "amp0 = FCFAConvert[CreateFeynAmp[alldiags], IncomingMomenta -> {Subscript[p, 1]},OutgoingMomenta -> {Subscript[p, 2], Subscript[p, 3]},UndoChiralSplittings -> True, TransversePolarizationVectors -> {p},DropSumOver -> True, List -> False, ChangeDimension -> D] //Contract;";
   
-  myfile<<"Export[\""<<s_cwd__<<"/models/"<<options.model<<"/LaTeX/vertex_"<<particle_1<< "_"<<particle_2<< "_"<<particle_3<< "_" << type <<".txt\",TeXForm[amp0]];\n"
+  input += "Export[\"" + get_cwd() + "/models/" + options.model + "/LaTeX/vertex_" + particle_1 +  "_" + particle_2 +  "_" + particle_3 +  "_"  +  type  + ".txt\",TeXForm[amp0]];";
   
-  <<"Export[\""<<s_cwd__<<"/models/"<<options.model<<"/LaTeX/vertex_"<<particle_1<< "_"<<particle_2<< "_"<<particle_3<< "_" << type <<".pdf\",Paint[alldiags, Numbering -> None, ColumnsXRows -> 1]];\n"
-  
-  
-  <<endl;
+  input += "Export[\"" + get_cwd() + "/models/" + options.model + "/LaTeX/vertex_" + particle_1 +  "_" + particle_2 +  "_" + particle_3 +  "_"  +  type  + ".pdf\",Paint[alldiags, Numbering -> None, ColumnsXRows -> 1]];";
   
 }
 
-void print_4_vertex(ofstream &myfile, std::string particle_1,std::string particle_2,std::string particle_3,std::string particle_4,Options options)
+void Compute_amp::print_4_vertex(std::string &input, std::string particle_1,std::string particle_2,std::string particle_3,std::string particle_4,Options options)
 {
   std::string type;
-  if (options.counter_terms){myfile<<"t12 = CreateCTTopologies[1, 2 -> 2, ExcludeTopologies -> Internal];"<<endl;
+  if (options.counter_terms){input += "t12 = CreateCTTopologies[1, 2 -> 2, ExcludeTopologies -> Internal];";
     type = "c";}
-  else {myfile<<"t12 = CreateTopologies[0, 2 -> 2, ExcludeTopologies -> Internal];"<<endl;
+  else {input += "t12 = CreateTopologies[0, 2 -> 2, ExcludeTopologies -> Internal];";
     type = "";}
   
-  myfile<<"alldiags = InsertFields[t12, {"<<particle_1<<","<<particle_2<<"} -> {"<<particle_3<<","<<particle_4<<"},InsertionLevel -> {Particles}, GenericModel -> Lorentz,Restrictions-> {" << options.restrictions << "}, Model -> \""<<s_cwd__<<"/models/"<<options.model<<"/"<<options.model<<"\"];\n";
-  myfile<<"amp0 = FCFAConvert[CreateFeynAmp[alldiags], IncomingMomenta -> {Subscript[p, 1],Subscript[p,2]},OutgoingMomenta -> {Subscript[p, 3], Subscript[p, 4]},UndoChiralSplittings -> True, TransversePolarizationVectors -> {p},DropSumOver -> True, List -> False, ChangeDimension -> D] //Contract\n";
+  input += "alldiags = InsertFields[t12, {" + particle_1 + "," + particle_2 + "} -> {" + particle_3 + "," + particle_4 + "},InsertionLevel -> {Particles}, GenericModel -> Lorentz,Restrictions-> {"  +  options.restrictions  +  "}, Model -> \"" + get_cwd() + "/models/" + options.model + "/" + options.model + "\"];";
+  input += "amp0 = FCFAConvert[CreateFeynAmp[alldiags], IncomingMomenta -> {Subscript[p, 1],Subscript[p,2]},OutgoingMomenta -> {Subscript[p, 3], Subscript[p, 4]},UndoChiralSplittings -> True, TransversePolarizationVectors -> {p},DropSumOver -> True, List -> False, ChangeDimension -> D] //Contract;";
   
-  myfile<<"Export[\""<<s_cwd__<<"/models/"<<options.model<<"/LaTeX/vertex_"<<particle_1<< "_"<<particle_2<< "_"<<particle_3<< "_"<<particle_4 << type <<".txt\",TeXForm[amp0]];\n"
+  input += "Export[\"" + get_cwd() + "/models/" + options.model + "/LaTeX/vertex_" + particle_1 +  "_" + particle_2 +  "_" + particle_3 +  "_" + particle_4  +  type  + ".txt\",TeXForm[amp0]];";
   
-  <<"Export[\""<<s_cwd__<<"/models/"<<options.model<<"/LaTeX/vertex_"<<particle_1<< "_"<<particle_2<< "_"<<particle_3<< "_"<<particle_4 << type <<".pdf\",Paint[alldiags, Numbering -> None, ColumnsXRows -> 1]];\n"
-  
-  
-  <<endl;
+  input += "Export[\"" + get_cwd() + "/models/" + options.model + "/LaTeX/vertex_" + particle_1 +  "_" + particle_2 +  "_" + particle_3 +  "_" + particle_4  +  type  + ".pdf\",Paint[alldiags, Numbering -> None, ColumnsXRows -> 1]];";
   
 }
 
 
-void print_vertex_tex(ofstream &myfile, std::string particle_1,std::string particle_2,std::string particle_3,std::string particle_4,Options options,int number)
+void Compute_amp::print_vertex_tex(ofstream &myfile, std::string particle_1,std::string particle_2,std::string particle_3,std::string particle_4,Options options,int number)
 {
   std::string type;
   if (options.counter_terms){ type = "c";}
@@ -225,9 +219,9 @@ void print_vertex_tex(ofstream &myfile, std::string particle_1,std::string parti
   
   if (success)
   {
-    myfile << number + 1 << ".\n"
+    myfile  <<  number + 1 << ".\n"
     << "\\begin{minipage}{0.2\\textwidth}\n"
-    <<"\\includegraphics[width=1\\textwidth]{"<<s_cwd__<<"/models/"<<options.model<<"/LaTeX/vertex_"<<particle_1<< "_"<<particle_2<< "_"<<particle_3<< "_"<<particle_4 << type <<".pdf}\n"
+    <<"\\includegraphics[width=1\\textwidth]{"<< get_cwd() <<"/models/"<<options.model<<"/LaTeX/vertex_"<<particle_1<< "_"<<particle_2<< "_"<<particle_3<< "_"<<particle_4 << type <<".pdf}\n"
     <<"\\end{minipage}\n"
     <<"\\hspace{2cm}\n"
     <<"\\begin{minipage}{0.7\\textwidth}\n"
@@ -273,14 +267,8 @@ void print_vertex_tex(ofstream &myfile, std::string particle_1,std::string parti
 
 
 
-void print_vertices(Options options)
+void Compute_amp::print_vertices(Options options)
 {
-  
-  
-  
-  
-  string s_cwd__(getcwd(NULL,0));
-  
   string model = options.model;
   
   
@@ -299,12 +287,16 @@ void print_vertices(Options options)
   
   // create Mathematica script to print a pdf for each vertex and record the amplitude in a text file
   
-  ofstream myfile;
-  myfile.open("output/print_vertices.m");
+  create_wstp_link();
+  load_libraries();
+  WSNewPacket(link);
+  std::string input;
   
-  templates::print_math_header(myfile);
-  utils::assign_FCGV(myfile,options);
-  utils::assign_variables(myfile,options);
+  templates::print_math_header(input);
+  utils::assign_FCGV(input,options);
+  utils::assign_variables(input,options);
+  
+  send_to_math(input);
   
   // loop over subroutine for all particles in list
   
@@ -312,26 +304,23 @@ void print_vertices(Options options)
   {
     if (particle_4[i] == "")
     {
-      print_3_vertex(myfile,particle_1[i],particle_2[i],particle_3[i],options);
+      print_3_vertex(input,particle_1[i],particle_2[i],particle_3[i],options);
     }
     else
     {
-      print_4_vertex(myfile,particle_1[i],particle_2[i],particle_3[i],particle_4[i],options);
+      print_4_vertex(input,particle_1[i],particle_2[i],particle_3[i],particle_4[i],options);
     }
   }
   
   // run Mathematica script
   
-  myfile.close();
+  send_to_math(input);
   
-#ifdef RUN_ALL
-  system("chmod +x output/print_vertices.m ");
-  if (options.verbose) system("./output/print_vertices.m");
-  else system("./output/print_vertices.m  >/dev/null");
-#endif
+  input += "Quit[]";
+  send_to_math(input);
   
-  
-  
+  WSClose(link);
+  cout << "WSTP link closed successfully" << endl;
   
   // generate LaTeX file
   
