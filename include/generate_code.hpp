@@ -14,6 +14,7 @@
 #include "options.hpp"
 #include "templates.hpp"
 #include "utils.hpp"
+#include "cmake_variables.hpp"
 
 
 using namespace std;

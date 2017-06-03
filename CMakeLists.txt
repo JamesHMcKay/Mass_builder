@@ -27,6 +27,9 @@ if(Mathematica_FOUND AND Mathematica_WSTP_FOUND)
 endif()
 
 
+set(TSIL_PATH /Users/jamesmckay/Documents/Programs/tsil-1.3/)
+
+
 # Configure cmake variables file
 set(outhdr "${PROJECT_SOURCE_DIR}/include/cmake_variables.hpp")
 configure_file("${PROJECT_SOURCE_DIR}/include/cmake_variables.hpp.in" ${outhdr})
@@ -34,8 +37,14 @@ configure_file("${PROJECT_SOURCE_DIR}/include/cmake_variables.hpp.in" ${outhdr})
 
 include_directories(src include ${Mathematica_WSTP_INCLUDE_DIR})
 
+
+
+
 # specify location of TSIL header file
-set(TSIL_HEADER_FILE /Users/jamesmckay/Documents/Programs/tsil-1.3/tsil_cpp.h ) 
+set(TSIL_HEADER_FILE ${TSIL_PATH}/tsil_cpp.h )
+
+
+
 
 # set source and header files used in all executables
 set(HEADER_FILES  include/cmake_variables.hpp include/templates.hpp include/options.hpp include/bases.hpp include/data.hpp include/self_energy.hpp include/utils.hpp include/write_tsil_ini.hpp)
@@ -56,10 +65,6 @@ set(HEADER_TRIPLET examples/EW_triplet.hpp)
 
 # include generated source files
 include(src/CMakeLists.txt)
-
-
-
-
 
 
 LINK_DIRECTORIES(/Users/jamesmckay/Documents/Programs/tsil-1.3) 
