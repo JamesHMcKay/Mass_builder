@@ -28,7 +28,6 @@ endif()
 
 set(TSIL_PATH "" CACHE STRING "The path to the TSIL file")
 
-#set(TSIL_PATH /Users/jamesmckay/Documents/Programs/tsil-1.3/)
 
 
 # Configure cmake variables file
@@ -68,7 +67,7 @@ set(HEADER_TRIPLET examples/EW_triplet.hpp)
 include(src/CMakeLists.txt)
 
 
-LINK_DIRECTORIES(/Users/jamesmckay/Documents/Programs/tsil-1.3) 
+LINK_DIRECTORIES(${TSIL_PATH})
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 set(CMAKE_CXX_FLAGS -L.)
