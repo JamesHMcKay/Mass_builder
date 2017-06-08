@@ -1,0 +1,43 @@
+#ifndef DATA_H
+#define DATA_H
+#include "options.hpp"
+#include <map>
+using namespace std;
+struct Data
+{
+public:
+
+double P, Q;
+std::map<std::string, double> SE_1;
+std::map<std::string, double> SE_2;
+std::map<std::string, double> M_tree;
+
+std::vector<std::string> avail_part;
+
+string null="";
+  Data (){};
+Data(Options options) {
+double param [99];
+std::string name [99]; int i=0;
+
+std::ifstream input(options.input_list);
+std::string line;
+while(getline(input, line)) {
+if (!line.length() || line[0] == '#')
+ continue;
+ std::istringstream iss(line);
+ iss>> name[i] >> param[i];
+     i=i+1;
+   }
+  for (int n=0;n<i+1;n++)
+  {
+  if (name[n]=="Q")
+  {  Q =param[n];  }
+  if (name[n]=="P")
+  {  P =param[n];  }
+}
+}
+
+
+};
+#endif
