@@ -15,12 +15,13 @@
 
 
 #include "templates.hpp"
+#include "cmake_variables.hpp"
 
 namespace templates
 {
   time_t t = time(0);   // get time now to print into generated files
   struct tm * now = localtime( & t );
-    /* TSIL_PATH */ std::string TSIL = "/Users/jamesmckay/Documents/Programs/tsil-1.3/tsil_cpp.h";  
+  std::string TSIL = TSIL_PATH;
   
   void self_energy_hpp_header(ofstream &file)
   {

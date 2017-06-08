@@ -561,7 +561,7 @@ void Generate_code::generate_code()
   ofstream main_output;
   main_output.open (main_output_file);
   
-  std::string TSIL = TSIL_PATH + "tsil_cpp.h";
+  std::string TSIL = TSIL_PATH;
   
   amp_preamble(main_output);
   
