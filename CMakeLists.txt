@@ -28,23 +28,29 @@ endif()
 
 set(TSIL_PATH "" CACHE STRING "The path to the TSIL file")
 
-
-
 # Configure cmake variables file
 set(outhdr "${PROJECT_SOURCE_DIR}/include/cmake_variables.hpp")
 configure_file("${PROJECT_SOURCE_DIR}/include/cmake_variables.hpp.in" ${outhdr})
 
 
+# We set up skeleton files that will be replaced by generated files by Mass Builder later
+# Configure skeleton self_energy.hpp
+set(outhdr "${PROJECT_SOURCE_DIR}/include/self_energy.hpp")
+configure_file("${PROJECT_SOURCE_DIR}/include/self_energy.hpp.in" ${outhdr})
+
+# Configure skeleton data.hpp
+set(outhdr "${PROJECT_SOURCE_DIR}/include/data.hpp")
+configure_file("${PROJECT_SOURCE_DIR}/include/data.hpp.in" ${outhdr})
+
+# Configure skeleton self_energy.cpp
+set(outhdr "${PROJECT_SOURCE_DIR}/src/self_energy.cpp")
+configure_file("${PROJECT_SOURCE_DIR}/src/self_energy.cpp.in" ${outhdr})
+
+
 include_directories(src include ${Mathematica_WSTP_INCLUDE_DIR})
-
-
-
 
 # specify location of TSIL header file
 set(TSIL_HEADER_FILE ${TSIL_PATH}/tsil_cpp.h )
-
-
-
 
 # set source and header files used in all executables
 set(HEADER_FILES  include/cmake_variables.hpp include/templates.hpp include/options.hpp include/bases.hpp include/data.hpp include/self_energy.hpp include/utils.hpp include/write_tsil_ini.hpp)
@@ -81,8 +87,10 @@ set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${MPI_LINK_FLAGS}")
 include_directories(${MPI_INCLUDE_PATH})
 endif()
 
+# The main Mass Builder executable
 add_executable(mass_builder ${SRC_MB} ${SRC_FILES_GEN} ${HEADER_FILES_GEN} ${HEADER_MB} ${TSIL_HEADER_FILE} ${SRC_FILES} ${HEADER_FILES} ${GENERATED_SRC_FILES})
 
+# Add example executables for each of the models
 add_executable(Scalar EXCLUDE_FROM_ALL ${SRC_Scalar} ${SRC_FILES_GEN} ${HEADER_FILES_GEN} ${TSIL_HEADER_FILE} ${SRC_FILES} ${HEADER_FILES} ${GENERATED_SRC_FILES})
 
 add_executable(MSSM EXCLUDE_FROM_ALL ${SRC_MSSM} ${SRC_FILES_GEN} ${HEADER_FILES_GEN} ${TSIL_HEADER_FILE} ${SRC_FILES} ${HEADER_FILES} ${GENERATED_SRC_FILES})
@@ -91,11 +99,12 @@ add_executable(VDM EXCLUDE_FROM_ALL ${SRC_VDM} ${SRC_FILES_GEN} ${HEADER_FILES_G
 
 add_executable(EW_triplet EXCLUDE_FROM_ALL ${SRC_TRIPLET} ${HEADER_TRIPLET} ${SRC_FILES_GEN} ${HEADER_FILES_GEN} ${TSIL_HEADER_FILE} ${SRC_FILES} ${HEADER_FILES} ${GENERATED_SRC_FILES})
 
+# Mass Builder required the WSTP and MPI libraries
 TARGET_LINK_LIBRARIES(mass_builder libtsil.a ${MPI_LIBRARIES} ${LIBRARIES})
 
 Mathematica_ABSOLUTIZE_LIBRARY_DEPENDENCIES(mass_builder)
 
-
+# Examples only require the TSIL libraries
 TARGET_LINK_LIBRARIES(MSSM libtsil.a)
 
 TARGET_LINK_LIBRARIES(EW_triplet libtsil.a)

@@ -112,14 +112,11 @@ which will generate the required files.  All packages within Mathematica are now
 The Two-loop Self-energy Integral Library (\tsils) can be downloaded from \href{http://www.niu.edu/spmartin/TSIL/}{\lstinline{http://www.niu.edu/spmartin/TSIL/}}.  \mb has been tested with version 1.4. It may installed anywhere (as \mb will request the path at configuration).
 
 \subsection{\mb}
-\mb can be downloaded from \href{https://github.com/JamesHMcKay/Mass_builder.git}{\lstinline{https://github.com/JamesHMcKay/Mass_builder.git}}.  The first step is to run the configuration script
-\begin{lstterm}
-./scripts/config.sh
-\end{lstterm}
-which will arrange the files and make some required output directories.
+\mb can be downloaded from \href{https://github.com/JamesHMcKay/Mass_builder.git}{\lstinline{https://github.com/JamesHMcKay/Mass_builder.git}}.
 
-After configuration, build using cmake as follows
+\mb is built using cmake with the following commands
 \begin{lstterm}
+mkdir build
 cd build
 cmake -DTSIL_PATH=/path/to/tsil-1.4/ ..
 make

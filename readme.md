@@ -36,16 +36,10 @@ All packages within Mathematica are now set up.
 
 To install the Two-loop Self-energy Integral Library (TSIL) downloaded the source from http://www.niu.edu/spmartin/TSIL/. It may installed anywhere (as Mass Builder will request the path at configuration).
 
-To install Mass Builder follow the instructions below.
-
-First run the config script, this just moves some files and creates output directories
-```
-./scripts/config.sh
-```
-
-Next to compile the code run
+To install Mass Builder enter the following commands
 
 ```
+mkdir build
 cd build
 cmake -DTSIL_PATH=/path/to/tsil-1.4/ ..
 make -jn
@@ -59,6 +53,7 @@ To test the program is functioning correctly run the following example.
 
 
 ```
+mkdir models/Scalar/output
 ./mass_builder -a -m Scalar
 ./mass_builder -g -m Scalar
 cd build
