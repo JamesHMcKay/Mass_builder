@@ -40,6 +40,7 @@ To install Mass Builder enter the following commands
 
 ```
 mkdir build
+mkdir output
 cd build
 cmake -DTSIL_PATH=/path/to/tsil-1.4/ ..
 make -jn
