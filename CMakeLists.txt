@@ -56,10 +56,10 @@ set(TSIL_HEADER_FILE ${TSIL_PATH}/tsil_cpp.h )
 # set source and header files used in all executables
 set(HEADER_FILES  include/cmake_variables.hpp include/templates.hpp include/options.hpp include/bases.hpp include/data.hpp include/self_energy.hpp include/utils.hpp include/write_tsil_ini.hpp)
 
-set(SRC_FILES src/templates.cpp src/options.cpp src/bases.cpp src/self_energy.cpp src/generate_code.cpp src/utils.cpp src/write_tsil_ini.cpp src/print_vertices.cpp)
+set(SRC_FILES src/templates.cpp src/options.cpp src/bases.cpp src/self_energy.cpp src/generate_code.cpp src/utils.cpp src/write_tsil_ini.cpp )
 
 # set source file for Mass Builder executable
-set(SRC_MB src/mass_builder.cpp  src/compute_amp.cpp)
+set(SRC_MB src/mass_builder.cpp  src/compute_amp.cpp src/print_vertices.cpp)
 set(HEADER_MB include/compute_amp.hpp)
 
 

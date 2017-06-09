@@ -9,7 +9,6 @@
  */
 
 #include "data.hpp"
-#include "calc_amplitudes.hpp"
 #include "generate_code.hpp"
 #include "self_energy.hpp"
 
