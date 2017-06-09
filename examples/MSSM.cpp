@@ -9,11 +9,9 @@
  */
 
 #include "data.hpp"
-#include "generate_code.hpp"
 #include "self_energy.hpp"
 
 using namespace std;
-using namespace utils;
 
 
 double iterative_mass_F5(Data data)
