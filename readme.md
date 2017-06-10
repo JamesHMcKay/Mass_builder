@@ -20,7 +20,7 @@ This is an interface tool making use of the existing Mathematica and C packages 
 Installation
 --
 
-This program requires Mathematica, FeynCalc, FeynArts (patched for use with FeynCalc) and TARCER to be installed.  
+This program requires Mathematica, FeynCalc, FeynArts (patched for use with FeynCalc) and TARCER to be installed.
 
 The easiest way to install FeynCalc, FeynArts and Tarcer is via the automated installation method.  Open a Mathematica notebook or kernel session and enter
 ```
@@ -35,7 +35,7 @@ GenerateTarcerMX
 ```
 All packages within Mathematica are now set up.
 
-To install the Two-loop Self-energy Integral Library (TSIL) downloaded the source from http://www.niu.edu/spmartin/TSIL/. It may installed anywhere (as Mass Builder will request the path at configuration).
+To install the Two-loop Self-energy Integral Library (TSIL) download the source from http://www.niu.edu/spmartin/TSIL/. It may installed anywhere (as Mass Builder will request the path at configuration).
 
 To install Mass Builder enter the following commands
 
@@ -97,7 +97,7 @@ cd build
 cmake .
 make MSSM
 ```
-This will build a new executable that demonstrates how one may call Mass Builder from external functions.  The source file is located in examples/MSSM.cpp.  Once this has build run the following to generate a figure.
+This will build a new executable that demonstrates how one may call Mass Builder from external functions.  The source file is located in examples/MSSM.cpp.  Once this has built run the following to generate a figure.
 
 ```
 ./MSSM -i models/MSSM/input.txt
