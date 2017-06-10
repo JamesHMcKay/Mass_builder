@@ -101,7 +101,7 @@ This will build a new executable that demonstrates how one may call Mass Builder
 
 ```
 ./MSSM -i models/MSSM/input.txt
-python examples/plot_example.py
+python examples/plot_MSSM.py
 ```
 This will place a figure mass_splittings_MSSM.eps in the root directory.
 
