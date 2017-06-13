@@ -82,7 +82,6 @@ public:
     {
       cout << "Unable to create link to the Kernel" << endl;
       WSNewPacket(link);
-      
     }
     else
     {
