@@ -503,14 +503,16 @@ void Compute_amp::generate_figures(Options options_in)
   
   std::string input;
   draw_all_diagrams(input,options);
-  
   create_wstp_link();
   load_libraries();
-  WSNewPacket(link);
-  WSPutFunction(link, "ToExpression", 1);
-  WSPutString(link, input.c_str());
-  wait_for_packet();
-}
+  send_to_math(input);
+  input += "Quit[]";
+  send_to_math(input);
+  
+  WSClose(link);
+  cout << "WSTP link closed successfully" << endl;
+  
+  }
 
 
 

@@ -534,6 +534,10 @@ namespace utils
     input+="SEm = (1/4) DiracTrace[ SE ];";
     input+="SE = p*SEk+SEm;";
     input+="SE = SE /. Pair[Momentum[Polarization[p, -I, Transversality -> True], D], Momentum[Polarization[p, I, Transversality -> True], D]] -> -1 ;";
+    for (int index = 1; index < 4;index ++)
+    {
+      input+="SE = SE /. Index[Generation, " + to_string(index) + "] -> " + to_string(index)+ ";";
+    }
     // uncomment the following line if using a different gauge choice
     //input+="SEn = SEn /. GaugeXi[Z] -> 0 /. GaugeXi[P] -> 0 /. GaugeXi[Wp] -> 0  /. GaugeXi[S[1]] -> 0 /. GaugeXi[S[2]] -> 0 /. GaugeXi[S[3]] -> 0 ;\n"
   }

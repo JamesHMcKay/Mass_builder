@@ -112,6 +112,7 @@ public:
     WSPutString(link, input.c_str());
     
     wait_for_packet();
+    cout << input << endl;
   }
   
   // Wait to receive a packet from the kernel
@@ -135,6 +136,7 @@ public:
     WSPutFunction(link, "ToExpression", 1);
     WSPutString(link, input.c_str());
     wait_for_packet();
+    cout << input << endl;
     input = "";
   }
   
