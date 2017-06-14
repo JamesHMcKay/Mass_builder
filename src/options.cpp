@@ -65,6 +65,10 @@ void User_input::user_interface()
     {
       options.restrictions = "WinoLimit,WinoCouplings";
     }
+    if (options.model == "VDM" || options.model == "QED")
+    {
+      options.use_lorentz = false;
+    }
 
   }
 

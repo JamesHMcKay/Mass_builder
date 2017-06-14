@@ -53,8 +53,8 @@ Mlep[ 3 ] := ML;
 
 
 TheLabel[ F[2, {1}] ] := "e";
-TheLabel[ F[2, {2}] ] := "mu";
-TheLabel[ F[2, {3}] ] := "ta";
+TheLabel[ F[2, {2}] ] := "\\mu";
+TheLabel[ F[2, {3}] ] := "\\tau";
 
 
 (*      Couplings (calculated by FeynRules)      *)
