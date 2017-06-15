@@ -10,7 +10,7 @@
 */
 
 #include "data.hpp"
-#include "calc_amplitudes.hpp"
+#include "compute_amp.hpp"
 #include "self_energy.hpp"
 
 using namespace std;
