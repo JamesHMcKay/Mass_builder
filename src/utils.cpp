@@ -524,7 +524,7 @@ namespace utils
       input+=" fullamp0 = (amp0) // DiracSimplify // TID[#, k1] & // DiracSimplify;";
       input+="tfiamp0 = fullamp0 // ToTFI[#, k1, p] & // ChangeDimension[#, D] &;";
     }
-    
+
   }
   
   void print_tarcer_recurse(std::string &input)

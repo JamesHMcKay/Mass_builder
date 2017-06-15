@@ -43,9 +43,9 @@ private:
   
 public:
   
-  Compute_amp(){}
+  Compute_amp(Options options) : options(options) {}
   
-  bool calc_diagram(Options options_in);
+  bool calc_diagram();
   
   
   void create_wstp_link()
@@ -107,7 +107,10 @@ public:
     input+= "<< FeynCalc/FeynCalc.m;";
     input+= "AppendTo[$Path, \"" + cwd + "/src/\"];";
     input+= "<< MassBuilder.m;";
-    
+    if (options.verbose)
+    {
+      cout << input << endl;
+    }
     WSPutString(link, input.c_str());
     
     wait_for_packet();
@@ -133,22 +136,26 @@ public:
     WSNewPacket(link);
     WSPutFunction(link, "ToExpression", 1);
     WSPutString(link, input.c_str());
+    if (options.verbose)
+    {
+      cout << input << endl;
+    }
     wait_for_packet();
     input = "";
   }
   
   
   // Generate all loop diagrams for specified particle
-  void generate_figures(Options options_in);
+  void generate_figures();
   
   // Compute tree-level counter-term coupling (print result to terminal)
-  void calc_counter_terms(Options options_in);
+  void calc_counter_terms();
   
   // solve the 1-loop order linear equation to determine counter-term coupling
   void solve_1loop(std::string particle,vector<std::string> diagram);
   
   // Main function to print vertices and Feynman rules to LaTeX ready file
-  void print_vertices(Options options);
+  void print_vertices();
   
   // Generate tex file
   void print_vertex_tex(ofstream &myfile, std::string particle_1,std::string particle_2,std::string particle_3,std::string particle_4,Options options,int number);

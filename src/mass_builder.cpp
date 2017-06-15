@@ -150,14 +150,14 @@ void run_mass_builder_mode_1a(Options options,int argc, char *argv[])
         inform_task_started(id, task);
         
         // execute calculation
-        Compute_amp ca;
+        Compute_amp ca(options);
         options.particle_1 = particles[task];
         options.particle_2 = particles[task];
         options.particle = particles[task];
         options.diagram = diagrams[task];
         options.mpi_process = id;
         options.set_type(types[task]);
-        ca.calc_diagram(options);
+        ca.calc_diagram();
       }
       
       task = task + p;
@@ -199,15 +199,15 @@ void run_mass_builder_mode_1a(Options options,int argc, char *argv[])
 void run_mass_builder_mode_1b(Options options)
 {
   //Calc_amplitudes ca; // alternative method
-  Compute_amp ca;
-  ca.calc_diagram(options);
+  Compute_amp ca(options);
+  ca.calc_diagram();
 }
 
 // Compute tree-level counter-term coupling
 void run_mass_builder_mode_2(Options options)
 {
-  Compute_amp ct;
-  ct.calc_counter_terms(options);
+  Compute_amp ct(options);
+  ct.calc_counter_terms();
 }
 
 
@@ -310,8 +310,8 @@ int main(int argc, char *argv[])
   if (options.run_mode == 5 )
   {
     if (options.model == "" || options.particle == "") { cout << "please specify a model and particle, at least one is missing" << endl; return 0;}
-    Compute_amp ca;
-    ca.generate_figures(options);
+    Compute_amp ca(options);
+    ca.generate_figures();
   }
   
   // Evaluate self energies via TSIL interface
@@ -332,8 +332,8 @@ int main(int argc, char *argv[])
   if (options.run_mode == 8 )
   {
     if (options.model == "" ) { cout << "please specify a model to work with" << endl; return 0;}
-    Compute_amp ca;
-    ca.print_vertices(options);
+    Compute_amp ca(options);
+    ca.print_vertices();
   }
   
   return 0;

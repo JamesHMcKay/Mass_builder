@@ -25,7 +25,7 @@ using namespace templates;
 
 // main routine for computing an amplitude for a given diagram
 // returns true for success and false if an error is encountered
-bool Compute_amp::calc_diagram(Options options)
+bool Compute_amp::calc_diagram()
 {
   bool success = 0;
   
@@ -496,10 +496,9 @@ std::string draw_all_diagrams(std::string &input, Options options)
 }
 
 
-void Compute_amp::generate_figures(Options options_in)
+void Compute_amp::generate_figures()
 {
   vector<std::string> particles, diagrams;
-  options = options_in;
   
   std::string input;
   draw_all_diagrams(input,options);
@@ -595,10 +594,8 @@ void Compute_amp::solve_1loop(std::string particle,vector<std::string> diagram)
 
 
 
-void Compute_amp::calc_counter_terms(Options options_in)
-{
-  options = options_in;
-  
+void Compute_amp::calc_counter_terms()
+{  
   // need to read in the list of available diagrams and then select the 1-loop ones for
   // adding up here
   

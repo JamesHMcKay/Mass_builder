@@ -267,7 +267,7 @@ void Compute_amp::print_vertex_tex(ofstream &myfile, std::string particle_1,std:
 
 
 
-void Compute_amp::print_vertices(Options options)
+void Compute_amp::print_vertices()
 {
   string model = options.model;
   
