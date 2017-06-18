@@ -39,7 +39,7 @@ V[1] == {
     PropagatorLabel -> "\\gamma",
     PropagatorType -> Sine,
     PropagatorArrow -> None,
-    Mass -> MA,
+    Mass -> 0,
     Indices -> {} }
 }
 
@@ -47,9 +47,9 @@ V[1] == {
 (*        Definitions       *)
 
 
-Mlep[ 1 ] := ME;
-Mlep[ 2 ] := MM;
-Mlep[ 3 ] := ML;
+Mlep[ 1 ] := 0;
+Mlep[ 2 ] := 0;
+Mlep[ 3 ] := 0;
 
 
 TheLabel[ F[2, {1}] ] := "e";

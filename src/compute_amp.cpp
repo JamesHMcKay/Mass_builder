@@ -96,6 +96,7 @@ bool Compute_amp::calc_diagram()
   {
     input += "SelfEnergyFinite = makeFiniteAmplitude[SelfEnergyFinite, 0, D];";
   }
+  input += "SelfEnergyFinite = FullSimplify[SelfEnergyFinite/.MassBuilderP^2 -> Pair[Momentum[p],Momentum[p]] /. MassBuilderP -> Momentum[p] ];";
   
   // send the above commands to Mathematica
   send_to_math(input);
@@ -595,7 +596,7 @@ void Compute_amp::solve_1loop(std::string particle,vector<std::string> diagram)
 
 
 void Compute_amp::calc_counter_terms()
-{  
+{
   // need to read in the list of available diagrams and then select the 1-loop ones for
   // adding up here
   

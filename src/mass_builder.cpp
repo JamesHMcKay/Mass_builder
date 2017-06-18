@@ -150,13 +150,13 @@ void run_mass_builder_mode_1a(Options options,int argc, char *argv[])
         inform_task_started(id, task);
         
         // execute calculation
-        Compute_amp ca(options);
         options.particle_1 = particles[task];
         options.particle_2 = particles[task];
         options.particle = particles[task];
         options.diagram = diagrams[task];
         options.mpi_process = id;
         options.set_type(types[task]);
+        Compute_amp ca(options);
         ca.calc_diagram();
       }
       

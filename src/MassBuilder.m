@@ -39,7 +39,16 @@ expandJKTIntegrals[amplitude_, masses_,J_,K_,T_,A_] := Module[{amp},amp = amplit
 Do[
    If[
         (masses[i]!=0) && (masses[j]!=0) && (masses[k]!=0),
-amp = amp
+    amp = amp /.
+    K[masses[[i]],masses[[j]],masses[[k]],D]  ->
+            (
+              K[masses[[i]],masses[[j]],masses[[k]],4]
+            - (masses[[i]]^2 + masses[[j]]^2 + masses[[k]]^2 )/ (2* MassBuilderEpsilon^2)
+            - (masses[[i]]^2 + masses[[j]]^2 + masses[[k]]^2 )/  ( 2*MassBuilderEpsilon)
+            + (I*A[masses[[i]],4]+ I*A[masses[[j]],4]+ I*A[masses[[k]],4])/MassBuilderEpsilon
+            + MassBuilderAe[masses[[i]]] +  MassBuilderAe[masses[[j]]] + MassBuilderAe[masses[[k]]]
+            )];
+    amp = amp
     /.
     J[masses[[i]],masses[[j]],masses[[k]],D]  ->
             (
@@ -48,18 +57,9 @@ amp = amp
             + (-(masses[[i]]^2 +masses[[j]]^2 +masses[[k]]^2)/2 + MassBuilderP^2/4 )/MassBuilderEpsilon
             + ( I*A[masses[[i]],4] + I*A[masses[[j]],4] + I*A[masses[[k]],4] )/MassBuilderEpsilon
             + MassBuilderAe[masses[[i]]] + MassBuilderAe[masses[[j]]] + MassBuilderAe[masses[[k]]]
-            )
-    /.
-    K[masses[[i]],masses[[j]],masses[[k]],D]  ->
-            (
-              K[masses[[i]],masses[[j]],masses[[k]],4]
-            - (masses[[i]]^2 + masses[[j]]^2 + masses[[k]]^2 )/ (2* MassBuilderEpsilon^2)
-            - (masses[[i]]^2 + masses[[j]]^2 + masses[[k]]^2 )/  ( 2*MassBuilderEpsilon)
-            + (I*A[masses[[i]],4]+ I*A[masses[[j]],4]+ I*A[masses[[k]],4])/MassBuilderEpsilon
-            + MassBuilderAe[masses[[i]]] +  MassBuilderAe[masses[[j]]] + MassBuilderAe[masses[[k]]]
             );
-   If[
-        masses[i]!=0,
+        If[
+        (masses[i]!=0),
         amp = amp
         /.
             T[masses[[i]],masses[[j]],masses[[k]],D]  ->
@@ -69,8 +69,7 @@ amp = amp
             + ((I*A[masses[[i]],4])/masses[[i]]^2 )/MassBuilderEpsilon
             - ((I*A[masses[[i]],4])/masses[[i]]^2 )
             + MassBuilderAe[masses[[i]]]/ masses[[i]]^2
-            )
-      ]];
+            )]
             ,
 {i, 1,Length[masses]},
 {j, 1,Length[masses]},
@@ -82,8 +81,6 @@ amp];
 
 expandVIntegrals[amplitude_, masses_,V_,B_] := Module[{amp},amp = amplitude;
 Do[
-   If[
-        (masses[i]!=0) && (masses[j]!=0) && (masses[k]!=0) && (masses[l]!=0),
 amp = amp
         /.
         V[masses[[i]],masses[[j]],masses[[k]],masses[[l]],D]  ->
@@ -92,7 +89,7 @@ amp = amp
         -1/(2*MassBuilderEpsilon^2) - 1/(2*MassBuilderEpsilon)
         - ( - I * B[masses[[j]] , masses[[l]] ] ) /MassBuilderEpsilon
         - MassBuilderBe[ masses[[j]] , masses[[l]] ]
-        )],
+        ),
 {i, 1,Length[masses]},
 {j, 1,Length[masses]},
 {k, 1,Length[masses]},
@@ -102,8 +99,6 @@ amp];
 
 expandBIntegrals[amplitude_, masses_,B_] := Module[{amp},amp = amplitude;
 Do[
- If[
-        (masses[i]!=0) && (masses[j]!=0),
         amp = amp
         /.
         B[masses[[i]],masses[[j]],D]  ->
@@ -111,7 +106,7 @@ Do[
           B[masses[[i]],masses[[j]],4]
           + I / MassBuilderEpsilon
           + I * MassBuilderEpsilon * MassBuilderBe[ masses[[i]], masses[[j]] ]
-        )],
+        ),
 {i, Length[masses]},
 {j, Length[masses]}
 ];

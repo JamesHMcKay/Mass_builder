@@ -47,11 +47,20 @@ double get_fermion_2loop(Data data)
   
   double C = pow(EL,4) * p / pow(16. * pow(Pi,2) ,2 );
   
-  double self_energy_1 = C * ( 5.25 - Zeta + 5.*pow(log(x),2) );
+  //double self_energy_1 = C * ( 5.25 - Zeta + 5.*pow(log(x),2) );
+  
+  double self_energy_1 = C * ( 5.25 - Zeta - 3*log(x) + 2*pow(log(x),2) );
+  
+  
   
   double self_energy_2 = C * ( (-31 + 4*Zeta + 20*log(x) - 8*pow(log(x),2))/8. );
+  //double self_energy_2 = C * ( (-31 + 4*Zeta + 20*log(x) - 8*pow(log(x),2))/8. );
   
   double self_energy_3 = C * ( -3.5 + 2*log(x) );
+  
+  cout << "self energy 1 = " << self_energy_1 << endl;  // this should match diagram 1
+  cout << "self energy 2 = " << self_energy_2 << endl;  // this should match diagram 5
+  cout << "self energy 3 = " << self_energy_3 << endl;  // this matches diagram 2
     
   return self_energy_1 + self_energy_2 + self_energy_3;
 }
@@ -80,10 +89,10 @@ int main()
   data.P = 10.;
   data.Q = 100.;
   data.EL = 0.1;
-  data.MM = 0.00001;
-  data.ME = 0.00001;
-  data.ML = 0.00001;
-  data.MA = 0.00001;
+  data.MM = 0;
+  data.ME = 0;
+  data.ML = 0;
+  data.MA = 0;
   
   Self_energy self_energy;
   
