@@ -26,20 +26,21 @@ MassBuilderBe[m1_,m2_];
 Begin["`Private`"]
 
 
-expandBasisIntegrals[amplitude_, masses_,A_,B_,J_,K_,T_,V_,F_]:=Module[{amp},amp = amplitude;
-amp = expandAIntegrals[amp,masses,A];
+expandBasisIntegrals[amplitude_, masses_,massesExpand_,A_,B_,J_,K_,T_,V_,F_]:=Module[{amp},amp = amplitude;
+amp = expandAIntegrals[amp,masses,massesExpand,A];
 amp = expandBIntegrals[amp,masses,B];
-amp = expandJKTIntegrals[amp,masses,J,K,T,A];
+amp = expandJKTIntegrals[amp,masses,massesExpand,J,K,T,A];
 amp = expandVIntegrals[amp,masses,V,B];
 amp];
 
 
 
-expandJKTIntegrals[amplitude_, masses_,J_,K_,T_,A_] := Module[{amp},amp = amplitude;
+expandJKTIntegrals[amplitude_, masses_,massesExpand_,J_,K_,T_,A_] := Module[{amp},amp = amplitude;
 Do[
    If[
-        (masses[i]!=0) && (masses[j]!=0) && (masses[k]!=0),
-    amp = amp /.
+        (massesExpand[[i]]!=0) && (massesExpand[[j]]!=0) && (massesExpand[[k]]!=0),
+    amp = amp
+    /.
     K[masses[[i]],masses[[j]],masses[[k]],D]  ->
             (
               K[masses[[i]],masses[[j]],masses[[k]],4]
@@ -58,11 +59,11 @@ Do[
             + ( I*A[masses[[i]],4] + I*A[masses[[j]],4] + I*A[masses[[k]],4] )/MassBuilderEpsilon
             + MassBuilderAe[masses[[i]]] + MassBuilderAe[masses[[j]]] + MassBuilderAe[masses[[k]]]
             );
-        If[
-        (masses[i]!=0),
-        amp = amp
-        /.
-            T[masses[[i]],masses[[j]],masses[[k]],D]  ->
+    If[
+        (massesExpand[[i]]!=0),
+    amp = amp
+    /.
+    T[masses[[i]],masses[[j]],masses[[k]],D]  ->
             (
               T[masses[[i]],masses[[j]],masses[[k]],4]
             - 1/(2*MassBuilderEpsilon^2) + 1/(2*MassBuilderEpsilon)
@@ -113,10 +114,10 @@ Do[
 amp];
 
 
-expandAIntegrals[amplitude_, masses_,A_] := Module[{amp},amp = amplitude;
+expandAIntegrals[amplitude_, masses_,massesExpand_,A_] := Module[{amp},amp = amplitude;
 Do[
    If[
-        masses[i]!=0,
+        massesExpand[[i]]!=0,
         amp = amp
       /. A[masses[[i]],D]  ->
       (

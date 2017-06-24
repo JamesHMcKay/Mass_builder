@@ -423,17 +423,33 @@ namespace utils
     }
     file << "];\n";
     
+    
+    if (masses[0]!="null")
+    {
+      file << "massesExpand = List[1";
+    }
+    else
+    {
+      file << "massesExpand = List[0";
+    }
+  
+    if (masses.size()>1)
+    {
+      for (unsigned int i=1; i < ( masses.size() ) ;i++)
+      {
+        if (masses[i]!="null")
+        {
+          file << ",1";
+        }
+        else
+        {
+          file << ",0";
+        }
+      }
+    }
+    file << "];\n";
+    
     file << "Do [  amp0 = amp0 /. MajoranaSpinor[p, masses[[i]]] -> 1 /. Spinor[Momentum[p, D], masses[[i]], 1] -> 1;   , {i, Length[masses]}];\n";
-    
-    /*  // now replacement by function above
-     for (unsigned int i=0; i < masses.size();i++)
-     {
-     file<<"amp0 = amp0 /. MajoranaSpinor[Momentum[p, D], "<<masses[i]<<"] -> 1 /.Spinor[Momentum[p, D], "<<masses[i]<<", 1] -> 1;"<<endl;
-     file<<"amp0 = amp0 /. MajoranaSpinor[p, "<<masses[i]<<"] -> 1 /.Spinor[Momentum[p], "<<masses[i]<<", 1] -> 1;"<<endl;
-     }
-     */
-    
-    
     
     
     file<<"SetOptions[Eps, Dimension -> D];\n";
@@ -502,6 +518,38 @@ namespace utils
       }
     }
     input+= "];";
+    
+    
+    
+    if (masses[0]!="null")
+    {
+      input+= "massesExpand = List[1";
+    }
+    else
+    {
+      input+= "massesExpand = List[0";
+    }
+  
+    if (masses.size()>1)
+    {
+      for (unsigned int i=1; i < ( masses.size() ) ;i++)
+      {
+        if (masses[i]!="null")
+        {
+          input+= ",1";
+        }
+        else
+        {
+          input+= ",0";
+        }
+      }
+    }
+    input+= "];\n";
+
+    
+    
+    
+    
     
     input+= "Do [  amp0 = amp0 /. MajoranaSpinor[p, masses[[i]]] -> 1 /. Spinor[Momentum[p, D], masses[[i]], 1] -> 1;   , {i, Length[masses]}];";
     for (int index = 1; index < 4;index ++)

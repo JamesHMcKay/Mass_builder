@@ -53,8 +53,8 @@ Mlep[ 3 ] := 0;
 
 
 TheLabel[ F[2, {1}] ] := "e";
-TheLabel[ F[2, {2}] ] := "\\mu";
-TheLabel[ F[2, {3}] ] := "\\tau";
+TheLabel[ F[2, {2}] ] := "mu";
+TheLabel[ F[2, {3}] ] := "ta";
 
 
 (*      Couplings (calculated by FeynRules)      *)
@@ -63,7 +63,7 @@ M$CouplingMatrices = {
 
 C[ V[1] , V[1] ] == {{0, (-I)*Z3}, {0, I*Z3}},
 
-C[ -F[2, {e1x2}] , F[2, {e2x2}] , V[1] ] == {{I*EL*IndexDelta[e1x2, e2x2], I*EL*Z1*IndexDelta[e1x2, e2x2]}, {I*EL*IndexDelta[e1x2, e2x2], I*EL*Z1*IndexDelta[e1x2, e2x2]}},
+C[ -F[2, {e1x2}] , F[2, {e2x2}] , V[1] ] == {{-I*EL*IndexDelta[e1x2, e2x2], I*EL*Z1*IndexDelta[e1x2, e2x2]}, {-I*EL*IndexDelta[e1x2, e2x2], I*EL*Z1*IndexDelta[e1x2, e2x2]}},
 
 C[ -F[2, {e1x2}] , F[2, {e2x2}] ] == {{0, I*Z2*IndexDelta[e1x2, e2x2]}, {0, I*Z2*IndexDelta[e1x2, e2x2]}, {0, 0}, {0, 0}}
 

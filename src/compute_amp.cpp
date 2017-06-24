@@ -81,7 +81,7 @@ bool Compute_amp::calc_diagram()
   send_to_math(input);
   
   // expand basis integrals into finite plus divergent pieces (using MassBuilder. package)
-  input += "SelfEnergyFinite = expandBasisIntegrals[SE, masses, MassBuilderA,";
+  input += "SelfEnergyFinite = expandBasisIntegrals[SE, masses, massesExpand, MassBuilderA,";
   input += "MassBuilderB, MassBuilderJ, MassBuilderK, MassBuilderT, MassBuilderV, MassBuilderF];";
   
   // save full expanded amplitude to a Mathematica data file

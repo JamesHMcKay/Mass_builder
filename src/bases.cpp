@@ -121,6 +121,16 @@ void set_id(std::vector<string> &masses_input, std::vector<string> &identifiers_
   cout << " --- " << endl;
 #endif
   
+  for (unsigned int i = 0; i < identifiers.size(); i++)
+  {
+    if ( identifiers[i] == "e")
+    {
+      cout << "Error, identifier can not currently be set to \"e\" as this clashes with other definitions" << endl;
+      exit(1);
+    }
+  }
+  
+  
   identifiers_input = identifiers;
   masses_input = masses;
   

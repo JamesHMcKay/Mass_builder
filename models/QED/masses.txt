@@ -1,5 +1,3 @@
-ME E
-MM m
-ML l
-MA a
+ma a
+mf f
 null n

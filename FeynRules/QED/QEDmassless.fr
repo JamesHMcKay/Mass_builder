@@ -1,6 +1,6 @@
 M$ModelName = "QED";
 
-$FeymanGauge=False;
+$FeymanGauge=True;
 
 M$Information = {
   Authors      -> {"V. Shtabovenko"},
