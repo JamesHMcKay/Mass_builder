@@ -211,12 +211,9 @@ namespace templates
   
   void print_math_header(std::string &input)
   {
-    input += "dm[mu_] := DiracMatrix[mu, Dimension -> D]";
-    input += "dm[5] := DiracMatrix[5]";
-    input += "ds[p_] := DiracSlash[p]";
     input += "SetOptions[DiracSlash, Dimension -> D, FeynCalcInternal -> True];";
     input += "SetOptions[DiracTrace, DiracTraceEvaluate -> True];";
-    input += "$GenericMixing = True;";
+    //input += "$GenericMixing = True;";
     input += "null=0;";
     input += "MassBuilderA[mass_, D_] := TAI[D, 0, {{1, mass}}];";
     input += "MassBuilderB[mass1_, mass2_, D_] := TBI[D, Pair[Momentum[p, D],Momentum[p, D]], {{1, mass1}, {1, mass2}}];";

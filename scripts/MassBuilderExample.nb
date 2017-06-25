@@ -1,0 +1,923 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 10.3' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     30683,        913]
+NotebookOptionsPosition[     28913,        857]
+NotebookOutlinePosition[     29268,        873]
+CellTagsIndexPosition[     29225,        870]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{"Quit", "[", "]"}]], "Input",
+ CellChangeTimes->{{3.707408437059297*^9, 3.707408437855465*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"$LoadTARCER", "=", "True"}], ";", 
+  RowBox[{"$LoadFeynArts", "=", "True"}], ";", 
+  RowBox[{"<<", "FeynCalc/FeynCalc.m"}], ";", 
+  RowBox[{"AppendTo", "[", 
+   RowBox[{
+   "$Path", ",", 
+    "\"\</Users/jamesmckay/Documents/Programs/Mass_builder/src/\>\""}], "]"}],
+   ";", 
+  RowBox[{"<<", "MassBuilder.m"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"SetOptions", "[", 
+   RowBox[{"DiracSlash", ",", 
+    RowBox[{"Dimension", "\[Rule]", "D"}], ",", 
+    RowBox[{"FeynCalcInternal", "\[Rule]", "True"}]}], "]"}], ";", 
+  RowBox[{"SetOptions", "[", 
+   RowBox[{"DiracTrace", ",", 
+    RowBox[{"DiracTraceEvaluate", "\[Rule]", "True"}]}], "]"}], ";", 
+  RowBox[{"null", "=", "0"}], ";", 
+  RowBox[{
+   RowBox[{"MassBuilderA", "[", 
+    RowBox[{"mass_", ",", "D_"}], "]"}], ":=", 
+   RowBox[{"TAI", "[", 
+    RowBox[{"D", ",", "0", ",", 
+     RowBox[{"{", 
+      RowBox[{"{", 
+       RowBox[{"1", ",", "mass"}], "}"}], "}"}]}], "]"}]}], ";", 
+  RowBox[{
+   RowBox[{"MassBuilderB", "[", 
+    RowBox[{"mass1_", ",", "mass2_", ",", "D_"}], "]"}], ":=", 
+   RowBox[{"TBI", "[", 
+    RowBox[{"D", ",", 
+     RowBox[{"Pair", "[", 
+      RowBox[{
+       RowBox[{"Momentum", "[", 
+        RowBox[{"p", ",", "D"}], "]"}], ",", 
+       RowBox[{"Momentum", "[", 
+        RowBox[{"p", ",", "D"}], "]"}]}], "]"}], ",", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"1", ",", "mass1"}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"1", ",", "mass2"}], "}"}]}], "}"}]}], "]"}]}], ";", 
+  RowBox[{
+   RowBox[{"MassBuilderJ", "[", 
+    RowBox[{"mass1_", ",", "mass2_", ",", "mass3_", ",", "D_"}], "]"}], ":=", 
+   
+   RowBox[{"TJI", "[", 
+    RowBox[{"D", ",", 
+     RowBox[{"Pair", "[", 
+      RowBox[{
+       RowBox[{"Momentum", "[", 
+        RowBox[{"p", ",", "D"}], "]"}], ",", 
+       RowBox[{"Momentum", "[", 
+        RowBox[{"p", ",", "D"}], "]"}]}], "]"}], ",", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"1", ",", "mass1"}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"1", ",", "mass2"}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"1", ",", "mass3"}], "}"}]}], "}"}]}], "]"}]}], ";", 
+  RowBox[{
+   RowBox[{"MassBuilderT", "[", 
+    RowBox[{"mass1_", ",", "mass2_", ",", "mass3_", ",", "D_"}], "]"}], ":=", 
+   
+   RowBox[{"TJI", "[", 
+    RowBox[{"D", ",", 
+     RowBox[{"Pair", "[", 
+      RowBox[{
+       RowBox[{"Momentum", "[", 
+        RowBox[{"p", ",", "D"}], "]"}], ",", 
+       RowBox[{"Momentum", "[", 
+        RowBox[{"p", ",", "D"}], "]"}]}], "]"}], ",", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"2", ",", "mass1"}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"1", ",", "mass2"}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"1", ",", "mass3"}], "}"}]}], "}"}]}], "]"}]}], ";", 
+  RowBox[{
+   RowBox[{"MassBuilderK", "[", 
+    RowBox[{"mass1_", ",", "mass2_", ",", "mass3_", ",", "D_"}], "]"}], ":=", 
+   
+   RowBox[{"TJI", "[", 
+    RowBox[{"D", ",", "0", ",", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"1", ",", "mass1"}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"1", ",", "mass2"}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"1", ",", "mass3"}], "}"}]}], "}"}]}], "]"}]}], ";", 
+  RowBox[{
+   RowBox[{"MassBuilderV", "[", 
+    RowBox[{
+    "mass1_", ",", "mass2_", ",", "mass3_", ",", "mass4_", ",", "D_"}], "]"}],
+    ":=", 
+   RowBox[{"TVI", "[", 
+    RowBox[{"D", ",", 
+     RowBox[{"Pair", "[", 
+      RowBox[{
+       RowBox[{"Momentum", "[", 
+        RowBox[{"p", ",", "D"}], "]"}], ",", 
+       RowBox[{"Momentum", "[", 
+        RowBox[{"p", ",", "D"}], "]"}]}], "]"}], ",", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"1", ",", "mass1"}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"1", ",", "mass2"}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"1", ",", "mass3"}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"1", ",", "mass4"}], "}"}]}], "}"}]}], "]"}]}], ";", 
+  RowBox[{
+   RowBox[{"MassBuilderF", "[", 
+    RowBox[{
+    "mass1_", ",", "mass2_", ",", "mass3_", ",", "mass4_", ",", "D_"}], "]"}],
+    ":=", 
+   RowBox[{"TJI", "[", 
+    RowBox[{"D", ",", 
+     RowBox[{"Pair", "[", 
+      RowBox[{
+       RowBox[{"Momentum", "[", 
+        RowBox[{"p", ",", "D"}], "]"}], ",", 
+       RowBox[{"Momentum", "[", 
+        RowBox[{"p", ",", "D"}], "]"}]}], "]"}], ",", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"1", ",", "mass1"}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"1", ",", "mass2"}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"1", ",", "mass3"}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"1", ",", "mass4"}], "}"}]}], "}"}]}], "]"}]}], ";", 
+  RowBox[{"t12", "=", 
+   RowBox[{"CreateTopologies", "[", 
+    RowBox[{"2", ",", 
+     RowBox[{"1", "\[Rule]", "1"}], ",", 
+     RowBox[{"ExcludeTopologies", "\[Rule]", "Internal"}]}], "]"}]}], ";", 
+  RowBox[{"alldiags", "=", 
+   RowBox[{"InsertFields", "[", 
+    RowBox[{"t12", ",", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"F", "[", 
+        RowBox[{"02", ",", 
+         RowBox[{"{", "1", "}"}]}], "]"}], "}"}], "\[Rule]", 
+      RowBox[{"{", 
+       RowBox[{"F", "[", 
+        RowBox[{"02", ",", 
+         RowBox[{"{", "1", "}"}]}], "]"}], "}"}]}], ",", 
+     RowBox[{"InsertionLevel", "\[Rule]", 
+      RowBox[{"{", "Particles", "}"}]}], ",", 
+     RowBox[{
+     "GenericModel", "\[Rule]", 
+      "\"\</Users/jamesmckay/Documents/Programs/Mass_builder/models/QED/QED\>\
+\""}], ",", 
+     RowBox[{"Restrictions", "\[Rule]", 
+      RowBox[{"{", "}"}]}], ",", 
+     RowBox[{
+     "Model", "\[Rule]", 
+      "\"\</Users/jamesmckay/Documents/Programs/Mass_builder/models/QED/QED\>\
+\""}]}], "]"}]}], ";", 
+  RowBox[{"subdiags0", "=", 
+   RowBox[{"DiagramExtract", "[", 
+    RowBox[{"alldiags", ",", "5"}], "]"}]}], ";", 
+  RowBox[{"amp0", "=", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"FCFAConvert", "[", 
+      RowBox[{
+       RowBox[{"CreateFeynAmp", "[", 
+        RowBox[{"subdiags0", ",", 
+         RowBox[{"Truncated", "\[Rule]", "True"}]}], "]"}], ",", 
+       RowBox[{"IncomingMomenta", "\[Rule]", 
+        RowBox[{"{", "p", "}"}]}], ",", 
+       RowBox[{"OutgoingMomenta", "\[Rule]", 
+        RowBox[{"{", "p", "}"}]}], ",", 
+       RowBox[{"LoopMomenta", "\[Rule]", 
+        RowBox[{"{", 
+         RowBox[{"k1", ",", "k2"}], "}"}]}], ",", 
+       RowBox[{"UndoChiralSplittings", "\[Rule]", "True"}], ",", 
+       RowBox[{"TransversePolarizationVectors", "\[Rule]", 
+        RowBox[{"{", "p", "}"}]}], ",", 
+       RowBox[{"DropSumOver", "\[Rule]", "True"}], ",", 
+       RowBox[{"List", "\[Rule]", "False"}], ",", 
+       RowBox[{"ChangeDimension", "\[Rule]", "D"}]}], "]"}], "//", 
+     "Contract"}], "//", "FCTraceFactor"}]}], ";", 
+  RowBox[{"masses", "=", 
+   RowBox[{"List", "[", 
+    RowBox[{"ma", ",", "mf", ",", "null"}], "]"}]}], ";", 
+  RowBox[{"massesExpand", "=", 
+   RowBox[{"List", "[", 
+    RowBox[{"1", ",", "1", ",", "0"}], "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"amp0", "=", 
+   RowBox[{"amp0", "/.", 
+    RowBox[{
+     RowBox[{"Index", "[", 
+      RowBox[{"Generation", ",", "1"}], "]"}], "\[Rule]", "1"}]}]}], ";", 
+  RowBox[{"amp0", "=", 
+   RowBox[{"amp0", "/.", 
+    RowBox[{
+     RowBox[{"Index", "[", 
+      RowBox[{"Generation", ",", "2"}], "]"}], "\[Rule]", "2"}]}]}], ";", 
+  RowBox[{"amp0", "=", 
+   RowBox[{"amp0", "/.", 
+    RowBox[{
+     RowBox[{"Index", "[", 
+      RowBox[{"Generation", ",", "3"}], "]"}], "\[Rule]", "3"}]}]}], ";", 
+  RowBox[{"amp1", "=", 
+   RowBox[{"amp0", "//", 
+    RowBox[{
+     RowBox[{"FDS", "[", 
+      RowBox[{"#", ",", "l1", ",", "l2"}], "]"}], "&"}]}]}], ";", 
+  RowBox[{"SetOptions", "[", 
+   RowBox[{"Eps", ",", 
+    RowBox[{"Dimension", "\[Rule]", "D"}]}], "]"}], ";", 
+  RowBox[{"fullamp0", "=", 
+   RowBox[{
+    RowBox[{
+     RowBox[{
+      RowBox[{"(", "amp1", ")"}], "//", "DiracSimplify"}], "//", 
+     RowBox[{
+      RowBox[{"FCMultiLoopTID", "[", 
+       RowBox[{"#", ",", 
+        RowBox[{"{", 
+         RowBox[{"k1", ",", "k2"}], "}"}]}], "]"}], "&"}]}], "//", 
+    "DiracSimplify"}]}], ";", 
+  RowBox[{"tfiamp0", "=", 
+   RowBox[{
+    RowBox[{"fullamp0", "//", 
+     RowBox[{
+      RowBox[{"ToTFI", "[", 
+       RowBox[{"#", ",", "k1", ",", "k2", ",", "p"}], "]"}], "&"}]}], "//", 
+    RowBox[{
+     RowBox[{"ChangeDimension", "[", 
+      RowBox[{"#", ",", "D"}], "]"}], "&"}]}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"SE", "=", 
+   RowBox[{"Simplify", "[", 
+    RowBox[{"TarcerRecurse", "[", "tfiamp0", "]"}], "]"}]}], ";", 
+  RowBox[{"SEk", "=", 
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{"1", "/", 
+      RowBox[{"(", 
+       RowBox[{"4", " ", 
+        RowBox[{"Pair", "[", 
+         RowBox[{
+          RowBox[{"Momentum", "[", 
+           RowBox[{"p", ",", "D"}], "]"}], ",", 
+          RowBox[{"Momentum", "[", 
+           RowBox[{"p", ",", "D"}], "]"}]}], "]"}]}], ")"}]}], ")"}], " ", 
+    RowBox[{"DiracTrace", "[", 
+     RowBox[{
+      RowBox[{"DiracGamma", "[", 
+       RowBox[{
+        RowBox[{"Momentum", "[", 
+         RowBox[{"p", ",", "D"}], "]"}], ",", "D"}], "]"}], "*", "SE"}], 
+     "]"}]}]}], ";", 
+  RowBox[{"SEm", "=", 
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{"1", "/", "4"}], ")"}], " ", 
+    RowBox[{"DiracTrace", "[", "SE", "]"}]}]}], ";", 
+  RowBox[{"SE", "=", 
+   RowBox[{
+    RowBox[{"p", "*", "SEk"}], "+", "SEm"}]}], ";", 
+  RowBox[{"SE", "=", 
+   RowBox[{"SE", "/.", 
+    RowBox[{
+     RowBox[{"Pair", "[", 
+      RowBox[{
+       RowBox[{"Momentum", "[", 
+        RowBox[{
+         RowBox[{"Polarization", "[", 
+          RowBox[{"p", ",", 
+           RowBox[{"-", "I"}], ",", 
+           RowBox[{"Transversality", "\[Rule]", "True"}]}], "]"}], ",", "D"}],
+         "]"}], ",", 
+       RowBox[{"Momentum", "[", 
+        RowBox[{
+         RowBox[{"Polarization", "[", 
+          RowBox[{"p", ",", "I", ",", 
+           RowBox[{"Transversality", "\[Rule]", "True"}]}], "]"}], ",", "D"}],
+         "]"}]}], "]"}], "\[Rule]", 
+     RowBox[{"-", "1"}]}]}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"SelfEnergyFinite", "=", 
+   RowBox[{"expandBasisIntegrals", "[", 
+    RowBox[{
+    "SE", ",", "masses", ",", "massesExpand", ",", "MassBuilderA", ",", 
+     "MassBuilderB", ",", "MassBuilderJ", ",", "MassBuilderK", ",", 
+     "MassBuilderT", ",", "MassBuilderV", ",", "MassBuilderF"}], "]"}]}], ";", 
+  RowBox[{"DumpSave", "[", 
+   RowBox[{
+   "\"\</Users/jamesmckay/Documents/Programs/Mass_builder/output/math_1_0.mx\>\
+\"", ",", "SelfEnergyFinite"}], "]"}], ";", 
+  RowBox[{"SelfEnergyFinite", "=", 
+   RowBox[{"makeFiniteAmplitude", "[", 
+    RowBox[{"SelfEnergyFinite", ",", "0", ",", "D"}], "]"}]}], ";", 
+  RowBox[{"SelfEnergyFinite", "=", 
+   RowBox[{"FullSimplify", "[", 
+    RowBox[{
+     RowBox[{"SelfEnergyFinite", "/.", 
+      RowBox[{
+       RowBox[{"MassBuilderP", "^", "2"}], "\[Rule]", 
+       RowBox[{"Pair", "[", 
+        RowBox[{
+         RowBox[{"Momentum", "[", "p", "]"}], ",", 
+         RowBox[{"Momentum", "[", "p", "]"}]}], "]"}]}]}], "/.", 
+     RowBox[{"MassBuilderP", "\[Rule]", 
+      RowBox[{"Momentum", "[", "p", "]"}]}]}], "]"}]}], ";"}]}], "Input",
+ CellChangeTimes->{{3.707408436237042*^9, 3.707408436246323*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ FormBox[
+  InterpretationBox[
+   RowBox[{
+    StyleBox["\<\"FeynCalc \"\>", "Text",
+     StripOnInput->False,
+     FontWeight->Bold], "\[InvisibleSpace]", 
+    StyleBox["\<\"9.2.0. For help, use the \"\>", "Text",
+     StripOnInput->False], "\[InvisibleSpace]", 
+    StyleBox[
+     TagBox[
+      ButtonBox[
+       RowBox[{"documentation", " ", "center"}],
+       BaseStyle->"Link",
+       ButtonData:>"paclet:FeynCalc/",
+       ButtonNote->"paclet:FeynCalc/"],
+      DisplayForm], "Text",
+     StripOnInput->False], "\[InvisibleSpace]", 
+    StyleBox["\<\", check out the \"\>", "Text",
+     StripOnInput->False], "\[InvisibleSpace]", 
+    StyleBox[
+     TagBox[
+      ButtonBox["wiki",
+       BaseStyle->"Hyperlink",
+       ButtonData:>{
+         URL["https://github.com/FeynCalc/feyncalc/wiki"], None},
+       ButtonNote->"https://github.com/FeynCalc/feyncalc/wiki"],
+      DisplayForm], "Text",
+     StripOnInput->False], "\[InvisibleSpace]", 
+    StyleBox["\<\" or write to the \"\>", "Text",
+     StripOnInput->False], "\[InvisibleSpace]", 
+    StyleBox[
+     TagBox[
+      ButtonBox[
+       RowBox[{"mailing", " ", 
+        RowBox[{"list", "."}]}],
+       BaseStyle->"Hyperlink",
+       ButtonData:>{
+         URL["http://www.feyncalc.org/forum/"], None},
+       ButtonNote->"http://www.feyncalc.org/forum/"],
+      DisplayForm], "Text",
+     StripOnInput->False]}],
+   SequenceForm[
+    Style["FeynCalc ", "Text", Bold], 
+    Style["9.2.0. For help, use the ", "Text"], 
+    Style[
+     DisplayForm[
+      ButtonBox[
+      "documentation center", BaseStyle -> "Link", ButtonData :> 
+       "paclet:FeynCalc/", ButtonNote -> "paclet:FeynCalc/"]], "Text"], 
+    Style[", check out the ", "Text"], 
+    Style[
+     DisplayForm[
+      ButtonBox["wiki", ButtonData :> {
+         URL["https://github.com/FeynCalc/feyncalc/wiki"], None}, BaseStyle -> 
+       "Hyperlink", ButtonNote -> 
+       "https://github.com/FeynCalc/feyncalc/wiki"]], "Text"], 
+    Style[" or write to the ", "Text"], 
+    Style[
+     DisplayForm[
+      ButtonBox["mailing list.", ButtonData :> {
+         URL["http://www.feyncalc.org/forum/"], None}, BaseStyle -> 
+       "Hyperlink", ButtonNote -> "http://www.feyncalc.org/forum/"]], "Text"]],
+   Editable->False], TraditionalForm]], "Print",
+ CellChangeTimes->{3.707408442687608*^9}],
+
+Cell[BoxData[
+ FormBox[
+  InterpretationBox[
+   RowBox[{
+    StyleBox["\<\"See also the supplied \"\>", "Text",
+     StripOnInput->False], "\[InvisibleSpace]", 
+    StyleBox[
+     TagBox[
+      ButtonBox[
+       RowBox[{"examples", "."}],
+       BaseStyle->"Hyperlink",
+       ButtonFunction:>SystemOpen[
+         FileNameJoin[{FeynCalc`$FeynCalcDirectory, "Examples"}]],
+       Evaluator->Automatic,
+       Method->"Preemptive"],
+      DisplayForm], "Text",
+     StripOnInput->False], "\[InvisibleSpace]", 
+    StyleBox["\<\" If you use FeynCalc in your research, please cite\"\>", 
+     "Text",
+     StripOnInput->False]}],
+   SequenceForm[
+    Style["See also the supplied ", "Text"], 
+    Style[
+     DisplayForm[
+      ButtonBox[
+      "examples.", BaseStyle -> "Hyperlink", ButtonFunction :> SystemOpen[
+         FileNameJoin[{FeynCalc`$FeynCalcDirectory, "Examples"}]], Evaluator -> 
+       Automatic, Method -> "Preemptive"]], "Text"], 
+    Style[" If you use FeynCalc in your research, please cite", "Text"]],
+   Editable->False], TraditionalForm]], "Print",
+ CellChangeTimes->{3.707408442693486*^9}],
+
+Cell[BoxData[
+ FormBox[
+  StyleBox["\<\" \[Bullet] V. Shtabovenko, R. Mertig and F. Orellana, Comput. \
+Phys. Commun., 207C, 432-444, 2016, arXiv:1601.01167\"\>", "Text",
+   StripOnInput->False], TraditionalForm]], "Print",
+ CellChangeTimes->{3.707408442696392*^9}],
+
+Cell[BoxData[
+ FormBox[
+  StyleBox["\<\" \[Bullet] R. Mertig, M. B\[ODoubleDot]hm, and A. Denner, \
+Comput. Phys. Commun., 64, 345-359, 1991.\"\>", "Text",
+   StripOnInput->False], TraditionalForm]], "Print",
+ CellChangeTimes->{3.707408442699354*^9}],
+
+Cell[BoxData[
+ FormBox[
+  InterpretationBox[
+   RowBox[{
+    StyleBox["\<\"FeynArts \"\>", "Text",
+     StripOnInput->False,
+     FontWeight->Bold], "\[InvisibleSpace]", 
+    StyleBox["\<\"3.9 patched for use with FeynCalc, for documentation use \
+the \"\>", "Text",
+     StripOnInput->False], "\[InvisibleSpace]", 
+    StyleBox[
+     TagBox[
+      ButtonBox["manual",
+       BaseStyle->"Hyperlink",
+       ButtonFunction:>SystemOpen[
+         First[
+          FileNames[{"*.pdf", "*.PDF"}, 
+           FileNameJoin[{FeynCalc`$FeynArtsDirectory, "manual"}]]]],
+       Evaluator->Automatic,
+       Method->"Preemptive"],
+      DisplayForm], "Text",
+     StripOnInput->False], "\[InvisibleSpace]", 
+    StyleBox["\<\" or visit \"\>", "Text",
+     StripOnInput->False], "\[InvisibleSpace]", 
+    StyleBox[
+     TagBox[
+      ButtonBox[
+       RowBox[{"www", ".", "feynarts", ".", "de", "."}],
+       BaseStyle->"Hyperlink",
+       ButtonData:>{
+         URL["http://www.feynarts.de/"], None},
+       ButtonNote->"www.feynarts.de/"],
+      DisplayForm], "Text",
+     StripOnInput->False]}],
+   SequenceForm[
+    Style["FeynArts ", "Text", Bold], 
+    Style[
+    "3.9 patched for use with FeynCalc, for documentation use the ", "Text"], 
+    
+    Style[
+     DisplayForm[
+      ButtonBox[
+      "manual", BaseStyle -> "Hyperlink", ButtonFunction :> SystemOpen[
+         First[
+          FileNames[{"*.pdf", "*.PDF"}, 
+           FileNameJoin[{FeynCalc`$FeynArtsDirectory, "manual"}]]]], 
+       Evaluator -> Automatic, Method -> "Preemptive"]], "Text"], 
+    Style[" or visit ", "Text"], 
+    Style[
+     DisplayForm[
+      ButtonBox["www.feynarts.de.", ButtonData :> {
+         URL["http://www.feynarts.de/"], None}, BaseStyle -> "Hyperlink", 
+       ButtonNote -> "www.feynarts.de/"]], "Text"]],
+   Editable->False], TraditionalForm]], "Print",
+ CellChangeTimes->{3.707408442783835*^9}],
+
+Cell[BoxData[
+ FormBox[
+  InterpretationBox[
+   RowBox[{
+    StyleBox["\<\"TARCER \"\>", "Text",
+     StripOnInput->False,
+     FontWeight->Bold], "\[InvisibleSpace]", 
+    StyleBox["\<\"2.0, for description see the preprint hep-ph/9801383 at \
+\"\>", "Text",
+     StripOnInput->False], "\[InvisibleSpace]", 
+    StyleBox[
+     TagBox[
+      ButtonBox[
+       RowBox[{"arxiv", ".", "org", "."}],
+       BaseStyle->{"Hyperlink"},
+       ButtonData:>{
+         URL["http://arxiv.org/abs/hep-ph/9801383"], None},
+       ButtonNote->"http://arxiv.org/abs/hep-ph/9801383"],
+      DisplayForm], "Text",
+     StripOnInput->False]}],
+   SequenceForm[
+    Style["TARCER ", "Text", Bold], 
+    Style["2.0, for description see the preprint hep-ph/9801383 at ", "Text"], 
+    Style[
+     DisplayForm[
+      ButtonBox["arxiv.org.", ButtonData :> {
+         URL["http://arxiv.org/abs/hep-ph/9801383"], None}, 
+       BaseStyle -> {"Hyperlink"}, ButtonNote -> 
+       "http://arxiv.org/abs/hep-ph/9801383"]], "Text"]],
+   Editable->False], TraditionalForm]], "Print",
+ CellChangeTimes->{3.707408442829603*^9}],
+
+Cell[BoxData[
+ FormBox["\<\"\"\>", TraditionalForm]], "Print",
+ CellChangeTimes->{3.707408442864871*^9}],
+
+Cell[BoxData[
+ FormBox[
+  InterpretationBox[
+   RowBox[{"\<\"\"\>", "\[InvisibleSpace]", "\<\"loading \"\>", 
+    "\[InvisibleSpace]", "\<\"generic\"\>", 
+    "\[InvisibleSpace]", "\<\" model file \"\>", 
+    "\[InvisibleSpace]", \
+"\<\"/Users/jamesmckay/Documents/Programs/Mass_builder/models/QED/QED.gen\"\>\
+"}],
+   SequenceForm[
+   "", "loading ", "generic", " model file ", 
+    "/Users/jamesmckay/Documents/Programs/Mass_builder/models/QED/QED.gen"],
+   Editable->False], TraditionalForm]], "Print",
+ CellChangeTimes->{3.707408442895474*^9}],
+
+Cell[BoxData[
+ FormBox["\<\"> $GenericMixing is OFF\"\>", TraditionalForm]], "Print",
+ CellChangeTimes->{3.707408442900631*^9}],
+
+Cell[BoxData[
+ FormBox[
+  InterpretationBox[
+   RowBox[{"\<\"generic model \"\>", "\[InvisibleSpace]", 
+    RowBox[{
+    "{", "\<\"/Users/jamesmckay/Documents/Programs/Mass_builder/models/QED/\
+QED\"\>", "}"}], "\[InvisibleSpace]", "\<\" initialized\"\>"}],
+   SequenceForm[
+   "generic model ", {
+    "/Users/jamesmckay/Documents/Programs/Mass_builder/models/QED/QED"}, 
+    " initialized"],
+   Editable->False], TraditionalForm]], "Print",
+ CellChangeTimes->{3.707408442905932*^9}],
+
+Cell[BoxData[
+ FormBox["\<\"\"\>", TraditionalForm]], "Print",
+ CellChangeTimes->{3.707408442912627*^9}],
+
+Cell[BoxData[
+ FormBox[
+  InterpretationBox[
+   RowBox[{"\<\"\"\>", "\[InvisibleSpace]", "\<\"loading \"\>", 
+    "\[InvisibleSpace]", "\<\"classes\"\>", 
+    "\[InvisibleSpace]", "\<\" model file \"\>", 
+    "\[InvisibleSpace]", \
+"\<\"/Users/jamesmckay/Documents/Programs/Mass_builder/models/QED/QED.mod\"\>\
+"}],
+   SequenceForm[
+   "", "loading ", "classes", " model file ", 
+    "/Users/jamesmckay/Documents/Programs/Mass_builder/models/QED/QED.mod"],
+   Editable->False], TraditionalForm]], "Print",
+ CellChangeTimes->{3.7074084429176407`*^9}],
+
+Cell[BoxData[
+ FormBox[
+  InterpretationBox[
+   RowBox[{"\<\"> \"\>", "\[InvisibleSpace]", "7", 
+    "\[InvisibleSpace]", "\<\" particles (incl. antiparticles) in \"\>", 
+    "\[InvisibleSpace]", "2", "\[InvisibleSpace]", "\<\" classes\"\>"}],
+   SequenceForm[
+   "> ", 7, " particles (incl. antiparticles) in ", 2, " classes"],
+   Editable->False], TraditionalForm]], "Print",
+ CellChangeTimes->{3.707408442920722*^9}],
+
+Cell[BoxData[
+ FormBox["\<\"> $CounterTerms are ON\"\>", TraditionalForm]], "Print",
+ CellChangeTimes->{3.707408442923609*^9}],
+
+Cell[BoxData[
+ FormBox[
+  InterpretationBox[
+   RowBox[{"\<\"> \"\>", "\[InvisibleSpace]", "1", 
+    "\[InvisibleSpace]", "\<\" vertices\"\>"}],
+   SequenceForm["> ", 1, " vertices"],
+   Editable->False], TraditionalForm]], "Print",
+ CellChangeTimes->{3.707408442926589*^9}],
+
+Cell[BoxData[
+ FormBox[
+  InterpretationBox[
+   RowBox[{"\<\"> \"\>", "\[InvisibleSpace]", "3", 
+    "\[InvisibleSpace]", "\<\" counter terms of order 1\"\>"}],
+   SequenceForm["> ", 3, " counter terms of order 1"],
+   Editable->False], TraditionalForm]], "Print",
+ CellChangeTimes->{3.707408442929551*^9}],
+
+Cell[BoxData[
+ FormBox[
+  InterpretationBox[
+   RowBox[{"\<\"classes model \"\>", "\[InvisibleSpace]", 
+    RowBox[{
+    "{", "\<\"/Users/jamesmckay/Documents/Programs/Mass_builder/models/QED/\
+QED\"\>", "}"}], "\[InvisibleSpace]", "\<\" initialized\"\>"}],
+   SequenceForm[
+   "classes model ", {
+    "/Users/jamesmckay/Documents/Programs/Mass_builder/models/QED/QED"}, 
+    " initialized"],
+   Editable->False], TraditionalForm]], "Print",
+ CellChangeTimes->{3.707408442932499*^9}],
+
+Cell[BoxData[
+ FormBox["\<\"\"\>", TraditionalForm]], "Print",
+ CellChangeTimes->{3.70740844293542*^9}],
+
+Cell[BoxData[
+ FormBox[
+  InterpretationBox[
+   RowBox[{"\<\"inserting at level(s) \"\>", "\[InvisibleSpace]", 
+    RowBox[{"{", "Particles", "}"}]}],
+   SequenceForm["inserting at level(s) ", {FeynArts`Particles}],
+   Editable->False], TraditionalForm]], "Print",
+ CellChangeTimes->{3.707408442938352*^9}],
+
+Cell[BoxData[
+ FormBox[
+  InterpretationBox[
+   RowBox[{"\<\"> Top. \"\>", "\[InvisibleSpace]", "1", 
+    "\[InvisibleSpace]", "\<\": \"\>", 
+    "\[InvisibleSpace]", "\<\"0 Particles insertions\"\>"}],
+   SequenceForm["> Top. ", 1, ": ", "0 Particles insertions"],
+   Editable->False], TraditionalForm]], "Print",
+ CellChangeTimes->{3.707408442941238*^9}],
+
+Cell[BoxData[
+ FormBox[
+  InterpretationBox[
+   RowBox[{"\<\"> Top. \"\>", "\[InvisibleSpace]", "2", 
+    "\[InvisibleSpace]", "\<\": \"\>", 
+    "\[InvisibleSpace]", "\<\"0 Particles insertions\"\>"}],
+   SequenceForm["> Top. ", 2, ": ", "0 Particles insertions"],
+   Editable->False], TraditionalForm]], "Print",
+ CellChangeTimes->{3.707408442944201*^9}],
+
+Cell[BoxData[
+ FormBox[
+  InterpretationBox[
+   RowBox[{"\<\"> Top. \"\>", "\[InvisibleSpace]", "3", 
+    "\[InvisibleSpace]", "\<\": \"\>", 
+    "\[InvisibleSpace]", "\<\"0 Particles insertions\"\>"}],
+   SequenceForm["> Top. ", 3, ": ", "0 Particles insertions"],
+   Editable->False], TraditionalForm]], "Print",
+ CellChangeTimes->{3.707408442947109*^9}],
+
+Cell[BoxData[
+ FormBox[
+  InterpretationBox[
+   RowBox[{"\<\"> Top. \"\>", "\[InvisibleSpace]", "4", 
+    "\[InvisibleSpace]", "\<\": \"\>", 
+    "\[InvisibleSpace]", "\<\"1 Particles insertion\"\>"}],
+   SequenceForm["> Top. ", 4, ": ", "1 Particles insertion"],
+   Editable->False], TraditionalForm]], "Print",
+ CellChangeTimes->{3.707408442950045*^9}],
+
+Cell[BoxData[
+ FormBox[
+  InterpretationBox[
+   RowBox[{"\<\"> Top. \"\>", "\[InvisibleSpace]", "5", 
+    "\[InvisibleSpace]", "\<\": \"\>", 
+    "\[InvisibleSpace]", "\<\"4 Particles insertions\"\>"}],
+   SequenceForm["> Top. ", 5, ": ", "4 Particles insertions"],
+   Editable->False], TraditionalForm]], "Print",
+ CellChangeTimes->{3.7074084429530163`*^9}],
+
+Cell[BoxData[
+ FormBox[
+  InterpretationBox[
+   RowBox[{"\<\"> Top. \"\>", "\[InvisibleSpace]", "6", 
+    "\[InvisibleSpace]", "\<\": \"\>", 
+    "\[InvisibleSpace]", "\<\"0 Particles insertions\"\>"}],
+   SequenceForm["> Top. ", 6, ": ", "0 Particles insertions"],
+   Editable->False], TraditionalForm]], "Print",
+ CellChangeTimes->{3.707408442956094*^9}],
+
+Cell[BoxData[
+ FormBox[
+  InterpretationBox[
+   RowBox[{"\<\"> Top. \"\>", "\[InvisibleSpace]", "7", 
+    "\[InvisibleSpace]", "\<\": \"\>", 
+    "\[InvisibleSpace]", "\<\"0 Particles insertions\"\>"}],
+   SequenceForm["> Top. ", 7, ": ", "0 Particles insertions"],
+   Editable->False], TraditionalForm]], "Print",
+ CellChangeTimes->{3.707408442959051*^9}],
+
+Cell[BoxData[
+ FormBox[
+  InterpretationBox[
+   RowBox[{"\<\"> Top. \"\>", "\[InvisibleSpace]", "8", 
+    "\[InvisibleSpace]", "\<\": \"\>", 
+    "\[InvisibleSpace]", "\<\"0 Particles insertions\"\>"}],
+   SequenceForm["> Top. ", 8, ": ", "0 Particles insertions"],
+   Editable->False], TraditionalForm]], "Print",
+ CellChangeTimes->{3.707408442961954*^9}],
+
+Cell[BoxData[
+ FormBox[
+  InterpretationBox[
+   RowBox[{"\<\"> Top. \"\>", "\[InvisibleSpace]", "9", 
+    "\[InvisibleSpace]", "\<\": \"\>", 
+    "\[InvisibleSpace]", "\<\"0 Particles insertions\"\>"}],
+   SequenceForm["> Top. ", 9, ": ", "0 Particles insertions"],
+   Editable->False], TraditionalForm]], "Print",
+ CellChangeTimes->{3.707408442964858*^9}],
+
+Cell[BoxData[
+ FormBox[
+  InterpretationBox[
+   RowBox[{"\<\"in total: \"\>", 
+    "\[InvisibleSpace]", "\<\"5 Particles insertions\"\>"}],
+   SequenceForm["in total: ", "5 Particles insertions"],
+   Editable->False], TraditionalForm]], "Print",
+ CellChangeTimes->{3.7074084429678288`*^9}],
+
+Cell[BoxData[
+ FormBox["\<\"\"\>", TraditionalForm]], "Print",
+ CellChangeTimes->{3.70740844297209*^9}],
+
+Cell[BoxData[
+ FormBox[
+  InterpretationBox[
+   RowBox[{"\<\"creating amplitudes at level(s) \"\>", "\[InvisibleSpace]", 
+    RowBox[{"{", "Particles", "}"}]}],
+   SequenceForm["creating amplitudes at level(s) ", {FeynArts`Particles}],
+   Editable->False], TraditionalForm]], "Print",
+ CellChangeTimes->{3.707408442974999*^9}],
+
+Cell[BoxData[
+ FormBox[
+  InterpretationBox[
+   RowBox[{"\<\"> Top. \"\>", "\[InvisibleSpace]", "1", 
+    "\[InvisibleSpace]", "\<\": \"\>", 
+    "\[InvisibleSpace]", "\<\"1 Particles amplitude\"\>"}],
+   SequenceForm["> Top. ", 1, ": ", "1 Particles amplitude"],
+   Editable->False], TraditionalForm]], "Print",
+ CellChangeTimes->{3.707408442977974*^9}],
+
+Cell[BoxData[
+ FormBox[
+  InterpretationBox[
+   RowBox[{"\<\"in total: \"\>", 
+    "\[InvisibleSpace]", "\<\"1 Particles amplitude\"\>"}],
+   SequenceForm["in total: ", "1 Particles amplitude"],
+   Editable->False], TraditionalForm]], "Print",
+ CellChangeTimes->{3.707408442980896*^9}]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData["SE"], "Input",
+ CellChangeTimes->{{3.707408449352179*^9, 3.7074084495267563`*^9}}],
+
+Cell[BoxData[
+ FormBox[
+  FractionBox[
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{"D", "-", "3"}], ")"}], " ", 
+    SuperscriptBox[
+     RowBox[{"(", 
+      RowBox[{"D", "-", "2"}], ")"}], "2"], " ", 
+    SuperscriptBox["EL", "4"], " ", "p", " ", 
+    InterpretationBox[
+     SubsuperscriptBox[
+      StyleBox["J",
+       SingleLetterItalics->False,
+       FontWeight->"Bold"], 
+      RowBox[{
+       FormBox[
+        RowBox[{"{", 
+         RowBox[{"1", ",", "0"}], "}"}],
+        TraditionalForm], 
+       FormBox[
+        RowBox[{"{", 
+         RowBox[{"1", ",", "0"}], "}"}],
+        TraditionalForm], 
+       FormBox[
+        RowBox[{"{", 
+         RowBox[{"1", ",", "0"}], "}"}],
+        TraditionalForm]}], 
+      RowBox[{"(", 
+       FormBox["D",
+        TraditionalForm], ")"}]],
+     Tarcer`TJI[D, 
+      FeynCalc`Pair[
+       FeynCalc`Momentum[$CellContext`p, D], 
+       FeynCalc`Momentum[$CellContext`p, D]], {{1, 0}, {1, 0}, {1, 0}}],
+     Editable->True]}], 
+   RowBox[{"256", " ", 
+    SuperscriptBox["\[Pi]", "8"], " ", 
+    RowBox[{"(", 
+     RowBox[{"D", "-", "4"}], ")"}], " ", 
+    SuperscriptBox[
+     FormBox[
+      FormBox["p",
+       TraditionalForm],
+      TraditionalForm], "2"]}]], TraditionalForm]], "Output",
+ CellChangeTimes->{3.7074084499183407`*^9}]
+}, Open  ]]
+},
+WindowSize->{1280, 704},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+FrontEndVersion->"10.3 for Mac OS X x86 (32-bit, 64-bit Kernel) (October 9, \
+2015)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 118, 2, 28, "Input"],
+Cell[CellGroupData[{
+Cell[701, 26, 11229, 325, 726, "Input"],
+Cell[CellGroupData[{
+Cell[11955, 355, 2324, 64, 25, "Print"],
+Cell[14282, 421, 1109, 30, 25, "Print"],
+Cell[15394, 453, 265, 5, 26, "Print"],
+Cell[15662, 460, 250, 5, 26, "Print"],
+Cell[15915, 467, 1883, 54, 25, "Print"],
+Cell[17801, 523, 1094, 30, 25, "Print"],
+Cell[18898, 555, 104, 2, 20, "Print"],
+Cell[19005, 559, 547, 13, 20, "Print"],
+Cell[19555, 574, 127, 2, 20, "Print"],
+Cell[19685, 578, 483, 12, 20, "Print"],
+Cell[20171, 592, 104, 2, 20, "Print"],
+Cell[20278, 596, 549, 13, 20, "Print"],
+Cell[20830, 611, 419, 9, 20, "Print"],
+Cell[21252, 622, 126, 2, 20, "Print"],
+Cell[21381, 626, 274, 7, 20, "Print"],
+Cell[21658, 635, 306, 7, 20, "Print"],
+Cell[21967, 644, 483, 12, 20, "Print"],
+Cell[22453, 658, 103, 2, 20, "Print"],
+Cell[22559, 662, 306, 7, 20, "Print"],
+Cell[22868, 671, 356, 8, 20, "Print"],
+Cell[23227, 681, 356, 8, 20, "Print"],
+Cell[23586, 691, 356, 8, 20, "Print"],
+Cell[23945, 701, 354, 8, 20, "Print"],
+Cell[24302, 711, 358, 8, 20, "Print"],
+Cell[24663, 721, 356, 8, 20, "Print"],
+Cell[25022, 731, 356, 8, 20, "Print"],
+Cell[25381, 741, 356, 8, 20, "Print"],
+Cell[25740, 751, 356, 8, 20, "Print"],
+Cell[26099, 761, 289, 7, 20, "Print"],
+Cell[26391, 770, 103, 2, 20, "Print"],
+Cell[26497, 774, 326, 7, 20, "Print"],
+Cell[26826, 783, 354, 8, 20, "Print"],
+Cell[27183, 793, 285, 7, 20, "Print"]
+}, Open  ]]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[27517, 806, 96, 1, 28, "Input"],
+Cell[27616, 809, 1281, 45, 116, "Output"]
+}, Open  ]]
+}
+]
+*)
+
+(* End of internal cache information *)
+

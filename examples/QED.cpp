@@ -43,13 +43,17 @@ double get_fermion_2loop(Data data)
   
   double Zeta = pow(Pi,2)/6.;
   
+  double gamma = 0;
+  
   double x = pow(p,2)/Q2;
   
   double C = pow(EL,4) * p / pow(16. * pow(Pi,2) ,2 );
   
   double self_energy_1 = C * ( 5.25 - Zeta - 3*log(x) + 2*pow(log(x),2) );
   
-  double self_energy_2 = C * ( (-31 + 4*Zeta + 20*log(x) - 8*pow(log(x),2))/8. );
+  double self_energy_2 = C * (p*(21 - 8*log(x) ))/2.;  // this is using TSIL definitions, gives consistent result, of course
+  
+  //double self_energy_2 = C * ((31 + 4*gamma*(-5 + 2*gamma) - 4*Zeta + 4*log(x)*(-5 + 4*gamma + 2*log(x))))/8.;
   
   double self_energy_3 = C * ( -3.5 + 2*log(x) );
   

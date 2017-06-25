@@ -505,7 +505,7 @@ namespace utils
     }
     
     input+="subdiags0 =   DiagramExtract[alldiags, " + diagram + "];";
-    input+="amp0 = FCFAConvert[CreateFeynAmp[subdiags0], IncomingMomenta -> {p}, OutgoingMomenta -> {p}, LoopMomenta -> {k1, k2} ,UndoChiralSplittings -> True,TransversePolarizationVectors -> {p},DropSumOver -> True, List -> False,ChangeDimension -> D] // Contract;";
+    input+="amp0 = FCFAConvert[CreateFeynAmp[subdiags0,Truncated -> True], IncomingMomenta -> {p}, OutgoingMomenta -> {p}, LoopMomenta -> {k1, k2} ,UndoChiralSplittings -> True,TransversePolarizationVectors -> {p},DropSumOver -> True, List -> False,ChangeDimension -> D] // Contract // FCTraceFactor;";
     // GaugeRules -> {GaugeXi[Z] -> 0, GaugeXi[A] -> 0, GaugeXi[W] -> 0, GaugeXi[P] -> 0,GaugeXi[Wp] -> 0} // add as option to CreateFeynAmp for Landau gauge
     
     
@@ -547,32 +547,30 @@ namespace utils
     input+= "];\n";
 
     
-    
-    
-    
-    
-    input+= "Do [  amp0 = amp0 /. MajoranaSpinor[p, masses[[i]]] -> 1 /. Spinor[Momentum[p, D], masses[[i]], 1] -> 1;   , {i, Length[masses]}];";
+    //input+= "Do [  amp0 = amp0 /. MajoranaSpinor[p, masses[[i]]] -> 1 /. Spinor[Momentum[p, D], masses[[i]], 1] -> 1;   , {i, Length[masses]}];";
     for (int index = 1; index < 4;index ++)
     {
       input+="amp0 = amp0 /. Index[Generation, " + to_string(index) + "] -> " + to_string(index)+ ";";
     }
     
+    input+="amp1 = amp0 //FDS[#,l1,l2]&;";
+    
     input+="SetOptions[Eps, Dimension -> D];";
     
     if ( (loop_order == 2) && (!options.counter_terms) )
     {
-      input+="fullamp0 = (amp0) // DiracSimplify // FCMultiLoopTID[#, {k1, k2}] & //DiracSimplify;";
+      input+="fullamp0 = (amp1) // DiracSimplify // FCMultiLoopTID[#, {k1, k2}] & //DiracSimplify;";
       input+="tfiamp0 = fullamp0 // ToTFI[#, k1, k2, p] & // ChangeDimension[#, D] &;";
     }
     
     else if ( (loop_order == 1) && (options.counter_terms) )
     {
-      input+=" fullamp0 = (amp0) // DiracSimplify;";
+      input+=" fullamp0 = (amp1) // DiracSimplify;";
       input+="tfiamp0 = fullamp0 // ChangeDimension[#, D] &;";
     }
     else
     {
-      input+=" fullamp0 = (amp0) // DiracSimplify // TID[#, k1] & // DiracSimplify;";
+      input+=" fullamp0 = (amp1) // DiracSimplify // TID[#, k1] & // DiracSimplify;";
       input+="tfiamp0 = fullamp0 // ToTFI[#, k1, p] & // ChangeDimension[#, D] &;";
     }
 
