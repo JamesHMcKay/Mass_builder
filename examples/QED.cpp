@@ -51,21 +51,21 @@ double get_fermion_2loop(Data data)
   
   double self_energy_1 = C * ( 5.25 - Zeta - 3*log(x) + 2*pow(log(x),2) );
   
-  double self_energy_2 = C * (p*(21 - 8*log(x) ))/2.;  // this is using TSIL definitions, gives consistent result, of course
+  // this is using TSIL definitions, gives consistent result, of course
+  //double self_energy_2 = C*(21 - 8*log(pow(p,2)/Q2))/2.;
   
-  //double self_energy_2 = C * ((31 + 4*gamma*(-5 + 2*gamma) - 4*Zeta + 4*log(x)*(-5 + 4*gamma + 2*log(x))))/8.;
+  
+  // this is the result from hep-ph/0508242 which matches that in Ibe thesis if gamma = 0
+  double self_energy_2 = C * ((31 + 4*gamma*(-5 + 2*gamma) - 4*Zeta + 4*log(x)*(-5 + 4*gamma + 2*log(x))))/8.;
+  
+  //double self_energy_2 = C * ((-31 + 4*Zeta + 4*(5 - 2*log(pow(p,2)/Q))*log(pow(p,2)/Q)))/8.;
+  
   
   double self_energy_3 = C * ( -3.5 + 2*log(x) );
   
   cout << "2-loop fermion diagram 1 = " << self_energy_1 << endl;  // this should match diagram 1
   cout << "2-loop fermion diagram 2 = " << self_energy_3 << endl;  // this matches diagram 2
   cout << "2-loop fermion diagram 5 = " << self_energy_2 << endl;  // this should match diagram 5
-  
-  // now use results from ArXiv:0508242
-  
-  //double g1 =
-  
-  
   
   return self_energy_1 + self_energy_2 + self_energy_3;
 }
@@ -96,6 +96,7 @@ int main()
   data.EL = 0.1;
   data.mf = 0.001;
   data.ma = 0.001;
+  cout.precision(17);
   
   Self_energy self_energy;
   

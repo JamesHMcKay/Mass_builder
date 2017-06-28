@@ -96,7 +96,12 @@ bool Compute_amp::calc_diagram()
   {
     input += "SelfEnergyFinite = makeFiniteAmplitude[SelfEnergyFinite, 0, D];";
   }
-  input += "SelfEnergyFinite = FullSimplify[SelfEnergyFinite/.MassBuilderP^2 -> Pair[Momentum[p],Momentum[p]] /. MassBuilderP -> Momentum[p] ];";
+  input += "SelfEnergyFinite = FullSimplify[SelfEnergyFinite/.MassBuilderP^2 -> Pair[Momentum[p],Momentum[p]] /. MassBuilderP -> Momentum[p] /. MassBuilderQ2->Q2 /. MassBuilderZeta-> Zeta ];";
+  
+  // take transverse part of self energy (fix required after adding Truncated->True to get diagrams, as this removes
+  // the polarization vectors from the amplitude which would normally fix this problem
+  input += "SelfEnergyFinite = FullSimplify[SelfEnergyFinite/.(Pair[LorentzIndex[Lor1], Momentum[p]]*Pair[LorentzIndex[Lor2], Momentum[p]] -Pair[LorentzIndex[Lor1], LorentzIndex[Lor2]]*Pair[Momentum[p], Momentum[p]]) -> Pair[Momentum[p],Momentum[p]] ];";
+  
   
   // send the above commands to Mathematica
   send_to_math(input);

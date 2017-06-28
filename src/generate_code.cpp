@@ -145,6 +145,7 @@ void Generate_code::decalare_var_tsil(ofstream &main_output)
   else {main_output<<endl;}
   
   main_output << "  TSIL_COMPLEXCPP  i;\n";
+  main_output << "    double Zeta;\n";
   
   get_data(masses,temp_vec, nm,file_masses);
   main_output << "  TSIL_REAL ";
@@ -230,6 +231,7 @@ void Generate_code::decalare_var(ofstream &main_output)
   // other global variable definitions
   
   main_output << "    double p,Pi;\n";
+  
   
   string c_file_couplings = "models/" + model + "/couplings.txt";  // need to make this model independent
   const char *file_couplings = c_file_couplings.c_str();
@@ -353,6 +355,7 @@ void Generate_code::generate_particle_src(std::string particle,int subgroup)
   functions << "  {\n";
 
   functions<<"    dcomp ii=-1;ii=sqrt(ii);i=ii;\n"
+  <<"    Zeta=PI*PI/6;\n"
   <<"    Pi=PI;\n";
 
     

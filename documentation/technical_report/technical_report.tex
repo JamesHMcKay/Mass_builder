@@ -548,6 +548,221 @@ where $x=m^2$.  This result contains only finite basis integrals and note that a
 % so there is actually a $A(x)$ term here that is cancelling out between the normal diagrams and the finite contribution from the counter-terms, but it's kind of hidden.  In our approach, we do not invoke this derivative at all (and don't carry around non-expanded things like  $A_{\epsilon}(x')$ ) , and thus our diagram (diagram 5) explicitly contains this $A(x)$ term, so it appears wrong until we actually consider the counter-term.  In Stephen's approach we could actually just ignore the  $A_{\epsilon}(x')$  term from the beginning knowing it will cancel.  All this only becomes apparent when we expand out  $A_{\epsilon}(x')$ and look at the counter-term and normal diagrams separately.
  
  
+\section{Massless QED}
+
+\subsection{Introduction}
+Massless quantum electrodynamics (QED) is a minimal theory containing a gauge boson and lepton fields.  I use the massless theory here as it admits analytic expressions for all two-loop amplitudes which I can then compare with the numerical results.
+
+The bare Lagrangian is
+\begin{align}
+\mathcal{L}=-\frac{1}{4}F_{B\mu\nu}F_B^{\mu\nu}+\Sigma_f \bar{\psi}_{f,B}\left(i\partial_{\mu}-e_{f,B}A_{B\mu}\right) \psi_{f,B}
+\end{align}
+where $F_{B\mu\nu}=\partial_{\mu}A_{B\nu}-\partial_{\nu}A_{B\mu}$ and $f$ is the flavour index.  The renormalised Lagrangian is given by
+\begin{align}
+\mathcal{L}_{\text{ren}} &= -\frac{1}{4}F_{\mu\nu}F^{\mu\nu}+\Sigma_f \bar{\psi}_{f}\left(i\partial_{\mu}-e_{f}A_{\mu}\right) \psi_{f}\\
+\mathcal{L}_{\text{ct}} &= -\sum_fe_f\delta_{f,1}\psi_fA_{\mu}\gamma^{\mu}\psi_f+\sum_f\delta_{f,2}i\bar{\psi}_f\partial_{\mu}\gamma^{\mu}\psi_f-\frac{\delta_3}{4}F_{\mu\nu}F^{\mu\nu}
+\end{align}
+
+I will focus in this section on the self energy of the $f=e$ flavour state.
+
+\subsection{One-loop self energies}
+I present the one-loop self energies for the photon and the lepton state.  The amplitudes and the analytic expressions for the integrated forms are taken from Sato \cite{Sato2013} and are compared with the same amplitude as computed using \mb.\\
+
+\noindent\begin{minipage}{0.3\textwidth}
+\begin{center}
+\includegraphics{QED_f_1loop.pdf}
+\end{center}
+\end{minipage}
+\noindent\begin{minipage}{0.7\textwidth}
+The one-loop amplitude for the fermion is given by the integral \cite{Sato2013}
+\begin{align}
+i\Sigma^{(1)} = -e^2\mu^{4-d}\int\frac{d^dk}{(2\pi)^d} \frac{\gamma^{\mu}\slashed{k}\gamma_{\mu}}{k^2(k-p)^2}
+\end{align}
+which is evaluated to be \cite{Sato2013}
+\begin{align}
+i\Sigma^{(1)} = \frac{e^2\slashed{p}}{16\pi^2}\left(\frac{1}{\epsilon}+1\right)\left(\frac{-p^2}{Q^2}\right)^{-\epsilon}+\mathcal{O}(\epsilon)
+\end{align}
+\end{minipage}
+The finite part of this is compared with the output from \mb and is found to be in agreement.\\
+
+\noindent\begin{minipage}{0.3\textwidth}
+\begin{center}
+\includegraphics{QED_V_1loop.pdf}
+\end{center}
+\end{minipage}
+\noindent\begin{minipage}{0.7\textwidth}
+The one-loop amplitude for the photon is given by the integral \cite{Sato2013}
+\begin{align}
+i\Pi^{(1)}_{\mu\nu} = -e^2\mu^{4-d}\int\frac{d^dk}{(2\pi)^d} \frac{\text{Tr}[\gamma^{\mu}\slashed{k}\gamma^{\nu}(\slashed{k}-\slashed{p}) ]  }{k^2(k-p)^2}
+\end{align}
+which is evaluated to be \cite{Sato2013}
+\begin{align}
+i\Pi^{(1)} = \sum_f \frac{ie^2}{16\pi^2} \left(\frac{4}{3\epsilon}+\frac{20}{9}\right)\left(\frac{-p^2}{Q^2}\right)^{-\epsilon}(p^2g_{\mu\nu}-p_{\mu}p_{\nu})+\mathcal{O}(\epsilon)
+\end{align}
+\end{minipage}
+The finite part of this is compared with the output from \mb and is found to be in agreement.
+
+\subsection{Two-loop self energy}
+
+In this section I will present the two-loop self energy for the electron flavoured lepton.  I will compare results from Sato \cite{Sato2013}, FeynHelpers \cite{Shtabovenko}, Grozin \cite{Grozin2005} with that computed using the \mb package.  To understand the differences I present the full UV divergent amplitudes, which are not usually output from \mb but can be obtained by running the generated Mathematica scripts (which are made available via the \lstinline{-v} flag at run time).\\
+
+\subsubsection{Required notation}
+The quantities we will need for the comparisons from various authors are given below.
+
+The TARCER basis integral \lstinline|TJI[D, SPD[p, p], {{1, 0}, {1, 0}, {1, 0}}]| is given by \cite{Mertig1998}
+\begin{align}
+\bold{J}_{ \{1,0\}, \{1,0\}, \{1,0\}}^{(D)} = \frac{1}{\pi^d} \int\int \frac{ d^dk_1 d^dk_2}{k_1^2(k_1-k_2)^2(k_2-p)^2}
+\end{align}
+this is converted into TSIL notation by $\bold{S}(x,y,z) = a^2 \bold{J}_{ \{1,\sqrt{x}\}, \{1,\sqrt{y}\}, \{1,\sqrt{z}\}}^{(D)}$ so that I can expand the integral into a finite plus divergent piece as
+\begin{align}
+\begin{split}
+\bold{S}(x,y,z)= &S(x,y,z) -\frac{(x+y+z)}{2\epsilon^2} + \left[A(x)+A(y)+A(z)-(x+y+z)/2+s/4\right]/\epsilon\\ &+ A_{\epsilon}(x)+ A_{\epsilon}(y)+ A_{\epsilon}(z)+\mathcal{O}(\epsilon)
+\end{split}
+\end{align}
+where $S(x,y,z)$ is the finite piece. For the massless case we are dealing with here is simply
+\begin{align}
+\bold{S}(0,0,0)= &S(0,0,0) + \frac{s}{4\epsilon} + \mathcal{O}(\epsilon)
+\end{align}
+where $s=-p^2$ with the Euclidean or metric with signiture $(-+++)$\footnote{Note that in the \mb Mathematica package where this expansion is implemented, I take $s=p^2$ as the $p^2$ inserted here at evaluation time is positive.}.  We can simply this further since $S(0,0,0)$ has a particularly simple integrated form \cite{Martin2003}
+\begin{align}
+S(0,0,0) = \frac{13s}{8}-\frac{s}{2}\log\left(\frac{-s}{Q^2}\right)
+\end{align}
+so we have
+\begin{align}
+\bold{S}(x,y,z) =  \frac{13s}{8}-\frac{s}{2}\log\left(\frac{-s}{Q^2}\right) + \frac{s}{4\epsilon}   + \mathcal{O}(\epsilon) \label{eqn:J_expand}
+\end{align}
+
+The notation used by Grozin makes use of the basis integrals $G_1$ and $G_2$ given by
+\begin{align}
+G_1 = -\frac{2g_2}{(d-3)(d-4)}
+G_2 = \frac{4g_2}{(d-3)(d-4)(3d-8)(3d-10)}
+\end{align}
+where
+\begin{align}
+g_n = \frac{\Gamma(1+n\epsilon)\Gamma^(n+1)(1-\epsilon)}{\Gamma(1-(n+1)\epsilon)}
+\end{align}
+although Grozin provides a general form for $G_n$ it is apparently incorrect, the lack of explanation for his notation renders it useless (one can attempt to infer what the subscripts on the brackets mean, but even the most creative explanations will not give a result consistent with $G_1$ and $G_2$ as stated elsewhere in the paper).\\
+
+The Gamma function is expanded by Grozin to be
+\begin{align}
+\Gamma(1+\epsilon) = \exp\left[-\gamma\epsilon + \sum_{n=2}^{\infty} \frac{(-1)^n\zeta_n}{n}\epsilon^n\right]
+\end{align}
+where $\zeta_n=\sum_{k=1}^{\infty} 1/k^n$ is the Riemann $\zeta$ function ($\zeta_2 = \pi^2/6$).\\
+
+\subsubsection{Integrated results}
+
+We will use the analytic expressions for the fully integrated amplitudes from Sato \cite{Sato2013}.  These are
+\begin{align}
+\Sigma_{f,1} &= \frac{e_f^4\slashed{p}}{(16\pi^2)^2} \left[ \frac{1}{\epsilon^2}+\frac{2}{2\epsilon} +\frac{21}{4}-\zeta_2  \right]\left(-\frac{p^2}{Q^2}\right)^{-2\epsilon} + \mathcal{O}(\epsilon)\\
+\Sigma_{f,2} &= \frac{e_f^4\slashed{p}}{(16\pi^2)^2} \left[- \frac{1}{2\epsilon^2}-\frac{5}{4\epsilon} -\frac{31}{8}+\frac{\zeta_2}{2} \right]\left(-\frac{p^2}{Q^2}\right)^{-2\epsilon} + \mathcal{O}(\epsilon)\\
+\Sigma_{f,3} &= \sum_{f'}\frac{e_f^2e_{f'}^2\slashed{p}}{(16\pi^2)^2} \left[ -\frac{1}{\epsilon} -\frac{7}{2} \right]\left(-\frac{p^2}{Q^2}\right)^{-2\epsilon} + \mathcal{O}(\epsilon)
+\end{align}
+which I express in a proper expansion of $\epsilon$ as
+\begin{eqnarray}
+&\Sigma_{f,1} = & \frac{e_f^4\slashed{p}}{(16\pi^2)^2} \left[ 
+\frac{1}{\epsilon^2}+\frac{1}{\epsilon} \left( \frac{3}{2} - 2 \log\left(-\frac{p^2}{Q^2}\right)\right) + \right.\\
+&&\left.   \left(2\log^2\left(-\frac{p^2}{Q^2}\right)  -3 \log\left(-\frac{p^2}{Q^2}\right)-\zeta+\frac{21}{4}\right) \right]
++ \mathcal{O}(\epsilon)\nonumber\\\label{eqn:Sato_SE2}
+&\Sigma_{f,2} = & \frac{e_f^4\slashed{p}}{(16\pi^2)^2} \left[
+- \frac{1}{2\epsilon^2}+\frac{1}{\epsilon} \left(-\frac{5}{4} + \log\left(-\frac{p^2}{Q^2}\right)\right) + \right.\\ 
+&&\left.   \frac{1}{8} \left(-8\log^2\left(-\frac{p^2}{Q^2}\right)  + 20\log\left(-\frac{p^2}{Q^2}\right)+4\zeta-31\right)
+ \right] + \mathcal{O}(\epsilon)\nonumber\\ \label{eqn:Sato_SE3}
+&\Sigma_{f,3} = &e^4 \left[ -\frac{1}{\epsilon} + \left( 2 \log\left(\frac{p^2}{Q^2}\right)-\frac{7}{2} \right) \right] + \mathcal{O}(\epsilon)
+\end{eqnarray}
+
+\subsubsection{Diagram 3}
+\noindent\begin{minipage}{0.3\textwidth}
+\begin{center}
+\includegraphics{QED_F_2loop_2.pdf}
+\end{center}
+\end{minipage}
+\noindent\begin{minipage}{0.7\textwidth}
+The first two-loop diagram we consider is given on the left.  I find consistency between my result and that of FeynHelpers, Sato and Grozin.  The integral is given by \cite{Sato2013}
+\begin{align}
+\Sigma_{f,3} = e^4 (\mu^{4-d})^2 \int \frac{d^dk}{(2\pi)^d}  \frac{d^dk'}{(2\pi)^d} \frac{\gamma_{\mu}(\slashed{k}-\slashed{p})\gamma_{\nu}}{(k^2)^2(k-p)^2} \frac{\text{Tr}[\gamma^{\mu}\slashed{k}'\gamma^{\nu}(\slashed{k}'-\slashed{k})]}{ {k'}^2 (k'-k)^2}
+\end{align}
+\end{minipage}
+
+The UV divergent amplitude given by an intermediate step in the \mb algorithm is
+\begin{align}
+\Sigma_{f,3} = e^4 \frac{2(d-2)^2}{(d-6)p^2} \bold{J}_{ \{1,0\}, \{1,0\}, \{1,0\}}^{(D)}
+\end{align}
+The amplitude given by FeynHelpers is in agreement, using the Mathematica example code available with the package \cite{Shtabovenko}.  To get the FeynHelpers result in an equivalent form we apply the steps
+\begin{mmaCell}[functionlocal=y]{Code}
+tfiamp = resSE // ToTFI[#, l1, l2, p] &;
+SE = Simplify[TarcerRecurse[tfiamp]]
+\end{mmaCell}
+which does not alter the result but expresses it in terms of TARCER integrals for the sake of comparison.  I expand this result into a fully integrated divergent form to be
+\begin{align}
+\Sigma_{f,3} = e^4 \left[ -\frac{1}{\epsilon} + \left( 2 \log\left(\frac{p^2}{Q^2}\right)-\frac{7}{2} \right) \right] + \mathcal{O}(\epsilon)
+\end{align}
+this agrees exactly with (\ref{eqn:Sato_SE3}).
+
+We next compare this with Grozin's result
+\begin{align}
+\Sigma_{f,3} = e^4 \frac{(-p^2)^{-2\epsilon}}{(4\pi)^d} G_2   \frac{2(d-2)^2}{(d-6)}
+\end{align}
+which is expanded to give
+\begin{align}
+\Sigma_{f,3} = -e^4 \left[-\frac{1}{\epsilon} +\left( 2\gamma+2\log\left(\frac{p^2}{Q^2}\right)-\frac{7}{2}\right) \right]+ \mathcal{O}(\epsilon)
+\end{align}
+which is in agreement with (\ref{eqn:Sato_SE3}) except for the $\gamma$ term, which I will discuss later (scheme dependent term I expect?).
+
+
+\subsubsection{Diagram 2}
+\noindent\begin{minipage}{0.3\textwidth}
+\begin{center}
+\includegraphics{QED_F_2loop_3.pdf}
+\end{center}
+\end{minipage}
+\noindent\begin{minipage}{0.7\textwidth}
+
+The next two-loop diagram we consider is given on the left.  The integral for this amplitude is
+\begin{align}
+\Sigma_{f,2} = e^4 (\mu^{4-d})^2 \int \frac{d^dk}{(2\pi)^d}  \frac{d^dk'}{(2\pi)^d} \frac{ \gamma_{\mu}\slashed{k}\gamma^{\nu}\slashed{k}'\gamma_{\nu}\slashed{k}\gamma_{\mu}} { (k^2)^2(k'^2)^2(p-k)^2(k-k')^2}
+\end{align}
+\end{minipage}
+The UV divergent amplitude given by an intermediate step in the \mb algorithm is
+\begin{align}
+\Sigma_{f,2} = e^4 \frac{(d-3)(d-2)^2}{(d-4)p^2} p \ \bold{J}_{ \{1,0\}, \{1,0\}, \{1,0\}}^{(D)}
+\end{align}
+which agrees with the FeynHelpers result.  Expanding this out using (\ref{eqn:J_expand}) gives
+\begin{align}
+\Sigma_{f,2} = &e^4 \left[ -\frac{1}{2\epsilon^2} + \frac{1}{\epsilon}\left(\log\left(\frac{p^2}{Q^2}\right)-\frac{5}{4}\right) + \left( \frac{21}{2}-4\log\left(\frac{p^2}{Q^2}\right)\right) \right] + \mathcal{O}(\epsilon)
+\end{align}
+which is in disagreement with (\ref{eqn:Sato_SE2}).\\
+
+The result from Grozin is
+\begin{align}
+\Sigma_{f,2} = e^4 \frac{(-p^2)^{-2\epsilon}}{(4\pi)^d} G_2   \frac{(d-2)^2(d-3)}{(d-4)}
+\end{align}
+which is expanded to give
+\begin{align}
+\begin{split}
+\Sigma_{f,2} = &e^4 \left[ -\frac{1}{2\epsilon^2} + \frac{1}{\epsilon}\left(
+\frac{5}{4}-\gamma-\log\left(\frac{p^2}{Q^2}\right)\right) \right.\\&\left.+ \frac{1}{8}\left(
+31 +
+4\gamma(2\gamma-5) - 4\zeta + 4\log\left(\frac{p^2}{Q^2}\right) \left( 4\gamma+2\log\left(\frac{p^2}{Q^2}\right)-5\right)
+ \right) \right] + \mathcal{O}(\epsilon)
+\end{split}
+\end{align}
+this agrees with (\ref{eqn:Sato_SE2}).
+
+
+\subsubsection{Diagram 1}
+\noindent\begin{minipage}{0.3\textwidth}
+\begin{center}
+\includegraphics{QED_F_2loop_1.pdf}
+\end{center}
+\end{minipage}
+\noindent\begin{minipage}{0.7\textwidth}
+
+The final two-loop diagram we consider is given on the left.  The amplitude is given by
+\begin{align}
+\Sigma_{f,1} = e^4 (\mu^{4-d})^2 \int \frac{d^dk}{(2\pi)^d}  \frac{d^dk'}{(2\pi)^d}
+\end{align}
+
+\end{minipage}
 
 
 

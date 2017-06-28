@@ -17,7 +17,9 @@ makeFiniteCT::usage =
 
 
 MassBuilderEpsilon;
+MassBuilderZeta;
 MassBuilderP;
+MassBuilderQ2;
 
 MassBuilderAe[m1_];
 MassBuilderBe[m1_,m2_];
@@ -58,6 +60,7 @@ Do[
             + (-(masses[[i]]^2 +masses[[j]]^2 +masses[[k]]^2)/2 + MassBuilderP^2/4 )/MassBuilderEpsilon
             + ( I*A[masses[[i]],4] + I*A[masses[[j]],4] + I*A[masses[[k]],4] )/MassBuilderEpsilon
             + MassBuilderAe[masses[[i]]] + MassBuilderAe[masses[[j]]] + MassBuilderAe[masses[[k]]]
+            + MassBuilderP^2 * MassBuilderEpsilon*(-4*MassBuilderZeta + 115 + 8* (Log[MassBuilderP^2])^2 - 52* Log[MassBuilderP^2])/16
             );
     If[
         (massesExpand[[i]]!=0),
