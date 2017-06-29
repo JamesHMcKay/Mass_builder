@@ -131,6 +131,13 @@ void User_input::user_interface()
   }
   
 
+  if (find_string("-k"))
+  {
+    string input = "diagram number";
+    if (find_and_read_string("-k",input)){options.epsilon_order = input;}
+  }
+
+
   if (find_string("-f")){ options.run_mode = 5;}
   if (find_string("-e")){ options.run_mode = 6;}
   if (find_string("-0")){ options.run_mode = 7;}
@@ -140,6 +147,8 @@ void User_input::user_interface()
   if (find_string("-y")){ options.run_mode = 9;}
   
   if (find_string("-z")){ options.use_lorentz = false;}
+  
+  if (find_string("-1")){ options.force = true;}
   
   
   if (options.particle_1!=options.particle_2)

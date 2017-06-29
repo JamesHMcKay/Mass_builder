@@ -63,11 +63,21 @@ double get_fermion_2loop(Data data)
   
   double self_energy_3 = C * ( -3.5 + 2*log(x) );
   
+  // counter-term amplitudes
+  
+  double ct_1 = C * ( -4 + Zeta + 2*log(x)-pow(log(x),2) );
+  
+  double ct_2 = C * (4. - Zeta - 2*log(x) + pow(log(x),2) ) / 2.;
+  
+  
   cout << "2-loop fermion diagram 1 = " << self_energy_1 << endl;  // this should match diagram 1
   cout << "2-loop fermion diagram 2 = " << self_energy_3 << endl;  // this matches diagram 2
   cout << "2-loop fermion diagram 5 = " << self_energy_2 << endl;  // this should match diagram 5
   
-  return self_energy_1 + self_energy_2 + self_energy_3;
+  cout << "2-loop counter-term diagram 1 = " << ct_1 << endl;  // this should match diagram 5
+  cout << "2-loop counter-term diagram 2 = " << ct_2 << endl;  // this should match diagram 5
+  
+  return self_energy_1 + self_energy_2 + self_energy_3 + ct_1 + ct_2;
 }
 
 double get_photon_1loop(Data data)
@@ -120,12 +130,12 @@ int main()
   
   // two-loop self energies
   
-  //double Fermion2loopMB = data.SE_2["F02_g1"];
+  double Fermion2loopMB = data.SE_2["F02_g1"];
   
-  get_fermion_2loop(data);
+  double Fermion2loopAnalytic = get_fermion_2loop(data);
     
-  //cout << "Mass Builder two-loop self energy = " << Fermion2loopMB << endl;
-  //cout << "Analytic two-loop result = " << Fermion2loopAnalytic << endl;
+  cout << "Mass Builder two-loop self energy = " << Fermion2loopMB << endl;
+  cout << "Analytic two-loop result = " << Fermion2loopAnalytic << endl;
   
   cout << "1-loop photon diagram 1 = " << Photon1loopAnalytic << endl;
   

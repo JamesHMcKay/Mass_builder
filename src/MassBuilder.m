@@ -15,11 +15,18 @@ makeFiniteAmplitude::usage =
 makeFiniteCT::usage =
   "makeFiniteCT[amplitude_,order,D_] := extract the terms of specified order in epsilon after multiplying by 1/epsilon "
 
+addHigherOrderDivergences::useage =
+  "addHigherOrderDivergences[amplitude_] := add 1/epsilon^2 order tree-level counter-terms that aren't included by FeynArts "
 
 MassBuilderEpsilon;
 MassBuilderZeta;
 MassBuilderP;
 MassBuilderQ2;
+(* tree-level counter-terms of order kappa^2(1/epsilon^2 + 1/epsilon), not included by FeynArts so we add them *)
+MassBuilderCTM1;
+MassBuilderCTZ1;
+MassBuilderCTM2;
+MassBuilderCTZ2;
 
 MassBuilderAe[m1_];
 MassBuilderBe[m1_,m2_];
@@ -145,6 +152,11 @@ makeFiniteCT[amplitude_,order_,D_] := Module[{amp,result},amp = amplitude*(1/Mas
                                                          amp = amp /. D-> (4 - 2*MassBuilderEpsilon);
                                                          result = Coefficient[amp, MassBuilderEpsilon, order];
                                                          result = result /. MassBuilderEpsilon -> 0;
+                                                         result
+                                                         ]
+ 
+(* note that we only multiply by 1/epsilon as MakeFiniteCT adds another factor of 1/epsilon *)
+addHigherOrderDivergences[amplitude_] := Module[{result},result = amplitude - MassBuilderCTM1 + MassBuilderCTZ1*MassBuilderP^2 + (MassBuilderCTZ2*MassBuilderP^2 - MassBuilderCTM2)/MassBuilderEpsilon;
                                                          result
                                                          ]
 

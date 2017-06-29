@@ -30,8 +30,6 @@ namespace templates
   
   void user_input_guide();
   
-  void print_math_header(ofstream &file);
-  
   void print_math_header(std::string &input);
   
 }

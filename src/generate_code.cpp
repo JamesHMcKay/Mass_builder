@@ -133,7 +133,12 @@ void Generate_code::decalare_var_tsil(ofstream &main_output)
 {
   
   int count = 0;
-  main_output<< "  TSIL_COMPLEXCPP ";
+  
+  if (integrals.size() > 0)
+  {
+    main_output<< "  TSIL_COMPLEXCPP ";
+  }
+  
   for (unsigned int i =0; i<integrals.size() ; i++)
   {
     count = count + 1;
@@ -146,6 +151,9 @@ void Generate_code::decalare_var_tsil(ofstream &main_output)
   
   main_output << "  TSIL_COMPLEXCPP  i;\n";
   main_output << "    double Zeta;\n";
+  // can't declare these as they get declared again later automatically
+  //main_output << "    double MassBuilderCTZ1 = 0, MassBuilderCTM1 = 0;\n";
+  //main_output << "    double MassBuilderCTZ2 = 0, MassBuilderCTM2 = 0;\n";
   
   get_data(masses,temp_vec, nm,file_masses);
   main_output << "  TSIL_REAL ";
@@ -184,7 +192,12 @@ void Generate_code::decalare_var(ofstream &main_output)
 {
   
   int count = 0;
-  main_output<< "    std::complex<long double> ";
+  
+  if (integrals.size() > 0)
+  {
+    main_output<< "    std::complex<long double> ";
+  }
+  
   for (unsigned int i =0; i<integrals.size() ; i++)
   {
     count = count + 1;
@@ -426,7 +439,8 @@ void Generate_code::generate_particle_src(std::string particle,int subgroup)
     }
   }
   functions <<");\n"
-  << "    SE  = -SE*TSIL_POW(PI,2);\n"
+  //<< "    SE  = -SE*TSIL_POW(PI,2);\n"
+  << "    SE  = -SE;\n"
   << "    return SE;\n"
   <<"  }\n"
   << "\n"
@@ -451,7 +465,8 @@ void Generate_code::generate_particle_src(std::string particle,int subgroup)
     }
   }
   functions << ");" << endl;
-  functions << "    SE = -SE * TSIL_POW(PI,4);\n"<<endl;
+  //functions << "    SE = -SE * TSIL_POW(PI,4);\n"<<endl;
+  functions << "    SE = -SE;\n"<<endl;
   
   
   
@@ -464,11 +479,11 @@ void Generate_code::generate_particle_src(std::string particle,int subgroup)
       {
         if (get_loop_order(levels[d]) == 2 )
         {
-        functions<< "  cout << \""<< levels[d] << "-loop diagram"<<" "<< particle_name << "_" <<  tags[d] << " = \" << TSIL_POW(PI,4)*real(diagram" <<"_"<< particle_name << "_" << tags[d] << "_" << levels[d] << "())<<endl;"<<endl;
+        functions<< "  cout << \""<< levels[d] << "-loop diagram"<<" "<< particle_name << "_" <<  tags[d] << " = \" << real(diagram" <<"_"<< particle_name << "_" << tags[d] << "_" << levels[d] << "())<<endl;"<<endl;
         }
         if (get_loop_order(levels[d]) == 1 )
         {
-        functions<< "  cout << \""<< levels[d] << "-loop diagram"<<" "<< particle_name << "_" <<  tags[d] << " = \" << TSIL_POW(PI,2)*real(diagram" <<"_"<< particle_name << "_" << tags[d] << "_" << levels[d] << "())<<endl;"<<endl;
+        functions<< "  cout << \""<< levels[d] << "-loop diagram"<<" "<< particle_name << "_" <<  tags[d] << " = \" << real(diagram" <<"_"<< particle_name << "_" << tags[d] << "_" << levels[d] << "())<<endl;"<<endl;
         }
       }
     }
@@ -482,11 +497,11 @@ void Generate_code::generate_particle_src(std::string particle,int subgroup)
     {
       if (get_loop_order(levels[d]) == 2 )
       {
-      functions<< "  table << \""<< particle_name  << " & "<<" "<< levels[d] << " & " <<  tags[d] << " & \" << TSIL_POW(PI,4)*real(diagram" <<"_"<< particle_name << "_" << tags[d] << "_" << levels[d] << "()) << \" \\\\\\\\ \" <<endl;"<<endl;
+      functions<< "  table << \""<< particle_name  << " & "<<" "<< levels[d] << " & " <<  tags[d] << " & \" << real(diagram" <<"_"<< particle_name << "_" << tags[d] << "_" << levels[d] << "()) << \" \\\\\\\\ \" <<endl;"<<endl;
       }
       if (get_loop_order(levels[d]) == 1 )
       {
-      functions<< "  table << \""<< particle_name << " & "<<" "<< levels[d] << " & " <<  tags[d] << " & \" << TSIL_POW(PI,2)*real(diagram" <<"_"<< particle_name << "_" << tags[d] << "_" << levels[d] << "()) << \" \\\\\\\\ \" <<endl;"<<endl;
+      functions<< "  table << \""<< particle_name << " & "<<" "<< levels[d] << " & " <<  tags[d] << " & \" << real(diagram" <<"_"<< particle_name << "_" << tags[d] << "_" << levels[d] << "()) << \" \\\\\\\\ \" <<endl;"<<endl;
       }
     }
   }

@@ -35,6 +35,7 @@ int main()
   
   cout << "One-loop self energy = " << one_loop << endl;
   cout << "Two-loop self energy = " << two_loop << endl;
+  cout << "Total self energy = " << one_loop+two_loop << endl;
   
   return 0;
 }

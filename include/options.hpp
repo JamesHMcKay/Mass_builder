@@ -20,6 +20,7 @@ bool optimise = false;
 bool detailed_output = false;
 bool latex_output = false;
 bool use_lorentz = true;
+bool force = false;
 int loop_order = 2;
 int n_group = 10;
 int n_final_states = 1;
@@ -32,6 +33,7 @@ string diagram;
 string particle_safe;
 string input_list="";
 string restrictions = "";
+string epsilon_order = "0";
 
 int run_mode = 0;
 /* options are:  

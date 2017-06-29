@@ -1,4 +1,4 @@
+Z1 -EL*EL*(data.P-4.*mf)/(16.0*Pi*Pi*Pi*Pi)
+Z2 -EL*EL*(data.P-4.*mf)/(16.0*Pi*Pi*Pi*Pi)
+Z3 0
 EL
-Z1
-Z2
-Z3

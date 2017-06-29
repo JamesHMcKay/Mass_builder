@@ -49,6 +49,8 @@ namespace utils
   
   void update_avail_diagrams(Options options);
   
+  bool check_if_available(Options options);
+  
   void sort_avail_diagrams(Options options);
   
   void ReplaceAll(string &input, const string& from, const string& to);
@@ -71,9 +73,7 @@ namespace utils
   
   void assign_variables(std::string &file,Options options);
   
-  void print_math_body(ofstream &file,Options options,string cwd,std::vector<std::string> masses);
-  
-  void print_math_body(ofstream &file,std::vector<std::string> masses);
+  void get_saved_amplitude(std::string &input, Options options);
   
   void print_math_body(std::string &input,Options options,string cwd,std::vector<std::string> masses);
   

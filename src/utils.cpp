@@ -110,6 +110,45 @@ namespace utils
   }
   
   
+  
+  // check if a diagram has already been computed, return true if it has
+  bool check_if_available(Options options)
+  {
+    const char *ext = ".txt";
+    string underscore = "_";
+    const char* str_tmp = "/output/";
+    string c_str = "models/" + options.model +str_tmp + "avail_diagrams" + underscore + ext;
+    const char *str = c_str.c_str();
+    string file_name = str;
+    
+    vector<string> particle, diagram, type;
+    int n;
+    get_data(particle,diagram,type,n,file_name);
+    
+    string this_type;
+    if (options.counter_terms)
+    {
+      this_type = to_string(options.loop_order)+"c";
+    }
+    else
+    {
+      this_type = to_string(options.loop_order);
+    }
+    
+    for (int i = 0; i < n; i++)
+    {
+      if ((options.particle == particle[i]) && (options.diagram==diagram[i]) && (this_type==type[i]))
+      {
+        return true;
+      }
+    }
+    
+    return false;
+  }
+  
+  
+  
+  
   void sort_avail_diagrams(Options options)
   {
     const char *ext = ".txt";
@@ -377,101 +416,28 @@ namespace utils
     
   }
   
-  
-  void print_math_body(ofstream &file,Options options,string cwd,std::vector<std::string> masses)
+ 
+  void get_saved_amplitude(std::string &input, Options options)
   {
-    int loop_order = options.loop_order;
-    string particle_1 = options.particle_1;
-    string particle_2 = options.particle_2;
-    string diagram = options.diagram;
-    string model = options.model;
     
-    assign_FCGV(file,options);
+    assign_FCGV(input,options);
     
-    assign_variables(file,options);
+    assign_variables(input,options);
     
+    string type;
     if (options.counter_terms)
     {
-      file<<"t12 = CreateCTTopologies["<< loop_order<<", 1 ->  " << options.n_final_states << ", ExcludeTopologies -> Internal];"<<endl;
+      type = to_string(options.loop_order)+"c";
     }
     else
     {
-      file<<"t12 = CreateTopologies["<< loop_order<<", 1 -> " << options.n_final_states << ", ExcludeTopologies -> Internal];"<<endl;
+      type = to_string(options.loop_order);
     }
     
-    if (options.use_lorentz)
-    {
-      file <<"alldiags = InsertFields[t12, {"<<particle_1<<"} -> {"<<particle_2<<"},InsertionLevel -> {Particles}, GenericModel -> Lorentz,Restrictions -> {" << options.restrictions << "},Model -> \""<<cwd<<"/models/"<<model<<"/"<<model<<"\"];\n";
-    }
-    else
-    {
-      file <<"alldiags = InsertFields[t12, {"<<particle_1<<"} -> {"<<particle_2<<"},InsertionLevel -> {Particles}, GenericModel -> \""<<cwd<<"/models/"<<model<<"/"<<model<<"\",Restrictions -> {" << options.restrictions << "},Model -> \""<<cwd<<"/models/"<<model<<"/"<<model<<"\"];\n";
-    }
-    
-    file<<"subdiags0 =   DiagramExtract[alldiags, "<<diagram<<"]\n"
-    <<"amp0 = FCFAConvert[CreateFeynAmp[subdiags0], IncomingMomenta -> {p}, OutgoingMomenta -> {p}, LoopMomenta -> {k1, k2} ,UndoChiralSplittings -> True,TransversePolarizationVectors -> {p},DropSumOver -> True, List -> False,ChangeDimension -> D] // Contract\n";
-    // GaugeRules -> {GaugeXi[Z] -> 0, GaugeXi[A] -> 0, GaugeXi[W] -> 0, GaugeXi[P] -> 0,GaugeXi[Wp] -> 0} // add as option to CreateFeynAmp for Landau gauge
-    
-    
-    file << "masses = List[" << masses[0];
-    if (masses.size()>1)
-    {
-      for (unsigned int i=1; i < ( masses.size() ) ;i++)
-      {
-        file << "," << masses[i];
-      }
-    }
-    file << "];\n";
-    
-    
-    if (masses[0]!="null")
-    {
-      file << "massesExpand = List[1";
-    }
-    else
-    {
-      file << "massesExpand = List[0";
-    }
-  
-    if (masses.size()>1)
-    {
-      for (unsigned int i=1; i < ( masses.size() ) ;i++)
-      {
-        if (masses[i]!="null")
-        {
-          file << ",1";
-        }
-        else
-        {
-          file << ",0";
-        }
-      }
-    }
-    file << "];\n";
-    
-    file << "Do [  amp0 = amp0 /. MajoranaSpinor[p, masses[[i]]] -> 1 /. Spinor[Momentum[p, D], masses[[i]], 1] -> 1;   , {i, Length[masses]}];\n";
-    
-    
-    file<<"SetOptions[Eps, Dimension -> D];\n";
-    
-    if ( (loop_order == 2) && (!options.counter_terms) )
-    {
-      file<<"fullamp0 = (amp0) // DiracSimplify // FCMultiLoopTID[#, {k1, k2}] & //DiracSimplify;\n"
-      <<"tfiamp0 = fullamp0 // ToTFI[#, k1, k2, p] & // ChangeDimension[#, D] &;\n";
-    }
-    
-    else if ( (loop_order == 1) && (options.counter_terms) )
-    {
-      file<<" fullamp0 = (amp0) // DiracSimplify;\n"
-      <<"tfiamp0 = fullamp0 // ChangeDimension[#, D] &;\n";
-    }
-    else
-    {
-      file<<" fullamp0 = (amp0) // DiracSimplify // TID[#, k1] & // DiracSimplify;\n"
-      <<"tfiamp0 = fullamp0 // ToTFI[#, k1, p] & // ChangeDimension[#, D] &;\n";
-    }
-    
+    input += "Get[\"" + get_cwd() + "/models/" + options.model + "/output/math_data_" + part_name_simple(options.particle) + "_" + options.diagram + "_" + type + ".mx\"];";
   }
+  
+  
   
   
   void print_math_body(std::string &input,Options options,string cwd,std::vector<std::string> masses)
@@ -508,6 +474,29 @@ namespace utils
     input+="amp0 = FCFAConvert[CreateFeynAmp[subdiags0,Truncated -> True], IncomingMomenta -> {p}, OutgoingMomenta -> {p}, LoopMomenta -> {k1, k2} ,UndoChiralSplittings -> True,TransversePolarizationVectors -> {p},DropSumOver -> True, List -> False,ChangeDimension -> D] // Contract // FCTraceFactor;";
     // GaugeRules -> {GaugeXi[Z] -> 0, GaugeXi[A] -> 0, GaugeXi[W] -> 0, GaugeXi[P] -> 0,GaugeXi[Wp] -> 0} // add as option to CreateFeynAmp for Landau gauge
     
+    
+    // correct for additional factors of Pi introduced by FeynArts
+    
+    if (options.counter_terms)
+    {
+      if (options.loop_order == 2 )
+      {
+        input+= "amp0 = amp0*Pi^2;";
+      }
+    }
+    else
+    {
+      if (options.loop_order == 1 )
+      {
+        input+= "amp0 = amp0*Pi^2;";
+      }
+      if (options.loop_order == 2 )
+      {
+        input+= "amp0 = amp0*Pi^4;";
+      }
+    }
+    
+        
     
     input+= "masses = List["  +  masses[0];
     if (masses.size()>1)

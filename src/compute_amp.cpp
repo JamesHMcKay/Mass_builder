@@ -70,38 +70,63 @@ bool Compute_amp::calc_diagram()
   
   // create string containing input to Mathematica
   std::string input;
-  templates::print_math_header(input);
-  utils::print_math_body(input,options,get_cwd(),masses_input);
   
-  // send input to Mathematica
-  send_to_math(input);
   
-  // send command to apply TARCER recurse function
-  utils::print_tarcer_recurse(input);
-  send_to_math(input);
   
-  // expand basis integrals into finite plus divergent pieces (using MassBuilder. package)
-  input += "SelfEnergyFinite = expandBasisIntegrals[SE, masses, massesExpand, MassBuilderA,";
-  input += "MassBuilderB, MassBuilderJ, MassBuilderK, MassBuilderT, MassBuilderV, MassBuilderF];";
+  // check if this diagram has already been computed (need to check available diagrams list and the existence of the math file)
   
-  // save full expanded amplitude to a Mathematica data file
-  input += "DumpSave[\"" + get_cwd() + "/output/math_1_" + std::to_string(options.mpi_process) + ".mx\", SelfEnergyFinite];";
+  if (check_if_available(options) && !options.force)
+  {
+    cout << "using previously computed amplitude " << endl;
+    templates::print_math_header(input);
+    utils::get_saved_amplitude(input,options);
+    send_to_math(input);
+  }
   
-  // obtain finite peice of amplitude (using MassBuilder. package)
+  else
+  {
+    cout << "computing amplitude " << endl;
+    templates::print_math_header(input);
+    utils::print_math_body(input,options,get_cwd(),masses_input);
+    // send input to Mathematica
+    send_to_math(input);
+    
+    // send command to apply TARCER recurse function
+    utils::print_tarcer_recurse(input);
+    send_to_math(input);
+    
+    // expand basis integrals into finite plus divergent pieces (using MassBuilder. package)
+    input += "SelfEnergyFinite = expandBasisIntegrals[SE, masses, massesExpand, MassBuilderA,";
+    input += "MassBuilderB, MassBuilderJ, MassBuilderK, MassBuilderT, MassBuilderV, MassBuilderF];";
+    
+    // save full expanded amplitude to a Mathematica data file
+    input += "DumpSave[\"" + get_cwd() + "/output/math_1_" + std::to_string(options.mpi_process) + ".mx\", SelfEnergyFinite];";
+    send_to_math(input);
+  }
+  
+  
+  
+  
+  // obtain finite peice of amplitude (using MassBuilder package)
   if (options.counter_terms)
   {
-    input += "SelfEnergyFinite = makeFiniteCT[SelfEnergyFinite, 0, D];";
+    // add 1/epsilon^2 order counter-terms to the tree-level counter-term amplitude since FeynArts doesn't include these
+    if (options.loop_order == 1)
+    {
+      input += "SelfEnergyFinite = addHigherOrderDivergences[SelfEnergyFinite];";
+    }
+    input += "SelfEnergyFinite = makeFiniteCT[SelfEnergyFinite," + options.epsilon_order + ", D];";
   }
   else
   {
-    input += "SelfEnergyFinite = makeFiniteAmplitude[SelfEnergyFinite, 0, D];";
+    input += "SelfEnergyFinite = makeFiniteAmplitude[SelfEnergyFinite," + options.epsilon_order + ", D];";
   }
   input += "SelfEnergyFinite = FullSimplify[SelfEnergyFinite/.MassBuilderP^2 -> Pair[Momentum[p],Momentum[p]] /. MassBuilderP -> Momentum[p] /. MassBuilderQ2->Q2 /. MassBuilderZeta-> Zeta ];";
   
   // take transverse part of self energy (fix required after adding Truncated->True to get diagrams, as this removes
   // the polarization vectors from the amplitude which would normally fix this problem
   input += "SelfEnergyFinite = FullSimplify[SelfEnergyFinite/.(Pair[LorentzIndex[Lor1], Momentum[p]]*Pair[LorentzIndex[Lor2], Momentum[p]] -Pair[LorentzIndex[Lor1], LorentzIndex[Lor2]]*Pair[Momentum[p], Momentum[p]]) -> Pair[Momentum[p],Momentum[p]] ];";
-  
+  input += "SelfEnergyFinite = FullSimplify[SelfEnergyFinite/.(-Pair[LorentzIndex[Lor1], Momentum[p]]*Pair[LorentzIndex[Lor2], Momentum[p]] +Pair[LorentzIndex[Lor1], LorentzIndex[Lor2]]*Pair[Momentum[p], Momentum[p]]) -> -Pair[Momentum[p],Momentum[p]] ];";
   
   // send the above commands to Mathematica
   send_to_math(input);
