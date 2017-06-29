@@ -139,7 +139,9 @@ int main()
   
   cout << "1-loop photon diagram 1 = " << Photon1loopAnalytic << endl;
   
-
+  cout << "One-loop self energy = " << data.SE_1["F02_g1"] << endl;
+  
+  cout << "Total self energy = " << data.SE_1["F02_g1"] + data.SE_2["F02_g1"] << endl;
   
   return 0;
 }

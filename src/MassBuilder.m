@@ -156,7 +156,7 @@ makeFiniteCT[amplitude_,order_,D_] := Module[{amp,result},amp = amplitude*(1/Mas
                                                          ]
  
 (* note that we only multiply by 1/epsilon as MakeFiniteCT adds another factor of 1/epsilon *)
-addHigherOrderDivergences[amplitude_] := Module[{result},result = amplitude - MassBuilderCTM1 + MassBuilderCTZ1*MassBuilderP^2 + (MassBuilderCTZ2*MassBuilderP^2 - MassBuilderCTM2)/MassBuilderEpsilon;
+addHigherOrderDivergences[amplitude_] := Module[{result},result = amplitude + (-MassBuilderCTM1 + MassBuilderCTZ1*MassBuilderP^2 + (MassBuilderCTZ2*MassBuilderP^2 - MassBuilderCTM2)/MassBuilderEpsilon)/(16*Pi*Pi);
                                                          result
                                                          ]
 

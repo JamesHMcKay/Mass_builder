@@ -49,6 +49,8 @@ namespace utils
   
   void update_avail_diagrams(Options options);
   
+  string make_tag(Options options);
+  
   bool check_if_available(Options options);
   
   void sort_avail_diagrams(Options options);

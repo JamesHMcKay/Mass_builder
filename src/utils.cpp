@@ -416,6 +416,35 @@ namespace utils
     
   }
   
+  string make_tag(Options options)
+  {
+    // return safe name for input and output particles
+    string particle_1 =  part_name_simple(options.particle_1);
+    string particle_2 =  part_name_simple(options.particle_2);
+    
+    // define tag used in all generated files
+    string particle_tag;
+    if ((options.particle_1!=options.particle_2))
+    {
+      particle_tag = particle_1 + "_" + particle_2;
+    }
+    else
+    {
+      particle_tag = particle_1;
+    }
+    string tag="";
+    
+    if (options.counter_terms)
+    {
+      tag = particle_tag + "_" + options.diagram + "_" + to_string(options.loop_order)+"c";
+    }
+    else
+    {
+      tag = particle_tag + "_" + options.diagram + "_" + to_string(options.loop_order);
+    }
+    return tag;
+  }
+  
  
   void get_saved_amplitude(std::string &input, Options options)
   {
@@ -423,18 +452,10 @@ namespace utils
     assign_FCGV(input,options);
     
     assign_variables(input,options);
+   
+    string tag = make_tag(options);
     
-    string type;
-    if (options.counter_terms)
-    {
-      type = to_string(options.loop_order)+"c";
-    }
-    else
-    {
-      type = to_string(options.loop_order);
-    }
-    
-    input += "Get[\"" + get_cwd() + "/models/" + options.model + "/output/math_data_" + part_name_simple(options.particle) + "_" + options.diagram + "_" + type + ".mx\"];";
+    input += "Get[\"" + get_cwd() + "/models/" + options.model + "/output/math_data_" + tag + ".mx\"];";
   }
   
   
@@ -481,18 +502,18 @@ namespace utils
     {
       if (options.loop_order == 2 )
       {
-        input+= "amp0 = amp0*Pi^2;";
+        input+= "amp0 = amp0*16*Pi^4;";
       }
     }
     else
     {
       if (options.loop_order == 1 )
       {
-        input+= "amp0 = amp0*Pi^2;";
+        input+= "amp0 = amp0*16*Pi^4;";
       }
       if (options.loop_order == 2 )
       {
-        input+= "amp0 = amp0*Pi^4;";
+        input+= "amp0 = amp0*256*Pi^8;";
       }
     }
     

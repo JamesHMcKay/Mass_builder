@@ -32,30 +32,7 @@ bool Compute_amp::calc_diagram()
   // print diagram details (number, particle, ...) to terminal
   print_diagram_info(options);
   
-  // return safe name for input and output particles
-  string particle_1 =  part_name_simple(options.particle_1);
-  string particle_2 =  part_name_simple(options.particle_2);
-  
-  // define tag used in all generated files
-  string particle_tag;
-  if ((options.particle_1!=options.particle_2))
-  {
-    particle_tag = particle_1 + "_" + particle_2;
-  }
-  else
-  {
-    particle_tag = particle_1;
-  }
-  string tag="";
-  
-  if (options.counter_terms)
-  {
-    tag = particle_tag + "_" + options.diagram + "_" + to_string(options.loop_order)+"c";
-  }
-  else
-  {
-    tag = particle_tag + "_" + options.diagram + "_" + to_string(options.loop_order);
-  }
+  string tag = make_tag(options);
   
   // get list of masses and identifier strings for this model
   const char* file_masses_tmp = "models/";
@@ -100,12 +77,10 @@ bool Compute_amp::calc_diagram()
     input += "MassBuilderB, MassBuilderJ, MassBuilderK, MassBuilderT, MassBuilderV, MassBuilderF];";
     
     // save full expanded amplitude to a Mathematica data file
-    input += "DumpSave[\"" + get_cwd() + "/output/math_1_" + std::to_string(options.mpi_process) + ".mx\", SelfEnergyFinite];";
+    input += "DumpSave[\"" + get_cwd() + "/models/" + options.model + "/output/math_data_" + tag + ".mx\", SelfEnergyFinite];";
     send_to_math(input);
   }
-  
-  
-  
+
   
   // obtain finite peice of amplitude (using MassBuilder package)
   if (options.counter_terms)
@@ -358,12 +333,7 @@ bool Compute_amp::calc_diagram()
   string remainder;
   success = check_done(remainder,options.mpi_process);
   
-  // copy the Mathematica data file to the output directory
-  const char *mx_ext = ".mx";
-  const char* copy_tmp = "/output/math_data_";
-  string c_copy = "cp output/math_1_" + std::to_string(options.mpi_process) + ".mx models/" + options.model +copy_tmp + tag + mx_ext;
-  const char *copy_cmd = c_copy.c_str();
-  system(copy_cmd);
+
   
   ReplaceAll(remainder,"Pair(Momentum(p),Momentum(p))", "Power(p,2)");
   

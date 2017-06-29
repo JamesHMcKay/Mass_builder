@@ -232,7 +232,7 @@ void Generate_code::decalare_var(ofstream &main_output)
   
   
   get_data(masses,temp_vec, nm,file_masses);
-  main_output << "    double ";
+  main_output << "    long double ";
   for (int i=0;i<nm;i++)
   {
     if (i!=(nm-1)) main_output << " " <<masses[i] << ", " << " " <<masses[i] << "2 , ";
@@ -439,8 +439,7 @@ void Generate_code::generate_particle_src(std::string particle,int subgroup)
     }
   }
   functions <<");\n"
-  //<< "    SE  = -SE*TSIL_POW(PI,2);\n"
-  << "    SE  = -SE;\n"
+  << "    SE  = -SE/(16.0L*TSIL_POW(PI,2));\n"
   << "    return SE;\n"
   <<"  }\n"
   << "\n"
@@ -465,8 +464,8 @@ void Generate_code::generate_particle_src(std::string particle,int subgroup)
     }
   }
   functions << ");" << endl;
-  //functions << "    SE = -SE * TSIL_POW(PI,4);\n"<<endl;
-  functions << "    SE = -SE;\n"<<endl;
+  functions << "    SE = -SE /(TSIL_POW(16.0L,2)*TSIL_POW(PI,4));\n"<<endl;
+  
   
   
   
@@ -479,11 +478,11 @@ void Generate_code::generate_particle_src(std::string particle,int subgroup)
       {
         if (get_loop_order(levels[d]) == 2 )
         {
-        functions<< "  cout << \""<< levels[d] << "-loop diagram"<<" "<< particle_name << "_" <<  tags[d] << " = \" << real(diagram" <<"_"<< particle_name << "_" << tags[d] << "_" << levels[d] << "())<<endl;"<<endl;
+        functions<< "  cout << \""<< levels[d] << "-loop diagram"<<" "<< particle_name << "_" <<  tags[d] << " = \" << real(diagram" <<"_"<< particle_name << "_" << tags[d] << "_" << levels[d] << "())/(TSIL_POW(16.0L,2)*TSIL_POW(PI,4))<<endl;"<<endl;
         }
         if (get_loop_order(levels[d]) == 1 )
         {
-        functions<< "  cout << \""<< levels[d] << "-loop diagram"<<" "<< particle_name << "_" <<  tags[d] << " = \" << real(diagram" <<"_"<< particle_name << "_" << tags[d] << "_" << levels[d] << "())<<endl;"<<endl;
+        functions<< "  cout << \""<< levels[d] << "-loop diagram"<<" "<< particle_name << "_" <<  tags[d] << " = \" << real(diagram" <<"_"<< particle_name << "_" << tags[d] << "_" << levels[d] << "())/(16.0L*TSIL_POW(PI,2)) <<endl;"<<endl;
         }
       }
     }

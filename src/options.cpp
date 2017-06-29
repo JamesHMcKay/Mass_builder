@@ -148,7 +148,7 @@ void User_input::user_interface()
   
   if (find_string("-z")){ options.use_lorentz = false;}
   
-  if (find_string("-1")){ options.force = true;}
+  if (find_string("-9")){ options.force = true;}
   
   
   if (options.particle_1!=options.particle_2)

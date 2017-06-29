@@ -1,4 +1,8 @@
-Z1 -EL*EL*(data.P-4.*mf)/(16.0*Pi*Pi*Pi*Pi)
-Z2 -EL*EL*(data.P-4.*mf)/(16.0*Pi*Pi*Pi*Pi)
+Z1 -EL*EL/(16.0*Pi*Pi)
+Z2 -EL*EL/(16.0*Pi*Pi)
 Z3 0
+MassBuilderCTZ1 0
+MassBuilderCTM1 0
+MassBuilderCTM2 0
+MassBuilderCTZ2 0
 EL
