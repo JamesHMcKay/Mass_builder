@@ -1,5 +1,5 @@
-Z1 -EL*EL/(16.0*Pi*Pi)
-Z2 -EL*EL/(16.0*Pi*Pi)
+Z1 -EL*EL
+Z2 -EL*EL
 Z3 0
 MassBuilderCTZ1 0
 MassBuilderCTM1 0

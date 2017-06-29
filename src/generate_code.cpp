@@ -250,7 +250,7 @@ void Generate_code::decalare_var(ofstream &main_output)
   const char *file_couplings = c_file_couplings.c_str();
   
   get_data(couplings, relationships, nc,file_couplings,true);
-  main_output << "  double ";
+  main_output << "    long double ";
   
   for (int i=0;i<nc;i++)
   {
@@ -384,9 +384,8 @@ void Generate_code::generate_particle_src(std::string particle,int subgroup)
   {
     functions << "    " << couplings[i] << " = integral."<<couplings[i]<<";\n";
   }
-  functions<<";\n"
-  << "\n"
-  << "    Q2 = data.Q;\n"
+  functions<<"\n"
+  << "    Q2 = data.Q;\n" // change this? kind of confusing
   << "    p=data.P;\n";
   
   
