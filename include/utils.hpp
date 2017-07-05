@@ -49,7 +49,7 @@ namespace utils
   
   void update_avail_diagrams(Options options);
   
-  string make_tag(Options options);
+  string make_tag(Options &options);
   
   bool check_if_available(Options options);
   
@@ -82,6 +82,8 @@ namespace utils
   void print_tarcer_recurse(std::string &input);
   
   void print_base(ofstream &myfile, Bases base, string id, string SEn,string D);
+  
+  void get_finite_amplitude(std::string &input, Options options);
   
   void print_math_basis(map<string, Bases> base_map, ofstream &myfile , string target, string D);
   

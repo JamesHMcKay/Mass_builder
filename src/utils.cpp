@@ -416,7 +416,7 @@ namespace utils
     
   }
   
-  string make_tag(Options options)
+  string make_tag(Options &options)
   {
     // return safe name for input and output particles
     string particle_1 =  part_name_simple(options.particle_1);
@@ -442,7 +442,42 @@ namespace utils
     {
       tag = particle_tag + "_" + options.diagram + "_" + to_string(options.loop_order);
     }
+    
+    
+    stringstream _part_1;
+    string part_1;
+    _part_1 << options.particle[0];
+    _part_1 >> part_1;
+      
+    if (part_1=="F")
+    {
+      options.fermion = true;
+    }
+    
     return tag;
+  }
+  
+  
+  void get_finite_amplitude(std::string &input, Options options)
+  {
+    
+    // obtain finite peice of amplitude (using MassBuilder package)
+    if (options.counter_terms)
+    {
+      input += "SelfEnergyFinite = makeFiniteCT[SelfEnergyFinite," + options.epsilon_order + ", D];";
+    }
+    else
+    {
+      input += "SelfEnergyFinite = makeFiniteAmplitude[SelfEnergyFinite," + options.epsilon_order + ", D];";
+    }
+    input += "SelfEnergyFinite = FullSimplify[SelfEnergyFinite/.MassBuilderP^2 -> Pair[Momentum[p],Momentum[p]] /. MassBuilderP -> p /. MassBuilderQ2->Q2 /. MassBuilderZeta-> Zeta ];";
+    
+    // take transverse part of self energy (fix required after adding Truncated->True to get diagrams, as this removes
+    // the polarization vectors from the amplitude which would normally fix this problem
+    input += "SelfEnergyFinite = FullSimplify[SelfEnergyFinite/.(Pair[LorentzIndex[Lor1], Momentum[p]]*Pair[LorentzIndex[Lor2], Momentum[p]] -Pair[LorentzIndex[Lor1], LorentzIndex[Lor2]]*Pair[Momentum[p], Momentum[p]]) -> Pair[Momentum[p],Momentum[p]] ];";
+    input += "SelfEnergyFinite = FullSimplify[SelfEnergyFinite/.(-Pair[LorentzIndex[Lor1], Momentum[p]]*Pair[LorentzIndex[Lor2], Momentum[p]] +Pair[LorentzIndex[Lor1], LorentzIndex[Lor2]]*Pair[Momentum[p], Momentum[p]]) -> -Pair[Momentum[p],Momentum[p]] ];";
+    
+
   }
   
  

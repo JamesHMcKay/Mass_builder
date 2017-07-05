@@ -76,34 +76,31 @@ bool Compute_amp::calc_diagram()
     input += "SelfEnergyFinite = expandBasisIntegrals[SE, masses, massesExpand, MassBuilderA,";
     input += "MassBuilderB, MassBuilderJ, MassBuilderK, MassBuilderT, MassBuilderV, MassBuilderF];";
     
+    if (options.counter_terms && options.loop_order == 1)
+    {
+      // add 1/epsilon^2 order counter-terms to the tree-level counter-term amplitude since FeynArts doesn't include these
+      if (options.fermion)
+      {
+        input += "SelfEnergyFinite = addHigherOrderDivergencesFermion[SelfEnergyFinite];";
+      }
+      else
+      {
+        input += "SelfEnergyFinite = addHigherOrderDivergences[SelfEnergyFinite];";
+      }
+    }
+    
+    if (options.counter_terms)
+    {
+      input += "SelfEnergyFinite = SelfEnergyFinite/MassBuilderEpsilon;";
+    }
+    
     // save full expanded amplitude to a Mathematica data file
     input += "DumpSave[\"" + get_cwd() + "/models/" + options.model + "/output/math_data_" + tag + ".mx\", SelfEnergyFinite];";
     send_to_math(input);
   }
-
   
-  // obtain finite peice of amplitude (using MassBuilder package)
-  if (options.counter_terms)
-  {
-    // add 1/epsilon^2 order counter-terms to the tree-level counter-term amplitude since FeynArts doesn't include these
-    if (options.loop_order == 1)
-    {
-      input += "SelfEnergyFinite = addHigherOrderDivergences[SelfEnergyFinite];";
-    }
-    input += "SelfEnergyFinite = makeFiniteCT[SelfEnergyFinite," + options.epsilon_order + ", D];";
-  }
-  else
-  {
-    input += "SelfEnergyFinite = makeFiniteAmplitude[SelfEnergyFinite," + options.epsilon_order + ", D];";
-  }
-  input += "SelfEnergyFinite = FullSimplify[SelfEnergyFinite/.MassBuilderP^2 -> Pair[Momentum[p],Momentum[p]] /. MassBuilderP -> Momentum[p] /. MassBuilderQ2->Q2 /. MassBuilderZeta-> Zeta ];";
+  get_finite_amplitude(input,options);
   
-  // take transverse part of self energy (fix required after adding Truncated->True to get diagrams, as this removes
-  // the polarization vectors from the amplitude which would normally fix this problem
-  input += "SelfEnergyFinite = FullSimplify[SelfEnergyFinite/.(Pair[LorentzIndex[Lor1], Momentum[p]]*Pair[LorentzIndex[Lor2], Momentum[p]] -Pair[LorentzIndex[Lor1], LorentzIndex[Lor2]]*Pair[Momentum[p], Momentum[p]]) -> Pair[Momentum[p],Momentum[p]] ];";
-  input += "SelfEnergyFinite = FullSimplify[SelfEnergyFinite/.(-Pair[LorentzIndex[Lor1], Momentum[p]]*Pair[LorentzIndex[Lor2], Momentum[p]] +Pair[LorentzIndex[Lor1], LorentzIndex[Lor2]]*Pair[Momentum[p], Momentum[p]]) -> -Pair[Momentum[p],Momentum[p]] ];";
-  
-  // send the above commands to Mathematica
   send_to_math(input);
   
   // extract non-zero coefficients

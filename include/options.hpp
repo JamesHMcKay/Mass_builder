@@ -20,7 +20,7 @@ bool optimise = false;
 bool detailed_output = false;
 bool latex_output = false;
 bool use_lorentz = true;
-bool force = false;
+bool force = true; // currently force MB to recompute all amplitudes
 int loop_order = 2;
 int n_group = 10;
 int n_final_states = 1;
@@ -34,6 +34,8 @@ string particle_safe;
 string input_list="";
 string restrictions = "";
 string epsilon_order = "0";
+
+bool fermion = false;
 
 int run_mode = 0;
 /* options are:  

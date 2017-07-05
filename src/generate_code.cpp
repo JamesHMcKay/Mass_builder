@@ -151,9 +151,9 @@ void Generate_code::decalare_var_tsil(ofstream &main_output)
   
   main_output << "  TSIL_COMPLEXCPP  i;\n";
   main_output << "    double Zeta;\n";
-  // can't declare these as they get declared again later automatically
-  //main_output << "    double MassBuilderCTZ1 = 0, MassBuilderCTM1 = 0;\n";
-  //main_output << "    double MassBuilderCTZ2 = 0, MassBuilderCTM2 = 0;\n";
+  
+  
+
   
   get_data(masses,temp_vec, nm,file_masses);
   main_output << "  TSIL_REAL ";
@@ -176,12 +176,15 @@ void Generate_code::decalare_var_tsil(ofstream &main_output)
   const char *file_couplings = c_file_couplings.c_str();
   
   get_data(couplings, relationships, nc,file_couplings,true);
-  main_output << "  TSIL_REAL ";
   
-  for (int i=0;i<nc;i++)
+
+  
+  main_output << "  TSIL_REAL ";
+  nc_all = couplings_all.size();
+  for (int i=0;i<nc_all;i++)
   {
-    if (i!=(nc-1)) main_output << couplings[i] << ", ";
-    else main_output <<couplings[i] << " ";
+    if (i!=(nc_all-1)) main_output << couplings_all[i] << ", ";
+    else main_output <<couplings_all[i] << " ";
   }
   main_output<<";"<<endl;
   main_output<< "\n";
@@ -250,12 +253,25 @@ void Generate_code::decalare_var(ofstream &main_output)
   const char *file_couplings = c_file_couplings.c_str();
   
   get_data(couplings, relationships, nc,file_couplings,true);
+  
+  couplings_all = remove_duplicates(couplings,"duplicate coupling definition, remove duplicates from couplings.txt"); //TODO: make this a fatal error
+  
+  couplings_all.push_back("MassBuilderCTZ1");
+  couplings_all.push_back("MassBuilderCTZ2");
+  couplings_all.push_back("MassBuilderCTM1");
+  couplings_all.push_back("MassBuilderCTM2");
+  
+  couplings_all = remove_duplicates(couplings_all);
+  
+  
+  
   main_output << "    long double ";
   
-  for (int i=0;i<nc;i++)
+  nc_all = couplings_all.size();
+  for (int i=0;i<nc_all;i++)
   {
-    if (i!=(nc-1)) main_output << couplings[i] << ", ";
-    else main_output <<couplings[i] << " ";
+    if (i!=(nc_all-1)) main_output << couplings_all[i] << ", ";
+    else main_output <<couplings_all[i] << " ";
   }
   main_output<<";"<<endl;
   main_output<< "\n";
@@ -380,9 +396,9 @@ void Generate_code::generate_particle_src(std::string particle,int subgroup)
   functions<<";\n"
   << "\n";
   
-  for (int i=0;i<nc;i++)
+  for (int i=0;i<nc_all;i++)
   {
-    functions << "    " << couplings[i] << " = integral."<<couplings[i]<<";\n";
+    functions << "    " << couplings_all[i] << " = integral."<<couplings_all[i]<<";\n";
   }
   functions<<"\n"
   << "    Q2 = data.Q;\n" // change this? kind of confusing
@@ -597,6 +613,12 @@ void Generate_code::generate_code()
   main_output<< "\n";
   main_output<< "   TSIL_REAL Q2 = data.Q;\n";
   main_output<< "   TSIL_REAL s = pow(data.P,2);\n";
+  
+  main_output<< "   MassBuilderCTM1 = 0;\n";
+  main_output<< "   MassBuilderCTZ1 = 0;\n";
+  main_output<< "   MassBuilderCTM2 = 0;\n";
+  main_output<< "   MassBuilderCTZ1 = 0;\n";
+  
   
   
   

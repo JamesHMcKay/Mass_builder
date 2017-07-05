@@ -49,8 +49,8 @@ class  Generate_code
     vector<std::string> integrals;
   
     std::map<std::string, Bases> base_map;
-    vector<std::string> couplings, relationships;
-    int nc; // number of diagrams, length of diagram_number vector
+    vector<std::string> couplings, couplings_all, relationships;
+    int nc, nc_all; // number of diagrams, length of diagram_number vector
     int nm; // number of diagrams, length of diagram_number vector
     int n_group; // number of diagrams in each source file
     vector<std::string> temp_vec; // TODO remove!

@@ -17,6 +17,9 @@ makeFiniteCT::usage =
 
 addHigherOrderDivergences::useage =
   "addHigherOrderDivergences[amplitude_] := add 1/epsilon^2 order tree-level counter-terms that aren't included by FeynArts "
+ 
+addHigherOrderDivergencesFermion::useage =
+  "addHigherOrderDivergences[amplitude_] := add 1/epsilon^2 order tree-level counter-terms that aren't included by FeynArts for a Fermionic particle "
 
 MassBuilderEpsilon;
 MassBuilderZeta;
@@ -67,7 +70,7 @@ Do[
             + (-(masses[[i]]^2 +masses[[j]]^2 +masses[[k]]^2)/2 + MassBuilderP^2/4 )/MassBuilderEpsilon
             + ( I*A[masses[[i]],4] + I*A[masses[[j]],4] + I*A[masses[[k]],4] )/MassBuilderEpsilon
             + MassBuilderAe[masses[[i]]] + MassBuilderAe[masses[[j]]] + MassBuilderAe[masses[[k]]]
-            + MassBuilderP^2 * MassBuilderEpsilon*(-4*MassBuilderZeta + 115 + 8* (Log[MassBuilderP^2])^2 - 52* Log[MassBuilderP^2])/16
+            + MassBuilderP^2 * MassBuilderEpsilon*(-4*MassBuilderZeta + 115 + 8* (Log[-MassBuilderP^2])^2 - 52* Log[-MassBuilderP^2])/16
             );
     If[
         (massesExpand[[i]]!=0),
@@ -148,7 +151,7 @@ makeFiniteAmplitude[amplitude_,order_,D_] := Module[{amp,result},amp = amplitude
                                                          result
                                                          ]
 
-makeFiniteCT[amplitude_,order_,D_] := Module[{amp,result},amp = amplitude*(1/MassBuilderEpsilon);
+makeFiniteCT[amplitude_,order_,D_] := Module[{amp,result},amp = amplitude;
                                                          amp = amp /. D-> (4 - 2*MassBuilderEpsilon);
                                                          result = Coefficient[amp, MassBuilderEpsilon, order];
                                                          result = result /. MassBuilderEpsilon -> 0;
@@ -159,7 +162,9 @@ makeFiniteCT[amplitude_,order_,D_] := Module[{amp,result},amp = amplitude*(1/Mas
 addHigherOrderDivergences[amplitude_] := Module[{result},result = amplitude + (-MassBuilderCTM1 + MassBuilderCTZ1*MassBuilderP^2 + (MassBuilderCTZ2*MassBuilderP^2 - MassBuilderCTM2)/MassBuilderEpsilon)/(16*Pi*Pi);
                                                          result
                                                          ]
-
+addHigherOrderDivergencesFermion[amplitude_] := Module[{result},result = amplitude + (-MassBuilderCTM1 + MassBuilderCTZ1*MassBuilderP + (MassBuilderCTZ2*MassBuilderP - MassBuilderCTM2)/MassBuilderEpsilon)/(16*Pi*Pi);
+                                                         result
+                                                         ]
 
 End[ ]
 

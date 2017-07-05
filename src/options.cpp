@@ -148,13 +148,14 @@ void User_input::user_interface()
   
   if (find_string("-z")){ options.use_lorentz = false;}
   
-  if (find_string("-9")){ options.force = true;}
+  if (find_string("reuse")){ options.force = false;}
   
   
   if (options.particle_1!=options.particle_2)
   {
     options.particle = options.particle_1 + "_" + options.particle_2;
   }
+  
 
   #ifdef DEBUG
   options.print_options();
