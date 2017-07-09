@@ -1,7 +1,7 @@
 #!/bin/sh
 
-originalfile=/Users/jamesmckay/Documents/Programs/Mass_builder/models/QED/QED_backup.mod
-file=/Users/jamesmckay/Documents/Programs/Mass_builder/models/QED/QED.mod
+originalfile=/Users/jamesmckay/Documents/Programs/Mass_builder/models/QED2/QED/QED.mod
+file=/Users/jamesmckay/Documents/Programs/Mass_builder/models/QED2/QED2.mod
 
 cp $originalfile $file
 
@@ -41,8 +41,8 @@ sed -i '' -e  "s/FeynAmpDenominator/FAFeynAmpDenominator/g"  $file
 #sed -i '' -e  "s/CW/FCGV[\"CW\"]/g"  $file
 #sed -i '' -e  "s/SW/FCGV[\"SW\"]/g"  $file
 
-originalfile=/Users/jamesmckay/Documents/Programs/Mass_builder/models/QED/QED_backup.gen
-file=/Users/jamesmckay/Documents/Programs/Mass_builder/models/QED/QED.gen
+originalfile=/Users/jamesmckay/Documents/Programs/Mass_builder/models/QED2/QED/QED.gen
+file=/Users/jamesmckay/Documents/Programs/Mass_builder/models/QED2/QED2.gen
 
 cp $originalfile $file
 

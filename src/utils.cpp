@@ -453,6 +453,10 @@ namespace utils
     {
       options.fermion = true;
     }
+    if (part_1=="V")
+    {
+      options.vector = true;
+    }
     
     return tag;
   }
@@ -470,13 +474,13 @@ namespace utils
     {
       input += "SelfEnergyFinite = makeFiniteAmplitude[SelfEnergyFinite," + options.epsilon_order + ", D];";
     }
-    input += "SelfEnergyFinite = FullSimplify[SelfEnergyFinite/.MassBuilderP^2 -> Pair[Momentum[p],Momentum[p]] /. MassBuilderP -> p /. MassBuilderQ2->Q2 /. MassBuilderZeta-> Zeta ];";
     
     // take transverse part of self energy (fix required after adding Truncated->True to get diagrams, as this removes
-    // the polarization vectors from the amplitude which would normally fix this problem
-    input += "SelfEnergyFinite = FullSimplify[SelfEnergyFinite/.(Pair[LorentzIndex[Lor1], Momentum[p]]*Pair[LorentzIndex[Lor2], Momentum[p]] -Pair[LorentzIndex[Lor1], LorentzIndex[Lor2]]*Pair[Momentum[p], Momentum[p]]) -> Pair[Momentum[p],Momentum[p]] ];";
-    input += "SelfEnergyFinite = FullSimplify[SelfEnergyFinite/.(-Pair[LorentzIndex[Lor1], Momentum[p]]*Pair[LorentzIndex[Lor2], Momentum[p]] +Pair[LorentzIndex[Lor1], LorentzIndex[Lor2]]*Pair[Momentum[p], Momentum[p]]) -> -Pair[Momentum[p],Momentum[p]] ];";
+    // the polarization vectors from the amplitude which would normally fix this problem (now only used for vectors)
+    input += "SelfEnergyFinite = SelfEnergyFinite/.(Pair[LorentzIndex[Lor1], Momentum[p]]*Pair[LorentzIndex[Lor2], Momentum[p]] -Pair[LorentzIndex[Lor1], LorentzIndex[Lor2]]*Pair[Momentum[p], Momentum[p]]) -> Pair[Momentum[p],Momentum[p]] ;";
+    input += "SelfEnergyFinite = SelfEnergyFinite/.(-Pair[LorentzIndex[Lor1], Momentum[p]]*Pair[LorentzIndex[Lor2], Momentum[p]] +Pair[LorentzIndex[Lor1], LorentzIndex[Lor2]]*Pair[Momentum[p], Momentum[p]]) -> -Pair[Momentum[p],Momentum[p]] ;";
     
+    input += "SelfEnergyFinite = FullSimplify[SelfEnergyFinite/.MassBuilderP^2 -> Pair[Momentum[p],Momentum[p]] /. MassBuilderP -> p /. MassBuilderQ2->Q2 /. MassBuilderZeta-> Zeta ];";
 
   }
   
@@ -527,7 +531,11 @@ namespace utils
     }
     
     input+="subdiags0 =   DiagramExtract[alldiags, " + diagram + "];";
-    input+="amp0 = FCFAConvert[CreateFeynAmp[subdiags0,Truncated -> True], IncomingMomenta -> {p}, OutgoingMomenta -> {p}, LoopMomenta -> {k1, k2} ,UndoChiralSplittings -> True,TransversePolarizationVectors -> {p},DropSumOver -> True, List -> False,ChangeDimension -> D] // Contract // FCTraceFactor;";
+    
+    string truncated = "True";
+    if (options.vector){ truncated = "False";}
+    
+    input+="amp0 = FCFAConvert[CreateFeynAmp[subdiags0,Truncated -> " + truncated + "], IncomingMomenta -> {p}, OutgoingMomenta -> {p}, LoopMomenta -> {k1, k2} ,UndoChiralSplittings -> True,TransversePolarizationVectors -> {p},DropSumOver -> True, List -> False,ChangeDimension -> D] // Contract // FCTraceFactor;";
     // GaugeRules -> {GaugeXi[Z] -> 0, GaugeXi[A] -> 0, GaugeXi[W] -> 0, GaugeXi[P] -> 0,GaugeXi[Wp] -> 0} // add as option to CreateFeynAmp for Landau gauge
     
     

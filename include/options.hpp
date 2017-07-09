@@ -36,6 +36,7 @@ string restrictions = "";
 string epsilon_order = "0";
 
 bool fermion = false;
+bool vector = false;
 
 int run_mode = 0;
 /* options are:  
