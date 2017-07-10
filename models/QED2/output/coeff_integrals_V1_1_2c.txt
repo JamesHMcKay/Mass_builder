@@ -1,0 +1,3 @@
+  TSIL_COMPLEXCPP C0 = (-4*Power(EL,2)*(18*Ae(mf)*(2*Power(mf,2)*(3*Z2m + 5*Z2z) - Z2z*Power(p,2)) + 2*Z2z*(24*Power(mf,4) - 10*Power(mf,2)*Power(p,2) + Power(Power(p,2),2)) + 9*Be(mf,mf)*(4*Power(mf,4)*(3*Z2m + 5*Z2z) + 2*Power(mf,2)*Z2z*Power(p,2) - Z2z*Power(Power(p,2),2))))/(27.*(4*Power(mf,2) - Power(p,2)));
+  TSIL_COMPLEXCPP CAf =   (Complex(0,0.8888888888888888)*Power(EL,2)*(-(Power(p,2)*Z2z) + 2*Power(mf,2)*(9*Z2m + 11*Z2z)))/(4*Power(mf,2) - Power(p,2)) ;
+  TSIL_COMPLEXCPP CBff =   (Complex(0,0.4444444444444444)*Power(EL,2)*(16*Power(mf,4)*Z2z + Power(p,4)*Z2z - 2*Power(mf,2)*Power(p,2)*(9*Z2m + 13*Z2z)))/(4*Power(mf,2) - Power(p,2)) ;

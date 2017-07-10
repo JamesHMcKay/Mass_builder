@@ -632,7 +632,7 @@ namespace utils
   void print_tarcer_recurse(std::string &input)
   {
     input+="SE = Simplify[TarcerRecurse[tfiamp0] ];";
-    input+="SEk = (1/(4 Pair[Momentum[p, D],Momentum[p, D]])) DiracTrace[ DiracGamma[Momentum[p, D], D] * SE ];";
+    input+="SEk = (1/(4 Pair[Momentum[p, D],Momentum[p, D]])) DiracTrace[ DiracGamma[Momentum[p, D], D].SE ];";
     input+="SEm = (1/4) DiracTrace[ SE ];";
     input+="SE = p*SEk+SEm;";
     input+="SE = SE /. Pair[Momentum[Polarization[p, -I, Transversality -> True], D], Momentum[Polarization[p, I, Transversality -> True], D]] -> -1 ;";
