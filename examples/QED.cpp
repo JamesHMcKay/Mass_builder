@@ -105,11 +105,11 @@ int main()
 {
 
   Data data;
-  data.P = 10.;
+  data.P = 100.;
   data.Q = 100.;
   data.EL = 0.1;
-  data.mf = 0.001;
-  data.ma = 0.001;
+  data.mf = 0.01;
+  data.ma = 0.01;
   cout.precision(17);
   
   Self_energy self_energy;
