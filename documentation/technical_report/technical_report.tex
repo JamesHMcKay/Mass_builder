@@ -83,7 +83,7 @@
 
 \section{Introduction}
 
-In this document we present a detailed calculation of radiative corrections up to two-loop order in the perturbative couplings for two quantum field theories.  For the purposes of a clear and explanatory presentation we work through a scalar field theory example using all the tools available.  This is followed by a more complicated calculation of the two-loop mass corrections in a triplet extended electroweak model.\\
+In this document we present a detailed calculation of radiative corrections up to two-loop order in the perturbative couplings for three quantum field theories.  For the purposes of a clear and explanatory presentation we work through a scalar field theory example using all the tools available.  This is followed by a more complicated calculation of the two-loop mass corrections in a massless and massive QED models, finally the triplet extended electroweak model is considered.\\
 
 The physical mass of a particle observed in experiments is not the \mbox{\footnotesize$\overline{\rm MS}~$} mass appearing in a renormalised Lagrangian.  Instead it is given by the \textit{pole mass}, which is defined as the pole of the two-point propagator after finite renormalisation effects are taken into account.  The form of the propagator, and thus the pole mass, depends on the field in question.  For a scalar field, $\phi(x)$, the two-point propagator is given by
 \begin{align}
@@ -209,7 +209,7 @@ which is the output we obtain from \tarcers.  The finite plus divergent result i
 \end{align}
 The counter-term diagram is trivial to calculate by hand, yet again we will take the result from \tarcer which is
 \begin{align}
-\Pi^{(1c)}_1 =  \delta m - \delta Z p^2
+\Pi^{(1c)}_1 =  \delta^{(1,1)} m - \delta^{(1,1)} Z p^2
 \end{align}
 
 We now need to remove the divergent terms from (\ref{eqn:scalar_1}) and (\ref{eqn:scalar_2}) by determining the appropriate values for the counter-term couplings, $\delta m$ and $\delta Z$.  In this case this is a simple calculation, which can do by hand but is also available as a feature in \mb to do automatically.  The full one-loop self energy, including counter-terms, is
@@ -222,8 +222,8 @@ where the divergent part is
 \end{align}
 so we find
 \begin{eqnarray}
-&\delta m &=\frac{\kappa}{2\epsilon} \left(g^2+\lambda m^2\right)+\mathcal{O}(\kappa^2)\\
-&\delta Z &= \mathcal{O}(\kappa^2)
+&\delta^{(1,1)} m &=\frac{\kappa}{2\epsilon} \left(g^2+\lambda m^2\right)+\mathcal{O}(\kappa^2)\\
+&\delta^{(1,1)} Z &= \mathcal{O}(\kappa^2)
 \end{eqnarray}
 where we allow for high order terms which are required to cancel divergences from amplitudes above the one-loop order, which we will determine in the next section.\\
 
@@ -518,14 +518,27 @@ changing to \tsil notation we find
 
 The final step is the most non-trivial and involves cancelling all divergences by a careful choice of counter-term couplings.  We use Mathematica to solve a set of simultaneous equations for the counter-term couplings.  There are five counter-terms to determine up to the order in $\epsilon$ we require, the first of these has already been calculated in the first section, leaving four to compute from the full amplitude.\\
 
-If $\Pi=\sum_{i=1}^{2} \Pi^{(1)}_i + \sum_{i=1}^{9} \Pi^{(2)}_i + \Pi^{(1c)}_1 + \sum_{i=1}^{5} \Pi^{(2c)}_i$ is the total self energy then we demand that $\Pi$ has no terms of order one or higher in $1/\epsilon$.  We take the coefficients of $1/\epsilon$, and $1/\epsilon^2$, and then subsequently take the coefficients of the $A(x)$ and $B(x,x)$ terms from each of these to form four seperate equations.  These are sufficient to solve the system and obtain the following counter-terms
+If $\Pi=\sum_{i=1}^{2} \Pi^{(1)}_i + \sum_{i=1}^{9} \Pi^{(2)}_i + \Pi^{(1c)}_1 + \sum_{i=1}^{5} \Pi^{(2c)}_i$ is the total self energy then we demand that $\Pi$ has no terms of order one or higher in $1/\epsilon$.
+
+To do this we must first add additional terms to the tree-level counter-term, this is done via the \mb Mathematica package at runtime, so the full tree-level counter-term diagram is
 \begin{align}
-\delta \lambda=& \kappa\frac{3\lambda^2}{2}\\
-\delta g=& \kappa\frac{3g\lambda}{2}\\
-\delta Z=& \frac{\kappa^2}{8}\left(7g^2\lambda+4\lambda^2m^2\right)\\
-\delta m=&\frac{\kappa}{2\epsilon} \left(g^2+\lambda m^2\right)+ \frac{\kappa^2}{24}\left(-15g^2\lambda+\lambda^2p^2-6\lambda^2m^2\right)
+\Pi_1^{(1c)}=  \kappa\left[\frac{1}{\epsilon}\left( \delta_{m}^{(1,1)}+ p^2\delta_{z}^{(1,1)}\right)\right]
++  \kappa^2\left[\frac{1}{\epsilon}\left( \delta_{m}^{(2,1)}+ p^2\delta_{z}^{(2,1)}\right)+\frac{1}{\epsilon^2}\left( \delta_{m}^{(2,2)}+ p^2\delta_{z}^{(2,2)}\right)\right]
 \end{align}
-with these counter-term couplings all divergences are removed.  In $\delta m$ we used the result for the order $\kappa$ part from the one-loop calculation in section \ref{sec:scalar_one_loop}.  The resultant self energy is
+
+
+  We take the coefficients of $1/\epsilon$, and $1/\epsilon^2$, and then subsequently take the coefficients of the $A(x)$ and $B(x,x)$ terms from each of these to form four seperate equations.  These are sufficient to solve the system and obtain the following counter-terms
+\begin{align}
+&\delta \lambda= \kappa\frac{3\lambda^2}{2}\\
+&\delta g= \kappa\frac{3g\lambda}{2}\\
+&\delta^{(1,1)}_m  =  \frac{\kappa}{2\epsilon} \left(g^2+\lambda m^2\right)\\
+&\delta^{(1,1)}_Z  =   0 \\
+&\delta^{(2,1)}_m  =  \frac{\kappa^2}{\epsilon}\left(   -\frac{5}{8} \lambda g^2-\frac{1}{4}\lambda^2 m^2\right)\\
+&\delta^{(2,1)}_Z  =  \frac{\kappa^2}{\epsilon} \left(-\frac{\lambda^2}{24}\right)\\
+&\delta^{(2,2)}_m  =   \frac{\kappa^2}{\epsilon^2} \left( \frac{7}{8}\lambda g^2+\frac{1}{2}\lambda^2 m^2\right)\\
+&\delta^{(2,2)}_Z  =  0
+\end{align}
+with these counter-term couplings all divergences are removed.  In $\delta^{(1,1)}_m,\delta^{(1,1)}_Z$ we used the result for the order $\kappa$ part from the one-loop calculation in section \ref{sec:scalar_one_loop}.  The resultant self energy is
 \begin{eqnarray}
 \Pi^{(1)}(p^2) &=& {1\over2}\lambda A(x) - {1\over2}g^2 B(x,x)\\
 \Pi^{(2)}(p^2) &=& -{1\over2}g^4 M(x,x,x,x,x) 
