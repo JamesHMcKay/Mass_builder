@@ -27,24 +27,27 @@ if(Mathematica_FOUND AND Mathematica_WSTP_FOUND)
 endif()
 
 set(TSIL_PATH "" CACHE STRING "The path to the TSIL file")
+get_filename_component(TSIL_PATH ${TSIL_PATH} REALPATH)
 
-# Configure cmake variables file (do this every time in case the TSIL path changes)
+# Configure cmake variables file
 set(outhdr "${PROJECT_SOURCE_DIR}/include/cmake_variables.hpp")
 configure_file("${PROJECT_SOURCE_DIR}/include/cmake_variables.hpp.in" ${outhdr})
 
 set(outhdr "${PROJECT_SOURCE_DIR}/include/self_energy.hpp")
-# We set up skeleton files that will be replaced by generated files by Mass Builder later
-# Configure skeleton self_energy.hpp
-set(outhdr "${PROJECT_SOURCE_DIR}/include/self_energy.hpp")
-configure_file("${PROJECT_SOURCE_DIR}/include/self_energy.hpp.in" ${outhdr})
+if(NOT EXISTS ${outhdr})
+  # We set up skeleton files that will be replaced by generated files by Mass Builder later
+  # Configure skeleton self_energy.hpp
+  set(outhdr "${PROJECT_SOURCE_DIR}/include/self_energy.hpp")
+  configure_file("${PROJECT_SOURCE_DIR}/include/self_energy.hpp.in" ${outhdr})
 
-# Configure skeleton data.hpp
-set(outhdr "${PROJECT_SOURCE_DIR}/include/data.hpp")
-configure_file("${PROJECT_SOURCE_DIR}/include/data.hpp.in" ${outhdr})
+  # Configure skeleton data.hpp
+  set(outhdr "${PROJECT_SOURCE_DIR}/include/data.hpp")
+  configure_file("${PROJECT_SOURCE_DIR}/include/data.hpp.in" ${outhdr})
 
-# Configure skeleton self_energy.cpp
-set(outhdr "${PROJECT_SOURCE_DIR}/src/self_energy.cpp")
-configure_file("${PROJECT_SOURCE_DIR}/src/self_energy.cpp.in" ${outhdr})
+  # Configure skeleton self_energy.cpp
+  set(outhdr "${PROJECT_SOURCE_DIR}/src/self_energy.cpp")
+  configure_file("${PROJECT_SOURCE_DIR}/src/self_energy.cpp.in" ${outhdr})
+endif()
 
 include_directories(src include ${Mathematica_WSTP_INCLUDE_DIR})
 

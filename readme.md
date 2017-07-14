@@ -59,6 +59,7 @@ mkdir models/Scalar/output
 ./mass_builder -a -m Scalar
 ./mass_builder -g -m Scalar
 cd build
+cmake ..
 make
 cd ..
 ./mass_builder -e -i models/Scalar/input.txt
