@@ -1,0 +1,72 @@
+M$ModelName = "QED";
+
+$FeymanGauge=True;
+
+M$Information = {
+  Authors      -> {"V. Shtabovenko"},
+  Institutions -> {"Technische Universität München"},
+  Emails       -> {"v.shtabovenko@tum.de"},
+  Date         -> "November 2, 2016"
+};
+
+IndexRange[Index[Generation]] = Range[3];
+IndexStyle[Generation, f];
+
+M$Parameters =
+ Join[{EL == {ParameterType ->
+      Internal}}, (# == {ParameterType -> External}) & /@ {Z1,Z2,Z3}]
+
+M$GaugeGroups = {
+  U1 == {
+    Abelian           -> True,
+    CouplingConstant  -> EL,
+    GaugeBoson        -> A,
+    Charge            -> Q
+  }
+};
+
+M$ClassesDescription = {
+
+ U[1] == { 
+    ClassName       -> ghA, 
+    SelfConjugate   -> False,
+    Ghost           -> A,
+    QuantumNumbers  -> {GhostNumber -> 1},
+    Mass            -> ma,
+    Width	    -> 0,
+    PropagatorLabel -> "uA",
+    PropagatorType  -> GhostDash,
+    PropagatorArrow -> Forward
+  },
+
+  F[2] == {
+    ClassName        -> l,
+    ClassMembers     -> {ele, mu, ta},
+    SelfConjugate    -> False,
+    Indices          -> {Index[Generation]},
+    FlavorIndex      -> Generation,
+    Mass             -> {Mlep, {ME,5.11*^-4}, {MM,0.10566}, {ML,1.777}},
+    Width            -> 0,
+    QuantumNumbers   -> {Q -> 1, LeptonNumber -> 1},
+    PropagatorLabel  -> {"l", "e", "mu", "ta"},
+    PropagatorType   -> Straight,
+    PropagatorArrow  -> Forward
+    Ghost            -> u
+  },
+
+  V[1] == {
+    ClassName        -> A,
+    SelfConjugate    -> True,
+    Mass             -> ma,
+    PropagatorLabel  -> "\\gamma",
+    PropagatorType   -> W,
+    PropagatorArrow  -> None
+  }
+};
+LQED = LQEDR + LQEDCT;
+LQEDR = -1/4 FS[A, imu, inu] FS[A, imu, inu] + I lbar.Ga[imu].DC[l, imu] - Mlep[fi] lbar[s,fi].l[s,fi];
+LQEDCT = FR$CT (-(Z3) 1/4 FS[A, imu, inu] FS[A, imu, inu]
+          + (Z2z) I lbar.Ga[imu].del[l,imu]
+          + (Z1) EL lbar.Ga[imu].l A[imu]
+          + (Z2m) Mlep[fi] lbar[s,fi].l[s,fi]
+          );

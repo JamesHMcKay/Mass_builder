@@ -1,0 +1,465 @@
+\documentclass[pdftex,twocolumn,epjc3]{svjour3}
+
+\usepackage{fontenc}
+\usepackage{calc}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{textcomp}
+\usepackage{xspace}
+\usepackage{relsize}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{listings}
+\usepackage{microtype}
+\usepackage{multirow}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage[utf8]{inputenc}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage[labelfont=bf,font=small]{caption}
+\usepackage[skip=-2pt]{subcaption}
+\usepackage[colorlinks,citecolor=blue,urlcolor=blue,linkcolor=blue]{hyperref}
+\usepackage[usenames,dvipsnames]{xcolor}
+\usepackage[clockwise,figuresright]{rotating}
+
+\newcolumntype{L}{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}X}
+\newcolumntype{R}{>{\raggedleft\let\newline\\\arraybackslash\hspace{0pt}}X}
+\newcolumntype{C}{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}X}
+
+\setlength{\rotFPtop}{0pt plus 1fil}
+\setcounter{tocdepth}{3}
+
+\makeatletter
+% \DeclareRobustCommand{\kbd}[1]{{\texttt{#1}}}
+% \DeclareRobustCommand{\code}[1]{\kbd{#1}\xspace}
+% \DeclareRobustCommand{\To}{\ensuremath{\Rightarrow}\xspace}
+\g@addto@macro\bfseries{\boldmath}
+\makeatother
+
+\newcommand{\subparagraph}{} %< workaround for svjour not defining subparagraph
+\usepackage{titlesec}
+% \titleformat*{\section}{\Large\bfseries\sffamily}
+% \titleformat*{\subsection}{\large\bfseries\sffamily}
+% \titleformat*{\subsubsection}{\bfseries\sffamily}
+\titleformat*{\paragraph}{\bfseries}
+% \titleformat*{\subparagraph}{\slshape}
+% \titlespacing*{\section}{0pt}{3ex plus .2ex minus .2ex}{1ex plus .2ex}
+% \titlespacing*{\subsection}{0pt}{3ex plus .4ex minus .4ex}{0.8ex plus .2ex}
+% \titlespacing*{\subsubsection}{0pt}{1.5ex plus .2ex minus .2ex}{0.5ex plus .2ex}
+% \titlespacing*{\paragraph}{0pt}{1ex plus .1ex minus .1ex}{0.5ex plus .1ex minus .1ex}
+% \titlespacing*{\subparagraph}{0pt}{0ex plus .1ex minus .1ex}{0.5ex plus .1ex minus .1ex}
+
+\journalname{Eur. Phys. J. C}
+\bibliographystyle{JHEP_pat}
+\smartqed
+\sloppy
+
+\let\underscore\_
+\renewcommand{\_}{\discretionary{\underscore}{}{\underscore}}
+
+\makeatletter
+\let\orgdescriptionlabel\descriptionlabel
+\renewcommand*{\descriptionlabel}[1]{%
+  \let\orglabel\label
+  \let\label\@gobble
+  \phantomsection
+  \protected@edef\@currentlabel{#1}%
+  %\protected@edef\@currentlabelname{#1}
+  \let\label\orglabel
+  \orgdescriptionlabel{#1}%
+}
+\makeatother
+
+%Journal definitions
+\input{jdefs.tex}
+
+\newcommand\cpp[1]{\lstinline{#1}}
+\newcommand\yaml[1]{\lstset{style=yaml}\lstinline{#1}\lstset{style=cpp}}
+\newcommand\yamlvalue[1]{{\YAMLvaluestyle\ttfamily#1}}
+\newcommand\term[1]{\lstset{style=terminal}\lstinline{#1}\lstset{style=cpp}}
+\newcommand\fortran[1]{\lstset{style=fortran}\lstinline{#1}\lstset{style=cpp}}
+\newcommand\py[1]{\lstset{style=python}\lstinline{#1}\lstset{style=cpp}}
+
+% Ben: Placeholder command for referring to glossary items in core paper from other paper
+\newcommand\corejargon[1]{\textbf{#1}}
+
+\lstnewenvironment{lstlistingyaml}{\lstset{style=yaml}}{\lstset{style=cpp}}
+\lstnewenvironment{lstlistingterm}{\lstset{style=terminal}}{\lstset{style=cpp}}
+\lstnewenvironment{lstlistingfortran}{\lstset{style=fortran}}{\lstset{style=cpp}}
+\lstnewenvironment{lstcpp}{\lstset{style=cpp}}{\lstset{style=cpp}}
+\lstnewenvironment{lstcppalt}{\lstset{style=cppalt}}{\lstset{style=cpp}}
+\lstnewenvironment{lstcppnum}{\lstset{style=cppnum}}{\lstset{style=cpp}}
+\lstnewenvironment{lstyaml}{\lstset{style=yaml}}{\lstset{style=cpp}}
+\lstnewenvironment{lstterm}{\lstset{style=terminal}}{\lstset{style=cpp}}
+\lstnewenvironment{lsttermalt}{\lstset{style=terminalalt}}{\lstset{style=cpp}}
+\lstnewenvironment{lstfortran}{\lstset{style=fortran}}{\lstset{style=cpp}}
+\lstnewenvironment{lstpy}{\lstset{style=python}}{\lstset{style=cpp}}
+
+%C++ syntax highlighting, direct from http://marcusmo.co.uk/blog/latex-syntax-highlighting/
+% Solarized colour scheme for listings
+\definecolor{solarized@base03}{HTML}{002B36}
+\definecolor{solarized@base02}{HTML}{073642}
+\definecolor{solarized@base01}{HTML}{586e75}
+\definecolor{solarized@base00}{HTML}{657b83}
+\definecolor{solarized@base0}{HTML}{839496}
+\definecolor{solarized@base1}{HTML}{93a1a1}
+\definecolor{solarized@base2}{HTML}{EEE8D5}
+\definecolor{solarized@base3}{HTML}{FDF6E3}
+\definecolor{solarized@yellow}{HTML}{B58900}
+\definecolor{solarized@orange}{HTML}{CB4B16}
+\definecolor{solarized@red}{HTML}{DC322F}
+\definecolor{solarized@magenta}{HTML}{D33682}
+\definecolor{solarized@violet}{HTML}{6C71C4}
+\definecolor{solarized@blue}{HTML}{268BD2}
+\definecolor{solarized@cyan}{HTML}{2AA198}
+\definecolor{solarized@green}{HTML}{859900}
+\definecolor{darkred}{HTML}{550003}
+\newcommand\YAMLcolonstyle{\footnotesize\color{solarized@red}\mdseries}
+\newcommand\YAMLstringstyle{\footnotesize\color{solarized@green}\mdseries}
+\newcommand\YAMLkeystyle{\footnotesize\color{solarized@blue}\ttfamily}
+\newcommand\YAMLvaluestyle{\footnotesize\color{blue}\mdseries}
+\newcommand\ProcessThreeDashes{\llap{\color{cyan}\mdseries-{-}-}}
+% Define C++ syntax highlighting colour scheme
+\newcommand\CPPplainstyle{\footnotesize\ttfamily}
+\newcommand\CPPkeywordstyle{\color{solarized@orange}\footnotesize\ttfamily}
+\newcommand\CPPidentifierstyle{\color{solarized@blue}\footnotesize\ttfamily}
+\lstdefinestyle{cpp}
+{
+  language=C++,
+  basicstyle=\footnotesize\ttfamily,
+  basewidth={0.53em,0.44em}, %Ben: experimenting a bit with the fixed-width width (first argument); feels a bit more readable to me with the slightly smaller width (was 0.6em by default)
+  numbers=none,
+  tabsize=2,
+  breaklines=true,
+  escapeinside={@}{@},
+  showstringspaces=false,
+  numberstyle=\tiny\color{solarized@base01},
+  keywordstyle=\color{solarized@orange},
+  stringstyle=\color{solarized@red}\ttfamily,
+  identifierstyle=\color{solarized@blue},
+  commentstyle=\color{solarized@violet},
+  morecomment=[l]{\#pragma},
+  emphstyle=\color{solarized@green},
+  frame=single,
+  rulecolor=\color{solarized@base2},
+  rulesepcolor=\color{solarized@base2},
+  otherkeywords={\#define,\#undef,\#include},
+  literate =
+}
+% C++ style with different escape character (so I can use @'s in strings)
+\lstdefinestyle{cppalt}
+{
+  language=C++,
+  basicstyle=\footnotesize\ttfamily,
+  basewidth={0.53em,0.44em}, %Ben: experimenting a bit with the fixed-width width (first argument); feels a bit more readable to me with the slightly smaller width (was 0.6em by default)
+  numbers=none,
+  tabsize=2,
+  breaklines=true,
+  escapeinside={*@}{@*},
+  showstringspaces=false,
+  numberstyle=\tiny\color{solarized@base01},
+  keywordstyle=\color{solarized@orange},
+  stringstyle=\color{solarized@red}\ttfamily,
+  identifierstyle=\color{solarized@blue},
+  commentstyle=\color{solarized@violet},
+  emphstyle=\color{solarized@green},
+  frame=single,
+  rulecolor=\color{solarized@base2},
+  rulesepcolor=\color{solarized@base2},
+  otherkeywords={define,undef,include,\#},
+  literate =
+}
+% C++ style with line numbers (try to keep everything else matching the 'cpp' style)
+\lstdefinestyle{cppnum}
+{
+  language=C++,
+  basicstyle=\footnotesize\ttfamily,
+  basewidth={0.53em,0.44em}, %Ben: experimenting a bit with the fixed-width width (first argument); feels a bit more readable to me with the slightly smaller width (was 0.6em by default)
+  numbers=left,
+  tabsize=2,
+  breaklines=true,
+  escapeinside={@}{@},
+  showstringspaces=false,
+  numberstyle=\tiny\color{solarized@base01},
+  keywordstyle=\color{solarized@orange},
+  stringstyle=\color{solarized@red}\ttfamily,
+  identifierstyle=\color{solarized@blue},
+  commentstyle=\color{solarized@violet},
+  emphstyle=\color{solarized@green},
+  frame=single,
+  rulecolor=\color{solarized@base2},
+  rulesepcolor=\color{solarized@base2},
+  otherkeywords={define,undef,include,\#},
+  literate =
+}
+% Define python syntax highlighting colour scheme
+\lstdefinestyle{python}
+{
+  language=Python,
+  basicstyle=\footnotesize\ttfamily,
+  basewidth={0.53em,0.44em},
+  numbers=none,
+  tabsize=2,
+  breaklines=true,
+  escapeinside={@}{@},
+  showstringspaces=false,
+  numberstyle=\tiny\color{solarized@base01},
+  keywordstyle=\color{blue},
+  stringstyle=\color{orange}\ttfamily,
+  identifierstyle=\color{darkred},
+  commentstyle=\color{purple},
+  emphstyle=\color{green},
+  frame=single,
+  rulecolor=\color{solarized@base2},
+  rulesepcolor=\color{solarized@base2},
+  literate = {\ as\ }{{\color{blue}\ as\ }}3 
+}
+% Define fortran syntax highlighting colour scheme
+\lstdefinestyle{fortran}
+{
+  language=Fortran,
+  basicstyle=\footnotesize\ttfamily,
+  basewidth={0.53em,0.44em},
+  numbers=none,
+  tabsize=2,
+  breaklines=true,
+  escapeinside={@}{@},
+  showstringspaces=false,
+  numberstyle=\tiny\color{solarized@base01},
+  keywordstyle=\color{blue},
+  stringstyle=\color{orange}\ttfamily,
+  identifierstyle=\color{black},
+  commentstyle=\color{purple},
+  emphstyle=\color{green},
+  frame=single,
+  rulecolor=\color{solarized@base2},
+  rulesepcolor=\color{solarized@base2},
+}
+% Define shell syntax highlighting colour scheme
+% Ben: I cannot get the damn comment highlighting to work for the 'bash' language. No idea what the problem is, the internet seems to think that it should just work.
+\lstdefinestyle{terminal}
+{
+  language=bash,
+  basicstyle=\footnotesize\ttfamily,
+  numbers=none,
+  tabsize=2,
+  breaklines=true,
+  escapeinside={@}{@},
+  frame=single,
+  showstringspaces=false,
+  numberstyle=\tiny\color{solarized@base01},
+  keywordstyle=\color{solarized@orange},
+  stringstyle=\color{solarized@red}\ttfamily,
+  identifierstyle=\color{black},
+  commentstyle=\color{solarized@violet},
+  emphstyle=\color{solarized@green},
+  frame=single,
+  rulecolor=\color{solarized@base2},
+  rulesepcolor=\color{solarized@base2},
+  morekeywords={gambit, cmake, make, mkdir},
+  deletekeywords={test},
+  literate = {\ gambit}{{\ }{\color{black}}gambit}7
+             {/gambit}{{/}{\color{black}}gambit}6
+             {/include}{{/}{\color{black}}include}8
+             {cmake/}{{\color{black}}cmake/}6
+             {.cmake}{{.}{\color{black}}cmake}6
+}
+% Terminal style with alternate escape character
+\lstdefinestyle{terminalalt}
+{
+  language=bash,
+  basicstyle=\footnotesize\ttfamily,
+  numbers=none,
+  tabsize=2,
+  breaklines=true,
+  escapeinside={*@}{@*},
+  frame=single,
+  showstringspaces=false,
+  numberstyle=\tiny\color{solarized@base01},
+  keywordstyle=\color{solarized@orange},
+  stringstyle=\color{solarized@red}\ttfamily,
+  identifierstyle=\color{black},
+  commentstyle=\color{solarized@violet},
+  emphstyle=\color{solarized@green},
+  frame=single,
+  rulecolor=\color{solarized@base2},
+  rulesepcolor=\color{solarized@base2},
+  morekeywords={gambit, cmake, make, mkdir},
+  deletekeywords={test},
+  literate = {\ gambit}{{\ }{\color{black}}gambit}7
+             {/gambit}{{/}{\color{black}}gambit}6
+             {/include}{{/}{\color{black}}include}8
+             {cmake/}{{\color{black}}cmake/}6
+             {.cmake}{{.}{\color{black}}cmake}6
+}
+\newcommand{\negphantom}[1]{\settowidth{\dimen0}{#1}\hspace*{-\dimen0}}
+% Define yaml syntax highlighting colour scheme
+\lstdefinestyle{yaml}
+{
+  escapeinside={@}{@},
+  keywords={true,false,null},
+  otherkeywords={},
+  keywordstyle=\color{solarized@base0}\bfseries,
+  basicstyle=\footnotesize\color{black}\ttfamily,
+  identifierstyle=\YAMLkeystyle,
+  sensitive=false,
+  commentstyle=\color{solarized@orange}\ttfamily,
+  morecomment=[l]{\#},
+  morecomment=[s]{/*}{*/},
+  stringstyle=\YAMLstringstyle\ttfamily,
+  moredelim=**[s][\YAMLkeystyle]{,}{:},   % switch to value style at : but back to key style at,
+  moredelim=**[l][\YAMLvaluestyle]{:},    % switch to value style at :
+  morestring=[b]',
+  morestring=[b]",
+  literate =    {---}{{\ProcessThreeDashes}}3
+                {>}{{\textcolor{solarized@red}\textgreater}}1
+                {|}{{\textcolor{solarized@red}\textbar}}1
+                {\ -\ }{{\mdseries\color{black}\ -\ \negmedspace}}3
+                {\}}{{{\color{black} \}}}}1
+                {\{}{{{\color{black} \{}}}1
+                {[}{{{\color{black} [}}}1
+                {]}{{{\color{black} ]}}}1,
+  breakindent=0pt,
+  breakatwhitespace,
+  columns=fullflexible
+}
+% Start with C++ style on
+\lstset{style=cpp}
+
+% Glossary commands
+\newcommand{\cross}[1]{\ref{#1}}
+\newcommand{\doublecross}[2]{\hyperref[#2]{\textbf{#1}}}
+\newcommand{\doublecrosssf}[2]{\hyperref[#2]{\textbf{\textsf{#1}}}}
+\newcommand{\gitem}[1]{\item[\textbf{#1}\label{#1}]}
+\newcommand{\gsfitem}[1]{\item[\textbf{\textsf{#1}}\label{#1}]}
+
+% Code commands
+\newcommand{\bcode}{\begin{lstlisting}}
+\newcommand{\ecode}{\end{lstlisting}}
+\newcommand{\metavar}[1]{\textit{\color{black!70}\footnotesize\textrm{#1}}}
+
+% For sign(mu), etc.
+\DeclareMathOperator{\sign}{sign}
+
+% Physics units
+\newcommand{\eV}{\ensuremath{\text{e}\mspace{-0.8mu}\text{V}}\xspace}
+\newcommand{\MeV}{\text{M\eV}\xspace}
+\newcommand{\GeV}{\text{G\eV}\xspace}
+\newcommand{\TeV}{\text{T\eV}\xspace}
+\newcommand{\pb}{\text{pb}\xspace}
+\newcommand{\fb}{\text{fb}\xspace}
+\newcommand{\invpb}{\ensuremath{\pb^{-1}}\xspace}
+\newcommand{\invfb}{\ensuremath{\fb^{-1}}\xspace}
+
+% Physical quantities
+\newcommand{\pt}{\ensuremath{p_\mathrm{T}}\xspace}
+\newcommand{\et}{\ensuremath{E_\mathrm{T}}\xspace}
+\newcommand{\etmiss}{\ensuremath{E_\mathrm{T}^\mathrm{\mspace{1.5mu}miss}}\xspace}
+\newcommand{\hT}{\ensuremath{H_\mathrm{T}}\xspace}
+\newcommand{\dphi}{\ensuremath{\Delta\phi}\xspace}
+\newcommand{\lhs}{\lambda_{h\sss S}}
+\newcommand{\ls}{\lambda_{\sss S}}
+\newcommand{\DR}{$\overline{DR}$\xspace}
+\newcommand{\MSbar}{$\overline{MS}$\xspace}
+
+% Textual shortcuts
+\newcommand{\ie}{\textit{i.e.}\ }
+\newcommand{\eg}{\textit{e.g.}\ }
+\newcommand{\atlas}{ATLAS\xspace}
+\newcommand{\cms}{CMS\xspace}
+\newcommand{\gambit}{\textsf{GAMBIT}\xspace}
+\newcommand{\darkbit}{\textsf{DarkBit}\xspace}
+\newcommand{\colliderbit}{\textsf{ColliderBit}\xspace}
+\newcommand{\flavbit}{\textsf{FlavBit}\xspace}
+\newcommand{\specbit}{\textsf{SpecBit}\xspace}
+\newcommand{\decaybit}{\textsf{DecayBit}\xspace}
+\newcommand{\precisionbit}{\textsf{PrecisionBit}\xspace}
+\newcommand{\scannerbit}{\textsf{ScannerBit}\xspace}
+\newcommand{\examplebita}{\textsf{ExampleBit\_A}\xspace}
+\newcommand{\examplebitb}{\textsf{ExampleBit\_B}\xspace}
+\newcommand{\BOSS}{\textsf{BOSS}\xspace}
+\newcommand{\GB}{\gambit}
+\newcommand{\DB}{\darkbit}
+\newcommand{\omp}{\textsf{OpenMP}\xspace}
+\newcommand{\openmpi}{\textsf{OpenMPI}\xspace}
+\newcommand{\mpi}{\textsf{MPI}\xspace}
+\newcommand{\posix}{\textsf{POSIX}\xspace}
+\newcommand{\buckfast}{\textsf{BuckFast}\xspace}
+\newcommand{\delphes}{\textsf{Delphes}\xspace}
+\newcommand{\pythia}{\textsf{Pythia}\xspace}
+\newcommand{\pythiaeight}{\textsf{Pythia 8}\xspace}
+\newcommand{\PythiaEM}{\textsf{PythiaEM}\xspace}
+\newcommand{\prospino}{\textsf{Prospino}\xspace}
+\newcommand{\nllfast}{\textsf{NLL-fast}\xspace}
+\newcommand{\madgraph}{\textsf{MadGraph}\xspace}
+\newcommand{\fastjet}{\textsf{FastJet}\xspace}
+\newcommand{\smodels}{\textsf{SmodelS}\xspace}
+\newcommand{\fastlim}{\textsf{Fastlim}\xspace}
+\newcommand{\checkmate}{\textsf{CheckMATE}\xspace}
+\newcommand{\higgsbounds}{\textsf{HiggsBounds}\xspace}
+\newcommand{\susypope}{\textsf{SUSYPope}\xspace}
+\newcommand{\higgssignals}{\textsf{HiggsSignals}\xspace}
+\newcommand{\ds}{\textsf{DarkSUSY}\xspace}
+\newcommand{\pppc}{\textsf{PPPC4DMID}\xspace}
+\newcommand{\micromegas}{\textsf{micrOMEGAs}\xspace}
+\newcommand{\rivet}{\textsf{Rivet}\xspace}
+\newcommand{\feynrules}{\textsf{Feynrules}\xspace}
+\newcommand{\feynhiggs}{\textsf{FeynHiggs}\xspace}
+\newcommand\SARAH{\textsf{SARAH}\xspace}
+\newcommand\SPheno{\textsf{SPheno}\xspace}
+\newcommand\superiso{\textsf{SuperIso}\xspace}
+\newcommand\FlexibleSUSY{\textsf{FlexibleSUSY}\xspace}
+\newcommand\SOFTSUSY{\textsf{SOFTSUSY}\xspace}
+\newcommand\SUSPECT{\textsf{SUSPECT}\xspace}
+\newcommand\NMSSMCalc{\textsf{NMSSMCALC}\xspace}
+\newcommand\NMSSMTools{\textsf{NMSSMTools}\xspace}
+\newcommand\NMSPEC{\textsf{NMSPEC}\xspace}
+\newcommand\NMHDECAY{\textsf{NMHDECAY}\xspace}
+\newcommand\HDECAY{\textsf{HDECAY}\xspace}
+\newcommand\SDECAY{\textsf{SDECAY}\xspace}
+\newcommand\SUSYHIT{\textsf{SUSYHIT}\xspace}
+\newcommand\SFOLD{\textsf{SFOLD}\xspace}
+\newcommand\HFOLD{\textsf{HFOLD}\xspace}
+\newcommand\FeynHiggs{\textsf{FeynHiggs}\xspace}
+\newcommand\Mathematica{\textsf{Mathematica}\xspace}
+\newcommand\lilith{\textsf{Lilith}\xspace}
+\newcommand\nulike{\textsf{nulike}\xspace}
+\newcommand\gamLike{\textsf{gamLike}\xspace}
+\newcommand\pippi{\textsf{pippi}\xspace}
+\newcommand\MultiNest{\textsf{MultiNest}\xspace}
+\newcommand\gamlike{\textsf{GamLike}\xspace}
+\newcommand\ddcalc{\textsf{DDCalc}\xspace}
+\newcommand\xx{\raisebox{0.2ex}{\smaller ++}\xspace}
+\newcommand\Cpp{\textsf{C\xx}\xspace}
+\newcommand\Cppeleven{\textsf{C\raisebox{0.2ex}{\smaller ++}11}\xspace}
+\newcommand\plainC{\textsf{C}\xspace}
+\newcommand\Python{\textsf{Python}\xspace}
+\newcommand\python{\Python}
+\newcommand\Fortran{\textsf{Fortran}\xspace}
+
+\newcommand{\beq}{\equation}
+\newcommand{\eeq}{\endequation}
+\newcommand{\sss}{\scriptscriptstyle}
+\newcommand{\ms}{m_{\sss S}}
+\newcommand{\mail}[1]{\href{mailto:#1}{#1}}
+
+% Author comments
+\newcommand{\TODO}[1]{\textbf{\textcolor{red}{#1}}}
+\newcommand{\tb}[1]{{\color{green}\textbf{[TB: #1]}}}
+\newcommand{\ps}[1]{\Pat{: #1}}
+\newcommand{\cw}[1]{{\color{red}Christoph: #1}}
+\newcommand{\gm}[1]{{\color{violet}Greg: #1}}
+\newcommand{\Ben}[1]{{\bf\color{magenta}Ben #1}}
+\newcommand{\Csaba}[1]{{\bf\color{orange}Csaba #1}}
+\newcommand{\Chris}[1]{{\bf\color{olive}Chris #1}}
+\newcommand{\Pat}[1]{{\bf\color{blue}Pat #1}}
+\newcommand{\Peter}[1]{{\bf\color{purple}Peter #1}}
+\newcommand{\Anders}[1]{{\bf\color{brown}Anders #1}}
+\newcommand{\James}[1]{{\bf\color{teal}James #1}}
+\newcommand{\Abram}[1]{{\bf\color{black!20!gray!60!magenta}Abram: #1}}
+
+% Custom \chapter-like command  (svjour3 document class does not define \part or \chapter)
+\newcommand{\segment}[1]{
+ {\clearpage\noindent\phantomsection\huge\it#1\par}
+ {\addcontentsline{toc}{section}{\it#1}}
+}
