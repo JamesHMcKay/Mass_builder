@@ -1,1 +1,0 @@
-  return  + C0  + Aa * CAa + Af * CAf + Baf * CBaf;

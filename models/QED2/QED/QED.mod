@@ -25,13 +25,22 @@ IndexRange[ Index[Generation] ] = Range[ 3 ]
 (*     Declared particles    *)
 
 M$ClassesDescription = {
+U[1] == {
+    SelfConjugate -> False,
+    QuantumNumbers -> {GhostNumber},
+    PropagatorLabel -> "uA",
+    PropagatorType -> GhostDash,
+    PropagatorArrow -> Forward,
+    Mass -> 0,
+    Indices -> {} },
+
 F[2] == {
     SelfConjugate -> False,
     Indices -> {Index[Generation]},
     QuantumNumbers -> {Q, LeptonNumber},
     PropagatorLabel -> "l",
     PropagatorType -> Straight,
-    PropagatorArrow -> Forward,
+    PropagatorArrow -> Forward*Ghost -> u,
     Mass -> Mlep },
 
 V[1] == {

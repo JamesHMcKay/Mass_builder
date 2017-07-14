@@ -10,6 +10,11 @@
 \usepackage{amsmath}
 \DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
 
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+
+\usepackage{booktabs} 
+
 \setlength{\parindent}{0pt}
 
 \usepackage{lmodern}
@@ -629,7 +634,7 @@ S(0,0,0) = \frac{13s}{8}-\frac{s}{2}\log\left(\frac{-s}{Q^2}\right)
 \end{align}
 so we have
 \begin{align}
-\bold{S}(x,y,z) =  \frac{13s}{8}-\frac{s}{2}\log\left(\frac{-s}{Q^2}\right) + \frac{s}{4\epsilon}   + \mathcal{O}(\epsilon) \label{eqn:J_expand}
+\bold{S}(0,0,0) =  \frac{13s}{8}-\frac{s}{2}\log\left(\frac{-s}{Q^2}\right) + \frac{s}{4\epsilon}   + \mathcal{O}(\epsilon) \label{eqn:J_expand}
 \end{align}
 
 The notation used by Grozin makes use of the basis integrals $G_1$ and $G_2$ given by
@@ -722,15 +727,7 @@ The next two-loop diagram we consider is given on the left.  The integral for th
 \Sigma_{f,2} = e^4 (\mu^{4-d})^2 \int \frac{d^dk}{(2\pi)^d}  \frac{d^dk'}{(2\pi)^d} \frac{ \gamma_{\mu}\slashed{k}\gamma^{\nu}\slashed{k}'\gamma_{\nu}\slashed{k}\gamma_{\mu}} { (k^2)^2(k'^2)^2(p-k)^2(k-k')^2}
 \end{align}
 \end{minipage}
-The UV divergent amplitude given by an intermediate step in the \mb algorithm is
-\begin{align}
-\Sigma_{f,2} = e^4 \frac{(d-3)(d-2)^2}{(d-4)p^2} p \ \bold{J}_{ \{1,0\}, \{1,0\}, \{1,0\}}^{(D)}
-\end{align}
-which agrees with the FeynHelpers result.  Expanding this out using (\ref{eqn:J_expand}) gives
-\begin{align}
-\Sigma_{f,2} = &e^4 \left[ -\frac{1}{2\epsilon^2} + \frac{1}{\epsilon}\left(\log\left(\frac{p^2}{Q^2}\right)-\frac{5}{4}\right) + \left( \frac{21}{2}-4\log\left(\frac{p^2}{Q^2}\right)\right) \right] + \mathcal{O}(\epsilon)
-\end{align}
-which is in disagreement with (\ref{eqn:Sato_SE2}).\\
+
 
 The result from Grozin is
 \begin{align}
@@ -748,6 +745,21 @@ which is expanded to give
 \end{align}
 this agrees with (\ref{eqn:Sato_SE2}).
 
+The UV divergent amplitude given by an intermediate step in the \mb algorithm is
+\begin{align}
+\Sigma_{f,2} = e^4 \frac{(d-3)(d-2)^2}{(d-4)p^2} p \ \bold{J}_{ \{1,0\}, \{1,0\}, \{1,0\}}^{(D)}
+\end{align}
+which agrees with the FeynHelpers result.  Expanding this out using (\ref{eqn:J_expand}) gives
+\begin{align}
+\Sigma_{f,2} = &e^4 \left[ -\frac{1}{2\epsilon^2} + \frac{1}{\epsilon}\left(\log\left(\frac{p^2}{Q^2}\right)-\frac{5}{4}\right) + \left( \frac{21}{2}-4\log\left(\frac{p^2}{Q^2}\right)\right) \right] + \mathcal{O}(\epsilon)
+\end{align}
+which is in disagreement with (\ref{eqn:Sato_SE2}).  This is because (\ref{eqn:Sato_SE2}) does not include $\mathcal{O}(\epsilon)$ terms, which become relevant in this amplitude due to $ \mathcal{O}(1/\epsilon)$ terms in the coefficient of the basis integral.  So to get a consistent result we augment the code to include these terms, which will only become relevant in this massless case.  So in \mb we now define
+\begin{align}
+\begin{split}
+\bold{S}(0,0,0) = \, & \frac{s}{4\epsilon} + \frac{13s}{8}-\frac{s}{2}\log\left(\frac{-s}{Q^2}\right) \\&+\epsilon\frac{s}{16}  \left[-4 \zeta + 115 + 8 (\log(-\frac{s}{Q^2}))^2 - 52 \log(-\frac{s}{Q^2})\right] + \mathcal{O}(\epsilon^2)
+\end{split}
+\end{align}
+
 
 \subsubsection{Diagram 1}
 \noindent\begin{minipage}{0.3\textwidth}
@@ -757,13 +769,84 @@ this agrees with (\ref{eqn:Sato_SE2}).
 \end{minipage}
 \noindent\begin{minipage}{0.7\textwidth}
 
-The final two-loop diagram we consider is given on the left.  The amplitude is given by
-\begin{align}
-\Sigma_{f,1} = e^4 (\mu^{4-d})^2 \int \frac{d^dk}{(2\pi)^d}  \frac{d^dk'}{(2\pi)^d}
-\end{align}
+The final two-loop diagram we consider is given on the left. 
+
+\textcolor{red}{Section not yet completed.  The understanding gained from above is sufficient to complete the calcuation, the result of this diagram is analogous.}
+
+
 
 \end{minipage}
 
+\subsection{Counter-terms and cancellation of divergences}
+
+In this section I calculate the counter-term diagrams and determine the required counter-term couplings for a model where the masses are zero from the beginning (as in the calculation above) and one where we include regulator masses for all fields.  We present result below for the case with masses for the fermion and vector fields, $m_f$ and $m_a$ respectively.
+
+\subsubsection{Counter-term diagram 1}
+\noindent\begin{minipage}{0.3\textwidth}
+\begin{center}
+\includegraphics{QED_F_2loop_1c.pdf}
+\includegraphics{QED_F_2loop_2c.pdf}
+\end{center}
+\end{minipage}
+\noindent\begin{minipage}{0.7\textwidth}
+The first two counter-term diagrams I consider are given on the left.  The counter-term coupling for the vertex here is taken from \cite{Sato2013}, and is the only counter-term that we can not determine ourself.  This is
+\begin{align}
+\delta_{1}=-e^2
+\end{align}
+The counter-term diagrams on the left cancel logarithmic divergences from diagram 1 considered above.  Such that the sum of these two diagrams and diagram one is
+\begin{align}
+D_1 = \frac{e^4}{(16\pi^2)^2} \left[ \frac{1}{\epsilon^2}(4m_f-p)+\frac{1}{\epsilon}(12m_f-p)\right]+\mathcal{O}(\epsilon^0)
+\end{align}
+\end{minipage}
+
+\subsubsection{Counter-term diagram 2}
+\noindent\begin{minipage}{0.3\textwidth}
+\begin{center}
+\includegraphics{QED_F_2loop_3c.pdf}
+\end{center}
+\end{minipage}
+\noindent\begin{minipage}{0.7\textwidth}
+The counter-term diagram on the left cancels logarithmic divergences from diagram 3 considered above.  The counter-term coupling is determined at one-loop and is given in Table \ref{tab:counter_terms}.   The sum of this diagram and diagram 3 is
+\begin{align}
+D_2 = \frac{e^4}{(16\pi^2)^2} \left[ -\frac{2}{\epsilon^2}m_f+\frac{1}{3\epsilon}(8m_f-3p)\right]+\mathcal{O}(\epsilon^0)
+\end{align}
+\end{minipage}
+
+\subsubsection{Counter-term diagram 3}
+\noindent\begin{minipage}{0.3\textwidth}
+\begin{center}
+\includegraphics{QED_F_2loop_4c.pdf}
+\end{center}
+\end{minipage}
+\noindent\begin{minipage}{0.7\textwidth}
+The counter-term diagram on the left cancels logarithmic divergences from diagram 2 considered above.  The counter-term coupling is determined at one-loop and is given in Table \ref{tab:counter_terms}.   The sum of this diagram and diagram 3 is
+\begin{align}
+D_3 = \frac{e^4}{(16\pi^2)^2} \left[ \frac{1}{\epsilon^2}(8m_f+p)-\frac{1}{4\epsilon}(24m_f+p)\right]+\mathcal{O}(\epsilon^0)
+\end{align}
+\end{minipage}
+
+The sum of the left over divergences above must be cancelled by the tree-level counter-term coupling, which is
+\begin{align}
+\Sigma_{1}^{(1c)} = \kappa\left[\frac{1}{\epsilon}\left( \delta_{m}^{(1,1)}+ \slashed{p}\delta_{z}^{(1,1)}\right)\right]
++  \kappa^2\left[\frac{1}{\epsilon}\left( \delta_{m}^{(2,1)}+ \slashed{p}\delta_{z}^{(2,1)}\right)+\frac{1}{\epsilon^2}\left( \delta_{m}^{(2,2)}+ \slashed{p}\delta_{z}^{(2,2)}\right)\right]
+\end{align}
+which is easily solved to cancel the divergences in $D_1,D_2$ and $D_3$.  The solutions are given in Table \ref{tab:counter_terms}.
+
+
+\begin{table*}[t!]
+\center{
+\setlength\tabcolsep{2.4pt}
+\begin{tabular}{l@{\hspace{6mm}}l@{\hspace{6mm}}l@{\hspace{6mm}}l@{\hspace{6mm}}l@{\hspace{6mm}}l@{\hspace{6mm}}l@{\hspace{6mm}} l @{\hspace{6mm}}l @{\hspace{6mm}}l @{\hspace{6mm}}l}
+ & $ \delta_1$ & $\delta_{z}^{(1,1)}$  & $\delta_{m}^{(1,1)}$  & $\delta_{3,z}$ & $\delta_{3,m}$  &  $\delta_{m}^{(2,1)}$  & $\delta_{z}^{(2,1)}$ & $\delta_{m}^{(2,2)}$ & $\delta_{z}^{(2,2)}$ \\
+  \toprule
+\multicolumn{8}{l}{Massive QED}  \\  
+& $-e^2$ & $-e^2$ & $4e^2$ & $\frac{4}{3}e^2$ & $0$  &  $\frac{8}{3}e^4m_f$  & $\frac{7}{4}e^4$ & $\frac{6}{3}e^4m_f$ & $\frac{1}{2}e^4$ \\  
+\multicolumn{8}{l}{Massless QED}  \\
+&$e^2$ & $-e^2$ & $0$ &$\frac{4}{3}e^2$ & $0$  &  $0$  & $\frac{7}{4}e^4$ & $0$ & $\frac{1}{2}e^4$ \\  
+  \bottomrule
+\end{tabular}
+\caption{\label{tab:counter_terms}The counter-term couplings required for a divergence free amplitude in the case of massless and massive QED.  The only non-trivial difference between the models is for $\delta_1$ where the sign is opposite.}}
+\end{table*}
 
 
 \section{The electroweak triplet model}

@@ -1,1 +1,0 @@
-  TSIL_COMPLEXCPP C0 = -(Power(EL,4)*(8*mf + p))/2.;

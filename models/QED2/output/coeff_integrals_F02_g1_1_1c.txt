@@ -1,1 +1,0 @@
-  TSIL_COMPLEXCPP C0 = -(MassBuilderCTM2 - MassBuilderCTZ2*p)/(16.*Power(Pi,2));

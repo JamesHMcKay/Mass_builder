@@ -1,4 +1,0 @@
-  TSIL_COMPLEXCPP C0 = Power(EL,2)*(2*mf - p);
-  TSIL_COMPLEXCPP CAa =   (Complex(0,-1)*Power(EL,2))/p ;
-  TSIL_COMPLEXCPP CAf =   (Complex(0,1)*Power(EL,2))/p ;
-  TSIL_COMPLEXCPP CBaf =   (Complex(0,1)*Power(EL,2)*((ma - mf)*(ma + mf)*p + (4*mf - p)*Power(p,2)))/Power(p,2) ;
