@@ -27,6 +27,7 @@ if(Mathematica_FOUND AND Mathematica_WSTP_FOUND)
 endif()
 
 set(TSIL_PATH "" CACHE STRING "The path to the TSIL file")
+get_filename_component(TSIL_PATH ${TSIL_PATH} REALPATH)
 
 # Configure cmake variables file
 set(outhdr "${PROJECT_SOURCE_DIR}/include/cmake_variables.hpp")

@@ -1,16 +1,16 @@
 /*
  Mass Builder
- 
+
  James McKay
  Sep 2016
  Jan 2016
- 
+
  --- utils.cpp ---
- 
+
  This file contains functions used throughout the code to perform a range of
  tasks including reading from and writing to input/output streams, sorting
  lists of data and code generation
- 
+
  */
 
 
@@ -21,8 +21,7 @@ namespace templates
 {
   time_t t = time(0);   // get time now to print into generated files
   struct tm * now = localtime( & t );
-  std::string TSIL = TSIL_PATH;
-  
+
   void self_energy_hpp_header(ofstream &file)
   {
     file << "#ifndef SELF_ENERGY_H\n"
@@ -45,10 +44,10 @@ namespace templates
     <<"  {\n"
     <<"    public:\n";
   }
-  
+
   void data_input_block(ofstream &file)
   {
-    
+
     file<<"  Data (){};\n"
     <<"  Data(Options options) \n"
     <<"  {\n"
@@ -67,8 +66,8 @@ namespace templates
     <<"    for (int n=0;n<i+1;n++)\n"
     <<"    {\n";
   }
-  
-  
+
+
   void self_energy_src_preamble(ofstream &file, std::string particle_name, int subgroup)
   {
     file<< "/* ---------------------------------------------------- \n"
@@ -95,7 +94,8 @@ namespace templates
     << " \n"
     << "namespace " << particle_name << "_" << std::to_string(subgroup) << "\n"
     << "{\n"
-    << "#include \""<< TSIL << "\"\n"
+    << "#include \"cmake_variables.hpp\"\n"
+    << "#include TSIL_PATH\n"
     << "  TSIL_DATA bar;\n"
     << " \n"
     << "#ifndef PI\n"
@@ -124,7 +124,7 @@ namespace templates
     << "  TSIL_COMPLEXCPP Complex(double a,double b){dcomp i;i=-1;i=sqrt(i);TSIL_COMPLEXCPP result = a + i*b; return result ;}\n"
     << " \n";
   }
-  
+
   void amp_preamble(ofstream &file)
   {
     file<< "/* ---------------------------------------------------- \n"
@@ -142,7 +142,8 @@ namespace templates
     << "#include <cfloat>\n"
     << "#include <cstdlib>\n"
     << "#include <ctime>\n"
-    << "#include \""<< TSIL << "\"\n"
+    << "#include \"cmake_variables.hpp\"\n"
+    << "#include TSIL_PATH\n"
     << "#include \"self_energy.hpp\"\n"
     << " \n"
     << "using namespace std;\n"
@@ -157,8 +158,8 @@ namespace templates
     << "#endif\n"
     << "\n";
   }
-  
-  
+
+
   void status_update(ofstream &file)
   {
     file << "Print[\" --------------------------------------- \"]\n"
@@ -171,7 +172,7 @@ namespace templates
     << "Print[\" --------------------------------------- \"]\n"
     << "Print[diff]\n";
   }
-  
+
   void user_input_guide()
   {
     cout << " Welcome to Mass Builder \n"
@@ -192,9 +193,9 @@ namespace templates
     << " -r   -  specify model restrictions, for example -r WinoLimit,WinoCouplings\n"
     << " ------------------------------------------------------------------------------------------------------------- " <<endl;
   }
-  
-  
-  
+
+
+
   void print_math_header(std::string &input)
   {
     input += "SetOptions[DiracSlash, Dimension -> D, FeynCalcInternal -> True];";
@@ -209,7 +210,7 @@ namespace templates
     input += "MassBuilderV[mass1_, mass2_, mass3_, mass4_, D_] := TVI[D, Pair[Momentum[p, D],Momentum[p, D]], {{1, mass1}, {1, mass2}, {1, mass3}, {1, mass4}}];";
     input += "MassBuilderF[mass1_, mass2_, mass3_, mass4_, D_] := TJI[D, Pair[Momentum[p, D],Momentum[p, D]], {{1, mass1}, {1, mass2}, {1, mass3}, {1,mass4}}];";
   }
-  
-  
-  
+
+
+
 }
