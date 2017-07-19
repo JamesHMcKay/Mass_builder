@@ -634,7 +634,7 @@ namespace utils
     input+="SE = Simplify[TarcerRecurse[tfiamp0] ];";
     input+="SEk = (1/(4 Pair[Momentum[p, D],Momentum[p, D]])) DiracTrace[ DiracGamma[Momentum[p, D], D].SE ];";
     input+="SEm = (1/4) DiracTrace[ SE ];";
-    input+="SE = p*SEk+SEm;";
+    input+="SE = p*SEk+SEm;"; // TODO make sure this is okay for all types of fields
     input+="SE = SE /. Pair[Momentum[Polarization[p, -I, Transversality -> True], D], Momentum[Polarization[p, I, Transversality -> True], D]] -> -1 ;";
     // uncomment the following line if using a different gauge choice
     //input+="SEn = SEn /. GaugeXi[Z] -> 0 /. GaugeXi[P] -> 0 /. GaugeXi[Wp] -> 0  /. GaugeXi[S[1]] -> 0 /. GaugeXi[S[2]] -> 0 /. GaugeXi[S[3]] -> 0 ;\n"
@@ -867,9 +867,11 @@ namespace utils
       }
     }
     
+    myfile << "C"<< id << " = FullSimplify[Coefficient["<<SEn<<", " << id << ", 1]];" << endl;
+    myfile << "C"<< id << "2 = FullSimplify[Coefficient["<<SEn<<", " << id << ", 2]];" << endl;
     
-    myfile << "C"<< id << " = Coefficient["<<SEn<<", " << id << ", 1];" << endl;
-    myfile << "C"<< id << "2 = Coefficient["<<SEn<<", " << id << ", 2];" << endl; // check if the squared integral exists
+    //myfile << "C"<< id << " = FullSimplify[Coefficient["<<SEn<<", " << id << ", 1]/.Pair[Momentum[p, "<<D<<"], Momentum[p, "<<D<<"]]->Pair[Momentum[p, "<<D<<"], Momentum[p, "<<D<<"]]];" << endl;
+    //myfile << "C"<< id << "2 = FullSimplify[Coefficient["<<SEn<<", " << id << ", 2]/.Pair[Momentum[p, "<<D<<"], Momentum[p, "<<D<<"]]->Pair[Momentum[p, "<<D<<"], Momentum[p, "<<D<<"]]];" << endl; // check if the squared integral exists
   }
   
   

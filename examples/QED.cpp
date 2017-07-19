@@ -113,21 +113,6 @@ namespace extra_TSIL_interface
     
     //result = (Power(EL,4)*(-1 + log(-s2))*(3 + log(-s2)))/(512.*Power(Pi,4));
     
-    
-      // doing some comparisons below
-
-  cout << " Be(0.01,0.01) = " << Be(0.01,0.01) << endl;
-  cout << " Be(0.001,0.001) = " << Be(0.001,0.001) << endl;
-  cout << " Be(0.0001,0.0001) = " << Be(0.0001,0.0001) << endl;
-  cout << " Be(0.00001,0.00001) = " << Be(0.00001,0.00001) << endl;
-  cout << " Be(0.000001,0.000001) = " << Be(0.000001,0.000001) << endl;
-  
-  
-  
-  
-    
-    
-    
     return real(result);
   }
 }
@@ -175,11 +160,6 @@ std::complex<double> get_fermion_2loop(Data data)
   
   std::complex<double> Be00 = (s/16.) * ( -4.*Zeta+115.+8.*pow(log(s),2)-52.*log(s));
   
-  cout << "Be00 = " << Be00 << endl;
-  
-  
-  
-  
   return self_energy_1 + self_energy_2 + self_energy_3 + ct_34 + ct_1;
 }
 
@@ -210,8 +190,8 @@ int main()
   data.P = 10.;
   data.Q = 100.;
   data.EL = 0.1;
-  data.mf = 0.00001;
-  data.ma = 0.00001;
+  data.mf = 10;
+  data.ma = 0;
   cout.precision(17);
   
   double Pi = 4.0L*atan(1.0L);

@@ -150,7 +150,7 @@ M$ClassesDescription = {
   V[1] == {
 	SelfConjugate -> True,
 	Indices -> {},
-	Mass -> ma,
+	Mass -> 0,
 	PropagatorLabel -> "\\gamma",
 	PropagatorType -> Sine,
 	PropagatorArrow -> None },

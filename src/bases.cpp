@@ -254,6 +254,8 @@ void format_coeff(string dimension, std::map <std::string, Bases > &base_map, st
   // deal with TAI and TBI objects that frequently appear in the coefficients
   string from="",to="";
   
+
+  
   for (int k = 0; k<nb ; k++)
   {
     string coefficient = base_map[bases_names[k]].coefficient;
@@ -265,13 +267,10 @@ void format_coeff(string dimension, std::map <std::string, Bases > &base_map, st
         to = "B"+id[j]+id[i];
         ReplaceAll(coefficient,from, to);
         
-        from = "TBI("+dimension+",Power(p,2),List(List(1,"+masses[i]+"),List(1," + masses[j] + ")))";
+        from = "TBI("+dimension+",Pair(Momentum(p),Momentum(p)),List(List(1,"+masses[i]+"),List(1," + masses[j] + ")))";
         to = "B"+id[j]+id[i];
         ReplaceAll(coefficient,from, to);
-        
-        from = "TBI["+dimension+", Pair[Momentum[p, D], Momentum[p, D]], {{1, "+masses[i]+"}, {1, " + masses[j] + "}}]";
-        to = "B"+id[j]+id[i];
-        ReplaceAll(coefficient,from, to);
+
         
         from = "MassBuilderB("+masses[i]+","+masses[j]+")";
         to = "B"+id[j]+id[i];
@@ -279,14 +278,10 @@ void format_coeff(string dimension, std::map <std::string, Bases > &base_map, st
         
       }
       
-      from = "TBI("+dimension+",Power(p,2),List(List(1,"+masses[i]+"),List(1,0)))";
-      to = "Bn"+id[i];
-      ReplaceAll(coefficient,from, to);
-        
-      from = "TBI["+dimension+", Pair[Momentum[p, D], Momentum[p, D]], {{1, "+masses[i]+"}, {1, 0}}]";
-      to = "Bn"+id[i];
-      ReplaceAll(coefficient,from, to);
       
+      from = "TBI("+dimension+",Pair(Momentum(p),Momentum(p)),List(List(1,"+masses[i]+"),List(1,0)))";
+      to = "Bn"+id[i];
+      ReplaceAll(coefficient,from, to);
       
       from = "TAI("+dimension+",0,List(List(1,"+masses[i]+")))";
       to = "A"+id[i];
@@ -309,11 +304,6 @@ void format_coeff(string dimension, std::map <std::string, Bases > &base_map, st
       to = "1.0L";
       ReplaceAll(coefficient,from, to);
       
-      
-      from = "Pair(Momentum(p),Momentum(p))";
-      to = "Power(p,2)";
-      ReplaceAll(coefficient,from, to);
-      
       from = "Dot(1.0,1.0)";
       to = "1.0L";
       ReplaceAll(coefficient,from, to);
@@ -321,6 +311,11 @@ void format_coeff(string dimension, std::map <std::string, Bases > &base_map, st
       to = "1.0L";
       ReplaceAll(coefficient,from, to);
     }
+    
+          
+    from = "Pair(Momentum(p),Momentum(p))";
+    to = "Power(p,2)";
+    ReplaceAll(coefficient,from, to);
     
     from = "DiracGamma(6)";
     to = "0.5L";
@@ -344,10 +339,7 @@ void format_coeff(string dimension, std::map <std::string, Bases > &base_map, st
     from = "MassBuilderP";
     to = "p";
     ReplaceAll(coefficient,from, to);
-    
-    
-    
-    
+ 
     base_map[bases_names[k]].coefficient = coefficient;
   }
 }
@@ -382,7 +374,7 @@ void format_coeff(std::string &coefficient,std::vector<std::string> masses, std:
   ReplaceAll(coefficient,from, to);
   
   from = "Pair(Momentum(p),Momentum(p))";
-  to = "Power(p,2)";
+  to = "(Power(p,2))";
   ReplaceAll(coefficient,from, to);
   
   from = "MassBuilderP";
