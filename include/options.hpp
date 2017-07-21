@@ -35,6 +35,8 @@ string input_list="";
 string restrictions = "";
 string epsilon_order = "0";
 
+bool onshell = true;
+
 bool fermion = false;
 bool vector = false;
 

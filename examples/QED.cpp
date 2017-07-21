@@ -187,11 +187,11 @@ double get_photon_1loop(Data data)
 int main()
 {
   Data data;
-  data.P = 10.;
+  data.P = 0.01;
   data.Q = 100.;
   data.EL = 0.1;
-  data.mf = 10;
-  data.ma = 0;
+  data.mf = 0.01;
+  data.ma = 0.01;
   cout.precision(17);
   
   double Pi = 4.0L*atan(1.0L);

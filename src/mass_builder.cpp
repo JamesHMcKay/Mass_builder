@@ -190,7 +190,10 @@ void run_mass_builder_mode_1a(Options options,int argc, char *argv[])
     cout << "  Normal end of execution.\n";
     cout << "\n";
     timestamp ( );
-    std::remove("output/tasks*.txt");
+    std::remove("output/tasks_0.txt");
+    std::remove("output/tasks_1.txt");
+    std::remove("output/tasks_2.txt");
+    std::remove("output/tasks_3.txt");
   }
 
 

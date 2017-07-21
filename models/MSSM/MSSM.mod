@@ -150,7 +150,7 @@ M$ClassesDescription = {
   V[1] == {
 	SelfConjugate -> True,
 	Indices -> {},
-	Mass -> 0,
+	Mass -> ma,
 	PropagatorLabel -> "\\gamma",
 	PropagatorType -> Sine,
 	PropagatorArrow -> None },
@@ -270,7 +270,7 @@ M$ClassesDescription = {
   U[1] == {
 	SelfConjugate -> False,
 	Indices -> {},
-	Mass -> ma,
+	Mass -> 0,
 	QuantumNumbers -> GhostNumber,
 	PropagatorLabel -> ComposedChar["\\eta", "\\gamma"],
 	PropagatorType -> GhostDash,

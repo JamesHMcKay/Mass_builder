@@ -47,9 +47,9 @@ V[1] == {
 (*        Definitions       *)
 
 
-Mlep[ 1 ] := mf;
-Mlep[ 2 ] := mf;
-Mlep[ 3 ] := mf;
+Mlep[ 1 ] := 0;
+Mlep[ 2 ] := 0;
+Mlep[ 3 ] := 0;
 
 
 TheLabel[ F[2, {1}] ] := "e";

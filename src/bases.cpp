@@ -272,12 +272,21 @@ void format_coeff(string dimension, std::map <std::string, Bases > &base_map, st
         ReplaceAll(coefficient,from, to);
 
         
+        from = "TBI("+dimension+",Power("+masses[0]+",2),List(List(1,"+masses[i]+"),List(1," + masses[j] + ")))";
+        to = "B"+id[j]+id[i];
+        ReplaceAll(coefficient,from, to);
+
+        
         from = "MassBuilderB("+masses[i]+","+masses[j]+")";
         to = "B"+id[j]+id[i];
         ReplaceAll(coefficient,from, to);
         
       }
       
+      
+      from = "TBI("+dimension+",Power("+masses[0]+",2),List(List(1,"+masses[i]+"),List(1,0)))";
+      to = "Bn"+id[i];
+      ReplaceAll(coefficient,from, to);
       
       from = "TBI("+dimension+",Pair(Momentum(p),Momentum(p)),List(List(1,"+masses[i]+"),List(1,0)))";
       to = "Bn"+id[i];

@@ -532,6 +532,13 @@ namespace utils
     
     input+="subdiags0 =   DiagramExtract[alldiags, " + diagram + "];";
     
+    // define onshell condition if required
+    if (options.onshell)
+    {
+      input+="SPD[p, p] = " + masses[0] + "^2;";
+      input+="Pair[Momentum[p], Momentum[p]] = " + masses[0] + "^2;";
+    }
+    
     string truncated = "True";
     if (options.vector){ truncated = "False";}
     

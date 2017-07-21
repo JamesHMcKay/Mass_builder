@@ -12,3 +12,4 @@ V2 91.1876
 V3 80.385
 F1 5000
 F2 5000
+MassBuilderJEpsilon 0.0
