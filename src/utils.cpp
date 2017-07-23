@@ -532,12 +532,7 @@ namespace utils
     
     input+="subdiags0 =   DiagramExtract[alldiags, " + diagram + "];";
     
-    // define onshell condition if required
-    if (options.onshell)
-    {
-      input+="SPD[p, p] = " + masses[0] + "^2;";
-      input+="Pair[Momentum[p], Momentum[p]] = " + masses[0] + "^2;";
-    }
+
     
     string truncated = "True";
     if (options.vector){ truncated = "False";}
@@ -605,14 +600,34 @@ namespace utils
       }
     }
     input+= "];\n";
-
     
-    //input+= "Do [  amp0 = amp0 /. MajoranaSpinor[p, masses[[i]]] -> 1 /. Spinor[Momentum[p, D], masses[[i]], 1] -> 1;   , {i, Length[masses]}];";
     for (int index = 1; index < 4;index ++)
     {
       input+="amp0 = amp0 /. Index[Generation, " + to_string(index) + "] -> " + to_string(index)+ ";";
     }
+
     
+    input += "ampsSE1 = (amp0 /. DiracTrace -> Tr) // FCMultiLoopTID[#, {k1, k2}] & // DiracSimplify;";
+    // define onshell condition if required
+    if (options.onshell)
+    {
+      input+="SPD[p, p] = " + masses[0] + "^2;";
+      input+="Pair[Momentum[p], Momentum[p]] = " + masses[0] + "^2;";
+    }
+    
+    input += "ampsSE2 = ampsSE1 // FDS[#, k1, k2] &;";
+    
+    input += "ampsSE3 = FIREBurn[ampsSE2, {k1, k2}, {p}] // FDS[#, k1, k2] &;";
+    
+    input += "ampsSE4 = ampsSE3 // Collect2[#, {FeynAmpDenominator}, Factoring -> FullSimplify] &;";
+    
+    input += "resSE = Cancel[ampsSE4];";
+    
+    input += "tfiamp0 = resSE // ToTFI[#, k1, k2, p] &;";
+    
+    
+
+/*
     input+="amp1 = amp0 //FDS[#,l1,l2]&;";
     
     input+="SetOptions[Eps, Dimension -> D];";
@@ -633,6 +648,10 @@ namespace utils
       input+=" fullamp0 = (amp1) // DiracSimplify // TID[#, k1] & // DiracSimplify;";
       input+="tfiamp0 = fullamp0 // ToTFI[#, k1, p] & // ChangeDimension[#, D] &;";
     }
+    
+*/
+
+
 
   }
   

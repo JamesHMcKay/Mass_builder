@@ -102,7 +102,8 @@ public:
     
     std::string input;
     
-    input = "$LoadTARCER = True;";
+    input = "$LoadAddOns = {\"FeynHelpers\"};";
+    input+= "$LoadTARCER = True;";
     input+= "$LoadFeynArts = True;";
     input+= "<< FeynCalc/FeynCalc.m;";
     input+= "AppendTo[$Path, \"" + cwd + "/src/\"];";
