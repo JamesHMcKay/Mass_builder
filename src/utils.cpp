@@ -485,7 +485,7 @@ namespace utils
   }
   
  
-  void get_saved_amplitude(std::string &input, Options options)
+  void get_saved_amplitude(std::string &input, Options options, std::string mass)
   {
     
     assign_FCGV(input,options);
@@ -493,6 +493,13 @@ namespace utils
     assign_variables(input,options);
    
     string tag = make_tag(options);
+    
+    // define kinematics
+    if (options.onshell)
+    {
+      input+="SPD[p, p] = " + mass + "^2;";
+      input+="Pair[Momentum[p], Momentum[p]] = " + mass + "^2;";
+    }
     
     input += "Get[\"" + get_cwd() + "/models/" + options.model + "/output/math_data_" + tag + ".mx\"];";
   }
@@ -606,25 +613,49 @@ namespace utils
       input+="amp0 = amp0 /. Index[Generation, " + to_string(index) + "] -> " + to_string(index)+ ";";
     }
 
+        
+    if ( (loop_order == 2) && (!options.counter_terms) )
+    {
+      input += "ampsSE1 = (amp0 /. DiracTrace -> Tr) // FCMultiLoopTID[#, {k1, k2}] & // DiracSimplify;";
+    }
+    else if ( (loop_order == 1) && (options.counter_terms) )
+    {
+      input += "ampsSE1 = amp0;";
+    }
+    else
+    {
+      input+=" ampsSE1 = (amp0) // DiracSimplify // TID[#, k1] & // DiracSimplify;";
+    }
     
-    input += "ampsSE1 = (amp0 /. DiracTrace -> Tr) // FCMultiLoopTID[#, {k1, k2}] & // DiracSimplify;";
-    // define onshell condition if required
+    // define kinematics
     if (options.onshell)
     {
       input+="SPD[p, p] = " + masses[0] + "^2;";
       input+="Pair[Momentum[p], Momentum[p]] = " + masses[0] + "^2;";
     }
     
-    input += "ampsSE2 = ampsSE1 // FDS[#, k1, k2] &;";
     
-    input += "ampsSE3 = FIREBurn[ampsSE2, {k1, k2}, {p}] // FDS[#, k1, k2] &;";
+    if ( (loop_order == 2) && (!options.counter_terms) )
+    {
+      input += "ampsSE2 = ampsSE1 // FDS[#, k1, k2] &;";
+      input += "ampsSE3 = FIREBurn[ampsSE2, {k1, k2}, {p}] // FDS[#, k1, k2] &;";
+      input += "ampsSE4 = ampsSE3 // Collect2[#, {FeynAmpDenominator}, Factoring -> FullSimplify] &;";
+      input += "resSE = Cancel[ampsSE4];";
+      input += "tfiamp0 = resSE // ToTFI[#, k1, k2, p] &;";
+    }
     
-    input += "ampsSE4 = ampsSE3 // Collect2[#, {FeynAmpDenominator}, Factoring -> FullSimplify] &;";
-    
-    input += "resSE = Cancel[ampsSE4];";
-    
-    input += "tfiamp0 = resSE // ToTFI[#, k1, k2, p] &;";
-    
+    else if ( (loop_order == 1) && (options.counter_terms) )
+    {
+      input+=" fullamp0 = (ampSE1) // DiracSimplify;";
+      input+="tfiamp0 = fullamp0 // ChangeDimension[#, D] &;";
+    }
+    else
+    {
+      input += "ampsSE3 = FIREBurn[ampsSE1, {k1}, {p}] // FDS[#, k1] &;";
+      input += "ampsSE4 = ampsSE3 // Collect2[#, {FeynAmpDenominator}, Factoring -> FullSimplify] &;";
+      input += "resSE = Cancel[ampsSE4];";
+      input += "tfiamp0 = resSE // ToTFI[#, k1, p] &;";
+    }
     
 
 /*

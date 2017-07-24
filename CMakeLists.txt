@@ -70,7 +70,6 @@ set(SRC_VDM examples/VDM.cpp)
 set(SRC_QED examples/QED.cpp)
 set(SRC_TRIPLET examples/EW_triplet.cpp)
 set(HEADER_TRIPLET examples/EW_triplet.hpp)
-set(SRC_EW examples/EW.cpp)
 
 # include generated source files
 include(src/CMakeLists.txt)
@@ -104,8 +103,6 @@ add_executable(QED EXCLUDE_FROM_ALL ${SRC_QED} ${SRC_FILES_GEN} ${HEADER_FILES_G
 
 add_executable(EW_triplet EXCLUDE_FROM_ALL ${SRC_TRIPLET} ${HEADER_TRIPLET} ${SRC_FILES_GEN} ${HEADER_FILES_GEN} ${TSIL_HEADER_FILE} ${SRC_FILES} ${HEADER_FILES} ${GENERATED_SRC_FILES})
 
-add_executable(EW EXCLUDE_FROM_ALL ${SRC_EW} ${SRC_FILES_GEN} ${HEADER_FILES_GEN} ${TSIL_HEADER_FILE} ${SRC_FILES} ${HEADER_FILES} ${GENERATED_SRC_FILES})
-
 
 # Mass Builder required the WSTP and MPI libraries
 TARGET_LINK_LIBRARIES(mass_builder libtsil.a ${MPI_LIBRARIES} ${LIBRARIES})
@@ -122,8 +119,6 @@ TARGET_LINK_LIBRARIES(VDM libtsil.a)
 TARGET_LINK_LIBRARIES(Scalar libtsil.a)
 
 TARGET_LINK_LIBRARIES(QED libtsil.a)
-
-TARGET_LINK_LIBRARIES(EW libtsil.a)
 
 if (CMAKE_COMPILER_IS_GNUCXX)
     message(status "Setting GCC flags")

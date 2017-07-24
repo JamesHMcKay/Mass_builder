@@ -12,15 +12,13 @@
  */
 
 #include "data.hpp"
-#include "calc_amplitudes.hpp"
-#include "generate_code.hpp"
 #include "self_energy.hpp"
 #include "EW_triplet.hpp"
+#include "cmake_variables.hpp"
+
 
 
 using namespace std;
-
-using namespace utils;
 
 
 // extra TSIL interface for manually entered derivatives
@@ -28,7 +26,7 @@ using namespace utils;
 
 namespace extra_TSIL_interface
 {
-  /*TSIL_INCLUDE_PATH */#include "/Users/jamesmckay/Documents/Programs/tsil-1.3/tsil_cpp.h"  // Required TSIL header file
+  #include TSIL_PATH
   using namespace std;
   TSIL_DATA bar;
   
@@ -48,7 +46,7 @@ namespace extra_TSIL_interface
   TSIL_REAL ma, mc, mw, mz ;
   TSIL_REAL ma2,mc2,mw2,mz2;
   
-  TSIL_REAL Pi,g2, tW, sw2, cw2, sw, cw , C, p, v;
+  TSIL_REAL Pi,e, tW, sw2, cw2, sw, cw , C, p, v;
   
   
   TSIL_COMPLEXCPP Bwc, Bzc, Bca;
@@ -90,14 +88,17 @@ namespace extra_TSIL_interface
   int init(Data data)
   {
   
-    cw = data.cw,   cw2 = data.cw2,   sw = data.sw,   g2 = data.g2,   sw2 = data.sw2, v = data.v;;
+    ;
+  
+    cw = data.cw,   cw2 = data.cw2,   sw = data.sw,   sw2 = data.sw2,   e = data.e,   v = data.v;
+  
   
     mw= data.mw, mz = data.mz ,ma = data.ma, mc = data.MChi;
     
     cw =  mw/mz;
     cw2 =  TSIL_POW(cw,2);
     sw =  TSIL_POW(1.-cw2,0.5);
-    g2 =  2.*mw/v;
+    
     sw2 =  TSIL_POW(sw,2);
 
     
@@ -108,7 +109,7 @@ namespace extra_TSIL_interface
     tW = acos(mw/mz);
     sw2 = data.sw2, cw2 = data.cw2;
     sw = data.sw, cw = data.cw;
-    C = TSIL_POW(g2,2)/(16.0L*PI*PI);
+    C = TSIL_POW(e,2)/(16.0L*PI*PI);
     i=Power(-1,0.5);
     Pi=PI;
     DoTSIL_2( TSIL_POW(data.P,2),data.Q);
@@ -164,8 +165,8 @@ namespace extra_TSIL_interface
     TSIL_COMPLEXCPP SE_0 = (SigmaM_0(M) + M*SigmaK_0(M,p) )*( SigmaK_0(M,p) + 2.0L*TSIL_POW(M,2)*d_SigmaK_0(M,p)+2.0L*M*d_SigmaM_0(M));
     TSIL_COMPLEXCPP SE_1 =(SigmaM_1(M) + M*SigmaK_1(M,p) )*( SigmaK_1(M,p) + 2.0L*TSIL_POW(M,2)*d_SigmaK_1(M,p)+2.0L*M*d_SigmaM_1(M));
     
-    data.SE_2["F2"] = data.SE_2["F2"]+real(SE_0);
-    data.SE_2["F1"] = data.SE_2["F1"]+real(SE_1);
+    data.SE_2["F11_g1"] = data.SE_2["F11_g1"]-real(SE_0);
+    data.SE_2["F12_g1"] = data.SE_2["F12_g1"]-real(SE_1);
     
   }
 }
@@ -202,14 +203,14 @@ int main(int argc, char *argv[])
 
   self_energy.run_tsil(data);
   
-  cout << "one-loop mass splitting = " << data.SE_1["F2"] - data.SE_1["F1"] << endl;
+  cout << "one-loop mass splitting = " << data.SE_1["F11_g1"] - data.SE_1["F12_g1"] << endl;
 
-  cout << "two-loop mass splitting = " << data.SE_2["F2"] - data.SE_2["F1"] << endl;
+  cout << "two-loop mass splitting = " << data.SE_2["F11_g1"] - data.SE_2["F12_g1"] << endl;
   
   One_loop_derivatives one_loop_derivatives(data);
   one_loop_derivatives.add_derivatives(data);
 
-  cout << "two-loop mass splitting including derivative terms = " << data.SE_2["F2"] - data.SE_2["F1"] << endl;
+  cout << "two-loop mass splitting including derivative terms = " << data.SE_2["F11_g1"] - data.SE_2["F12_g1"] << endl;
   
   return 0;
 }

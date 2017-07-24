@@ -18,12 +18,12 @@ dzM (-g*g/(cw2)) * ( mz2*(-1.+6.*sw2-4.*sw2*sw2) )
 dgammaZ (-e*e)*(-5./3.)
 dZgammaZ (-e*g/(cw))*(11./6.-5.*sw2/3.)
 dZgammaM (-e*g/(cw))*( mz2*(2.-2.*sw2) )
-dg2 4.0*TSIL_POW(g1,3)
+dg2 4.0*TSIL_POW(g,3)
 e g1*g2/TSIL_POW(g1*g1+g2*g2,0.5)
-Ca sw
-Cz1 cw
-Cz2 -cw
-Cw1 1.
-Cw2 -1.
+Ca -2.*sw
+Cz1 2.*cw
+Cz2 -2.*cw
+Cw1 -2.
+Cw2 -2.
 v
 MassBuilderJEpsilon

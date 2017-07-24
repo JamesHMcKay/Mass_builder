@@ -56,7 +56,7 @@ bool Compute_amp::calc_diagram()
   {
     cout << "using previously computed amplitude " << endl;
     templates::print_math_header(input);
-    utils::get_saved_amplitude(input,options);
+    utils::get_saved_amplitude(input,options,masses_input[0]);
     send_to_math(input);
   }
   

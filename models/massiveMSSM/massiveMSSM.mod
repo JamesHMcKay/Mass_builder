@@ -150,7 +150,7 @@ M$ClassesDescription = {
   V[1] == {
 	SelfConjugate -> True,
 	Indices -> {},
-	Mass -> 0,
+	Mass -> ma,
 	PropagatorLabel -> "\\gamma",
 	PropagatorType -> Sine,
 	PropagatorArrow -> None },
@@ -270,7 +270,7 @@ M$ClassesDescription = {
   U[1] == {
 	SelfConjugate -> False,
 	Indices -> {},
-	Mass -> 0,
+	Mass -> ma,
 	QuantumNumbers -> GhostNumber,
 	PropagatorLabel -> ComposedChar["\\eta", "\\gamma"],
 	PropagatorType -> GhostDash,
@@ -1089,7 +1089,7 @@ C[S[6], -S[6], V[1]] == {{I*FCGV["EL"]}}, C[S[6], -S[6], V[2]] ==
   {{((I/2)*FCGV["EL"]*$HKSign*IndexDelta[j1, j2]*(-2*Conjugate[UCha[c1, 1]]*
         USf[2, j1][s2, 1] + (Sqrt[2]*Conjugate[UCha[c1, 2]]*Mass[F[2, {j1}]]*
          USf[2, j1][s2, 2])/(CB*FCGV["MW"])))/FCGV["SW"]}, {0}},
-C[F[11, {n1}], F[11, {n2}], V[2]] ==
+ C[F[11, {n1}], F[11, {n2}], V[2]] ==
   {{((I/2)*FCGV["EL"]*$HKSign*(-(Conjugate[ZNeu[n2, 3]]*ZNeu[n1, 3]) + 
        Conjugate[ZNeu[n2, 4]]*ZNeu[n1, 4]))/(FCGV["CW"]*FCGV["SW"]),0},
    {((I/2)*FCGV["EL"]*$HKSign*(Conjugate[ZNeu[n1, 3]]*ZNeu[n2, 3] - 
@@ -1111,7 +1111,7 @@ C[F[11, {n1}], F[11, {n2}], V[2]] ==
         UCha[c2, 1] - (Conjugate[UCha[c1, 2]]*UCha[c2, 2])/2))/(FCGV["CW"]*FCGV["SW"]),0},
    {((-I)*FCGV["EL"]*$HKSign*(FCGV["SW"]^2*IndexDelta[c1, c2] - Conjugate[VCha[c2, 1]]*
         VCha[c1, 1] - (Conjugate[VCha[c2, 2]]*VCha[c1, 2])/2))/(FCGV["CW"]*FCGV["SW"]),I*Cz2*dg2}},
- C[S[1], S[1], S[11, {j2}], -S[11, {j1}]] == 
+ C[S[1], S[1], S[11, {j2}], -S[11, {j1}]] ==
   {{((I/4)*C2A*FCGV["EL"]^2*IndexDelta[j1, j2])/(FCGV["CW"]^2*FCGV["SW"]^2)}}, 
  C[S[1], S[1], S[12, {s2, j2}], -S[12, {s1, j1}]] == 
   {{((I/4)*FCGV["EL"]^2*IndexDelta[j1, j2]*(Conjugate[USf[2, j1][s2, 1]]*

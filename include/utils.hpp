@@ -75,7 +75,7 @@ namespace utils
   
   void assign_variables(std::string &file,Options options);
   
-  void get_saved_amplitude(std::string &input, Options options);
+  void get_saved_amplitude(std::string &input, Options options, string mass);
   
   void print_math_body(std::string &input,Options options,string cwd,std::vector<std::string> masses);
   
