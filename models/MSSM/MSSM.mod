@@ -448,14 +448,14 @@ C[-V[3], V[3]] ==
 {{0, I*dZW1, I*dZW2}, {0, I*(dMWsq1 + dZW1*FCGV["MW"]^2),
     I*(dMWsq2 + dMWsq1*dZW1 + dZW2*FCGV["MW"]^2)}, {0, (-I)*dZW1, (-I)*dZW2}}, 
  C[V[2], V[2]] ==
- {{0, I*dZZZ1, (I/4)*(dZAZ1^2 + 4*dZZZ2)}, 
+ {{0, I*dZZZ1, (I/4)*(dZAZ1^2 + 4*dZZZ2)},
    {0, I*(dMZsq1 + dZZZ1*FCGV["MZ"]^2), I*(dMZsq2 + dMZsq1*dZZZ1 + dZZZ2*FCGV["MZ"]^2)}, 
    {0, (-I)*dZZZ1, (-I/4)*(dZAZ1^2 + 4*dZZZ2)}}, 
  C[V[1], V[1]] ==
  {{0, I*dZAA1, (I/4)*(4*dZAA2 + dZZA1^2)},
    {0, 0, (I/4)*dZZA1^2*FCGV["MZ"]^2}, {0, (-I)*dZAA1, (-I/4)*(4*dZAA2 + dZZA1^2)}}, 
- C[V[1], V[2]] ==
- {{0, (I/2)*(dZAZ1 + dZZA1),(I/4)*(dZAA1*dZAZ1 + 2*(dZAZ2 + dZZA2) + dZZA1*dZZZ1)},
+ C[V[1], V[2]] == {{0, (I/2)*(dZAZ1 + dZZA1), 
+    (I/4)*(dZAA1*dZAZ1 + 2*(dZAZ2 + dZZA2) + dZZA1*dZZZ1)}, 
    {0, (I/2)*dZZA1*FCGV["MZ"]^2, (I/4)*(2*dMZsq1*dZZA1 + (2*dZZA2 + dZZA1*dZZZ1)*
        FCGV["MZ"]^2)}, {0, (-I/2)*(dZAZ1 + dZZA1), 
     (-I/4)*(dZAA1*dZAZ1 + 2*(dZAZ2 + dZZA2) + dZZA1*dZZZ1)}},
