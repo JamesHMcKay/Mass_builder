@@ -1,10 +1,10 @@
 P 5000
 Q 100
 MChi 5000
-ma 0.00001
+ma 0.1
 mw 80.385
 mz 91.1876
 v 246
 e 0.3134
 mh 125.6
-MassBuilderJEpsilon 0.0
+MassBuilderJEpsilon 1000.0

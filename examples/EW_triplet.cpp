@@ -158,15 +158,14 @@ namespace extra_TSIL_interface
   }
   
   
-  void One_loop_derivatives::add_derivatives(Data &data)
+  double One_loop_derivatives::add_derivatives(Data &data)
   {
     TSIL_REAL p = data.P, M = data.MChi;
     init(data);
     TSIL_COMPLEXCPP SE_0 = (SigmaM_0(M) + M*SigmaK_0(M,p) )*( SigmaK_0(M,p) + 2.0L*TSIL_POW(M,2)*d_SigmaK_0(M,p)+2.0L*M*d_SigmaM_0(M));
     TSIL_COMPLEXCPP SE_1 =(SigmaM_1(M) + M*SigmaK_1(M,p) )*( SigmaK_1(M,p) + 2.0L*TSIL_POW(M,2)*d_SigmaK_1(M,p)+2.0L*M*d_SigmaM_1(M));
     
-    data.SE_2["F11_g1"] = data.SE_2["F11_g1"]-real(SE_0);
-    data.SE_2["F12_g1"] = data.SE_2["F12_g1"]-real(SE_1);
+    return real(SE_1-SE_0);
     
   }
 }
@@ -207,10 +206,15 @@ int main(int argc, char *argv[])
 
   cout << "two-loop mass splitting = " << data.SE_2["F11_g1"] - data.SE_2["F12_g1"] << endl;
   
+  
+  
   One_loop_derivatives one_loop_derivatives(data);
-  one_loop_derivatives.add_derivatives(data);
+  
 
-  cout << "two-loop mass splitting including derivative terms = " << data.SE_2["F11_g1"] - data.SE_2["F12_g1"] << endl;
+  cout << "one-loop derivative terms = " << one_loop_derivatives.add_derivatives(data) << endl;
+
+
+  cout << "two-loop mass splitting including derivative terms = " << data.SE_2["F11_g1"] - data.SE_2["F12_g1"]+one_loop_derivatives.add_derivatives(data) << endl;
   
   return 0;
 }

@@ -35,7 +35,7 @@ class One_loop_derivatives
    }
   
   
-   void add_derivatives(Data &data);
+   double add_derivatives(Data &data);
   
 };
 }

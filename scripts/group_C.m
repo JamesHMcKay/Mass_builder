@@ -632,7 +632,7 @@ cw=Cos[\[Theta]];
 FullSimplify[CsumZZ2+CsumWW2+CsumZA2+CsumAA2+Cct2 -NsumZZ2-NsumWW2-Nct2/.mz->mw/cw]
 
 
-test=FullSimplify[CsumZZ1+CsumWW1+CsumZA1+CsumAA1+Cct1-(NsumWW1+NsumZZ1+Nct1) /.mz->mw/cw]
+Simplify[CsumZZ1+CsumWW1+CsumZA1+CsumAA1+Cct1-(NsumWW1+NsumZZ1+Nct1) /.mz->mw/cw]
 
 
 CForm[FullSimplify[dZW1]]
