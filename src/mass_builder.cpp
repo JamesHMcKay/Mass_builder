@@ -108,6 +108,8 @@ void run_mass_builder_mode_1a(Options options,int argc, char *argv[])
     i=i+1;
   }
 
+  
+
 
   //  Initialize MPI
   MPI_Init ( &argc, &argv );

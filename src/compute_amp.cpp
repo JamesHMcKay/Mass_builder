@@ -564,9 +564,9 @@ void Compute_amp::solve_1loop(std::string particle,vector<std::string> diagram)
   
   cout << "Higher order divergences in (1/epsilon) are = " << high_order_terms << endl;
   
-  input += "ct = FullSimplify[-SE*Pi^2/.Pair[Momentum[p], Momentum[p]]->p^2];";
+  input += "ct = FullSimplify[-SE/.Pair[Momentum[p], Momentum[p]]->p^2];";
   
-  input += "ToString[ct,CForm]";
+  input += "ToString[ct,InputForm]";
   
   send_to_math(input);
   

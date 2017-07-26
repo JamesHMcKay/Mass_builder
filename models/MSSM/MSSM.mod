@@ -444,22 +444,21 @@ NoLightFHCoupling =
     FieldPoint[_][-F[4], F[3, {2, ___}], S] }
 
 M$CouplingMatrices = {
-C[ -V[3], V[3] ] == I *
-    { {0, dwZ},
-      {0, dwM},
-      {0, -dwZ} },
-  C[ V[2], V[2] ] == I *
-    { {0, dzZ},
-      {0, dzM},
-      {0, -dzZ} },
-  C[ V[1], V[1] ] == I *
-    { {0, dgammaZ},
-      {0, 0},
-      {0, -dgammaZ} },
-C[ V[1], V[2] ] == I *
-    { {0, dZgammaZ},
-      {0, dZgammaM},
-      {0, -dZgammaZ}},
+C[-V[3], V[3]] ==
+{{0, I*dZW1, I*dZW2}, {0, I*(dMWsq1 + dZW1*FCGV["MW"]^2),
+    I*(dMWsq2 + dMWsq1*dZW1 + dZW2*FCGV["MW"]^2)}, {0, (-I)*dZW1, (-I)*dZW2}}, 
+ C[V[2], V[2]] ==
+ {{0, I*dZZZ1, (I/4)*(dZAZ1^2 + 4*dZZZ2)}, 
+   {0, I*(dMZsq1 + dZZZ1*FCGV["MZ"]^2), I*(dMZsq2 + dMZsq1*dZZZ1 + dZZZ2*FCGV["MZ"]^2)}, 
+   {0, (-I)*dZZZ1, (-I/4)*(dZAZ1^2 + 4*dZZZ2)}}, 
+ C[V[1], V[1]] ==
+ {{0, I*dZAA1, (I/4)*(4*dZAA2 + dZZA1^2)},
+   {0, 0, (I/4)*dZZA1^2*FCGV["MZ"]^2}, {0, (-I)*dZAA1, (-I/4)*(4*dZAA2 + dZZA1^2)}}, 
+ C[V[1], V[2]] ==
+ {{0, (I/2)*(dZAZ1 + dZZA1),(I/4)*(dZAA1*dZAZ1 + 2*(dZAZ2 + dZZA2) + dZZA1*dZZZ1)},
+   {0, (I/2)*dZZA1*FCGV["MZ"]^2, (I/4)*(2*dMZsq1*dZZA1 + (2*dZZA2 + dZZA1*dZZZ1)*
+       FCGV["MZ"]^2)}, {0, (-I/2)*(dZAZ1 + dZZA1), 
+    (-I/4)*(dZAA1*dZAZ1 + 2*(dZAZ2 + dZZA2) + dZZA1*dZZZ1)}},
 C[ F[12,{1}], -F[12,{1}]] == -I *  { {0, 0},{0, d1Z},{0,d1m},{0,0} },
 C[ F[11,{1}], F[11,{1}]] == -I *  { {0, 0},{0, d2Z},{0,d2m},{0,0} },
 C[S[6], -S[6], V[1]] == {{I*FCGV["EL"]}}, C[S[6], -S[6], V[2]] ==

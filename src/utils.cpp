@@ -646,7 +646,7 @@ namespace utils
     
     else if ( (loop_order == 1) && (options.counter_terms) )
     {
-      input+=" fullamp0 = (ampSE1) // DiracSimplify;";
+      input+=" fullamp0 = (ampsSE1) // DiracSimplify;";
       input+="tfiamp0 = fullamp0 // ChangeDimension[#, D] &;";
     }
     else

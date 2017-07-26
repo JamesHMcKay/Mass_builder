@@ -1,10 +1,10 @@
-P 5000
+P 50000
 Q 100
-MChi 5000
-ma 0.01
+MChi 50000
+ma 0.0001
 mw 80.385
 mz 91.1876
 v 246
-#e 0.3134 # now defined in couplings.txt
+e 0.3134
 mh 125.6
 MassBuilderJEpsilon 0.0

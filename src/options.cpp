@@ -150,6 +150,8 @@ void User_input::user_interface()
   
   if (find_string("reuse")){ options.force = false;}
   
+  if (find_string("offshell")){ options.onshell = false;}
+  
   
   if (options.particle_1!=options.particle_2)
   {
