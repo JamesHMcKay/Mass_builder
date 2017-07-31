@@ -39,14 +39,14 @@ namespace extra_TSIL_interface
   TSIL_REAL Sin(TSIL_REAL a){return sin(a);}
   TSIL_REAL Cos(TSIL_REAL a){return cos(a);}
   TSIL_COMPLEXCPP operator*(int a, TSIL_COMPLEXCPP b){TSIL_COMPLEXCPP c=a;return c*b;}
-  
+  TSIL_COMPLEXCPP Complex(double a,double b){dcomp i;i=-1;i=sqrt(i);TSIL_COMPLEXCPP result = a + i*b; return result ;}
   TSIL_COMPLEXCPP Aa, Ac, Aw, Az, Bac ;
   TSIL_COMPLEXCPP Bcw, Bcz ;
   TSIL_COMPLEXCPP  i=Power(-1,0.5);
   TSIL_REAL ma, mc, mw, mz ;
   TSIL_REAL ma2,mc2,mw2,mz2;
   
-  TSIL_REAL Pi,e, tW, sw2, cw2, sw, cw , C, p, v;
+  TSIL_REAL Pi,g,g1, tW, sw2, cw2, sw, cw , C, p, v;
   
   
   TSIL_COMPLEXCPP Bwc, Bzc, Bca;
@@ -90,7 +90,7 @@ namespace extra_TSIL_interface
   
     ;
   
-    cw = data.cw,   cw2 = data.cw2,   sw = data.sw,   sw2 = data.sw2,   e = data.e,   v = data.v;
+    cw = data.cw,   cw2 = data.cw2,   sw = data.sw,   sw2 = data.sw2,   g = data.g,   v = data.v;
   
   
     mw= data.mw, mz = data.mz ,ma = data.ma, mc = data.MChi;
@@ -100,7 +100,8 @@ namespace extra_TSIL_interface
     sw =  TSIL_POW(1.-cw2,0.5);
     
     sw2 =  TSIL_POW(sw,2);
-
+    g1 =  2.*mw/v;
+    g =  g1*sw/cw;
     
     mw2 = pow(mw,2);
     mz2 = pow(mz,2);
@@ -109,7 +110,7 @@ namespace extra_TSIL_interface
     tW = acos(mw/mz);
     sw2 = data.sw2, cw2 = data.cw2;
     sw = data.sw, cw = data.cw;
-    C = TSIL_POW(e,2)/(16.0L*PI*PI);
+    C = TSIL_POW(g,2)/(16.0L*PI*PI);
     i=Power(-1,0.5);
     Pi=PI;
     DoTSIL_2( TSIL_POW(data.P,2),data.Q);
@@ -168,6 +169,31 @@ namespace extra_TSIL_interface
     return real(SE_1-SE_0);
     
   }
+  
+  
+  double One_loop_derivatives::add_derivatives_2(Data &data)
+  {
+    
+  
+
+    init(data);
+    
+    cout << "256.*Power(cw,4)*Power(Pi,4)*Power(sw,4));" << 256.*Power(cw,4)*Power(Pi,4)*Power(sw,4) << endl;
+    
+    TSIL_COMPLEXCPP result = (-3*Power(e,4)*MChi*Power(-1 + Power(sw,2),2)*(-3*Bwc*Bwc + Complex(0,8)*(Bwc - Bzc) + 2*Bwc*Bzc +Bzc*Bzc - Complex(0,12)*Power(MChi,2)*dBwc +
+       18*Power(MChi,2)*Bwc*dBwc - 6*Power(MChi,2)*Bzc*dBwc + Complex(0,12)*Power(MChi,2)*dBzc - 
+       6*Power(MChi,2)*Bwc*dBzc - 6*Power(MChi,2)*Bzc*dBzc + 
+       Power(sw,4)*(Bac - Bzc)*(Bac - Bzc + 6*Power(MChi,2)*(-dBca + dBzc)) + 
+       2*Power(sw,2)*(-Bzc*Bzc + 3*Power(MChi,2)*(Complex(0,-2) + Bwc)*(-dBca + dBzc) + 
+          Bac*(Complex(0,-4) + Bwc + Bzc - 3*Power(MChi,2)*(dBwc + dBzc)) + 
+          Bzc*(Complex(0,4) - Bwc + 3*Power(MChi,2)*(-dBca + dBwc + 2*dBzc)))))/(256.*Power(cw,4)*Power(Pi,4)*Power(sw,4));
+  
+    return real(result);
+  
+  }
+  
+  
+  
 }
 
 
@@ -212,6 +238,7 @@ int main(int argc, char *argv[])
   
 
   cout << "one-loop derivative terms = " << one_loop_derivatives.add_derivatives(data) << endl;
+  cout << "one-loop derivative terms (alternative) = " << one_loop_derivatives.add_derivatives_2(data) << endl;
 
 
   cout << "two-loop mass splitting including derivative terms = " << data.SE_2["F11_g1"] - data.SE_2["F12_g1"]+one_loop_derivatives.add_derivatives(data) << endl;

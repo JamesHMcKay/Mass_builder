@@ -88,7 +88,7 @@ V3SE = V3SE + SelfEnergyFinite*kappa;
 
 V3SEdiv = makeFiniteAmplitude[V3SE,-1,D];
 Get[FileNameJoin[{path, "/models/massiveMSSM/output/math_data_V3_1_1c.mx"}]];
-V3ct= -makeFiniteAmplitude[SelfEnergyFinite*kappa,-1,D]/.MassBuilderCTM1->0/.MassBuilderCTZ1->0;
+V3ct= makeFiniteAmplitude[SelfEnergyFinite*kappa,-1,D]/.MassBuilderCTM1->0/.MassBuilderCTZ1->0;
 eq1 = FullSimplify[Coefficient[V3ct+V3SEdiv,Pair[Momentum[p],Momentum[p]]]];
 eq2 = FullSimplify[Coefficient[V3ct+V3SEdiv,Pair[Momentum[p],Momentum[p]],0]];
 solV3 = Solve[{eq1==0,eq2==0},{dZW1, dMWsq1}]
@@ -140,7 +140,7 @@ V2SE = V2SE + SelfEnergyFinite*kappa;
 
 V2SEdiv = makeFiniteAmplitude[V2SE,-1,D];
 Get[FileNameJoin[{path, "/models/massiveMSSM/output/math_data_V2_1_1c.mx"}]];
-V2ct= -makeFiniteAmplitude[SelfEnergyFinite*kappa,-1,D]/.MassBuilderCTM1->0/.MassBuilderCTZ1->0;
+V2ct= makeFiniteAmplitude[SelfEnergyFinite*kappa,-1,D]/.MassBuilderCTM1->0/.MassBuilderCTZ1->0;
 eq1 = FullSimplify[Coefficient[V2ct+V2SEdiv,Pair[Momentum[p],Momentum[p]]]];
 eq2 = FullSimplify[Coefficient[V2ct+V2SEdiv,Pair[Momentum[p],Momentum[p]],0]];
 solV2 = Solve[{eq1==0,eq2==0},{dMZsq1,dZZZ1}]
@@ -177,7 +177,7 @@ V1SE = V1SE + SelfEnergyFinite*kappa;
 
 V1SEdiv = makeFiniteAmplitude[V1SE,-1,D];
 Get[FileNameJoin[{path, "/models/massiveMSSM/output/math_data_V1_1_1c.mx"}]];
-V1ct= -makeFiniteAmplitude[SelfEnergyFinite*kappa,-1,D]/.MassBuilderCTM1->0/.MassBuilderCTZ1->0;
+V1ct= makeFiniteAmplitude[SelfEnergyFinite*kappa,-1,D]/.MassBuilderCTM1->0/.MassBuilderCTZ1->0;
 eq1 = FullSimplify[Coefficient[V1ct+V1SEdiv,Pair[Momentum[p],Momentum[p]]]];
 (*solV1 = Solve[{eq1\[Equal]0,eq2\[Equal]0},{dZAA1,dMAsq1}]*)
 solV1 = Solve[{eq1==0},{dZAA1}]
@@ -215,7 +215,7 @@ V12SE = V12SE + SelfEnergyFinite*kappa;
 
 V12SEdiv = makeFiniteAmplitude[V12SE,-1,D];
 Get[FileNameJoin[{path, "/models/massiveMSSM/output/math_data_V1_V2_1_1c.mx"}]];
-V12ct= -makeFiniteAmplitude[SelfEnergyFinite*kappa,-1,D]/.MassBuilderCTM1->0/.MassBuilderCTZ1->0;
+V12ct= makeFiniteAmplitude[SelfEnergyFinite*kappa,-1,D]/.MassBuilderCTM1->0/.MassBuilderCTZ1->0;
 eq1 = FullSimplify[Coefficient[V12ct+V12SEdiv,Pair[Momentum[p],Momentum[p]]]];
 eq2 = FullSimplify[Coefficient[V12ct+V12SEdiv,Pair[Momentum[p],Momentum[p]],0]];
 solV12 = Solve[{eq1==0,eq2==0},{dZZA1,dZAZ1}]
@@ -389,10 +389,10 @@ Get[FileNameJoin[{path, "/models/massiveMSSM/output/math_data_F11_g1_4_2c.mx"}]]
 N4c = SelfEnergyFinite*kappa^2;
 
 Get[FileNameJoin[{path, "/models/massiveMSSM/output/math_data_F11_g1_5_2c.mx"}]];
-N5c = -SelfEnergyFinite*kappa^2;
+N5c = SelfEnergyFinite*kappa^2;
 
 Get[FileNameJoin[{path, "/models/massiveMSSM/output/math_data_F11_g1_6_2c.mx"}]];
-N6c = -SelfEnergyFinite*kappa^2;
+N6c = SelfEnergyFinite*kappa^2;
 
 NsumZZ1=makeFiniteAmplitude[N1+N2+N3+N10+N32+N33+N45+N46+N52+N51+N61+N62+N63+N70,-1,D];
 NsumZZ2=makeFiniteAmplitude[N1+N2+N3+N10+N32+N33+N45+N46+N52+N51+N61+N62+N63+N70,-2,D];
@@ -585,19 +585,19 @@ Get[FileNameJoin[{path, "/models/massiveMSSM/output/math_data_F12_g1_80_2.mx"}]]
 C80 = SelfEnergyFinite*kappa^2;
 
 Get[FileNameJoin[{path, "/models/massiveMSSM/output/math_data_F12_g1_4_2c.mx"}]];
-C4c = -SelfEnergyFinite*kappa^2;
+C4c = SelfEnergyFinite*kappa^2;
 
 Get[FileNameJoin[{path, "/models/massiveMSSM/output/math_data_F12_g1_5_2c.mx"}]];
-C5c = -SelfEnergyFinite*kappa^2;
+C5c = SelfEnergyFinite*kappa^2;
 
 Get[FileNameJoin[{path, "/models/massiveMSSM/output/math_data_F12_g1_6_2c.mx"}]];
-C6c = -SelfEnergyFinite*kappa^2;
+C6c = SelfEnergyFinite*kappa^2;
 
 Get[FileNameJoin[{path, "/models/massiveMSSM/output/math_data_F12_g1_7_2c.mx"}]];
-C7c = -SelfEnergyFinite*kappa^2;
+C7c = SelfEnergyFinite*kappa^2;
 
 Get[FileNameJoin[{path, "/models/massiveMSSM/output/math_data_F12_g1_8_2c.mx"}]];
-C8c = -SelfEnergyFinite*kappa^2;
+C8c = SelfEnergyFinite*kappa^2;
 
 CsumZZ1=makeFiniteAmplitude[C4+C5+C6+C13+C32+C33+C47+C48+C57+C58+C63+C70+C71+C78,-1,D];
 CsumZZ2=makeFiniteAmplitude[C4+C5+C6+C13+C32+C33+C47+C48+C57+C58+C63+C70+C71+C78,-2,D];
@@ -658,3 +658,35 @@ CForm[FullSimplify[dZAZ1]]
 
 
 CForm[FullSimplify[dZZZ1]]
+
+
+FullSimplify[dZW1]
+
+
+(* Check that counter-term couplings agree with Ibe et al. (2013) *)
+g=e/sw;
+gammaZ = -e^2(-5/3);
+ZgammaZ = (-e*g/cw)*(11/6-5*sw^2/3);
+ZZ= (-g^2/cw^2)( -11/6+11*sw^2/3-5 sw^4/3);
+WZ=-g^2 * (-11/6);
+
+ZgammaM = (-e*g/cw)*(2-2 sw^2)*mz^2;
+ZM = (-g^2/cw^2)*(-1+6 sw^2- 4 sw^4)*mz^2;
+WM = (-g^2)*(-1+2 sw^2)*mz^2;
+
+
+FullSimplify[gammaZ- dZAA1]
+
+FullSimplify[ZZ-dZZZ1/.mz->mw/cw]
+FullSimplify[WZ-dZW1/.mz->mw/cw]
+FullSimplify[ZgammaZ+(1/2)(dZZA1+dZAZ1)/.mz->mw/cw]
+
+FullSimplify[dMZsq1+dZZZ1*mz^2 + ZM /.mz->mw/cw]
+
+FullSimplify[dMWsq1+dZW1*mw^2 + WM /.mz->mw/cw]
+
+FullSimplify[ZgammaM-(1/2)dZZA1*mz^2/.mz->mw/cw]
+
+
+
+

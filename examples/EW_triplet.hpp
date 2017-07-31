@@ -36,6 +36,7 @@ class One_loop_derivatives
   
   
    double add_derivatives(Data &data);
+   double add_derivatives_2(Data &data);
   
 };
 }

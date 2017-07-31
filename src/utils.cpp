@@ -691,7 +691,7 @@ namespace utils
     input+="SE = Simplify[TarcerRecurse[tfiamp0] ];";
     input+="SEk = (1/(4 Pair[Momentum[p, D],Momentum[p, D]])) DiracTrace[ DiracGamma[Momentum[p, D], D].SE ];";
     input+="SEm = (1/4) DiracTrace[ SE ];";
-    input+="SE = p*SEk+SEm;"; // TODO make sure this is okay for all types of fields
+    input+="SE = p*SEk+SEm;"; // TODO make this general (this only works for vectors because SEk is just zero and the p^2 comes through SEm)
     input+="SE = SE /. Pair[Momentum[Polarization[p, -I, Transversality -> True], D], Momentum[Polarization[p, I, Transversality -> True], D]] -> -1 ;";
     // uncomment the following line if using a different gauge choice
     //input+="SEn = SEn /. GaugeXi[Z] -> 0 /. GaugeXi[P] -> 0 /. GaugeXi[Wp] -> 0  /. GaugeXi[S[1]] -> 0 /. GaugeXi[S[2]] -> 0 /. GaugeXi[S[3]] -> 0 ;\n"

@@ -7,6 +7,7 @@ CTW cw
 g1 2.*mw/v
 g2 g1*sw/cw
 g g2
+e g1*g2/TSIL_POW(g1*g1+g2*g2,0.5)
 d1Z (-2*TSIL_POW(e,2)*(TSIL_POW(-1 + TSIL_POW(sw,2),2) + TSIL_POW(cw,2)*(1 + TSIL_POW(sw,2))))/(TSIL_POW(cw,2)*TSIL_POW(sw,2))
 d1m (8*TSIL_POW(e,2)*MChi*(TSIL_POW(-1 + TSIL_POW(sw,2),2) + TSIL_POW(cw,2)*(1 + TSIL_POW(sw,2))))/(TSIL_POW(cw,2)*TSIL_POW(sw,2))
 d2Z (-4*TSIL_POW(e,2))/TSIL_POW(sw,2)
@@ -18,10 +19,9 @@ dZAA1 (-5*TSIL_POW(e,2))/3.
 dZZA1 (4*TSIL_POW(e,2)*TSIL_POW(mw,2)*(TSIL_POW(cw,2) + TSIL_POW(sw,2)))/(cw*TSIL_POW(mz,2)*sw)
 dZAZ1 -(TSIL_POW(e,2)*(TSIL_POW(cw,2)*(12*TSIL_POW(mw,2) + 19*TSIL_POW(mz,2)) + 12*TSIL_POW(mw,2)*TSIL_POW(sw,2) + TSIL_POW(mz,2)*(-8 + 9*TSIL_POW(sw,2))))/(3.*cw*TSIL_POW(mz,2)*sw)
 dZZZ1 (TSIL_POW(e,2)*(17 - 39*TSIL_POW(cw,4) - 2*(16 + TSIL_POW(cw,2))*TSIL_POW(sw,2) + 17*TSIL_POW(sw,4)))/(12.*TSIL_POW(cw,2)*TSIL_POW(sw,2))
-dg2 4.0*TSIL_POW(g,3)
-e g1*g2/TSIL_POW(g1*g1+g2*g2,0.5)
+dg2 4.0*TSIL_POW(e/sw,3)
 Ca -2.*sw
-Cz1 2.*cw
+Cz1 1.
 Cz2 -2.*cw
 Cw1 -2.
 Cw2 -2.

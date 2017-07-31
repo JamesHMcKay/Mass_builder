@@ -186,8 +186,8 @@ Cct2 = -makeFiniteAmplitude[C10+C11+C12,-2,D];
 /. MassBuilderB[ma, MChi] -> TBI[4, MChi^2, {{1, MChi}, {1, ma}}]\
 /. MassBuilderB[MChi, ma] -> TBI[4, MChi^2, {{1, MChi}, {1, ma}}]\
 /.p->MChi/.STW->sw/.CTW->cw;
-(*sw=Sin[\[Theta]];
-cw=Cos[\[Theta]];*)
+sw=Sin[\[Theta]];
+cw=Cos[\[Theta]];
 
 
 FullSimplify[Nsum2+Nct2-(Csum2+Cct2)/.mz->mw/cw]
@@ -206,3 +206,12 @@ CForm[FullSimplify[d2Z]]
 
 
 CForm[FullSimplify[d2m]]
+
+
+FullSimplify[d1m*kappa]
+FullSimplify[d2m*kappa]
+FullSimplify[d1Z*kappa]
+FullSimplify[d2Z*kappa]
+
+
+
