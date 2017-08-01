@@ -6,20 +6,18 @@ Quit[]
 $LoadTARCER = True;
 $LoadFeynArts = True;
 << FeynCalc/FeynCalc.m;
-AppendTo[$Path, 
-  "/Users/jamesmckay/Documents/Programs/Mass_builder/src/"];
+AppendTo[$Path,"/Users/jamesmckay/Documents/Programs/Mass_builder/src/"];
 << MassBuilder.m;
 SetOptions[DiracSlash, Dimension -> D, 
- FeynCalcInternal -> True]; SetOptions[DiracTrace, 
- DiracTraceEvaluate -> True]; null = 0;
+ FeynCalcInternal -> True]; SetOptions[DiracTrace, DiracTraceEvaluate -> True]; null = 0;
 
 
 (* Determine one-loop counter-term couplings *)
 
-path = "/Users/jamesmckay/Documents/Programs/Mass_builder/";
+path = "/Users/jamesmckay/Documents/Programs/Mass_builder_results/";
 kappa = 1/(16 \[Pi]^2);
-(*sw=Sin[\[Theta]];
-cw=Cos[\[Theta]];*)
+sw=Sin[\[Theta]];
+cw=Cos[\[Theta]];
 (*F11*)
 
 F11SE = 0;
@@ -105,47 +103,13 @@ C2 = Coefficient[FullSimplify[F11SE], MassBuilderEpsilon, 2];
 SEtest = C0 + C1*MassBuilderEpsilon + C2*MassBuilderEpsilon^2;
 FullSimplify[SEtest - F11SE];
 SEN = FullSimplify[SEtest] /. MassBuilderEpsilon -> 0 /. Pair[Momentum[p], Momentum[p]] -> p^2;
-SEN1 = SEN /. TBI[4, p^2, {{1, mw}, {1, MChi}}] -> Bwc[s]\
-/. TAI[4, 0, {{1, mw}}] -> Aw /. TAI[4, 0, {{1, MChi}}] -> Ac\
-/. TAI[4, 0, {{1, ma}}] -> Aa /. TAI[4, 0, {{1, mz}}] -> Az;
-
-SEN1=SEN1/.p^2->s/.p->Sqrt[s];
-DN = D[SEN1, s];
-totalN1=2*MChi*FullSimplify[DN*SEN1];
-
 
 (* express in terms of B1 *)
-SEN2 = SEN /. TBI[4, p^2, {{1, mw}, {1, MChi}}] -> Bwc[s]\
+SEN2 = SEN /. TBI[4, p^2, {{1, mw}, {1, MChi}}] -> b Bwc[s]\
 /. TAI[4, 0, {{1, mw}}] -> Aw /. TAI[4, 0, {{1, MChi}}] -> Ac\
 /. TAI[4, 0, {{1, ma}}] -> Aa /. TAI[4, 0, {{1, mz}}] -> Az;
-SEN2 = FullSimplify[SEN2 /. (Aw) -> 2 p^2 B1cw[s] -(p^2 + MChi^2 - mw^2)*Bwc[s] + Ac];
-Coefficient[SEN2 /. Pair[Momentum[p, D], Momentum[p, D]] -> p^2, p, -1];
-SigmaKN = Coefficient[SEN2 /. Pair[Momentum[p, D], Momentum[p, D]] -> p^2, p,1];
-SigmaMN = Coefficient[SEN2 /. Pair[Momentum[p, D], Momentum[p, D]] -> p^2, p,0];
-DSigmaMN = D[SigmaMN, s];
-DSigmaKN = D[SigmaKN, s];
-totalN2 = FullSimplify[(SigmaMN + MChi*SigmaKN)*(SigmaKN + 2*MChi*DSigmaMN + 2*MChi^2*DSigmaKN)];
+SEN2 = FullSimplify[SEN2 /. (Aw) -> 2 p^2 a B1cw[s] -b(p^2 + MChi^2 - mw^2)*Bwc[s] + Ac]
 
-deltaM = totalN1-totalN2;
-
-deltaM=Simplify[deltaM]/.MassBuilderEpsilon->0;
-deltaMCForm=Simplify[deltaM\
-/.Derivative[1][B1cw][s]->(1/(2*s))*(-2*B1cw[s]+Bcw[s]+(s+MChi^2-mw^2)*dBwc)\
-/.Derivative[1][B1cz][s]->(1/(2*s))*(-2*B1cz[s]+Bcz[s]+(s+MChi^2-mz^2)*dBzc)\
-/.Derivative[1][B1ca][s]->(1/(2*s))*(-2*B1ca[s]+Bca[s]+(s+MChi^2-ma^2)*dBac)\
-/.B1cz[s]->(1/(2*s))*(Az-Ac+(s+MChi^2-mz^2)*Bzc[s])\
-/.B1ca[s]->(1/(2*s))*(Aa-Ac+(s+MChi^2-ma^2)*Bac[s])\
-/.B1cw[s]->(1/(2*s))*(Aw-Ac+(s+MChi^2-mw^2)*Bwc[s])\
-/.Derivative[1][Bzc][s]->dBzc\
-/.Derivative[1][Bcz][s]->dBzc\
-/.Derivative[1][Bwc][s]->dBwc\
-/.Derivative[1][Bcw][s]->dBwc\
-/.Derivative[1][Bac][s]->dBac\
-/.Derivative[1][Bca][s]->dBac\
-/.Bzc[s]->Bzc/.Bca[s]->Bac\
-/.Bac[s]->Bac/.Bwc[s]->Bwc\
-/.Bcw[s]->Bwc/.Bcz[s]->Bzc];
-Simplify[deltaMCForm/.Sqrt[s]->MChi/.s->MChi^2]
 
 
 (* F12 *)
@@ -169,102 +133,38 @@ C0=Coefficient[Simplify[F12SE],MassBuilderEpsilon,0];
 C1=Coefficient[Simplify[F12SE],MassBuilderEpsilon,1];
 C2=Coefficient[Simplify[F12SE],MassBuilderEpsilon,2];
 SEtest2 = C0+C1*MassBuilderEpsilon+C2*MassBuilderEpsilon^2;
-Simplify[SEtest2-F12SE]
+Simplify[SEtest2-F12SE];
 SEC=Simplify[SEtest2]/.MassBuilderEpsilon->0/.Pair[Momentum[p],Momentum[p]]->p^2;
 
-SEC1=SEC/.TBI[4,p^2,{{1,mz},{1,MChi}}]->Bzc[s]\
-/.TBI[4,p^2,{{1,MChi},{1,ma}}]->Bac[s]\
-/.TBI[4,p^2,{{1,mw},{1,MChi}}]->Bwc[s]\
-/.TAI[4,0,{{1,mw}}]->Aw\
-/.TAI[4,0,{{1,MChi}}]->Ac\
-/.TAI[4,0,{{1,ma}}]->Aa\
-/.TAI[4,0,{{1,mz}}]->Az;
-
-SEC1=SEC1/.p^2->s/.p->Sqrt[s];
-DC = D[SEC1, s];
-totalC1=2*MChi*Simplify[DC*SEC1];
-
-
-SEC2=SEC/.TBI[4,p^2,{{1,mz},{1,MChi}}]->Bzc[s]\
-/.TBI[4,p^2,{{1,MChi},{1,ma}}]->Bac[s]\
-/.TBI[4,p^2,{{1,mw},{1,MChi}}]->Bwc[s]\
+SEC2=SEC/.TBI[4,p^2,{{1,mz},{1,MChi}}]->b Bzc[s]\
+/.TBI[4,p^2,{{1,MChi},{1,ma}}]->b Bac[s]\
+/.TBI[4,p^2,{{1,mw},{1,MChi}}]->b Bwc[s]\
 /.TAI[4,0,{{1,mw}}]->Aw\
 /.TAI[4,0,{{1,MChi}}]->Ac\
 /.TAI[4,0,{{1,ma}}]->Aa\
 /.TAI[4,0,{{1,mz}}]->Az;
 SEC2=Simplify[SEC2\
-/. (Aw) -> 2 p^2 B1cw[s] -(p^2 + MChi^2 - mw^2)*Bwc[s] + Ac\
-/. (Az) -> 2 p^2 B1cz[s] -(p^2 + MChi^2 - mz^2)*Bzc[s] + Ac\
-/. (Aa) -> 2 p^2 B1ca[s] -(p^2 + MChi^2 - ma^2)*Bac[s] + Ac];
-
-Coefficient[SEC2 /. Pair[Momentum[p, D], Momentum[p, D]] -> p^2, p, -1]
-SigmaKC = Coefficient[SEC2 /. Pair[Momentum[p, D], Momentum[p, D]] -> p^2, p,1]
-SigmaMC = Coefficient[SEC2 /. Pair[Momentum[p, D], Momentum[p, D]] -> p^2, p,0]
-DSigmaMC = D[SigmaMC, s];
-DSigmaKC = D[SigmaKC, s];
-totalC2 = FullSimplify[(SigmaMC + MChi*SigmaKC)*(SigmaKC + 2*MChi*DSigmaMC + 2*MChi^2*DSigmaKC)];
+/. (Aw) -> 2 a p^2 B1cw[s] -(p^2 + MChi^2 - mw^2)*b Bwc[s] + Ac\
+/. (Az) -> 2 a p^2 B1cz[s] -(p^2 + MChi^2 - mz^2)*b Bzc[s] + Ac\
+/. (Aa) -> 2 a p^2 B1ca[s] -(p^2 + MChi^2 - ma^2)*b Bac[s] + Ac]
 
 
-deltaM = totalC1-totalC2;
-
-deltaM=Simplify[deltaM]/.MassBuilderEpsilon->0;
-deltaMCForm=Simplify[deltaM\
-/.Derivative[1][B1cw][s]->(1/(2*s))*(-2*B1cw[s]+Bcw[s]+(s+MChi^2-mw^2)*dBwc)\
-/.Derivative[1][B1cz][s]->(1/(2*s))*(-2*B1cz[s]+Bcz[s]+(s+MChi^2-mz^2)*dBzc)\
-/.Derivative[1][B1ca][s]->(1/(2*s))*(-2*B1ca[s]+Bca[s]+(s+MChi^2-ma^2)*dBac)\
-/.B1cz[s]->(1/(2*s))*(Az-Ac+(s+MChi^2-mz^2)*Bzc[s])\
-/.B1ca[s]->(1/(2*s))*(Aa-Ac+(s+MChi^2-ma^2)*Bac[s])\
-/.B1cw[s]->(1/(2*s))*(Aw-Ac+(s+MChi^2-mw^2)*Bwc[s])\
-/.Derivative[1][Bzc][s]->dBzc\
-/.Derivative[1][Bcz][s]->dBzc\
-/.Derivative[1][Bwc][s]->dBwc\
-/.Derivative[1][Bcw][s]->dBwc\
-/.Derivative[1][Bac][s]->dBac\
-/.Derivative[1][Bca][s]->dBac\
-/.Bzc[s]->Bzc/.Bca[s]->Bac\
-/.Bac[s]->Bac/.Bwc[s]->Bwc\
-/.Bcw[s]->Bwc/.Bcz[s]->Bzc]/.Sqrt[s]->MChi/.s->MChi^2;
-del=Simplify[deltaMCForm];
-FullSimplify[del,{MChi>0}]
 
 
-finaldeltaM=Simplify[ (totalC1-totalN1) - (totalC2-totalN2)]/.MassBuilderEpsilon->0;
-finaldeltaM2=Simplify[finaldeltaM\
-/.Derivative[1][B1cw][s]->(1/(2*s))*(-2*B1cw[s]+Bcw[s]+(s+MChi^2-mw^2)*dBwc)\
-/.Derivative[1][B1cz][s]->(1/(2*s))*(-2*B1cz[s]+Bcz[s]+(s+MChi^2-mz^2)*dBzc)\
-/.Derivative[1][B1ca][s]->(1/(2*s))*(-2*B1ca[s]+Bca[s]+(s+MChi^2-ma^2)*dBac)\
-/.B1cz[s]->(1/(2*s))*(Az-Ac+(s+MChi^2-mz^2)*Bzc[s])\
-/.B1ca[s]->(1/(2*s))*(Aa-Ac+(s+MChi^2-ma^2)*Bac[s])\
-/.B1cw[s]->(1/(2*s))*(Aw-Ac+(s+MChi^2-mw^2)*Bwc[s])\
-/.Derivative[1][Bzc][s]->dBzc\
-/.Derivative[1][Bcz][s]->dBzc\
-/.Derivative[1][Bwc][s]->dBwc\
-/.Derivative[1][Bcw][s]->dBwc\
-/.Derivative[1][Bac][s]->dBac\
-/.Derivative[1][Bca][s]->dBac\
-/.Bzc[s]->Bcz/.Bca[s]->Bca\
-/.Bac[s]->Bca/.Bwc[s]->Bcw\
-/.Bcw[s]->Bcw/.Bcz[s]->Bcz]/.Sqrt[s]->MChi/.s->MChi^2;
-
-Simplify[finaldeltaM2,{MChi>0}]
+SigmaKN=-(e^2/(16*Pi^2*sw^2))*(4*c1*B1cw[s]+2);
+SigmaMN=-(e^2*MChi/(16*Pi^2*sw^2))*(8*c0*Bwc[s]-4);
+SENIbe = SigmaKN*p+SigmaMN
+SigmaKC = -(e^2/(8*Pi^2 * sw^2)) * ( sw^2 *c1*B1ca[s] + cw^2 *c1*B1cz[s] + c1*B1cw[s] + 1 );
+SigmaMC = -(e^2 MChi /(4*Pi^2 * sw^2)) * ( sw^2 *c0*Bac[s] + cw^2 *c0*Bzc[s] + c0*Bwc[s] - 1 );
+SECIbe = (SigmaKC*p+SigmaMC)
 
 
-finaldeltaM=Simplify[ (totalC1-totalN1)]/.MassBuilderEpsilon->0;
-finaldeltaM2=Simplify[finaldeltaM\
-/.Derivative[1][B1cw][s]->(1/(2*s))*(-2*B1cw[s]+Bcw[s]+(s+MChi^2-mw^2)*dBwc)\
-/.Derivative[1][B1cz][s]->(1/(2*s))*(-2*B1cz[s]+Bcz[s]+(s+MChi^2-mz^2)*dBzc)\
-/.Derivative[1][B1ca][s]->(1/(2*s))*(-2*B1ca[s]+Bca[s]+(s+MChi^2-ma^2)*dBac)\
-/.B1cz[s]->(1/(2*s))*(Az-Ac+(s+MChi^2-mz^2)*Bzc[s])\
-/.B1ca[s]->(1/(2*s))*(Aa-Ac+(s+MChi^2-ma^2)*Bac[s])\
-/.B1cw[s]->(1/(2*s))*(Aw-Ac+(s+MChi^2-mw^2)*Bwc[s])\
-/.Derivative[1][Bzc][s]->dBzc\
-/.Derivative[1][Bcz][s]->dBzc\
-/.Derivative[1][Bwc][s]->dBwc\
-/.Derivative[1][Bcw][s]->dBwc\
-/.Derivative[1][Bac][s]->dBac\
-/.Derivative[1][Bca][s]->dBac\
-/.Bzc[s]->Bcz/.Bca[s]->Bca\
-/.Bac[s]->Bca/.Bwc[s]->Bcw\
-/.Bcw[s]->Bcw/.Bcz[s]->Bcz]/.Sqrt[s]->MChi/.s->MChi^2;
+(*a=-I
+b=I*)
+a=1;b=1;
+Simplify[SENIbe-SEN2]
 
-CForm[Simplify[finaldeltaM2,{MChi>0}]]
+
+c1=I;
+c0=-I;
+Simplify[SECIbe-SEC2]

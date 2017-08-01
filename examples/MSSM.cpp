@@ -242,21 +242,6 @@ double iterative_mass_F6(Data data)
 }
 
 
-double pole_mass_F5(Data data)
-{
-
-  double Mp = data.MChi + (data.SE_1["F12_g1"]+data.SE_2["F12_g1"]);
-  return Mp;
-}
-
-double pole_mass_F6(Data data)
-{
-  double Mp = data.MChi + (data.SE_1["F11_g1"]+data.SE_2["F11_g1"]);
-  return Mp;
-}
-
-
-
 int main(int argc, char *argv[])
 {
   User_input user(argc,argv);
@@ -268,43 +253,40 @@ int main(int argc, char *argv[])
   
   Data data(options);
   
-  double der = extra_TSIL_interface::add_derivatives(data);
+  //cout << " derivative terms = " << der << endl;
+  //cout << " two-loop mass splitting = " << pole_mass_F6(data) - pole_mass_F5(data)+der << endl;
   
-  cout << " derivative terms = " << der << endl;
-  
-  
-  
-  Self_energy se;
-  se.run_tsil(data);
-  
-  cout << " two-loop mass splitting = " << pole_mass_F6(data) - pole_mass_F5(data)+der << endl;
-  
-  
-  /*
   ofstream myfile;
   myfile.open ("models/MSSM/output/mass_splittings.txt");
-  int pts = 30;
+  int pts = 10;
   double n = 0;
-  double M=0;
+  double M = 0;
   int status = 0;
   for (int i = 0; i < pts ; i++)
   {
     n=(float(i)/float(pts))*5;
-    M= pow(10,n);
+    
+    // M= pow(10,n);
+    // data.MChi=M;
+    // data.P = M;
+    //double delta_m_it=iterative_mass_F5(data) - iterative_mass_F6(data);
+    M = pow(10,n);
     data.MChi=M;
     data.P = M;
     
-    double delta_m_it=iterative_mass_F5(data) - iterative_mass_F6(data);
-    data.MChi=M;
-    data.P = M;
-    M= pow(10,n);
-    double delta_m=pole_mass_F5(data) - pole_mass_F6(data);
+    Self_energy se;
+    se.run_tsil(data);
     
-    myfile << M << " " << delta_m_it << " " << delta_m << endl;
+    double delta_m_2 = data.SE_2["F12_g1"] - data.SE_2["F11_g1"] - extra_TSIL_interface::add_derivatives(data);
+    
+    double delta_m_1 = data.SE_1["F12_g1"] - data.SE_1["F11_g1"];
+    
+    myfile << M << " " << delta_m_1 <<  " " << delta_m_1 + delta_m_2 << endl;
     status=(float(i)/pts)*100;
     cout<< "\r" << "computing mass splittings . . . " << status << "% complete ";
     std::cout << std::flush;
   }
+  
   status=100;
   cout<< "\r" << "computing mass splittings . . . " << status << "% complete ";
   cout << "\n";
@@ -315,7 +297,7 @@ int main(int argc, char *argv[])
   cout << "to make plot in this directory "<< endl;
   
   myfile.close();
-  */
+  
   
   return 0;
 }

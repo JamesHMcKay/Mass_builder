@@ -53,16 +53,15 @@ y2=A[:,2]*1000
 
 
 
-plt.plot(x,y2,'-',color='black',label='Explicit pole mass') #
+plt.plot(x,y1,'-',color='black',label='1-loop') #
 
-plt.plot(x,y1,'--',color='black',label='Implicit pole mass') #
+plt.plot(x,y2,'--',color='black',label='2-loop') #
 
-plt.plot(x,c0*1000.*ones(size(y1)),'--',color='black',label='Limit') #
-
-
+#plt.plot(x,c0*1000.*ones(size(y1)),'--',color='black',label='Limit') #
 
 xlabel(r"Degenerate mass $M$ (GeV)",fontsize=16)
 ylabel(r"$\Delta M$ (Mev)",fontsize=16)
+#plt.xlim([0,5000])
 plt.ylim([0,200])
 plt.legend(loc=2)
 
