@@ -149,6 +149,31 @@ void Generate_code::decalare_var_tsil(ofstream &main_output)
   if (count != 0){main_output<< ";"<<endl;}
   else {main_output<<endl;}
 
+
+  // deal with Bxy = Byx case
+  if (options.optimise)
+  {
+    for (unsigned int i = 0; i<integrals.size();i++)
+    {
+      string name = integrals[i];
+
+      Bases base_temp = base_map[name];
+      base_temp.short_name = name;
+
+      if (base_temp.type == "B" && base_temp.e1!=base_temp.e2)
+      {
+        Bases base_temp_B;
+        base_temp_B.type = "B";
+        base_temp_B.e1 = base_temp.e2;
+        base_temp_B.e2 = base_temp.e1;
+        string name_B = get_short_name(base_temp_B,masses_input, id_input);
+        main_output << "  TSIL_COMPLEXCPP " << name_B << ";" << endl;
+      }
+    }
+  }
+
+
+
   main_output << "  TSIL_COMPLEXCPP  i;\n";
   main_output << "    double Zeta;\n";
 

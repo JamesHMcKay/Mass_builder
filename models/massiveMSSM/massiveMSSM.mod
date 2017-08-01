@@ -305,37 +305,9 @@ M$ClassesDescription = {
 	PropagatorArrow -> Forward }
 }
 
-(*
-ZNeu[1,1] = 1;
-ZNeu[1,2] = 1;
-ZNeu[1,3] = 1;
-ZNeu[1,4] = 1;
-ZNeu[2,1] = 1;
-ZNeu[2,2] = 1;
-ZNeu[2,3] = 1;
-ZNeu[2,4] = 1;
-ZNeu[3,1] = 1;
-ZNeu[3,2] = 1;
-ZNeu[3,3] = 1;
-ZNeu[3,4] = 1;
-ZNeu[4,1] = 1;
-ZNeu[4,2] = 1;
-ZNeu[4,3] = 1;
-ZNeu[4,4] = 1;
-
-UCha[1,1] =  1;
-UCha[1,2] =  1;
-UCha[2,1] =  1;
-UCha[2,2] =  1;
-VCha[1,1] :=  1;
-VCha[1,2] :=  1;
-VCha[2,1] :=  1;
-VCha[2,2] :=  1;
-*)
 
 
-
-MLE[1] = FCGV["ME"];
+(*MLE[1] = FCGV["ME"];
 MLE[2] = FCGV["MM"];
 MLE[3] = FCGV["ML"];
 MQU[1] = FCGV["MU"];
@@ -343,7 +315,17 @@ MQU[2] = FCGV["MC"];
 MQU[3] = FCGV["MT"];
 MQD[1] = FCGV["MD"];
 MQD[2] = FCGV["MS"];
-MQD[3] = FCGV["MB"];
+MQD[3] = FCGV["MB"];*)
+
+MLE[1] = FCGV["MF"];
+MLE[2] = FCGV["MF"];
+MLE[3] = FCGV["MF"];
+MQU[1] = FCGV["MF"];
+MQU[2] = FCGV["MF"];
+MQU[3] = FCGV["MT"];
+MQD[1] = FCGV["MF"];
+MQD[2] = FCGV["MF"];
+MQD[3] = FCGV["MF"];
 MQU[gen_, _] = MQU[gen];
 MQD[gen_, _] = MQD[gen]
 
@@ -402,7 +384,7 @@ M$LastModelRules = {}
 (* some short-hands for excluding classes of particles *)
 
 WinoLimit = ExcludeParticles ->
-  {F[1|2|3|4], S[11], S[12], S[13], S[14], S[2], S[3], S[5],F[11,{2}],F[11,{3}],F[11,{4}],F[12,{2}]}
+  {S[11], S[12], S[13], S[14], S[2], S[3], S[5],F[11,{2}],F[11,{3}],F[11,{4}],F[12,{2}]}
 
 WinoCouplings = ExcludeFieldPoints ->
 {FieldPoint[_][S[4],F[11],F[12]],
