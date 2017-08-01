@@ -103,36 +103,32 @@ namespace extra_TSIL_interface
     Cz2 =  -2.*cw;
     Cw1 =  -2.;
     Cw2 =  -2.;
-
     
-    cout << "g1 = " << g1 << endl;
-    cout << "g2 = " << g2 << endl;
-    cout << "e = " << e << endl;
-    cout << "e/sw = " << e/sw << endl;
+    TSIL_REAL a = -1., b = 1., c = 1.;
     
-    Aa = -i*TSIL_A_ (ma2 , Q2);
+    Aa = a*TSIL_A_ (ma2 , Q2);
     
-    Ac = -i*TSIL_A_ (MChi2 , Q2);
+    Ac = a*TSIL_A_ (MChi2 , Q2);
     
-    Aw = -i*TSIL_A_ (mw2 , Q2);
+    Aw = a*TSIL_A_ (mw2 , Q2);
     
-    Az = -i*TSIL_A_ (mz2 , Q2);
+    Az = a*TSIL_A_ (mz2 , Q2);
     
-    Bac = i*TSIL_B_ (ma2, MChi2, s, Q2);
+    Bac = b*TSIL_B_ (ma2, MChi2, s, Q2);
     
-    Bcw = i*TSIL_B_ (MChi2, mw2, s, Q2);
+    Bcw = b*TSIL_B_ (MChi2, mw2, s, Q2);
     
-    Bcz = i*TSIL_B_ (MChi2, mz2, s, Q2);
+    Bcz = b*TSIL_B_ (MChi2, mz2, s, Q2);
     
     Bwc = Bcw;
     Bzc = Bcz;
     Bca = Bac;
     
-    dBwc = i*TSIL_dBds_(mw2,MChi2,s,Q2);
-    dBzc = i*TSIL_dBds_(mz2,MChi2,s,Q2);
-    dBca = i*TSIL_dBds_(ma2,MChi2,s,Q2);
+    dBwc = c*TSIL_dBds_(mw2,MChi2,s,Q2);
+    dBzc = c*TSIL_dBds_(mz2,MChi2,s,Q2);
+    dBca = c*TSIL_dBds_(ma2,MChi2,s,Q2);
     
-    dBac = i*TSIL_dBds_(ma2,MChi2,s,Q2);
+    dBac = c*TSIL_dBds_(ma2,MChi2,s,Q2);
     
   }
    
@@ -141,31 +137,23 @@ namespace extra_TSIL_interface
     DoTSIL(data);
     
     p = data.P;
-    TSIL_REAL s = pow(data.P,2);
+
     
-    TSIL_REAL a1 = -1, a2 = 1 , a3 = -1;
+    TSIL_COMPLEXCPP result = (Power(e,4)*MChi*(-(((Ac - Aw - Power(MChi,2) + 2*Bcw*Power(MChi,2) + Bcw*Power(mw,2))*
+            (Ac*Power(MChi,2) - Aw*Power(MChi,2) - Power(MChi,4) - 4*dBwc*Power(MChi,6) + Bcw*Power(MChi,2)*Power(mw,2) - 
+              2*dBwc*Power(MChi,4)*Power(mw,2)))/Power(MChi,6)) + 
+       ((2 + 8*dBwc*Power(MChi,2) + 8*Power(cw,2)*dBzc*Power(MChi,2) - 
+            (2*(Ac - Aw - Bcw*Power(MChi,2) + 2*dBwc*Power(MChi,4) + Bcw*Power(mw,2) - dBwc*Power(MChi,2)*Power(mw,2)))/Power(MChi,2) + 
+            (Ac - Aw - Bcw*(2*Power(MChi,2) - Power(mw,2)))/Power(MChi,2) - 
+            (2*Power(cw,2)*(Ac - Az - Bcz*Power(MChi,2) + 2*dBzc*Power(MChi,4) + Bcz*Power(mz,2) - dBzc*Power(MChi,2)*Power(mz,2)))/
+             Power(MChi,2) + (Power(cw,2)*(Ac - Az - Bcz*(2*Power(MChi,2) - Power(mz,2))))/Power(MChi,2) + 
+            8*dBac*Power(MChi,2)*Power(sw,2) - (2*(-Aa + Ac + Bca*Power(ma,2) - Bca*Power(MChi,2) - dBac*Power(ma,2)*Power(MChi,2) + 
+                 2*dBac*Power(MChi,4))*Power(sw,2))/Power(MChi,2) + 
+            ((-Aa + Ac - Bca*(-Power(ma,2) + 2*Power(MChi,2)))*Power(sw,2))/Power(MChi,2))*
+          (Aw + Az*Power(cw,2) + 2*Power(MChi,2) - 2*Bcw*Power(MChi,2) - 2*Bcz*Power(cw,2)*Power(MChi,2) - Bcw*Power(mw,2) - 
+            Bcz*Power(cw,2)*Power(mz,2) + Aa*Power(sw,2) - Bca*Power(ma,2)*Power(sw,2) - 2*Bca*Power(MChi,2)*Power(sw,2) - 
+            Ac*(1 + Power(cw,2) + Power(sw,2))))/(4.*Power(MChi,2))))/(64.*Power(Pi,4)*Power(sw,4));
     
-    TSIL_COMPLEXCPP result = (Power(e,4)*MChi*((((-1 + 4*Bcw)*Power(MChi,2) + a3*(-Ac + Aw + Bcw*(2*Power(MChi,2) - Power(mw,2))))*
-          (Power(MChi,2)*(Power(MChi,2) + 8*dBwc*Power(MChi,4) + 
-               a3*(-Ac + Aw + Bcw*(2*Power(MChi,2) - Power(mw,2)))) + 
-            2*a1*Power(MChi,2)*(a2*a3*(-Ac + Aw + Bcw*(2*Power(MChi,2) - Power(mw,2))) + 
-               Power(MChi,2)*(Bcw + dBwc*(2*Power(MChi,2) - Power(mw,2))))))/Power(MChi,6) - 
-       ((-1 + 2*Bcw + (a3*(-Ac + Aw + Bcw*(2*Power(MChi,2) - Power(mw,2))))/(2.*Power(MChi,2)) + 
-            Power(cw,2)*(2*Bcz + (a3*(-Ac + Az + Bcz*(2*Power(MChi,2) - Power(mz,2))))/
-                (2.*Power(MChi,2))) + (2*Bca + 
-               (a3*(Aa - Ac + Bca*(-Power(ma,2) + 2*Power(MChi,2))))/(2.*Power(MChi,2)))*Power(sw,2))*
-          (2 + (a3*(-Ac + Aw + Bcw*(2*Power(MChi,2) - Power(mw,2))))/Power(MChi,2) + 
-            (a3*Power(cw,2)*(-Ac + Az + Bcz*(2*Power(MChi,2) - Power(mz,2))))/Power(MChi,2) + 
-            (a3*(Aa - Ac + Bca*(-Power(ma,2) + 2*Power(MChi,2)))*Power(sw,2))/Power(MChi,2) + 
-            4*Power(MChi,2)*(2*dBwc + (a1*
-                  (a2*a3*(-Ac + Aw + Bcw*(2*Power(MChi,2) - Power(mw,2))) + 
-                    Power(MChi,2)*(Bcw + dBwc*(2*Power(MChi,2) - Power(mw,2)))))/(2.*Power(MChi,4)) + 
-               Power(cw,2)*(2*dBzc + (a1*
-                     (a2*a3*(-Ac + Az + Bcz*(2*Power(MChi,2) - Power(mz,2))) + 
-                       Power(MChi,2)*(Bcz + dBzc*(2*Power(MChi,2) - Power(mz,2)))))/(2.*Power(MChi,4))
-                  ) + (2*dBac + (a1*(a2*a3*(Aa - Ac + Bca*(-Power(ma,2) + 2*Power(MChi,2))) + 
-                       Power(MChi,2)*(Bca + dBac*(-Power(ma,2) + 2*Power(MChi,2)))))/
-                   (2.*Power(MChi,4)))*Power(sw,2))))/2.))/(64.*Power(Pi,4)*Power(sw,4));
     
     return real(result);
   
@@ -280,14 +268,16 @@ int main(int argc, char *argv[])
   
   Data data(options);
   
-  cout << " derivative terms = " << extra_TSIL_interface::add_derivatives(data) << endl;
+  double der = extra_TSIL_interface::add_derivatives(data);
+  
+  cout << " derivative terms = " << der << endl;
   
   
   
   Self_energy se;
   se.run_tsil(data);
   
-  cout << " two-loop mass splitting = " << pole_mass_F6(data) - pole_mass_F5(data) << endl;
+  cout << " two-loop mass splitting = " << pole_mass_F6(data) - pole_mass_F5(data)+der << endl;
   
   
   /*
