@@ -4,7 +4,9 @@ MChi 1000
 ma 0.01
 mw 80.385
 mz 91.1876
+mt 173.15
 v 246
 #e 0.3134
 mh 125.6
 MassBuilderJEpsilon 0.0
+mf 0
