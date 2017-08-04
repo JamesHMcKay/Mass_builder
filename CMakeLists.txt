@@ -68,8 +68,6 @@ set(SRC_Scalar examples/Scalar.cpp)
 set(SRC_MSSM examples/MSSM.cpp)
 set(SRC_VDM examples/VDM.cpp)
 set(SRC_QED examples/QED.cpp)
-set(SRC_TRIPLET examples/EW_triplet.cpp)
-set(HEADER_TRIPLET examples/EW_triplet.hpp)
 
 # include generated source files
 include(src/CMakeLists.txt)
@@ -101,8 +99,6 @@ add_executable(VDM EXCLUDE_FROM_ALL ${SRC_VDM} ${SRC_FILES_GEN} ${HEADER_FILES_G
 
 add_executable(QED EXCLUDE_FROM_ALL ${SRC_QED} ${SRC_FILES_GEN} ${HEADER_FILES_GEN} ${TSIL_HEADER_FILE} ${SRC_FILES} ${HEADER_FILES} ${GENERATED_SRC_FILES})
 
-add_executable(EW_triplet EXCLUDE_FROM_ALL ${SRC_TRIPLET} ${HEADER_TRIPLET} ${SRC_FILES_GEN} ${HEADER_FILES_GEN} ${TSIL_HEADER_FILE} ${SRC_FILES} ${HEADER_FILES} ${GENERATED_SRC_FILES})
-
 
 # Mass Builder required the WSTP and MPI libraries
 TARGET_LINK_LIBRARIES(mass_builder libtsil.a ${MPI_LIBRARIES} ${LIBRARIES})
@@ -111,8 +107,6 @@ Mathematica_ABSOLUTIZE_LIBRARY_DEPENDENCIES(mass_builder)
 
 # Examples only require the TSIL libraries
 TARGET_LINK_LIBRARIES(MSSM libtsil.a)
-
-TARGET_LINK_LIBRARIES(EW_triplet libtsil.a)
 
 TARGET_LINK_LIBRARIES(VDM libtsil.a)
 

@@ -154,6 +154,20 @@ namespace extra_TSIL_interface
             Bcz*Power(cw,2)*Power(mz,2) + Aa*Power(sw,2) - Bca*Power(ma,2)*Power(sw,2) - 2*Bca*Power(MChi,2)*Power(sw,2) - 
             Ac*(1 + Power(cw,2) + Power(sw,2))))/(4.*Power(MChi,2))))/(64.*Power(Pi,4)*Power(sw,4));
     
+    // These two expressions are symbolically identical yet will give slightly different (1e-20) numerical results
+    /*
+   TSIL_COMPLEXCPP result_2 = (Power(e,4)*(-4*(Ac - Aw - Power(MChi,2) + 2*Bcw*Power(MChi,2) + Bcw*Power(mw,2))*(Ac - Aw - Power(MChi,2) - 4*dBwc*Power(MChi,4) + Bcw*Power(mw,2) - 2*dBwc*Power(MChi,2)*Power(mw,2)) +
+       ((Aw*Power(cw,2) + Power(MChi,2) - 2*Bcz*Power(MChi,2) + Power(cw,2)*Power(MChi,2) - 2*Bcw*Power(cw,2)*Power(MChi,2) - Bcw*Power(cw,2)*Power(mw,2) - Bcz*Power(mz,2) + Aa*Power(cw,2)*Power(sw,2) - 
+            Bca*Power(cw,2)*Power(ma,2)*Power(sw,2) - 2*Power(MChi,2)*Power(sw,2) + 4*Bcz*Power(MChi,2)*Power(sw,2) + Power(cw,2)*Power(MChi,2)*Power(sw,2) - 2*Bca*Power(cw,2)*Power(MChi,2)*Power(sw,2) + 
+            2*Bcz*Power(mz,2)*Power(sw,2) + Power(MChi,2)*Power(sw,4) - 2*Bcz*Power(MChi,2)*Power(sw,4) - Bcz*Power(mz,2)*Power(sw,4) + Az*Power(-1 + Power(sw,2),2) - 
+            Ac*(Power(-1 + Power(sw,2),2) + Power(cw,2)*(1 + Power(sw,2))))*(Aw*Power(cw,2) + Power(MChi,2) + Power(cw,2)*Power(MChi,2) + 4*Power(cw,2)*dBwc*Power(MChi,4) + 4*dBzc*Power(MChi,4) - 
+            Bcw*Power(cw,2)*Power(mw,2) + 2*Power(cw,2)*dBwc*Power(MChi,2)*Power(mw,2) - Bcz*Power(mz,2) + 2*dBzc*Power(MChi,2)*Power(mz,2) + Aa*Power(cw,2)*Power(sw,2) - Bca*Power(cw,2)*Power(ma,2)*Power(sw,2) - 
+            2*Power(MChi,2)*Power(sw,2) + Power(cw,2)*Power(MChi,2)*Power(sw,2) + 2*Power(cw,2)*dBac*Power(ma,2)*Power(MChi,2)*Power(sw,2) + 4*Power(cw,2)*dBac*Power(MChi,4)*Power(sw,2) - 
+            8*dBzc*Power(MChi,4)*Power(sw,2) + 2*Bcz*Power(mz,2)*Power(sw,2) - 4*dBzc*Power(MChi,2)*Power(mz,2)*Power(sw,2) + Power(MChi,2)*Power(sw,4) + 4*dBzc*Power(MChi,4)*Power(sw,4) - 
+            Bcz*Power(mz,2)*Power(sw,4) + 2*dBzc*Power(MChi,2)*Power(mz,2)*Power(sw,4) + Az*Power(-1 + Power(sw,2),2) - Ac*(Power(-1 + Power(sw,2),2) + Power(cw,2)*(1 + Power(sw,2)))))/Power(cw,4)))/
+   (256.*Power(MChi,3)*Power(Pi,4)*Power(sw,4));
+    */
+    
     
     return real(result);
   

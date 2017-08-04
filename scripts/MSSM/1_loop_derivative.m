@@ -26,21 +26,21 @@ F11SE = 0;
 ClearScalarProducts[];
 
 Get[FileNameJoin[{path, 
-    "/models/massiveMSSM/output/math_data_F11_g1_1_1.mx"}]];
+    "/models/MSSM/output/math_data_F11_g1_1_1.mx"}]];
 F11SE = F11SE + SelfEnergyFinite*kappa;
 
 Get[FileNameJoin[{path, 
-    "/models/massiveMSSM/output/math_data_F11_g1_2_1.mx"}]];
+    "/models/MSSM/output/math_data_F11_g1_2_1.mx"}]];
 F11SE = F11SE + SelfEnergyFinite*kappa;
 
 Get[FileNameJoin[{path, 
-    "/models/massiveMSSM/output/math_data_F11_g1_3_1.mx"}]];
+    "/models/MSSM/output/math_data_F11_g1_3_1.mx"}]];
 F11SE = F11SE + SelfEnergyFinite*kappa;
 
 F11SEdiv = makeFiniteAmplitude[F11SE, -1, D];
 
 Get[FileNameJoin[{path, 
-    "/models/massiveMSSM/output/math_data_F11_g1_1_1c.mx"}]];
+    "/models/MSSM/output/math_data_F11_g1_1_1c.mx"}]];
 
 F11ct = makeFiniteAmplitude[SelfEnergyFinite*kappa, -1, D] /. 
     MassBuilderCTM1 -> 0 /. MassBuilderCTZ1 -> 0;
@@ -54,20 +54,20 @@ solF11 = Solve[{eq1 == 0, eq2 == 0}, {d2Z, d2m}]
 F12SE = 0;
 
 Get[FileNameJoin[{path, 
-    "/models/massiveMSSM/output/math_data_F12_g1_1_1.mx"}]];
+    "/models/MSSM/output/math_data_F12_g1_1_1.mx"}]];
 F12SE = F12SE + SelfEnergyFinite*kappa;
 
 Get[FileNameJoin[{path, 
-    "/models/massiveMSSM/output/math_data_F12_g1_2_1.mx"}]];
+    "/models/MSSM/output/math_data_F12_g1_2_1.mx"}]];
 F12SE = F12SE + SelfEnergyFinite*kappa;
 
 Get[FileNameJoin[{path, 
-    "/models/massiveMSSM/output/math_data_F12_g1_3_1.mx"}]];
+    "/models/MSSM/output/math_data_F12_g1_3_1.mx"}]];
 F12SE = F12SE + SelfEnergyFinite*kappa;
 
 F12SEdiv = makeFiniteAmplitude[F12SE, -1, D];
 Get[FileNameJoin[{path, 
-    "/models/massiveMSSM/output/math_data_F12_g1_1_1c.mx"}]];
+    "/models/MSSM/output/math_data_F12_g1_1_1c.mx"}]];
 F12ct = makeFiniteAmplitude[SelfEnergyFinite*kappa, -1, D] /. 
     MassBuilderCTM1 -> 0 /. MassBuilderCTZ1 -> 0;
 eq1 = FullSimplify[Coefficient[F12ct + F12SEdiv, p]];
@@ -81,19 +81,19 @@ F11SE = 0;
 ClearScalarProducts[];
 
 Get[FileNameJoin[{path, 
-    "/models/massiveMSSM/output/math_data_F11_g1_1_1.mx"}]];
+    "/models/MSSM/output/math_data_F11_g1_1_1.mx"}]];
 F11SE = F11SE + SelfEnergyFinite*kappa;
 
 Get[FileNameJoin[{path, 
-    "/models/massiveMSSM/output/math_data_F11_g1_2_1.mx"}]];
+    "/models/MSSM/output/math_data_F11_g1_2_1.mx"}]];
 F11SE = F11SE + SelfEnergyFinite*kappa;
 
 Get[FileNameJoin[{path, 
-    "/models/massiveMSSM/output/math_data_F11_g1_3_1.mx"}]];
+    "/models/MSSM/output/math_data_F11_g1_3_1.mx"}]];
 F11SE = F11SE + SelfEnergyFinite*kappa;
 
 Get[FileNameJoin[{path, 
-    "/models/massiveMSSM/output/math_data_F11_g1_1_1c.mx"}]];
+    "/models/MSSM/output/math_data_F11_g1_1_1c.mx"}]];
 F11SE = F11SE + SelfEnergyFinite*kappa;
 F11SE = F11SE /. MassBuilderCTZ1 -> 0 /. MassBuilderCTZ2 -> 0 /. 
      MassBuilderCTM1 -> 0 /. MassBuilderCTM2 -> 0 /. 
@@ -118,16 +118,16 @@ totalN1=2*MChi*FullSimplify[DN*SEN1];
 F12SE = 0;
 ClearScalarProducts[];
 
-Get[FileNameJoin[{path, "/models/massiveMSSM/output/math_data_F12_g1_1_1.mx"}]];
+Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_1_1.mx"}]];
 F12SE = F12SE + SelfEnergyFinite*kappa;
 
-Get[FileNameJoin[{path, "/models/massiveMSSM/output/math_data_F12_g1_2_1.mx"}]];
+Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_2_1.mx"}]];
 F12SE = F12SE + SelfEnergyFinite*kappa;
 
-Get[FileNameJoin[{path, "/models/massiveMSSM/output/math_data_F12_g1_3_1.mx"}]];
+Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_3_1.mx"}]];
 F12SE = F12SE + SelfEnergyFinite*kappa;
 
-Get[FileNameJoin[{path, "/models/massiveMSSM/output/math_data_F12_g1_1_1c.mx"}]];
+Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_1_1c.mx"}]];
 F12SE = F12SE + SelfEnergyFinite*kappa;
 
 F12SE = F12SE/.MassBuilderCTZ1->0/.MassBuilderCTZ2->0/.MassBuilderCTM1->0/.MassBuilderCTM2->0/.D->4-2MassBuilderEpsilon;
@@ -151,6 +151,8 @@ DC = D[SEC1, s];
 totalC1=2*MChi*Simplify[DC*SEC1];
 
 
+a=1;
+b=1;
 deltaM= (totalN1-totalC1)/.MassBuilderEpsilon->0;
 deltaM2=Simplify[deltaM\
 /.Derivative[1][Bzc][s]->dBzc\
@@ -167,8 +169,9 @@ CForm[Simplify[deltaM2,{MChi>0}]]
 
 
 (* Ibe et al. working *)
-sw=Sin[\[Theta]];
-cw=Cos[\[Theta]];
+(*sw=Sin[\[Theta]];
+cw=Cos[\[Theta]];*)
+Clear[cw,sw];
 SigmaKN=-(e^2/(16*Pi^2*sw^2))*(4*B1cw[s]+2);
 SigmaMN=-(e^2*MChi/(16*Pi^2*sw^2))*(8*Bcw[s]-4);
 DSigmaMN=D[SigmaMN,s];
@@ -205,3 +208,6 @@ Simplify[Coefficient[deltaMIbe-deltaM2,dBac],{MChi>0}]
 
 
 FullSimplify[deltaMIbe-deltaM2,{MChi>0}]
+
+
+CForm[deltaMIbe]

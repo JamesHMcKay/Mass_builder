@@ -480,7 +480,7 @@ namespace utils
     input += "SelfEnergyFinite = SelfEnergyFinite/.(Pair[LorentzIndex[Lor1], Momentum[p]]*Pair[LorentzIndex[Lor2], Momentum[p]] -Pair[LorentzIndex[Lor1], LorentzIndex[Lor2]]*Pair[Momentum[p], Momentum[p]]) -> Pair[Momentum[p],Momentum[p]] ;";
     input += "SelfEnergyFinite = SelfEnergyFinite/.(-Pair[LorentzIndex[Lor1], Momentum[p]]*Pair[LorentzIndex[Lor2], Momentum[p]] +Pair[LorentzIndex[Lor1], LorentzIndex[Lor2]]*Pair[Momentum[p], Momentum[p]]) -> -Pair[Momentum[p],Momentum[p]] ;";
     
-    input += "SelfEnergyFinite = FullSimplify[SelfEnergyFinite/.MassBuilderP^2 -> Pair[Momentum[p],Momentum[p]] /. MassBuilderP -> p /. MassBuilderQ2->Q2 /. MassBuilderZeta-> Zeta ];";
+    input += "SelfEnergyFinite = Simplify[SelfEnergyFinite/.MassBuilderP^2 -> Pair[Momentum[p],Momentum[p]] /. MassBuilderP -> p /. MassBuilderQ2->Q2 /. MassBuilderZeta-> Zeta ];";
 
   }
   
@@ -639,7 +639,7 @@ namespace utils
     {
       input += "ampsSE2 = ampsSE1 // FDS[#, k1, k2] &;";
       input += "ampsSE3 = FIREBurn[ampsSE2, {k1, k2}, {p}] // FDS[#, k1, k2] &;";
-      input += "ampsSE4 = ampsSE3 // Collect2[#, {FeynAmpDenominator}, Factoring -> FullSimplify] &;";
+      input += "ampsSE4 = ampsSE3 // Collect2[#, {FeynAmpDenominator}, Factoring -> Simplify] &;";
       input += "resSE = Cancel[ampsSE4];";
       input += "tfiamp0 = resSE // ToTFI[#, k1, k2, p] &;";
     }
@@ -652,7 +652,7 @@ namespace utils
     else
     {
       input += "ampsSE3 = FIREBurn[ampsSE1, {k1}, {p}] // FDS[#, k1] &;";
-      input += "ampsSE4 = ampsSE3 // Collect2[#, {FeynAmpDenominator}, Factoring -> FullSimplify] &;";
+      input += "ampsSE4 = ampsSE3 // Collect2[#, {FeynAmpDenominator}, Factoring -> Simplify] &;";
       input += "resSE = Cancel[ampsSE4];";
       input += "tfiamp0 = resSE // ToTFI[#, k1, p] &;";
     }
@@ -688,7 +688,7 @@ namespace utils
   
   void print_tarcer_recurse(std::string &input)
   {
-    input+="SE = Simplify[TarcerRecurse[tfiamp0] ];";
+    input+="SE = TarcerRecurse[tfiamp0];";
     input+="SEk = (1/(4 Pair[Momentum[p, D],Momentum[p, D]])) DiracTrace[ DiracGamma[Momentum[p, D], D].SE ];";
     input+="SEm = (1/4) DiracTrace[ SE ];";
     input+="SE = p*SEk+SEm;"; // TODO make this general (this only works for vectors because SEk is just zero and the p^2 comes through SEm)
@@ -924,8 +924,8 @@ namespace utils
       }
     }
     
-    myfile << "C"<< id << " = FullSimplify[Coefficient["<<SEn<<", " << id << ", 1]];" << endl;
-    myfile << "C"<< id << "2 = FullSimplify[Coefficient["<<SEn<<", " << id << ", 2]];" << endl;
+    myfile << "C"<< id << " = Simplify[Coefficient["<<SEn<<", " << id << ", 1]];" << endl;
+    myfile << "C"<< id << "2 = Simplify[Coefficient["<<SEn<<", " << id << ", 2]];" << endl;
     
     //myfile << "C"<< id << " = FullSimplify[Coefficient["<<SEn<<", " << id << ", 1]/.Pair[Momentum[p, "<<D<<"], Momentum[p, "<<D<<"]]->Pair[Momentum[p, "<<D<<"], Momentum[p, "<<D<<"]]];" << endl;
     //myfile << "C"<< id << "2 = FullSimplify[Coefficient["<<SEn<<", " << id << ", 2]/.Pair[Momentum[p, "<<D<<"], Momentum[p, "<<D<<"]]->Pair[Momentum[p, "<<D<<"], Momentum[p, "<<D<<"]]];" << endl; // check if the squared integral exists
