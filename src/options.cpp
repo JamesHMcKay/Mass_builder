@@ -61,7 +61,7 @@ void User_input::user_interface()
     string input = "model name";
     if (find_and_read_string("-m",input)){options.model = input;}
     
-    if (options.model == "MSSM" || options.model == "massiveMSSM")
+    if (options.model == "MSSM" || options.model == "MSSMoffshell")
     {
       options.restrictions = "WinoLimit,WinoCouplings";
     }

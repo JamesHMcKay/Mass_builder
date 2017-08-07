@@ -61,8 +61,9 @@ plt.plot(x,y2,'--',color='black',label='2-loop') #
 
 xlabel(r"Degenerate mass $M$ (GeV)",fontsize=16)
 ylabel(r"$\Delta M$ (Mev)",fontsize=16)
-#plt.xlim([0,5000])
-plt.ylim([0,200])
+plt.xlim([90,4000])
+plt.ylim([145,172])
+#plt.ylim([0,200])
 plt.legend(loc=2)
 
 

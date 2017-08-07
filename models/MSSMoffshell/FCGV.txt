@@ -1,0 +1,14 @@
+EL e
+SW sw
+CW cw
+MW mw
+MZ mz
+ME me
+MM mm
+ML ml
+MU mu
+MT mt
+MD md
+MS ms
+MB mb
+MF mf

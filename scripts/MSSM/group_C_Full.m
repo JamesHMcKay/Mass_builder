@@ -104,7 +104,6 @@ V3SE = V3SE + SelfEnergyFinite*kappa;
 Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V3_24_1.mx"}]];
 V3SE = V3SE + SelfEnergyFinite*kappa;
 
-
 V3SEdiv = makeFiniteAmplitude[V3SE,-1,D];
 Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V3_1_1c.mx"}]];
 V3ct= makeFiniteAmplitude[SelfEnergyFinite*kappa,-1,D]/.MassBuilderCTM1->0/.MassBuilderCTZ1->0;
@@ -189,10 +188,6 @@ V2SE = V2SE + SelfEnergyFinite*kappa;
 
 Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V2_25_1.mx"}]];
 V2SE = V2SE + SelfEnergyFinite*kappa;
-
-
-
-
 V2SEdiv = makeFiniteAmplitude[V2SE,-1,D];
 Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V2_1_1c.mx"}]];
 V2ct= makeFiniteAmplitude[SelfEnergyFinite*kappa,-1,D]/.MassBuilderCTM1->0/.MassBuilderCTZ1->0;
@@ -256,8 +251,6 @@ V1SE = V1SE + SelfEnergyFinite*kappa;
 
 Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V1_18_1.mx"}]];
 V1SE = V1SE + SelfEnergyFinite*kappa;
-
-
 V1SEdiv = makeFiniteAmplitude[V1SE,-1,D];
 Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V1_1_1c.mx"}]];
 V1ct= makeFiniteAmplitude[SelfEnergyFinite*kappa,-1,D]/.MassBuilderCTM1->0/.MassBuilderCTZ1->0;
@@ -322,8 +315,6 @@ V12SE = V12SE + SelfEnergyFinite*kappa;
 
 Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V1_V2_18_1.mx"}]];
 V12SE = V12SE + SelfEnergyFinite*kappa;
-
-
 V12SEdiv = makeFiniteAmplitude[V12SE,-1,D];
 Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V1_V2_1_1c.mx"}]];
 V12ct= makeFiniteAmplitude[SelfEnergyFinite*kappa,-1,D]/.MassBuilderCTM1->0/.MassBuilderCTZ1->0;
@@ -332,13 +323,11 @@ eq2 = FullSimplify[Coefficient[V12ct+V12SEdiv,Pair[Momentum[p],Momentum[p]],0]];
 solV12 = Solve[{eq1==0,eq2==0},{dZZA1,dZAZ1}]
 
 
+
 Set @@@ solV1[[1]];
 Set @@@ solV2[[1]];
 Set @@@ solV3[[1]];
 Set @@@ solV12[[1]];
-
-
-Clear[dZZA1,dZAZ1,dZZZ1,dZAA1]
 
 
 SPD[p,p]=MChi^2;Pair[Momentum[p],Momentum[p]]=MChi^2;
@@ -382,12 +371,6 @@ N11 = SelfEnergyFinite*kappa^2;
 Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F11_g1_12_2.mx"}]];
 N12 = SelfEnergyFinite*kappa^2;
 
-
-
-
-
-
-
 Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F11_g1_19_2.mx"}]];
 N19 = SelfEnergyFinite*kappa^2;
 
@@ -430,32 +413,6 @@ N31 = SelfEnergyFinite*kappa^2;
 Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F11_g1_32_2.mx"}]];
 N32 = SelfEnergyFinite*kappa^2;
 
-
-
-
-
-
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F11_g1_33_2.mx"}]];
-N33 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F11_g1_34_2.mx"}]];
-N34 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F11_g1_35_2.mx"}]];
-N35 = SelfEnergyFinite*kappa^2;
-
-
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F11_g1_36_2.mx"}]];
-N36 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F11_g1_37_2.mx"}]];
-N37 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F11_g1_38_2.mx"}]];
-N38 = SelfEnergyFinite*kappa^2;
-
 Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F11_g1_39_2.mx"}]];
 N39 = SelfEnergyFinite*kappa^2;
 
@@ -473,7 +430,6 @@ N43 = SelfEnergyFinite*kappa^2;
 
 Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F11_g1_44_2.mx"}]];
 N44 = SelfEnergyFinite*kappa^2;
-
 
 Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F11_g1_45_2.mx"}]];
 N45 = SelfEnergyFinite*kappa^2;
@@ -523,31 +479,26 @@ N59 = SelfEnergyFinite*kappa^2;
 Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F11_g1_60_2.mx"}]];
 N60 = SelfEnergyFinite*kappa^2;
 
-
-
 Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F11_g1_3_2c.mx"}]];
 N3c = SelfEnergyFinite*kappa^2;
 
 Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F11_g1_4_2c.mx"}]];
 N4c = SelfEnergyFinite*kappa^2;
 
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F11_g1_5_2c.mx"}]];
-N5c = SelfEnergyFinite*kappa^2;
-
 Nsum1a = makeFiniteAmplitude[N1+N2+N3+N4+N5+N6+N7+N8+N9+N10+N11+N12,-1,D];
-Nsum1b = makeFiniteAmplitude[N19+N20+N21+N22+N23+N24+N25+N26+N27+N28+N29+N30+N31+N32,-1,D]
-Nsum1c = makeFiniteAmplitude[N39+N40+N41+N42+N43+N44+N45+N46+N47+N48+N49+N50+N51+N52+N53+N54+N55+N56+N57+N58+N59+N60,-1,D]
+Nsum1b = makeFiniteAmplitude[N19+N20+N21+N22+N23+N24+N25+N26+N27+N28+N29+N30+N31+N32,-1,D];
+Nsum1c = makeFiniteAmplitude[N39+N40+N41+N42+N43+N44+N45+N46+N47+N48+N49+N50+N51+N52+N53+N54+N55+N56+N57+N58+N59+N60,-1,D];
 
 Nsum1 = Nsum1a+Nsum1b+Nsum1c;
 
 Nsum2a = makeFiniteAmplitude[N1+N2+N3+N4+N5+N6+N7+N8+N9+N10+N11+N12,-2,D];
-Nsum2b = makeFiniteAmplitude[N19+N20+N21+N22+N23+N24+N25+N26+N27+N28+N29+N30+N31+N32,-2,D]
-Nsum2c = makeFiniteAmplitude[N39+N40+N41+N42+N43+N44+N45+N46+N47+N48+N49+N50+N51+N52+N53+N54+N55+N56+N57+N58+N59+N60,-2,D]
+Nsum2b = makeFiniteAmplitude[N19+N20+N21+N22+N23+N24+N25+N26+N27+N28+N29+N30+N31+N32,-2,D];
+Nsum2c = makeFiniteAmplitude[N39+N40+N41+N42+N43+N44+N45+N46+N47+N48+N49+N50+N51+N52+N53+N54+N55+N56+N57+N58+N59+N60,-2,D];
 
 Nsum2 = Nsum2a+Nsum2b+Nsum2c;
 
-Nct1 = makeFiniteAmplitude[N3c+N4c+N5c,-1,D];
-Nct2 = makeFiniteAmplitude[N3c+N4c+N5c,-2,D];
+Nct1 = makeFiniteAmplitude[N3c+N4c,-1,D];
+Nct2 = makeFiniteAmplitude[N3c+N4c,-2,D];
 
 (* Particle 2 *)
 
@@ -601,10 +552,6 @@ C15 = SelfEnergyFinite*kappa^2;
 Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_16_2.mx"}]];
 C16 = SelfEnergyFinite*kappa^2;
 
-
-
-
-
 Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_26_2.mx"}]];
 C26 = SelfEnergyFinite*kappa^2;
 
@@ -632,10 +579,7 @@ C33 = SelfEnergyFinite*kappa^2;
 Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_34_2.mx"}]];
 C34 = SelfEnergyFinite*kappa^2;
 
-
-
-
-et[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_35_2.mx"}]];
+Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_35_2.mx"}]];
 C35 = SelfEnergyFinite*kappa^2;
 
 Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_36_2.mx"}]];
@@ -662,8 +606,7 @@ C42 = SelfEnergyFinite*kappa^2;
 Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_43_2.mx"}]];
 C43 = SelfEnergyFinite*kappa^2;
 
-
-Get[FileNameJoin[{path, "models/MSSM/output/math_data_F12_g1_44_2.mx"}]];
+Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_44_2.mx"}]];
 C44 = SelfEnergyFinite*kappa^2;
 
 Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_45_2.mx"}]];
@@ -684,10 +627,10 @@ C49 = SelfEnergyFinite*kappa^2;
 Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_50_2.mx"}]];
 C50 = SelfEnergyFinite*kappa^2;
 
-Get[FileNameJoin[{path, "models/MSSM/output/math_data_F12_g1_51_2.mx"}]];
+Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_51_2.mx"}]];
 C51 = SelfEnergyFinite*kappa^2;
 
-Get[FileNameJoin[{path, "models/MSSM/output/math_data_F12_g1_52_2.mx"}]];
+Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_52_2.mx"}]];
 C52 = SelfEnergyFinite*kappa^2;
 
 Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_53_2.mx"}]];
@@ -723,10 +666,10 @@ C62 = SelfEnergyFinite*kappa^2;
 Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_63_2.mx"}]];
 C63 = SelfEnergyFinite*kappa^2;
 
-Get[FileNameJoin[{path, "models/MSSM/output/math_data_F12_g1_64_2.mx"}]];
+Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_64_2.mx"}]];
 C64 = SelfEnergyFinite*kappa^2;
 
-Get[FileNameJoin[{path, "models/MSSM/output/math_data_F12_g1_65_2.mx"}]];
+Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_65_2.mx"}]];
 C65 = SelfEnergyFinite*kappa^2;
 
 Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_66_2.mx"}]];
@@ -756,18 +699,13 @@ C73 = SelfEnergyFinite*kappa^2;
 Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_74_2.mx"}]];
 C74 = SelfEnergyFinite*kappa^2;
 
-Get[FileNameJoin[{path, "models/MSSM/output/math_data_F12_g1_75_2.mx"}]];
+Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_75_2.mx"}]];
 C75 = SelfEnergyFinite*kappa^2;
-
-
-
-
-
 
 Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_84_2.mx"}]];
 C84 = SelfEnergyFinite*kappa^2;
 
-Get[FileNameJoin[{path, "models/MSSM/output/math_data_F12_g1_85_2.mx"}]];
+Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_85_2.mx"}]];
 C85 = SelfEnergyFinite*kappa^2;
 
 Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_86_2.mx"}]];
@@ -875,12 +813,6 @@ C119 = SelfEnergyFinite*kappa^2;
 Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_120_2.mx"}]];
 C120 = SelfEnergyFinite*kappa^2;
 
-
-
-
-
-
-
 Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_4_2c.mx"}]];
 C4c = SelfEnergyFinite*kappa^2;
 
@@ -896,7 +828,6 @@ C7c = SelfEnergyFinite*kappa^2;
 Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_8_2c.mx"}]];
 C8c = SelfEnergyFinite*kappa^2;
 
-
 Csum1a = makeFiniteAmplitude[C1+C2+C3+C4+C5+C6+C7+C8+C9+C10+C11+C12+C13+C14+C15+C16,-1,D];
 
 Csum1b = makeFiniteAmplitude[C26+C27+C28+C29+C30+C31+C32+C33+C34+C35+C36+C37+C38+C39+C40+C41+C42+C43+C44+C45+C46+C47+C48+\
@@ -906,25 +837,17 @@ Csum1c = makeFiniteAmplitude[C84+C85+C86+C87+C88+C89+C90+C91+C92+C93+C94+C95+C96
 C106+C107+C108+C109+C110+C111+C112+C113+C114+C115+C116+C117+C118+C119+C120,-1,D];
 
 Csum1 = Csum1a+Csum1b+Csum1c;
-
-
 Csum2a = makeFiniteAmplitude[C1+C2+C3+C4+C5+C6+C7+C8+C9+C10+C11+C12+C13+C14+C15+C16,-2,D];
 
-Csum2b = makeFiniteAmplitude[C26+C27+C28+C29+C30+C31+C32+C33+C34+C35+C36+C37+C38+C39+C40+C41+C42+C43+C44+C45+C46+C47+C48+\
-C49+C50+C51+C52+C53+C54+C55+C56+C57+C58+C59+C60+C61+C62+C63+C64+C65+C66+C67+C68+C69+C70+C71+C72+C73+C74+C75,-2,D];
+Csum2b = makeFiniteAmplitude[C26+C27+C28+C29+C30+C31+C32+C33+C34+C35+C36+C37+C38+C39+C40+C41+C42+C43+C44+C45+C46+C47+C48+C49+C50+C51+C52+C53+C54+C55+C56+C57+C58+C59+C60+C61+C62+C63+C64+C65+C66+C67+C68+C69+C70+C71+C72+C73+C74+C75,-2,D];
 
-Csum2c = makeFiniteAmplitude[C84+C85+C86+C87+C88+C89+C90+C91+C92+C93+C94+C95+C96+C97+C98+C99+C100+C101+C102+C103+C104+C105+\
-C106+C107+C108+C109+C110+C111+C112+C113+C114+C115+C116+C117+C118+C119+C120,-2,D];
+Csum2c = makeFiniteAmplitude[C84+C85+C86+C87+C88+C89+C90+C91+C92+C93+C94+C95+C96+C97+C98+C99+C100+C101+C102+C103+C104+C105+C106+C107+C108+C109+C110+C111+C112+C113+C114+C115+C116+C117+C118+C119+C120,-2,D];
 
 Csum2 = Csum2a+Csum2b+Csum2c;
 
 
-
-
 Cct1 = makeFiniteAmplitude[C4c+C5c+C6c+C7c+C8c,-1,D];
 Cct2 = makeFiniteAmplitude[C4c+C5c+C6c+C7c+C8c,-2,D];
-
-
 
 {Csum1,Csum2,Nsum1,Nsum2,Cct1,Cct2,Nct1,Nct2}={Csum1,Csum2,Nsum1,Nsum2,Cct1,Cct2,Nct1,Nct2}/. (DiracGamma[Momentum[p, D], D].DiracGamma[6] + DiracGamma[Momentum[p, D], D].DiracGamma[7]) -> p\
 /. MassBuilderP^2 -> Pair[Momentum[p],Momentum[p]]/. MassBuilderP -> Momentum[p]/. MassBuilderEpsilon -> \[Epsilon]/. MassBuilderZeta -> \[Zeta]/. MassBuilderAe[0] -> 0\
@@ -944,10 +867,16 @@ sw=Sin[\[Theta]];
 cw=Cos[\[Theta]];
 
 
-FullSimplify[Csum2+Cct2 -Nsum2-Nct2/.mz->mw/cw]
+Simplify[Csum2+Cct2 -Nsum2-Nct2/.mz->mw/cw]
 
 
-Simplify[Csum1+Cct1 -Nsum1-Nct1 /.mz->mw/cw]
+Simplify[ Nsum1+Nct1/.mz->mw/cw]
+
+
+Simplify[Csum1+Cct1/.mz->mw/cw,TimeConstraint->100000]
+
+
+ Simplify[Coefficient[Csum1+Cct1/.mz->mw/cw,TBI[4, MChi^2, {{1, MChi}, {1, mf}}]]]
 
 
 CForm[FullSimplify[dZW1]]

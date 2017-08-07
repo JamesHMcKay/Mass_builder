@@ -422,7 +422,7 @@ void Generate_code::generate_particle_src(std::string particle,int subgroup)
     functions << "    " << couplings_all[i] << " = integral."<<couplings_all[i]<<";\n";
   }
   functions<<"\n"
-  << "    Q2 = data.Q;\n" // change this? kind of confusing
+  << "    Q2 = data.Q;\n"
   << "    p=data.P;\n";
 
 

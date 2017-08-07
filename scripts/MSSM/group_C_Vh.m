@@ -268,8 +268,6 @@ N31 = SelfEnergyFinite*kappa^2;
 
 Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F11_g1_32_2.mx"}]];
 N32 = SelfEnergyFinite*kappa^2;
-
-
 Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F11_g1_39_2.mx"}]];
 N39 = SelfEnergyFinite*kappa^2;
 
@@ -407,8 +405,6 @@ C15 = SelfEnergyFinite*kappa^2;
 
 Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_16_2.mx"}]];
 C16 = SelfEnergyFinite*kappa^2;
-
-
 
 Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_35_2.mx"}]];
 C35 = SelfEnergyFinite*kappa^2;
@@ -565,8 +561,6 @@ Csum2c = makeFiniteAmplitude[C84+C85+C86+C87+C88+C89+C90+C91+C92+C93+C94+C95+C96
 C106+C107+C108+C109+C110+C111+C112+C113+C114+C115+C116+C117+C118+C119+C120,-2,D];
 
 Csum2 = Csum2a+Csum2b+Csum2c;
-
-
 Cct1 = makeFiniteAmplitude[C4c+C5c+C6c+C7c+C8c,-1,D];
 Cct2 = makeFiniteAmplitude[C4c+C5c+C6c+C7c+C8c,-2,D];
 {Csum1,Csum2,Nsum1,Nsum2,Cct1,Cct2,Nct1,Nct2}={Csum1,Csum2,Nsum1,Nsum2,Cct1,Cct2,Nct1,Nct2}/. (DiracGamma[Momentum[p, D], D].DiracGamma[6] + DiracGamma[Momentum[p, D], D].DiracGamma[7]) -> p\
@@ -616,7 +610,7 @@ CForm[FullSimplify[dZAZ1]]
 CForm[FullSimplify[dZZZ1]]
 
 
-FullSimplify[dZW1]
+CForm[FullSimplify[dZAA1]]
 
 
 (* Check that counter-term couplings agree with Ibe et al. (2013) *)
@@ -643,6 +637,9 @@ FullSimplify[dMZsq1+dZZZ1*mz^2 + ZM /.mz->mw/cw]
 FullSimplify[dMWsq1+dZW1*mw^2 + WM /.mz->mw/cw]
 
 FullSimplify[ZgammaM-(1/2)dZZA1*mz^2/.mz->mw/cw]
+
+
+
 
 
 
