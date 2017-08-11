@@ -516,8 +516,9 @@ namespace utils
     string model = options.model;
     
     assign_FCGV(input,options);
-    
     assign_variables(input,options);
+    
+    
     
     if (options.counter_terms)
     {
@@ -539,7 +540,6 @@ namespace utils
     
     input+="subdiags0 =   DiagramExtract[alldiags, " + diagram + "];";
     
-
     
     string truncated = "True";
     if (options.vector){ truncated = "False";}
@@ -635,52 +635,53 @@ namespace utils
     }
     
     
-    if ( (loop_order == 2) && (!options.counter_terms) )
+    if (options.fire)
     {
-      input += "ampsSE2 = ampsSE1 // FDS[#, k1, k2] &;";
-      input += "ampsSE3 = FIREBurn[ampsSE2, {k1, k2}, {p}] // FDS[#, k1, k2] &;";
-      input += "ampsSE4 = ampsSE3 // Collect2[#, {FeynAmpDenominator}, Factoring -> FullSimplify] &;";
-      input += "resSE = Cancel[ampsSE4];";
-      input += "tfiamp0 = resSE // ToTFI[#, k1, k2, p] &;";
-    }
-    
-    else if ( (loop_order == 1) && (options.counter_terms) )
-    {
-      input+=" fullamp0 = (ampsSE1) // DiracSimplify;";
-      input+="tfiamp0 = fullamp0 // ChangeDimension[#, D] &;";
-    }
-    else
-    {
-      input += "ampsSE3 = FIREBurn[ampsSE1, {k1}, {p}] // FDS[#, k1] &;";
-      input += "ampsSE4 = ampsSE3 // Collect2[#, {FeynAmpDenominator}, Factoring -> FullSimplify] &;";
-      input += "resSE = Cancel[ampsSE4];";
-      input += "tfiamp0 = resSE // ToTFI[#, k1, p] &;";
-    }
-    
-
-/*
-    input+="amp1 = amp0 //FDS[#,l1,l2]&;";
-    
-    input+="SetOptions[Eps, Dimension -> D];";
-    
-    if ( (loop_order == 2) && (!options.counter_terms) )
-    {
-      input+="fullamp0 = (amp1) // DiracSimplify // FCMultiLoopTID[#, {k1, k2}] & //DiracSimplify;";
-      input+="tfiamp0 = fullamp0 // ToTFI[#, k1, k2, p] & // ChangeDimension[#, D] &;";
-    }
-    
-    else if ( (loop_order == 1) && (options.counter_terms) )
-    {
-      input+=" fullamp0 = (amp1) // DiracSimplify;";
-      input+="tfiamp0 = fullamp0 // ChangeDimension[#, D] &;";
+      if ( (loop_order == 2) && (!options.counter_terms) )
+      {
+        input += "ampsSE2 = ampsSE1 // FDS[#, k1, k2] &;";
+        input += "ampsSE3 = FIREBurn[ampsSE2, {k1, k2}, {p}] // FDS[#, k1, k2] &;";
+        input += "ampsSE4 = ampsSE3 // Collect2[#, {FeynAmpDenominator}, Factoring -> FullSimplify] &;";
+        input += "resSE = Cancel[ampsSE4];";
+        input += "tfiamp0 = resSE // ToTFI[#, k1, k2, p] &;";
+      }
+      
+      else if ( (loop_order == 1) && (options.counter_terms) )
+      {
+        input+=" fullamp0 = (ampsSE1) // DiracSimplify;";
+        input+="tfiamp0 = fullamp0 // ChangeDimension[#, D] &;";
+      }
+      else
+      {
+        input += "ampsSE3 = FIREBurn[ampsSE1, {k1}, {p}] // FDS[#, k1] &;";
+        input += "ampsSE4 = ampsSE3 // Collect2[#, {FeynAmpDenominator}, Factoring -> FullSimplify] &;";
+        input += "resSE = Cancel[ampsSE4];";
+        input += "tfiamp0 = resSE // ToTFI[#, k1, p] &;";
+      }
     }
     else
     {
-      input+=" fullamp0 = (amp1) // DiracSimplify // TID[#, k1] & // DiracSimplify;";
-      input+="tfiamp0 = fullamp0 // ToTFI[#, k1, p] & // ChangeDimension[#, D] &;";
+      input+="amp1 = ampSE1 //FDS[#,l1,l2]&;";
+      
+      input+="SetOptions[Eps, Dimension -> D];";
+      
+      if ( (loop_order == 2) && (!options.counter_terms) )
+      {
+        input+="fullamp0 = (amp1) // DiracSimplify // FCMultiLoopTID[#, {k1, k2}] & //DiracSimplify;";
+        input+="tfiamp0 = fullamp0 // ToTFI[#, k1, k2, p] & // ChangeDimension[#, D] &;";
+      }
+      
+      else if ( (loop_order == 1) && (options.counter_terms) )
+      {
+        input+=" fullamp0 = (amp1) // DiracSimplify;";
+        input+="tfiamp0 = fullamp0 // ChangeDimension[#, D] &;";
+      }
+      else
+      {
+        input+=" fullamp0 = (amp1) // DiracSimplify // TID[#, k1] & // DiracSimplify;";
+        input+="tfiamp0 = fullamp0 // ToTFI[#, k1, p] & // ChangeDimension[#, D] &;";
+      }
     }
-    
-*/
 
 
 

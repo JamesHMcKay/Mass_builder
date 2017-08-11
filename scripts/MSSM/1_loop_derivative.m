@@ -169,9 +169,9 @@ CForm[Simplify[deltaM2,{MChi>0}]]
 
 
 (* Ibe et al. working *)
-(*sw=Sin[\[Theta]];
-cw=Cos[\[Theta]];*)
-Clear[cw,sw];
+sw=Sin[\[Theta]];
+cw=Cos[\[Theta]];
+(*Clear[cw,sw];*)
 SigmaKN=-(e^2/(16*Pi^2*sw^2))*(4*B1cw[s]+2);
 SigmaMN=-(e^2*MChi/(16*Pi^2*sw^2))*(8*Bcw[s]-4);
 DSigmaMN=D[SigmaMN,s];
@@ -211,3 +211,35 @@ FullSimplify[deltaMIbe-deltaM2,{MChi>0}]
 
 
 CForm[deltaMIbe]
+
+
+a=1;
+b=1;
+deltaM= (totalN1-totalC1)/.MassBuilderEpsilon->0;
+totalN1CForm=Simplify[totalN1\
+/.Derivative[1][Bzc][s]->dBzc\
+/.Derivative[1][Bcz][s]->dBzc\
+/.Derivative[1][Bwc][s]->dBwc\
+/.Derivative[1][Bcw][s]->dBwc\
+/.Derivative[1][Bac][s]->dBac\
+/.Derivative[1][Bca][s]->dBac\
+/.Bzc[s]->Bcz/.Bca[s]->Bca\
+/.Bac[s]->Bca/.Bwc[s]->Bcw\
+/.Bcw[s]->Bcw/.Bcz[s]->Bcz]/.Sqrt[s]->MChi/.s->MChi^2;
+
+totalC1CForm=Simplify[totalC1\
+/.Derivative[1][Bzc][s]->dBzc\
+/.Derivative[1][Bcz][s]->dBzc\
+/.Derivative[1][Bwc][s]->dBwc\
+/.Derivative[1][Bcw][s]->dBwc\
+/.Derivative[1][Bac][s]->dBac\
+/.Derivative[1][Bca][s]->dBac\
+/.Bzc[s]->Bcz/.Bca[s]->Bca\
+/.Bac[s]->Bca/.Bwc[s]->Bcw\
+/.Bcw[s]->Bcw/.Bcz[s]->Bcz]/.Sqrt[s]->MChi/.s->MChi^2;
+
+
+CForm[Simplify[totalN1CForm,{MChi>0}]]
+
+
+CForm[Simplify[totalC1CForm,{MChi>0}]]

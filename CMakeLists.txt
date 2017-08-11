@@ -66,8 +66,10 @@ set(HEADER_MB include/compute_amp.hpp)
 # set example source and header files here
 set(SRC_Scalar examples/Scalar.cpp)
 set(SRC_MSSM examples/MSSM.cpp)
+set(SRC_itMSSM examples/itMSSM.cpp)
 set(SRC_VDM examples/VDM.cpp)
 set(SRC_QED examples/QED.cpp)
+set(SRC_MDM examples/MDM.cpp)
 
 # include generated source files
 include(src/CMakeLists.txt)
@@ -95,9 +97,13 @@ add_executable(Scalar EXCLUDE_FROM_ALL ${SRC_Scalar} ${SRC_FILES_GEN} ${HEADER_F
 
 add_executable(MSSM EXCLUDE_FROM_ALL ${SRC_MSSM} ${SRC_FILES_GEN} ${HEADER_FILES_GEN} ${TSIL_HEADER_FILE} ${SRC_FILES} ${HEADER_FILES} ${GENERATED_SRC_FILES})
 
+add_executable(itMSSM EXCLUDE_FROM_ALL ${SRC_itMSSM} ${SRC_FILES_GEN} ${HEADER_FILES_GEN} ${TSIL_HEADER_FILE} ${SRC_FILES} ${HEADER_FILES} ${GENERATED_SRC_FILES})
+
 add_executable(VDM EXCLUDE_FROM_ALL ${SRC_VDM} ${SRC_FILES_GEN} ${HEADER_FILES_GEN} ${TSIL_HEADER_FILE} ${SRC_FILES} ${HEADER_FILES} ${GENERATED_SRC_FILES})
 
 add_executable(QED EXCLUDE_FROM_ALL ${SRC_QED} ${SRC_FILES_GEN} ${HEADER_FILES_GEN} ${TSIL_HEADER_FILE} ${SRC_FILES} ${HEADER_FILES} ${GENERATED_SRC_FILES})
+
+add_executable(MDM EXCLUDE_FROM_ALL ${SRC_MDM} ${SRC_FILES_GEN} ${HEADER_FILES_GEN} ${TSIL_HEADER_FILE} ${SRC_FILES} ${HEADER_FILES} ${GENERATED_SRC_FILES})
 
 
 # Mass Builder required the WSTP and MPI libraries
@@ -107,6 +113,10 @@ Mathematica_ABSOLUTIZE_LIBRARY_DEPENDENCIES(mass_builder)
 
 # Examples only require the TSIL libraries
 TARGET_LINK_LIBRARIES(MSSM libtsil.a)
+
+TARGET_LINK_LIBRARIES(itMSSM libtsil.a)
+
+TARGET_LINK_LIBRARIES(MDM libtsil.a)
 
 TARGET_LINK_LIBRARIES(VDM libtsil.a)
 

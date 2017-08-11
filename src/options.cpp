@@ -61,7 +61,7 @@ void User_input::user_interface()
     string input = "model name";
     if (find_and_read_string("-m",input)){options.model = input;}
     
-    if (options.model == "MSSM" || options.model == "itMSSM")
+    if (options.model == "MSSM" || options.model == "itMSSM" || options.model == "itMSSMmassless")
     {
       options.restrictions = "WinoLimit,WinoCouplings";
     }
@@ -137,13 +137,10 @@ void User_input::user_interface()
     if (find_and_read_string("-k",input)){options.epsilon_order = input;}
   }
 
-
   if (find_string("-f")){ options.run_mode = 5;}
   if (find_string("-e")){ options.run_mode = 6;}
   if (find_string("-0")){ options.run_mode = 7;}
-  
   if (find_string("-x")){ options.run_mode = 8;}
-  
   if (find_string("-y")){ options.run_mode = 9;}
   
   if (find_string("-z")){ options.use_lorentz = false;}
@@ -152,6 +149,7 @@ void User_input::user_interface()
   
   if (find_string("offshell")){ options.onshell = false;}
   
+  if (find_string("TARCER")){ options.fire = false;}
   
   if (options.particle_1!=options.particle_2)
   {

@@ -488,6 +488,8 @@ std::string draw_all_diagrams(std::string &input, Options options)
     input+= "alldiags = InsertFields[t12, {" + particle_1 + "} -> {" + particle_2 + "},InsertionLevel -> {Particles}, GenericModel -> \"" + get_cwd() + "/models/" + options.model + "/" + options.model + "\",Restrictions -> {"  +  options.restrictions  +  "},Model -> \"" + get_cwd() + "/models/" + options.model + "/" + options.model + "\"];";
   }
   
+  
+  
   input+= "Export[\"" + get_cwd() + "/models/" + options.model + "/FA_diagrams/diagrams_"+ tag + "_" + type + ".pdf\",Paint[alldiags,Numbering->Simple]];";  // print the FA diagram to pdf in local directory
   
   return input;

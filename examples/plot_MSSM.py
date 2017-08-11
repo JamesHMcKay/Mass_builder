@@ -44,31 +44,37 @@ ax.set_xscale('log')
 
 ax.xaxis.set_major_formatter(ticker.FormatStrFormatter("%d"))
 
-A=np.genfromtxt('models/MSSM/output/mass_splittings.txt',usecols=[0,1,2])
+A=np.genfromtxt('models/MSSM/output/mass_splittings.txt',usecols=[0,1,2,3,4])
 x=A[:,0]
 y1=A[:,1]*1000
 y2=A[:,2]*1000
 
+y3=A[:,3]*1000
+y4=A[:,4]*1000
 
 
+plt.plot(x,y1,'-',color='red',label='2-loop non-iterative') #
 
+plt.plot(x,y2,'--',color='red',label='2-loop iterative') #
 
-plt.plot(x,y1,'-',color='black',label='1-loop') #
+plt.plot(x,y3,'-',color='green',label='1-loop non-iterative') #
 
-plt.plot(x,y2,'--',color='black',label='2-loop') #
+plt.plot(x,y4,'--',color='green',label='1-loop iterative') #
+
+ax.set_yscale('symlog')
 
 #plt.plot(x,c0*1000.*ones(size(y1)),'--',color='black',label='Limit') #
 
 xlabel(r"Degenerate mass $M$ (GeV)",fontsize=16)
 ylabel(r"$\Delta M$ (Mev)",fontsize=16)
-plt.xlim([90,4000])
-plt.ylim([145,172])
+#plt.xlim([90,10000])
+#plt.ylim([150,172])
 #plt.ylim([0,200])
-plt.legend(loc=2)
+plt.legend(loc=4,fontsize=10)
 
 
-plt.axvspan((9.4e3-0.47e3), (9.4e3+0.47e3), alpha=0.8, color='green')
+#plt.axvspan((9.4e3-0.47e3), (9.4e3+0.47e3), alpha=0.8, color='green')
 
-plt.plot((9.4e3,9.4e3),(0,700),color='red')
+#plt.plot((9.4e3,9.4e3),(0,700),color='red')
 
 plt.savefig("mass_splittings_MSSM.eps")

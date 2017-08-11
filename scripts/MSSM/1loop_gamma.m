@@ -3,14 +3,6 @@
 Quit[]
 
 
-(* ::Section:: *)
-(**)
-
-
-(* ::Subsection:: *)
-(* Load required packages *)
-
-
 $LoadTARCER = True;
 $LoadFeynArts = True;
 << FeynCalc/FeynCalc.m;
@@ -28,67 +20,12 @@ SetOptions[DiracSlash,Dimension->D,FeynCalcInternal->True];SetOptions[DiracTrace
 
 path = "/Users/jamesmckay/Documents/Programs/Mass_builder/";
 kappa=1/(16\[Pi]^2);
-(*sw=Sin[\[Theta]];
-cw=Cos[\[Theta]];*)
-
-(* photon *) 
-V1SE = 0;
-ClearScalarProducts[];
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V1_3_1.mx"}]];
-V1SE = V1SE + SelfEnergyFinite*kappa;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V1_4_1.mx"}]];
-V1SE = V1SE + SelfEnergyFinite*kappa;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V1_5_1.mx"}]];
-V1SE = V1SE + SelfEnergyFinite*kappa;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V1_6_1.mx"}]];
-V1SE = V1SE + SelfEnergyFinite*kappa;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V1_7_1.mx"}]];
-V1SE = V1SE + SelfEnergyFinite*kappa;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V1_8_1.mx"}]];
-V1SE = V1SE + SelfEnergyFinite*kappa;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V1_9_1.mx"}]];
-V1SE = V1SE + SelfEnergyFinite*kappa;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V1_10_1.mx"}]];
-V1SE = V1SE + SelfEnergyFinite*kappa;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V1_11_1.mx"}]];
-V1SE = V1SE + SelfEnergyFinite*kappa;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V1_12_1.mx"}]];
-V1SE = V1SE + SelfEnergyFinite*kappa;
-
-V1SEdiv = makeFiniteAmplitude[V1SE,-1,D];
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V1_1_1c.mx"}]];
-V1ct= makeFiniteAmplitude[SelfEnergyFinite*kappa,-1,D]/.MassBuilderCTM1->0/.MassBuilderCTZ1->0;
-eq1 = FullSimplify[Coefficient[V1ct+V1SEdiv,Pair[Momentum[p],Momentum[p]]]];
-(*solV1 = Solve[{eq1\[Equal]0,eq2\[Equal]0},{dZAA1,dMAsq1}]*)
-solV1 = Solve[{eq1==0},{dZAA1}]
-
-
-
-Clear[dZZA1,dZAZ1,dZZZ1,dZAA1]
-
-
-V1SEfinite = makeFiniteAmplitude[V1SE,0,D]
-
+sw=Sin[\[Theta]];
+cw=Cos[\[Theta]];
 
 (* Check that counter-term couplings agree with Ibe et al. (2013) *)
 g=e/sw;
 gammaZ = -e^2(-5/3);
-
-
-FullSimplify[gammaZ- dZAA1]
-
-
-
 mB0[m1_,m2_]=-I TBI[4, Pair[Momentum[p], Momentum[p]], {{1, m1}, {1, m2}}];
 mA0[m_]= -I TAI[4, 0, {{1, m}}];
 
@@ -96,28 +33,13 @@ mB1[m1_,m2_]=-((1/(2 p^2))*(mA0[m2]-mA0[m1]+(p^2+m1^2-m2^2)*mB0[m1,m2]));
 
 mB21[m1_,m2_] = (6*(p^2-m1^2)*mB0[m1,m2]+6*mA0[m1]-6*m1^2+p^2)/(18 p^2);
 
+mB22[m1_,m2_]=-p^2 (mB1[m1,m2]+mB21[m1,m2])-(p^2/4)*mB0[m1,m2]-(1/4)*(m1^2-m2^2)*(mB0[m1,m2]+2*mB1[m1,m2]);
+
 PI[m1_,m2_]=-p^2(mB1[m1,m2]+mB21[m1,m2]);
 
-
-SEIbe =  e^2*(1/(2*Pi^2))*( (-1)^2*(3*PI[mf,mf]) + (2/3)^2*(2*PI[mf,mf]+PI[mt,mt]) + (1/3)^2*(3*PI[mf,mf]) + (-1)^2*(PI[MChi,MChi]));
-
-
-FullSimplify[Coefficient[V1SEfinite - SEIbe,mB0[mf,mf]]/.Pair[Momentum[p],Momentum[p]]->p^2]
-
-
-FullSimplify[V1SEfinite - SEIbe/.Pair[Momentum[p],Momentum[p]]->p^2]
-
-
-
-(* photon *) 
+(* Fermion and lepton sector *) 
 V1SE = 0;
 ClearScalarProducts[];
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V1_1_1.mx"}]];
-V1SE = V1SE + SelfEnergyFinite*kappa;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V1_2_1.mx"}]];
-V1SE = V1SE + SelfEnergyFinite*kappa;
 
 Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V1_3_1.mx"}]];
 V1SE = V1SE + SelfEnergyFinite*kappa;
@@ -129,24 +51,37 @@ Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V1_5_1.mx"}]];
 V1SE = V1SE + SelfEnergyFinite*kappa;
 
 Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V1_6_1.mx"}]];
-V1SE = V1SE + SelfEnergyFinite*kappa;
+V1SE = V1SE + N SelfEnergyFinite*kappa;
 
 Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V1_7_1.mx"}]];
-V1SE = V1SE + SelfEnergyFinite*kappa;
+V1SE = V1SE + N SelfEnergyFinite*kappa;
 
 Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V1_8_1.mx"}]];
-V1SE = V1SE + SelfEnergyFinite*kappa;
+V1SE = V1SE + N SelfEnergyFinite*kappa;
 
 Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V1_9_1.mx"}]];
-V1SE = V1SE + SelfEnergyFinite*kappa;
+V1SE = V1SE + N SelfEnergyFinite*kappa;
 
 Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V1_10_1.mx"}]];
-V1SE = V1SE + SelfEnergyFinite*kappa;
+V1SE = V1SE + N SelfEnergyFinite*kappa;
 
 Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V1_11_1.mx"}]];
+V1SE = V1SE + N SelfEnergyFinite*kappa;
+
+V1FermionLepton = makeFiniteAmplitude[V1SE,0,D];
+SEIbeFermionLepton =  e^2*(1/(2*Pi^2))*( (-1)^2*(3*PI[mf,mf]) + 3(2/3)^2*(2*PI[mf,mf]+PI[mt,mt]) + 3(1/3)^2*(3*PI[mf,mf]) );
+FullSimplify[V1FermionLepton - SEIbeFermionLepton/.Pair[Momentum[p],Momentum[p]]->p^2]
+
+
+
+(* Gauge boson sector *) 
+V1SE = 0;
+ClearScalarProducts[];
+
+Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V1_1_1.mx"}]];
 V1SE = V1SE + SelfEnergyFinite*kappa;
 
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V1_12_1.mx"}]];
+Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V1_2_1.mx"}]];
 V1SE = V1SE + SelfEnergyFinite*kappa;
 
 Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V1_13_1.mx"}]];
@@ -167,13 +102,21 @@ V1SE = V1SE + SelfEnergyFinite*kappa;
 Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V1_18_1.mx"}]];
 V1SE = V1SE + SelfEnergyFinite*kappa;
 
-V1SEdiv = makeFiniteAmplitude[V1SE,-1,D];
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V1_1_1c.mx"}]];
-V1ct= makeFiniteAmplitude[SelfEnergyFinite*kappa,-1,D]/.MassBuilderCTM1->0/.MassBuilderCTZ1->0;
-eq1 = FullSimplify[Coefficient[V1ct+V1SEdiv,Pair[Momentum[p],Momentum[p]]]];
-(*solV1 = Solve[{eq1\[Equal]0,eq2\[Equal]0},{dZAA1,dMAsq1}]*)
-solV1 = Solve[{eq1==0},{dZAA1}]
+V1Boson = makeFiniteAmplitude[V1SE,0,D];
+SEIbeBoson = -  e^2*(3/(4*Pi^2))*( mB22[mw,mw]+ p^2/18  ) -e^2*p^2*(1/(4*Pi^2))*( mB0[mw,mw]);
+FullSimplify[V1Boson - SEIbeBoson/.Pair[Momentum[p],Momentum[p]]->p^2]
 
+
+(* Wino sector *) 
+V1SE = 0;
+ClearScalarProducts[];
+
+Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V1_12_1.mx"}]];
+V1SE = V1SE + SelfEnergyFinite*kappa;
+
+V1Wino = makeFiniteAmplitude[V1SE,0,D];
+SEIbeWino = e^2*(1/(2*Pi^2))*( PI[MChi,MChi] );
+FullSimplify[V1Wino - SEIbeWino/.Pair[Momentum[p],Momentum[p]]->p^2]
 
 
 Set @@@ solV1[[1]];
@@ -183,3 +126,21 @@ deltaZgammaIbe = - e^2(32/9 *Ng - 5/3)
 
 
 FullSimplify[dZAA1-deltaZgammaIbe]
+
+
+SEIbeTotal = FullSimplify[SEIbeWino+SEIbeBoson+SEIbeFermionLepton]
+
+
+SEIbeDIV = SEIbeTotal/.TBI[4, Pair[Momentum[p], Momentum[p]], {{1, mt}, {1, mt}}]->I/\[Epsilon]/.TBI[4, Pair[Momentum[p], Momentum[p]], {{1, mf}, {1, mf}}]->I/\[Epsilon]\
+/.TBI[4, Pair[Momentum[p], Momentum[p]], {{1, MChi}, {1, MChi}}]->I/\[Epsilon]/.TBI[4, Pair[Momentum[p], Momentum[p]], {{1, mw}, {1, mw}}]->I/\[Epsilon]\
+/.TAI[4, 0, {{1, mf}}]->I*mf^2/\[Epsilon] /.TAI[4, 0, {{1, MChi}}]->I*MChi^2/\[Epsilon] /.TAI[4, 0, {{1, mw}}]->I*mw^2/\[Epsilon] \
+/.TAI[4, 0, {{1, mt}}]->I*mt^2/\[Epsilon];
+
+
+deltaIbe=FullSimplify[Coefficient[SEIbeDIV,\[Epsilon],-1]]
+
+
+deltaZgammaIbe = - (e^2/(16*Pi^2))*(32/9 *Ng - 5/3)
+
+
+FullSimplify[deltaZgammaIbe*kappa-deltaIbe/p^2]

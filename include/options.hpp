@@ -21,6 +21,7 @@ bool detailed_output = false;
 bool latex_output = false;
 bool use_lorentz = true;
 bool force = true; // currently force MB to recompute all amplitudes
+bool fire = true; // use FIRE5 before calling TARCER (if false will use TARCER only)
 int loop_order = 2;
 int n_group = 10;
 int n_final_states = 1;

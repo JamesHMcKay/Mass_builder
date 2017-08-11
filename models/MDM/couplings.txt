@@ -1,0 +1,10 @@
+cw mw/mz
+cw2 TSIL_POW(cw,2)
+sw TSIL_POW(1.-cw2,0.5)
+sw2 TSIL_POW(sw,2)
+STW sw
+CTW cw
+g2 2.*mw/v
+g1 g2*sw/cw
+g g2
+v
