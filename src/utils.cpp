@@ -641,7 +641,7 @@ namespace utils
       {
         input += "ampsSE2 = ampsSE1 // FDS[#, k1, k2] &;";
         input += "ampsSE3 = FIREBurn[ampsSE2, {k1, k2}, {p}] // FDS[#, k1, k2] &;";
-        input += "ampsSE4 = ampsSE3 // Collect2[#, {FeynAmpDenominator}, Factoring -> FullSimplify] &;";
+        input += "ampsSE4 = ampsSE3 // Collect2[#, {FeynAmpDenominator}, Factoring -> Simplify] &;";
         input += "resSE = Cancel[ampsSE4];";
         input += "tfiamp0 = resSE // ToTFI[#, k1, k2, p] &;";
       }
@@ -654,7 +654,7 @@ namespace utils
       else
       {
         input += "ampsSE3 = FIREBurn[ampsSE1, {k1}, {p}] // FDS[#, k1] &;";
-        input += "ampsSE4 = ampsSE3 // Collect2[#, {FeynAmpDenominator}, Factoring -> FullSimplify] &;";
+        input += "ampsSE4 = ampsSE3 // Collect2[#, {FeynAmpDenominator}, Factoring -> Simplify] &;";
         input += "resSE = Cancel[ampsSE4];";
         input += "tfiamp0 = resSE // ToTFI[#, k1, p] &;";
       }

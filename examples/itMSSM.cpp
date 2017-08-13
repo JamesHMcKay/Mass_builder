@@ -250,11 +250,11 @@ namespace extra_TSIL_interface
 
 double iterative_mass(Data data, string particle,int loop_order)
 {
-  double M_tree = data.MChi;
-  double M_pole = data.MChi;
+  long double M_tree = data.MChi;
+  long double M_pole = data.MChi;
   data.P = M_tree;
-  double diff = 1;
-  double precision = 1e-4;
+  long double diff = 1;
+  long double precision = 1e-6;
   int iteration =0;
   int loop_order_temp = loop_order;
   do
@@ -279,7 +279,10 @@ double iterative_mass(Data data, string particle,int loop_order)
     
     diff = abs(M_pole - data.P);
     
+    //diff = abs(M_pole/data.P - 1.0);
+    
     data.P = M_pole;
+    
     
     if (iteration == 0)
     {
@@ -289,134 +292,21 @@ double iterative_mass(Data data, string particle,int loop_order)
     iteration++;
     cout<< "\r" << "M_pole - p = " << diff << " GeV";
     std::cout << std::flush;
-  } while (diff > precision  && iteration < 500);
+  } while (diff > precision  && iteration < 50000);
   
   cout<< "\r" << "M_pole - p = " << diff << " GeV";
   cout << "\n";
   
   
-  if (iteration == 500)
+  if (iteration == 50000)
   {
     cout << "pole mass did not converge" << endl;
   }
   
+  cout << "number of iterations = " << iteration << endl;
+  
   return M_pole;
 }
-
-
-
-
-
-// determine MSbar parameters
-void set_SM_parameters(Data &data)
-{
-  
-  
-  
-  Self_energy se;
-  
-  double Pi=PI;
-  
-  //data.alpha = data.alpha*( 1.0-real(extra_TSIL_interface::gammagamma_Chi(data,data.mz)) /pow(data.mz,2) );
-  
-  double Q0 = pow(data.mz,2)*exp(3*Pi / (2*data.alpha) );
-  
-  data.alpha = - (3*Pi/2.) * 1. / log(data.Q/Q0);
-  
-  cout << "data.alpha = " << data.alpha << endl;
-  
-  
-  
-  /*
-   data.two_loop = false;
-   se.run_tsil(data);
-   data.P = data.mw;
-   data.Q = data.mw;
-   data.mw = pow( pow(data.mw,2) - real(data.SE_1["V3"]),0.5 );
-   
-   se.run_tsil(data);
-   data.P = data.mz;
-   data.mz = pow( pow(data.mz,2) - real(data.SE_1["V2"]) ,0.5);
-   
-   
-   se.run_tsil(data);
-   data.P = data.MChi;
-   data.MChi = data.MChi - real(data.SE_1["F11_g1"]);
-   
-   cout << "mz = " << data.mz << endl;
-   cout << "mw = " << data.mw << endl;
-   cout << "MChi = " << data.MChi << endl;
-   
-   data.two_loop = true;
-   */
-}
-
-
-void plot_Q(Data data)
-{
-  
-  ofstream myfile;
-  myfile.open ("models/MSSM/output/mass_splittings_Q.txt");
-  int pts = 10;
-  double M = 1000;
-  int status = 0;
-  
-  double max_Q = 400; // (GeV)
-  double min_Q = 50; // (GeV)
-  data.MChi=M;
-  data.P = M;
-  
-  double alpha_in = data.alpha;
-  double MChi_in = data.MChi;
-  double mw_in = data.mw;
-  double mz_in = data.mz;
-  
-  
-  for (int i = 0; i < pts+1 ; i++)
-  {
-    
-    data.Q = pow((i)*(max_Q - min_Q)/pts + min_Q,2);
-    
-    data.alpha = alpha_in;
-    data.MChi = MChi_in;
-    data.mw = mw_in;
-    data.mz = mz_in;
-    
-    
-    set_SM_parameters(data);
-    
-    data.P = data.MChi;
-    data.Q = pow((i)*(max_Q - min_Q)/pts + min_Q,2);
-    
-    Self_energy se;
-    se.run_tsil(data);
-    
-    
-    
-    
-    double delta_m_2 = data.SE_2["F12_g1"] - data.SE_2["F11_g1"] - extra_TSIL_interface::add_derivatives(data);
-    
-    double delta_m_1 = data.SE_1["F12_g1"] - data.SE_1["F11_g1"];
-    
-    myfile << pow(data.Q,0.5) << " " << delta_m_1 <<  " " << delta_m_1 + delta_m_2 << endl;
-    status=(float(i)/pts)*100;
-    cout<< "\r" << "computing mass splittings . . . " << status << "% complete ";
-    std::cout << std::flush;
-  }
-  
-  status=100;
-  cout<< "\r" << "computing mass splittings . . . " << status << "% complete ";
-  cout << "\n";
-  
-  cout << "example mass splitting routine complete" << endl;
-  cout << "now run: "<< endl;
-  cout << "          python examples/plot_MSSM_Q.py "<< endl;
-  cout << "to make plot in this directory "<< endl;
-  
-  myfile.close();
-  
-}
-
 
 
 
@@ -426,13 +316,13 @@ void plot_M(Data data)
   
   ofstream myfile;
   myfile.open ("models/MSSM/output/mass_splittings.txt");
-  int pts = 30;
+  int pts = 10;
   double n = 0;
   double M = 0;
   int status = 0;
   
-  double max_M = 100000; // (GeV)
-  double min_M = 100; // (GeV)
+  double max_M = 1e6; // (GeV)
+  double min_M = 1000; // (GeV)
   
   double logMax = log10(max_M);
   double logMin = log10(min_M);
@@ -442,31 +332,34 @@ void plot_M(Data data)
   {
     n = (i)*(logMax - logMin)/pts + logMin;
     
-    
-    
     M = pow(10,n);
     data.MChi=M;
     data.P = M;
     
-    data.Q = M;
+    
+    //data.Q = pow(M,2);
     
     // compute explicit mass splitting
     
     Self_energy se;
     se.run_tsil(data);
     
-    double delta_m_explicit_2loop = (data.SE_1["F12_g1"]+data.SE_2["F12_g1"]) - (data.SE_1["F11_g1"]+data.SE_2["F11_g1"]) - extra_TSIL_interface::add_derivatives(data);
+    //double delta_m_explicit_2loop = 0;//(data.SE_1["F12_g1"]+data.SE_2["F12_g1"]) - (data.SE_1["F11_g1"]+data.SE_2["F11_g1"]) - extra_TSIL_interface::add_derivatives(data);
     
     double delta_m_explicit_1loop = (data.SE_1["F12_g1"]) - (data.SE_1["F11_g1"]);
     
     // compute iterative mass splitting
     
-    double delta_m_iterative_2loop = iterative_mass(data,"F12_g1",2) - iterative_mass(data,"F11_g1",2);
+    double it_1loop_F11 = iterative_mass(data,"F11_g1",2);
+    double it_1loop_F12 = iterative_mass(data,"F12_g1",2);
     
-    double delta_m_iterative_1loop = iterative_mass(data,"F12_g1",1) - iterative_mass(data,"F11_g1",1);
+    
+    //double delta_m_iterative_2loop = iterative_mass(data,"F12_g1",2) - iterative_mass(data,"F11_g1",2);
+    
+    double delta_m_iterative_1loop = it_1loop_F12 - it_1loop_F11;
     
     
-    myfile << M << " " << delta_m_explicit_2loop <<  " " << delta_m_iterative_2loop << " " << delta_m_explicit_1loop <<  " " << delta_m_iterative_1loop << endl;
+    myfile << M << " " << it_1loop_F11 <<  " " << it_1loop_F12  << " " << delta_m_explicit_1loop <<  " " << delta_m_iterative_1loop << endl;
     status=(float(i)/pts)*100;
     cout<< "\r" << "computing mass splittings . . . " << status << "% complete ";
     std::cout << std::flush;
@@ -499,6 +392,13 @@ void print_masses(Data data)
   
   double F11_explicit_1loop = data.MChi + data.SE_1["F11_g1"];
   
+  
+  cout << "Self energies" << endl;
+  
+  cout << "One-loop self energy (charged) " <<data.SE_1["F12_g1"] << endl;
+  cout << "One-loop self energy (neutral) " <<data.SE_1["F11_g1"] << endl;
+  
+  
   double F11_iterative_2loop = iterative_mass(data, "F11_g1" ,2);
   
   double F12_iterative_2loop = iterative_mass(data, "F12_g1" ,2);
@@ -506,6 +406,10 @@ void print_masses(Data data)
   double F11_iterative_1loop = iterative_mass(data, "F11_g1" ,1);
   
   double F12_iterative_1loop = iterative_mass(data, "F12_g1" ,1);
+  
+    
+  cout << "realtive difference " << (1.0 - iterative_mass(data, "F12_g1" ,1)/iterative_mass(data, "F11_g1" ,1))*iterative_mass(data, "F12_g1" ,1) << endl;
+  cout << "absolute difference " << iterative_mass(data, "F12_g1" ,1)-iterative_mass(data, "F11_g1" ,1)<< endl;
   
   
   
@@ -546,9 +450,9 @@ int main(int argc, char *argv[])
   
   
 
-  print_masses(data);
+ // print_masses(data);
   
- // plot_M(data);
+  plot_M(data);
   
   
   

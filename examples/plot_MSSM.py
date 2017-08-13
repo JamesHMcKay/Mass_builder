@@ -40,7 +40,7 @@ c0 = (e**2) * (mw - CW2*mz) / (8. * pi * sw2)
 fig=plt.figure()
 
 ax = fig.add_subplot(1,1,1)
-ax.set_xscale('log')
+
 
 ax.xaxis.set_major_formatter(ticker.FormatStrFormatter("%d"))
 
@@ -53,15 +53,22 @@ y3=A[:,3]*1000
 y4=A[:,4]*1000
 
 
-plt.plot(x,y1,'-',color='red',label='2-loop non-iterative') #
+#plt.plot(x,y1,'-',color='red',label='2-loop non-iterative') #
 
-plt.plot(x,y2,'--',color='red',label='2-loop iterative') #
+#plt.plot(x,y2,'--',color='red',label='2-loop iterative') #
 
-plt.plot(x,y3,'-',color='green',label='1-loop non-iterative') #
 
-plt.plot(x,y4,'--',color='green',label='1-loop iterative') #
+plt.scatter(x,y4,color='green',label='1-loop iterative',s=2) #
+plt.scatter(x,y3,color='red',label='1-loop non-iterative',s=2) #
+
+
+
+#plt.plot(x,y3,'-',color='green',label='1-loop non-iterative') #
+
+#plt.plot(x,y4,'--',color='green',label='1-loop iterative') #
 
 ax.set_yscale('symlog')
+ax.set_xscale('log')
 
 #plt.plot(x,c0*1000.*ones(size(y1)),'--',color='black',label='Limit') #
 
@@ -70,7 +77,7 @@ ylabel(r"$\Delta M$ (Mev)",fontsize=16)
 #plt.xlim([90,10000])
 #plt.ylim([150,172])
 #plt.ylim([0,200])
-plt.legend(loc=4,fontsize=10)
+#plt.legend(loc=4,fontsize=10)
 
 
 #plt.axvspan((9.4e3-0.47e3), (9.4e3+0.47e3), alpha=0.8, color='green')
@@ -78,3 +85,49 @@ plt.legend(loc=4,fontsize=10)
 #plt.plot((9.4e3,9.4e3),(0,700),color='red')
 
 plt.savefig("mass_splittings_MSSM.eps")
+
+
+
+## plot masses
+#
+#fig=plt.figure()
+#
+#ax = fig.add_subplot(1,1,1)
+#
+#y1 =y1/1000
+#y2 =y2/1000
+#
+#z1 = (y1/y2 - 1 )
+#
+#
+#ax.xaxis.set_major_formatter(ticker.FormatStrFormatter("%d"))
+#
+#plt.scatter(x,z1,color='green',label='1-loop iterative',s=2) #
+##plt.scatter(x,y2,color='red',label='1-loop non-iterative',s=2) #
+#
+#
+#
+##plt.plot(x,y3,'-',color='green',label='1-loop non-iterative') #
+#
+##plt.plot(x,y4,'--',color='green',label='1-loop iterative') #
+#
+##ax.set_yscale('symlog')
+#ax.set_xscale('log')
+#
+##plt.plot(x,c0*1000.*ones(size(y1)),'--',color='black',label='Limit') #
+#
+#xlabel(r"Degenerate mass $M$ (GeV)",fontsize=16)
+#ylabel(r"Pole mass",fontsize=16)
+##plt.xlim([90,10000])
+##plt.ylim([150,172])
+##plt.ylim([0,200])
+##plt.legend(loc=4,fontsize=10)
+#
+#
+##plt.axvspan((9.4e3-0.47e3), (9.4e3+0.47e3), alpha=0.8, color='green')
+#
+##plt.plot((9.4e3,9.4e3),(0,700),color='red')
+#
+#plt.savefig("masses_MSSM.eps")
+
+

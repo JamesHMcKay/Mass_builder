@@ -7,4 +7,18 @@ CTW cw
 g2 2.*mw/v
 g1 g2*sw/cw
 g g2
+dg1 -16*TSIL_POW(3,0.5)*TSIL_POW(g2,3)
+dg2 16*TSIL_POW(g2,3)*sw
+dg3 -16*TSIL_POW(2,0.5)*TSIL_POW(g2,3)
+dg4 16*cw*TSIL_POW(g2,3)
+dg5 32*TSIL_POW(g2,3)*sw
+dg6 32*cw*TSIL_POW(g2,3)
+dg7 dg3
+dg8 dg1
+d5Z 12*TSIL_POW(g2,2)
+d5m -48*TSIL_POW(g2,2)*MChi
+d6Z 12*TSIL_POW(g2,2)
+d6m -48*TSIL_POW(g2,2)*MChi
+d7Z 12*TSIL_POW(g2,2)
+d7m -48*TSIL_POW(g2,2)*MChi
 v

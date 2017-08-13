@@ -62,15 +62,15 @@ void Generate_code::generate_data_hpp()
 
   for (int i=0;i<nm;i++)
   {
-    data_h << "  double "<< masses[i]<<";"<<endl;
+    data_h << "  long double "<< masses[i]<<";"<<endl;
   }
 
 
   // create a map for self energies
-  data_h << "  std::map<std::string, double> SE_1;"<< endl;
-  data_h << "  std::map<std::string, double> SE_2;"<< endl;
+  data_h << "  std::map<std::string, long double> SE_1;"<< endl;
+  data_h << "  std::map<std::string, long double> SE_2;"<< endl;
   data_h << "  std::map<std::string, double> M_tree;"<< endl;
-  data_h << "  double P, Q;" << endl;
+  data_h << "  long double P, Q;" << endl;
   data_h << "  std::vector<std::string> avail_part = {\"";
   for (unsigned int i=0;i<particle_names_short_reduced.size()-1;i++)
   {
@@ -271,7 +271,7 @@ void Generate_code::decalare_var(ofstream &main_output)
 
   // other global variable definitions
 
-  main_output << "    double p,Pi;\n";
+  main_output << "    long double p,Pi;\n";
 
 
   string c_file_couplings = "models/" + model + "/couplings.txt";  // need to make this model independent
@@ -454,12 +454,12 @@ void Generate_code::generate_particle_src(std::string particle,int subgroup)
   functions << "  }\n"
   << "\n"
   << "\n"
-  << "  double SE_1()\n"
+  << "  long double SE_1()\n"
   << "  {\n";
 
   /* One loop */
 
-  functions<< "    double SE = real(0.L  ";
+  functions<< "    long double SE = real(0.L  ";
   for (int d = 0; d<nd;d++)
   {
     if (particle_names[d] == particle && subgroup==subgrouplist[d])
@@ -480,11 +480,11 @@ void Generate_code::generate_particle_src(std::string particle,int subgroup)
   <<"  }\n"
   << "\n"
   << "\n"
-  << "  double SE_2(ofstream &table)\n"
+  << "  long double SE_2(ofstream &table)\n"
   << "  {\n";
 
   /* Two loop */
-  functions<< "    double  SE = real(0.L ";
+  functions<< "    long double  SE = real(0.L ";
   for (int d = 0; d<nd;d++)
   {
     if (particle_names[d] == particle && subgroup==subgrouplist[d])
@@ -558,8 +558,8 @@ void Generate_code::generate_particle_src(std::string particle,int subgroup)
   <<" \n"
   <<"void  SE_"<<particle_name <<"(Data data, tsil::Integrals integral);\n"
   <<"\n"
-  <<"double SE_1();"
-  <<"double SE_2(ofstream &table);"
+  <<"long double SE_1();"
+  <<"long double SE_2(ofstream &table);"
   <<"\n"
   <<"}\n";
 
@@ -740,8 +740,8 @@ void Generate_code::generate_code()
     pair<int,int> num_diagrams = number_of_diagrams(particle_names_reduced[i]);
 
 
-    main_output << "  double "<<  particle_name_tmp_short << "_1= 0;\n";
-    main_output << "  double "<<  particle_name_tmp_short << "_2= 0;\n";
+    main_output << "  long double "<<  particle_name_tmp_short << "_1= 0;\n";
+    main_output << "  long double "<<  particle_name_tmp_short << "_2= 0;\n";
 
     for (int j = 0; j< num_diagrams.first+1; j++)
     {
