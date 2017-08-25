@@ -192,7 +192,7 @@ double iterative_mass(Data data, string particle,int loop_order)
   double M_pole = data.MChi;
   data.P = M_tree;
   double diff = 1;
-  double precision = 1e-4;
+  long double precision = 1e-4;
   int iteration =0;
   int loop_order_temp = loop_order;
   do

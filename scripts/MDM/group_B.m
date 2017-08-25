@@ -58,8 +58,6 @@ eq1 = FullSimplify[Coefficient[F5ct+F5SEdiv,p]];
 eq2 = FullSimplify[Coefficient[F5ct+F5SEdiv,p,0]];
 solF5 = Solve[{eq1==0,eq2==0},{d5Z, d5m}]
 
-
-
 (* F6 *)
 
 F6SE = 0;
@@ -73,8 +71,6 @@ F6SE = F6SE + SelfEnergyFinite*kappa;
 
 Get[FileNameJoin[{path, "/models/MDM/output/math_data_F6_3_1.mx"}]];
 F6SE = F6SE + SelfEnergyFinite*kappa;
-
-
 F6SEdiv = makeFiniteAmplitude[F6SE,-1,D];
 
 Get[FileNameJoin[{path, "/models/MDM/output/math_data_F6_1_1c.mx"}]];
@@ -84,8 +80,6 @@ F6ct= makeFiniteAmplitude[SelfEnergyFinite*kappa,-1,D]/.MassBuilderCTM1->0/.Mass
 eq1 = FullSimplify[Coefficient[F6ct+F6SEdiv,p]];
 eq2 = FullSimplify[Coefficient[F6ct+F6SEdiv,p,0]];
 solF6 = Solve[{eq1==0,eq2==0},{d6Z, d6m}]
-
-
 
 
 (* F7 *)
@@ -98,8 +92,6 @@ F7SE = F7SE + SelfEnergyFinite*kappa;
 
 Get[FileNameJoin[{path, "/models/MDM/output/math_data_F7_2_1.mx"}]];
 F7SE = F7SE + SelfEnergyFinite*kappa;
-
-
 F7SEdiv = makeFiniteAmplitude[F7SE,-1,D];
 
 Get[FileNameJoin[{path, "/models/MDM/output/math_data_F7_1_1c.mx"}]];
@@ -109,8 +101,6 @@ F7ct= makeFiniteAmplitude[SelfEnergyFinite*kappa,-1,D]/.MassBuilderCTM1->0/.Mass
 eq1 = FullSimplify[Coefficient[F7ct+F7SEdiv,p]];
 eq2 = FullSimplify[Coefficient[F7ct+F7SEdiv,p,0]];
 solF7 = Solve[{eq1==0,eq2==0},{d7Z, d7m}]
-
-
 Set @@@ solF5[[1]];
 Set @@@ solF6[[1]];
 Set @@@ solF7[[1]];
@@ -298,16 +288,22 @@ FullSimplify[Nsum1+Nct1-(Csum1+Cct1)/.mz->mw/cw]
 FullSimplify[Nsum1+Nct1-(CCsum1+CCct1)/.mz->mw/cw]
 
 
-CForm[FullSimplify[d1Z]]
+CForm[FullSimplify[d5Z]]
 
 
-CForm[FullSimplify[d1m]]
+CForm[FullSimplify[d5m]]
 
 
-CForm[FullSimplify[d2Z]]
+CForm[FullSimplify[d6Z]]
 
 
-CForm[FullSimplify[d2m]]
+CForm[FullSimplify[d6m]]
+
+
+CForm[FullSimplify[d7Z]]
+
+
+CForm[FullSimplify[d7m]]
 
 
 FullSimplify[d5m*kappa]

@@ -160,6 +160,7 @@ start:;
   // print out TSIL evaluate statements
   
   // do the lower dimensional functions first and set total[i]=2.
+  
   for (unsigned int i = 0;i< names.size();i++)
   {
     string type = base_map[names[i]].type;
@@ -180,6 +181,10 @@ start:;
       }
     }
   }
+  
+  myfile << "  if (data.do_tsil_all)" << endl;
+  myfile << "  {" << endl;
+  
   for (unsigned int i = 0; i<eval_vec.size();i++)
   {
     eval_obj eo_tmp = eval_vec[i];
@@ -194,7 +199,7 @@ start:;
       
     }
   }
-  
+  myfile << "  }" << endl;
 #ifdef DEBUG
   print_total(total);
 #endif
@@ -212,8 +217,8 @@ string Print_dotsil::coeff(string type)
 
 void Print_dotsil::print_eval_obj(ofstream &myfile,eval_obj &eo, vector<int> &total)
 {
-  myfile << "  TSIL_SetParameters (&bar," << eo.x << "2, " << eo.y << "2, " << eo.z << "2 , " << eo.u << "2 , " << eo.v  << "2, Q2);" << endl;
-  myfile << "  TSIL_Evaluate (&bar, s);" << endl;
+  myfile << "    TSIL_SetParameters (&bar," << eo.x << "2, " << eo.y << "2, " << eo.z << "2 , " << eo.u << "2 , " << eo.v  << "2, Q2);" << endl;
+  myfile << "    TSIL_Evaluate (&bar, s);" << endl;
   
   vector<bool> check_vec = eo.get_check_vec(names, base_map);
   
@@ -221,7 +226,7 @@ void Print_dotsil::print_eval_obj(ofstream &myfile,eval_obj &eo, vector<int> &to
   {
     if (check_vec[i] && total[i]==1)
     {
-      myfile << "  " << base_map[names[i]].short_name << "="<< coeff(base_map[names[i]].type) << " TSIL_GetFunction (&bar,\""<< eo.eval_string[i] <<"\");"<< endl;
+      myfile << "    " << base_map[names[i]].short_name << "="<< coeff(base_map[names[i]].type) << " TSIL_GetFunction (&bar,\""<< eo.eval_string[i] <<"\");"<< endl;
       total [i] = 2;
     }
   }

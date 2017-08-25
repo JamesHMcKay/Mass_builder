@@ -19,6 +19,8 @@ using namespace std;
 #define PI 4.0L*atan(1.0L)
 #endif
 
+double Pi = PI;
+
 namespace extra_TSIL_interface
 {
 #include TSIL_PATH
@@ -216,18 +218,14 @@ namespace extra_TSIL_interface
   }
   
   
-  
-  
-  
   TSIL_COMPLEXCPP  gammagamma_Chi(Data data,double Q)
   {
     DoTSIL(data);
     
-    p = TSIL_POW(data.Q,0.5);
+    p = Q;// TSIL_POW(data.Q,0.5);
     TSIL_REAL Q2 = pow(Q,2);
     
-    
-    TSIL_COMPLEXCPP AcMB = -i*TSIL_A_ (MChi2 , Q2);
+    TSIL_COMPLEXCPP AcMB = -i*TSIL_A_ (MChi2 ,  Q2);
     
     // evaluate as s = Q^2
     TSIL_COMPLEXCPP BccMB = i*TSIL_B_ (MChi2, MChi2, Q2, Q2);
@@ -244,8 +242,60 @@ namespace extra_TSIL_interface
   
   
   
+}
+
+
+
+// determine MSbar parameters
+void set_SM_parameters_2loop(Data &data)
+{
+  Self_energy se;
+  
+  
+  
+  // matching (?) of SM to Wino model
+  data.alpha = data.alpha*( 1.0-real(extra_TSIL_interface::gammagamma_Chi(data,TSIL_POW(data.Q,0.5))) /data.Q );
+  
+  // determine MS bar input parameters at Q
+  // only recompute the 1-loop functions for efficiency
+  data.do_tsil_all = false;
+  
+  data.P = data.mw;
+  se.run_tsil(data);
+  data.mw = pow( pow(data.mw,2) - real(data.SE_1["V3"]),0.5 );
+  
+  data.P = data.mz;
+  se.run_tsil(data);
+  data.mz = pow( pow(data.mz,2) - real(data.SE_1["V2"]) ,0.5);
+  
+  cout << "mw, mz = " << data.mw << " , " << data.mz << endl;
+  
+  // need to iterate to determine MS bar mass for MChi to match equation (9) of Ibe et al.
+  //data.MChi = iterative_ms_bar_mass(data, "F11_g1");
+  
+  data.do_tsil_all = true;
+}
+
+
+
+// determine MSbar parameters
+void set_SM_parameters_1loop(Data &data)
+{
+  Self_energy se;
+  
+  
+  // RGE evolution
+  double A = (19./(10.*Pi)); // MSSM
+  //double A = (17./(30.*Pi)); // Wino model
+  //double A = (7./(30.*Pi)); // SM
+  double alpha_mz = data.alpha;
+  double mu0 = data.mz;
+  double mu = pow(data.Q,0.5);
+  
+  data.alpha = pow(   1.0/alpha_mz -  A * log( mu/mu0) , -1);
   
 }
+
 
 
 double iterative_mass(Data data, string particle,int loop_order)
@@ -254,7 +304,7 @@ double iterative_mass(Data data, string particle,int loop_order)
   long double M_pole = data.MChi;
   data.P = M_tree;
   long double diff = 1;
-  long double precision = 1e-6;
+  long double precision = 1e-5;
   int iteration =0;
   int loop_order_temp = loop_order;
   do
@@ -290,12 +340,12 @@ double iterative_mass(Data data, string particle,int loop_order)
     }
     
     iteration++;
-    cout<< "\r" << "M_pole - p = " << diff << " GeV";
-    std::cout << std::flush;
+    //cout<< "\r" << "M_pole - p = " << diff << " GeV";
+    //std::cout << std::flush;
   } while (diff > precision  && iteration < 50000);
   
-  cout<< "\r" << "M_pole - p = " << diff << " GeV";
-  cout << "\n";
+  //cout<< "\r" << "M_pole - p = " << diff << " GeV";
+  //cout << "\n";
   
   
   if (iteration == 50000)
@@ -316,17 +366,19 @@ void plot_M(Data data)
   
   ofstream myfile;
   myfile.open ("models/MSSM/output/mass_splittings.txt");
-  int pts = 10;
+  int pts = 100;
   double n = 0;
   double M = 0;
   int status = 0;
   
   double max_M = 1e6; // (GeV)
-  double min_M = 1000; // (GeV)
+  double min_M = 10; // (GeV)
   
   double logMax = log10(max_M);
   double logMin = log10(min_M);
-  
+  double alpha_in = data.alpha;
+  double mw_in = data.mw;
+  double mz_in = data.mz;
   
   for (int i = 0; i < pts+1 ; i++)
   {
@@ -335,23 +387,27 @@ void plot_M(Data data)
     M = pow(10,n);
     data.MChi=M;
     data.P = M;
+    data.alpha = alpha_in;
+    data.mz = mz_in;
+    data.mw = mw_in;
     
     
-    //data.Q = pow(M,2);
+    data.Q = pow(2*M,2);
     
     // compute explicit mass splitting
-    
+    set_SM_parameters_1loop(data);
+    data.P = M;
     Self_energy se;
     se.run_tsil(data);
     
-    //double delta_m_explicit_2loop = 0;//(data.SE_1["F12_g1"]+data.SE_2["F12_g1"]) - (data.SE_1["F11_g1"]+data.SE_2["F11_g1"]) - extra_TSIL_interface::add_derivatives(data);
+    //double delta_m_explicit_2loop = (data.SE_1["F12_g1"]+data.SE_2["F12_g1"]) - (data.SE_1["F11_g1"]+data.SE_2["F11_g1"]) - extra_TSIL_interface::add_derivatives(data);
     
     double delta_m_explicit_1loop = (data.SE_1["F12_g1"]) - (data.SE_1["F11_g1"]);
     
     // compute iterative mass splitting
     
-    double it_1loop_F11 = iterative_mass(data,"F11_g1",2);
-    double it_1loop_F12 = iterative_mass(data,"F12_g1",2);
+    double it_1loop_F11 = iterative_mass(data,"F11_g1",1);
+    double it_1loop_F12 = iterative_mass(data,"F12_g1",1);
     
     
     //double delta_m_iterative_2loop = iterative_mass(data,"F12_g1",2) - iterative_mass(data,"F11_g1",2);
@@ -359,7 +415,7 @@ void plot_M(Data data)
     double delta_m_iterative_1loop = it_1loop_F12 - it_1loop_F11;
     
     
-    myfile << M << " " << it_1loop_F11 <<  " " << it_1loop_F12  << " " << delta_m_explicit_1loop <<  " " << delta_m_iterative_1loop << endl;
+    myfile << M << " " << delta_m_explicit_1loop <<  " " << delta_m_iterative_1loop << endl;
     status=(float(i)/pts)*100;
     cout<< "\r" << "computing mass splittings . . . " << status << "% complete ";
     std::cout << std::flush;
@@ -371,7 +427,7 @@ void plot_M(Data data)
   
   cout << "example mass splitting routine complete" << endl;
   cout << "now run: "<< endl;
-  cout << "          python examples/plot_MSSM.py "<< endl;
+  cout << "          python examples/plot_itMSSM.py "<< endl;
   cout << "to make plot in this directory "<< endl;
   
   myfile.close();
@@ -399,19 +455,15 @@ void print_masses(Data data)
   cout << "One-loop self energy (neutral) " <<data.SE_1["F11_g1"] << endl;
   
   
-  double F11_iterative_2loop = iterative_mass(data, "F11_g1" ,2);
+  double F11_iterative_2loop = 0;//iterative_mass(data, "F11_g1" ,2);
   
-  double F12_iterative_2loop = iterative_mass(data, "F12_g1" ,2);
+  double F12_iterative_2loop = 0;//iterative_mass(data, "F12_g1" ,2);
+  
+  data.do_tsil_all = false;
   
   double F11_iterative_1loop = iterative_mass(data, "F11_g1" ,1);
   
   double F12_iterative_1loop = iterative_mass(data, "F12_g1" ,1);
-  
-    
-  cout << "realtive difference " << (1.0 - iterative_mass(data, "F12_g1" ,1)/iterative_mass(data, "F11_g1" ,1))*iterative_mass(data, "F12_g1" ,1) << endl;
-  cout << "absolute difference " << iterative_mass(data, "F12_g1" ,1)-iterative_mass(data, "F11_g1" ,1)<< endl;
-  
-  
   
   cout << "2-loop pole masses" << endl;
   cout << "iterative pole mass (neutral) = " << F11_iterative_2loop << endl;
@@ -450,7 +502,7 @@ int main(int argc, char *argv[])
   
   
 
- // print_masses(data);
+  //print_masses(data);
   
   plot_M(data);
   
