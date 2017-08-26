@@ -3,6 +3,8 @@ project(mass_builder)
 message(status "${CMAKE_CURRENT_SOURCE_DIR}")
 
 
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${PROJECT_SOURCE_DIR}/cmake)
+
 # Check for Mathematica
 include(FindMathematica.cmake)
 if(Mathematica_FOUND)
@@ -49,7 +51,7 @@ if(NOT EXISTS ${outhdr})
   configure_file("${PROJECT_SOURCE_DIR}/src/self_energy.cpp.in" ${outhdr})
 endif()
 
-include_directories(src include ${Mathematica_WSTP_INCLUDE_DIR})
+include_directories(src include flexiblesusy/src/ ${Mathematica_WSTP_INCLUDE_DIR})
 
 # specify location of TSIL header file
 set(TSIL_HEADER_FILE ${TSIL_PATH}/tsil_cpp.h )
@@ -71,11 +73,18 @@ set(SRC_VDM examples/VDM.cpp)
 set(SRC_QED examples/QED.cpp)
 set(SRC_MDM examples/MDM.cpp)
 
+set(FS_INCLUDE include/flexiblesusy.hpp flexiblesusy/src/utils.h)
+
 # include generated source files
 include(src/CMakeLists.txt)
 
 
-LINK_DIRECTORIES(${TSIL_PATH})
+
+# include flexiblesusy
+include(contrib.cmake)
+
+
+LINK_DIRECTORIES(${TSIL_PATH} ${PROJECT_SOURCE_DIR}/flexiblesusy/src/ ${PROJECT_SOURCE_DIR}/flexiblesusy/models/EW_triplet/ ${EIGEN3_INCLUDE_DIR})
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 set(CMAKE_CXX_FLAGS -L.)
@@ -89,13 +98,53 @@ set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${MPI_LINK_FLAGS}")
 include_directories(${MPI_INCLUDE_PATH})
 endif()
 
+# Check for Eigen
+find_package(Eigen3 3.1.0)
+if(EIGEN3_FOUND)
+  include_directories("${EIGEN3_INCLUDE_DIR}")
+  message("-- Eigen version: ${EIGEN3_VERSION}")
+else()
+  message("${BoldRed}   Eigen v3.1.0 or greater not found.")
+  message(FATAL_ERROR "Eigen not found -- this is required for FlexibleSUSY functionality")
+endif()
+
+message("Eigen found in ${EIGEN3_INCLUDE_DIR}")
+
+
+# find boost (currently hardcoded to my system)
+
+set(Boost_INCLUDE_DIR /usr/local/Cellar/boost/1.59.0/include)
+set(Boost_LIBRARY_DIR /usr/local/Cellar/boost/1.59.0/lib)
+
+find_package(Boost COMPONENTS system filesystem REQUIRED)
+include_directories(${Boost_INCLUDE_DIR})
+link_directories(${Boost_LIBRARY_DIR})
+
+
+# Check for Gnu Scientific Library (GSL)
+include(cmake/FindGSL.cmake)
+if(GSL_FOUND)
+  if (NOT GSL_INCLUDE_DIRS STREQUAL "")
+    include_directories("${GSL_INCLUDE_DIRS}")
+  endif()
+else()
+  message(FATAL_ERROR "FlexibleSUSY requires the GSL libraries.")
+endif()
+
+set(LIBRARIES ${LIBRARIES} ${GSL_LIBRARIES})
+
+
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${FS_CXX_FLAGS}")
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${flexiblesusy_LDFLAGS}")
+
 # The main Mass Builder executable
-add_executable(mass_builder ${SRC_MB} ${SRC_FILES_GEN} ${HEADER_FILES_GEN} ${HEADER_MB} ${TSIL_HEADER_FILE} ${SRC_FILES} ${HEADER_FILES} ${GENERATED_SRC_FILES})
+add_executable(mass_builder ${FS_INCLUDE} ${SRC_MB} ${SRC_FILES_GEN} ${HEADER_FILES_GEN} ${HEADER_MB} ${TSIL_HEADER_FILE} ${SRC_FILES} ${HEADER_FILES} ${GENERATED_SRC_FILES})
 
 # Add example executables for each of the models
 add_executable(Scalar EXCLUDE_FROM_ALL ${SRC_Scalar} ${SRC_FILES_GEN} ${HEADER_FILES_GEN} ${TSIL_HEADER_FILE} ${SRC_FILES} ${HEADER_FILES} ${GENERATED_SRC_FILES})
 
-add_executable(MSSM EXCLUDE_FROM_ALL ${SRC_MSSM} ${SRC_FILES_GEN} ${HEADER_FILES_GEN} ${TSIL_HEADER_FILE} ${SRC_FILES} ${HEADER_FILES} ${GENERATED_SRC_FILES})
+add_executable(MSSM EXCLUDE_FROM_ALL ${FS_INCLUDE} ${SRC_MSSM} ${SRC_FILES_GEN} ${HEADER_FILES_GEN} ${TSIL_HEADER_FILE} ${SRC_FILES} ${HEADER_FILES} ${GENERATED_SRC_FILES})
 
 add_executable(itMSSM EXCLUDE_FROM_ALL ${SRC_itMSSM} ${SRC_FILES_GEN} ${HEADER_FILES_GEN} ${TSIL_HEADER_FILE} ${SRC_FILES} ${HEADER_FILES} ${GENERATED_SRC_FILES})
 
@@ -105,14 +154,16 @@ add_executable(QED EXCLUDE_FROM_ALL ${SRC_QED} ${SRC_FILES_GEN} ${HEADER_FILES_G
 
 add_executable(MDM EXCLUDE_FROM_ALL ${SRC_MDM} ${SRC_FILES_GEN} ${HEADER_FILES_GEN} ${TSIL_HEADER_FILE} ${SRC_FILES} ${HEADER_FILES} ${GENERATED_SRC_FILES})
 
+add_dependencies(mass_builder flexiblesusy)
 
 # Mass Builder required the WSTP and MPI libraries
 TARGET_LINK_LIBRARIES(mass_builder libtsil.a ${MPI_LIBRARIES} ${LIBRARIES})
 
 Mathematica_ABSOLUTIZE_LIBRARY_DEPENDENCIES(mass_builder)
+Mathematica_ABSOLUTIZE_LIBRARY_DEPENDENCIES(MSSM)
 
 # Examples only require the TSIL libraries
-TARGET_LINK_LIBRARIES(MSSM libtsil.a)
+TARGET_LINK_LIBRARIES(MSSM libflexisusy.a libEW_triplet.a libtsil.a ${LIBRARIES} ${Boost_LIBRARIES} )
 
 TARGET_LINK_LIBRARIES(itMSSM libtsil.a)
 

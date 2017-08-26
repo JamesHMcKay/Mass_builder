@@ -8,18 +8,39 @@
  requires an input list flag at runtime: ./MSSM -i models/MSSM/input.txt
  */
 
-
 #include "data.hpp"
 #include "self_energy.hpp"
 #include "cmake_variables.hpp"
 
-using namespace std;
+//inline double sqr(double a) { return a * a; }
+#include "flexiblesusy/src/utils.h"
 
+#include "spectrum_generator_settings.hpp"
+#include "lowe.h"
+
+#include "flexiblesusy.hpp"
+#define ALGORITHM1 Two_scale
+
+#include "flexiblesusy/models/EW_triplet/EW_triplet_input_parameters.hpp"
+#include "flexiblesusy/models/EW_triplet/EW_triplet_slha_io.hpp"
+#include "flexiblesusy/models/EW_triplet/EW_triplet_spectrum_generator.hpp"
+#include "flexiblesusy/models/EW_triplet/EW_triplet_two_scale_model.hpp"
+#include "flexiblesusy/models/EW_triplet/EW_triplet_two_scale_model_slha.hpp"
+#include "flexiblesusy/models/EW_triplet/EW_triplet_physical.hpp"
+#include "flexiblesusy/models/EW_triplet/EW_triplet_info.hpp"
+
+ 
+using namespace flexiblesusy;
+using namespace softsusy;
+
+
+using namespace std;
+/*
 #ifndef PI
 #define PI 4.0L*atan(1.0L)
 #endif
-
-double Pi=PI;
+*/
+//double Pi=PI;
 
 namespace extra_TSIL_interface
 {
@@ -515,7 +536,7 @@ int main(int argc, char *argv[])
   
   Data data(options);
   
-  plot_M(data);
+  //plot_M(data);
   /*
   
   data.MChi = 1000;
@@ -543,5 +564,50 @@ int main(int argc, char *argv[])
   cout << "two-loop mass splitting = " << (data.SE_1["F12_g1"] - data.SE_1["F11_g1"]) + ( data.SE_2["F12_g1"] - data.SE_2["F11_g1"] - extra_TSIL_interface::add_derivatives(data) ) << endl;
   */
   
+  Spectrum_generator_settings spectrum_generator_settings;
+  
+  QedQcd oneset;
+  EW_triplet_input_parameters input;
+  EW_triplet_spectrum_generator<Two_scale> spectrum_generator;
+  
+  EW_triplet_slha_io slha_io;
+  
+  const std::string slha_file="flexiblesusy/models/EW_triplet/LesHouches.in.EW_triplet";
+  
+  slha_io.read_from_file(slha_file);
+  slha_io.fill(oneset);
+  slha_io.fill(input);
+  slha_io.fill(spectrum_generator_settings);
+  
+  spectrum_generator.set_settings(spectrum_generator_settings);
+  spectrum_generator.set_parameter_output_scale(slha_io.get_parameter_output_scale());
+  
+  oneset.setPoleMt(data.mt);
+  
+  oneset.toMz();
+  
+	input.QEWSB=pow(data.Q,0.5);
+	input.Qin=pow(data.Q,0.5);
+  input.HiggsIN = 0.5*pow(data.mh,2);
+  input.YcIN = 0.5*data.MChi;
+  spectrum_generator.run(oneset, input);
+	
+	std::ostringstream warnings;
+	const Problems<EW_triplet_info::NUMBER_OF_PARTICLES>& problems
+	= spectrum_generator.get_problems();
+	const bool error = problems.have_problem();
+	problems.print_warnings(warnings);
+	if (error==1)
+	{
+	// check for errors
+	std::ostringstream problems_str;
+	problems.print_problems(problems_str);
+	
+	cout<< FORMAT_SPINFO(4,problems_str.str()) << endl;
+	}
+	EW_triplet_slha<Two_scale> model(spectrum_generator.get_model());
+	  
+  cout << "pole mass = " << model.get_MFn_pole_slha() << endl;
+    
   return 0;
 }
