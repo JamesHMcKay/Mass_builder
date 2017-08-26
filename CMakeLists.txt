@@ -73,6 +73,9 @@ set(SRC_VDM examples/VDM.cpp)
 set(SRC_QED examples/QED.cpp)
 set(SRC_MDM examples/MDM.cpp)
 
+set(SRC_MASS_SPLITTINGS mass_splittings/splittings.cpp mass_splittings/MSSM.cpp mass_splittings/MSSM.hpp mass_splittings/figures.cpp mass_splittings/figures.hpp)
+
+
 set(FS_INCLUDE include/flexiblesusy.hpp flexiblesusy/src/utils.h)
 
 # include generated source files
@@ -154,6 +157,9 @@ add_executable(QED EXCLUDE_FROM_ALL ${SRC_QED} ${SRC_FILES_GEN} ${HEADER_FILES_G
 
 add_executable(MDM EXCLUDE_FROM_ALL ${SRC_MDM} ${SRC_FILES_GEN} ${HEADER_FILES_GEN} ${TSIL_HEADER_FILE} ${SRC_FILES} ${HEADER_FILES} ${GENERATED_SRC_FILES})
 
+
+add_executable(splittings EXCLUDE_FROM_ALL ${FS_INCLUDE} ${SRC_MASS_SPLITTINGS} ${SRC_FILES_GEN} ${HEADER_FILES_GEN} ${TSIL_HEADER_FILE} ${SRC_FILES} ${HEADER_FILES} ${GENERATED_SRC_FILES})
+
 add_dependencies(mass_builder flexiblesusy)
 
 # Mass Builder required the WSTP and MPI libraries
@@ -161,9 +167,13 @@ TARGET_LINK_LIBRARIES(mass_builder libtsil.a ${MPI_LIBRARIES} ${LIBRARIES})
 
 Mathematica_ABSOLUTIZE_LIBRARY_DEPENDENCIES(mass_builder)
 Mathematica_ABSOLUTIZE_LIBRARY_DEPENDENCIES(MSSM)
+Mathematica_ABSOLUTIZE_LIBRARY_DEPENDENCIES(splittings)
+
 
 # Examples only require the TSIL libraries
 TARGET_LINK_LIBRARIES(MSSM libflexisusy.a libEW_triplet.a libtsil.a ${LIBRARIES} ${Boost_LIBRARIES} )
+
+TARGET_LINK_LIBRARIES(splittings libflexisusy.a libEW_triplet.a libtsil.a ${LIBRARIES} ${Boost_LIBRARIES} )
 
 TARGET_LINK_LIBRARIES(itMSSM libtsil.a)
 
