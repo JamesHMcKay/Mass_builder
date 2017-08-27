@@ -28,7 +28,7 @@ int main(int argc, char *argv[])
   
   Figures fig;
   
-  fig.plot_Q(data);
+  fig.plot_M(data);
   
   return 0;
 }

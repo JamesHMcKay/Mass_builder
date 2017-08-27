@@ -7,17 +7,24 @@
 class MSSM
 {
 private:
-  
+		
 public:
   
-  MSSM(){};
+  // Mass Builder data structure
+  Data data;
+   
+  MSSM(Data data) : data(data) {};
   
-  // run FlexibleSUSY and update data structure with spectrum
-  void set_flexiblesusy_spectra(Data &data);
+  // run FlexibleSUSY and update data structure with couplings and self energies
+  void compute_spectra_flexiblesusy();
   
   // set parameters according to method in Ibe et al. (2013)
-  void set_SM_parameters_1loop(Data &data);
-  void set_SM_parameters_2loop(Data &data);
+  void compute_spectra_MB_1loop();
+  void compute_spectra_MB_2loop();
+  
+  // compute self energies using TSIL
+  void compute_tsil();
+  void compute_tsil_iterative();
   
   // temporary for now, get difference of 1-loop derivatives
   double add_1loop_der(Data &data);

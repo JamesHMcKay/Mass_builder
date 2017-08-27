@@ -39,7 +39,7 @@ V[1] == {
     PropagatorLabel -> "\\gamma",
     PropagatorType -> Sine,
     PropagatorArrow -> None,
-    Mass -> ma,
+    Mass -> 0,
     Indices -> {} }
 }
 

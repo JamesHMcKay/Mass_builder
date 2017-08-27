@@ -19,6 +19,8 @@ public:
 	void plot_Q(Data data);
 	
 	void plot_M(Data data);
+	
+	void plot_M_flexiblesusy(Data data);
   
 };
 

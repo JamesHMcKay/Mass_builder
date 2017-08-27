@@ -83,10 +83,6 @@ namespace extra_TSIL_interface
     
     TSIL_REAL Q2 = data.Q;
     TSIL_REAL s = pow(data.P,2);
-    MassBuilderCTM1 = 0;
-    MassBuilderCTZ1 = 0;
-    MassBuilderCTM2 = 0;
-    MassBuilderCTZ1 = 0;
     MChi = data.MChi, MChi2 = TSIL_POW(data.MChi, 2) ,   ma = data.ma, ma2 = TSIL_POW(data.ma, 2) ,   mw = data.mw, mw2 = TSIL_POW(data.mw, 2) ,   mz = data.mz, mz2 = TSIL_POW(data.mz, 2) ,   mh = data.mh, mh2 = TSIL_POW(data.mh, 2) ,   null = data.null, null2 = TSIL_POW(data.null, 2) ,   mf = data.mf, mf2 = TSIL_POW(data.mf, 2) ,   mt = data.mt , mt2 = TSIL_POW(data.mt, 2) ;
     
     dcomp ii=-1;ii=sqrt(ii);i=ii;
@@ -98,23 +94,6 @@ namespace extra_TSIL_interface
     STW =  sw;
     CTW =  cw;
     e =  TSIL_POW(4*Pi*alpha,0.5);
-    d1Z =  (2*TSIL_POW(e,2)*(TSIL_POW(-1 + TSIL_POW(sw,2),2) + TSIL_POW(cw,2)*(1 + TSIL_POW(sw,2))))/(TSIL_POW(cw,2)*TSIL_POW(sw,2));
-    d1m =  (-8*TSIL_POW(e,2)*MChi*(TSIL_POW(-1 + TSIL_POW(sw,2),2) + TSIL_POW(cw,2)*(1 + TSIL_POW(sw,2))))/(TSIL_POW(cw,2)*TSIL_POW(sw,2));
-    d2Z =  (4*TSIL_POW(e,2))/TSIL_POW(sw,2);
-    d2m =  (-16*TSIL_POW(e,2)*MChi)/TSIL_POW(sw,2);
-    dZW1 =  (TSIL_POW(e,2)*(-9 + 20*TSIL_POW(cw,2) + 20*TSIL_POW(sw,2)))/(6.*TSIL_POW(sw,2));
-    dMWsq1 =  -(TSIL_POW(e,2)*(TSIL_POW(cw,4)*(44*TSIL_POW(mw,2) + 6*TSIL_POW(mz,2)) - 6*TSIL_POW(mw,2)*TSIL_POW(sw,4) + TSIL_POW(cw,2)*(6*TSIL_POW(ma,2)*TSIL_POW(sw,2) + TSIL_POW(mw,2)*(-33 + 38*TSIL_POW(sw,2)))))/(6.*TSIL_POW(cw,2)*TSIL_POW(sw,2));
-    dMZsq1 =  (TSIL_POW(e,2)*(TSIL_POW(cw,2)*TSIL_POW(mz,2)*(17 - 39*TSIL_POW(cw,4) - 2*(16 + TSIL_POW(cw,2))*TSIL_POW(sw,2) + 17*TSIL_POW(sw,4)) + 12*TSIL_POW(mw,2)*(1 - 2*TSIL_POW(cw,6) + 2*TSIL_POW(cw,2)*TSIL_POW(sw,4))))/(12.*TSIL_POW(cw,4)*TSIL_POW(sw,2));
-    dZAA1 =  (5*TSIL_POW(e,2))/3.;
-    dZZA1 =  (-4*TSIL_POW(e,2)*TSIL_POW(mw,2)*(TSIL_POW(cw,2) + TSIL_POW(sw,2)))/(cw*TSIL_POW(mz,2)*sw);
-    dZAZ1 =  (TSIL_POW(e,2)*(TSIL_POW(cw,2)*(12*TSIL_POW(mw,2) + 19*TSIL_POW(mz,2)) + 12*TSIL_POW(mw,2)*TSIL_POW(sw,2) + TSIL_POW(mz,2)*(-8 + 9*TSIL_POW(sw,2))))/(3.*cw*TSIL_POW(mz,2)*sw);
-    dZZZ1 =  (TSIL_POW(e,2)*(-17 + 39*TSIL_POW(cw,4) + 2*(16 + TSIL_POW(cw,2))*TSIL_POW(sw,2) - 17*TSIL_POW(sw,4)))/(12.*TSIL_POW(cw,2)*TSIL_POW(sw,2));
-    dg2 =  4.0*TSIL_POW(e/sw,3);
-    Ca =  -2.*sw;
-    Cz1 =  1.;
-    Cz2 =  -2.*cw;
-    Cw1 =  -2.;
-    Cw2 =  -2.;
     
     TSIL_REAL a = -1., b = 1., c = 1.;
     
@@ -169,6 +148,55 @@ namespace extra_TSIL_interface
     return real(result);
   }
   
+  
+  double F11_der(Data data)
+  {
+    
+    DoTSIL(data);
+    
+    p = data.P;
+    
+    
+    TSIL_COMPLEXCPP result = (Power(e,4)*(Ac - Aw - Power(MChi,2) + 2*Bcw*Power(MChi,2) + Bcw*Power(mw,2))*
+                              (-Ac + Aw + Power(MChi,2) + 4*dBwc*Power(MChi,4) - Bcw*Power(mw,2) + 2*dBwc*Power(MChi,2)*Power(mw,2)))/
+    (64.*Power(MChi,3)*Power(Pi,4)*Power(sw,4));
+    
+    return real(result);
+    
+  }
+  
+  
+  
+  double F12_der(Data data)
+  {
+    
+    DoTSIL(data);
+    
+    p = data.P;
+    
+    
+    TSIL_COMPLEXCPP result = (Power(e,4)*(Aw*Power(cw,2) + Power(MChi,2) + Power(cw,2)*Power(MChi,2) + 4*Power(cw,2)*dBwc*Power(MChi,4) + 4*dBzc*Power(MChi,4) -
+                                          Bcw*Power(cw,2)*Power(mw,2) + 2*Power(cw,2)*dBwc*Power(MChi,2)*Power(mw,2) - Bcz*Power(mz,2) + 2*dBzc*Power(MChi,2)*Power(mz,2) +
+                                          Aa*Power(cw,2)*Power(sw,2) - Bca*Power(cw,2)*Power(ma,2)*Power(sw,2) - 2*Power(MChi,2)*Power(sw,2) +
+                                          Power(cw,2)*Power(MChi,2)*Power(sw,2) + 2*Power(cw,2)*dBac*Power(ma,2)*Power(MChi,2)*Power(sw,2) +
+                                          4*Power(cw,2)*dBac*Power(MChi,4)*Power(sw,2) - 8*dBzc*Power(MChi,4)*Power(sw,2) + 2*Bcz*Power(mz,2)*Power(sw,2) -
+                                          4*dBzc*Power(MChi,2)*Power(mz,2)*Power(sw,2) + Power(MChi,2)*Power(sw,4) + 4*dBzc*Power(MChi,4)*Power(sw,4) -
+                                          Bcz*Power(mz,2)*Power(sw,4) + 2*dBzc*Power(MChi,2)*Power(mz,2)*Power(sw,4) + Az*Power(-1 + Power(sw,2),2) -
+                                          Ac*(Power(-1 + Power(sw,2),2) + Power(cw,2)*(1 + Power(sw,2))))*
+                              (-(Aw*Power(cw,2)) - Power(MChi,2) + 2*Bcz*Power(MChi,2) - Power(cw,2)*Power(MChi,2) + 2*Bcw*Power(cw,2)*Power(MChi,2) +
+                               Bcw*Power(cw,2)*Power(mw,2) + Bcz*Power(mz,2) - Aa*Power(cw,2)*Power(sw,2) + Bca*Power(cw,2)*Power(ma,2)*Power(sw,2) +
+                               2*Power(MChi,2)*Power(sw,2) - 4*Bcz*Power(MChi,2)*Power(sw,2) - Power(cw,2)*Power(MChi,2)*Power(sw,2) +
+                               2*Bca*Power(cw,2)*Power(MChi,2)*Power(sw,2) - 2*Bcz*Power(mz,2)*Power(sw,2) - Power(MChi,2)*Power(sw,4) +
+                               2*Bcz*Power(MChi,2)*Power(sw,4) + Bcz*Power(mz,2)*Power(sw,4) - Az*Power(-1 + Power(sw,2),2) +
+                               Ac*(Power(-1 + Power(sw,2),2) + Power(cw,2)*(1 + Power(sw,2)))))/(256.*Power(cw,4)*Power(MChi,3)*Power(Pi,4)*Power(sw,4));
+    
+    return real(result);
+    
+  }
+  
+  
+  
+  
   TSIL_COMPLEXCPP  gammagamma_Chi(Data data,double Q)
   {
     DoTSIL(data);
@@ -199,45 +227,51 @@ double MSSM::add_1loop_der(Data &data)
 	
 }
 
+
 double iterative_ms_bar_mass(Data data, string particle)
 {
-  double M_msbar = data.MChi;
-  double M_pole = data.MChi;
-  data.P = M_msbar;
-  double diff = 1;
-  double precision = 1e-6;
-  int iteration =0;
+  long double M_tree = data.MChi;
+  long double M_pole = data.MChi;
+  data.P = M_tree;
+  long double diff = 1;
+  long double precision = 1e-5;
+  int iteration = 0;
   do
   {
     Self_energy se;
     se.run_tsil(data);
     
-    M_msbar = M_pole - (data.SE_1[particle]);
+    if (data.do_tsil_all)
+    {
+			M_pole = M_tree + data.SE_1[particle] + data.SE_2[particle];
+    }
+    else
+    {
+      M_pole = M_tree + data.SE_1[particle];
+    }
     
-    diff = abs(M_msbar - data.MChi);
+    diff = abs(M_pole - data.P);    
+    data.P = M_pole;
     
-    data.MChi = M_msbar;
+    cout<< "\r" << "M_pole - p = " << diff << " GeV";
+    std::cout << std::flush;
     
     iteration++;
-    // cout<< "\r" << "M_msbar - MChi = " << diff << " GeV";
-    // std::cout << std::flush;
-  } while (diff > precision  && iteration < 500);
+  } while (diff > precision  && iteration < 5000);
   
-  // cout<< "\r" << "M_msbar - MChi = " << diff << " GeV";
-  // cout << "\n";
+  cout<< "\r" << "M_pole - p = " << diff << " GeV";
+  cout << "\n";
   
-  
-  if (iteration == 500)
+  if (iteration == 5000)
   {
-    cout << "ms bar mass did not converge" << endl;
+    cout << "pole mass did not converge" << endl;
   }
-  
-  return M_msbar;
+    
+  return M_pole;
 }
 
-
 // determine MSbar parameters
-void MSSM::set_SM_parameters_1loop(Data &data)
+void MSSM::compute_spectra_MB_1loop()
 {
   Self_energy se;
   
@@ -250,11 +284,13 @@ void MSSM::set_SM_parameters_1loop(Data &data)
   double mu = pow(data.Q,0.5);
   
   data.alpha = pow(   1.0/alpha_mz -  A * log( mu/mu0) , -1);
+  
+  data.do_tsil_all = false;
+  
 }
 
-
 // determine MSbar parameters
-void MSSM::set_SM_parameters_2loop(Data &data)
+void MSSM::compute_spectra_MB_2loop()
 {
   Self_energy se;
   
@@ -276,11 +312,12 @@ void MSSM::set_SM_parameters_2loop(Data &data)
   // need to iterate to determine MS bar mass for MChi to match equation (9) of Ibe et al.
   //data.MChi = iterative_ms_bar_mass(data, "F11_g1");
   
+  data.P = data.MChi;
   data.do_tsil_all = true;
 }
 
 
-void MSSM::set_flexiblesusy_spectra(Data &data)
+void MSSM::compute_spectra_flexiblesusy()
 {
 	Spectrum_generator_settings spectrum_generator_settings;
   
@@ -304,8 +341,8 @@ void MSSM::set_flexiblesusy_spectra(Data &data)
   
   oneset.toMz();
   
-	input.QEWSB=pow(data.Q,0.5);
-	input.Qin=pow(data.Q,0.5);
+	input.QEWSB=data.Q;
+	input.Qin=data.Q;
   input.HiggsIN = 0.5*pow(data.mh,2);
   input.YcIN = 0.5*data.MChi;
   spectrum_generator.run(oneset, input);
@@ -317,14 +354,54 @@ void MSSM::set_flexiblesusy_spectra(Data &data)
 	problems.print_warnings(warnings);
 	if (error==1)
 	{
-	// check for errors
-	std::ostringstream problems_str;
-	problems.print_problems(problems_str);
-	
-	cout<< FORMAT_SPINFO(4,problems_str.str()) << endl;
+		// check for errors
+		std::ostringstream problems_str;
+		problems.print_problems(problems_str);
+		
+		cout<< FORMAT_SPINFO(4,problems_str.str()) << endl;
 	}
 	EW_triplet_slha<Two_scale> model(spectrum_generator.get_model());
 	  
-  cout << "pole mass = " << model.get_MFn_pole_slha() << endl;
+  // update data struct with computed spectrum
+  
+  // MS bar masses
+  
+  //data.mw = EW_triplet physical
+  
+	data.SE_1["F11_g1"] = model.get_MFn_pole_slha() - data.MChi;
+	data.SE_1["F12_g1"] = model.get_MFc_pole_slha() - data.MChi;
     
+}
+
+
+void MSSM::compute_tsil()
+{
+	Self_energy se;
+	se.run_tsil(data);	
+	
+	// add derivatives of 1-loop self energies
+	data.SE_2["F11_g1"] = data.SE_2["F11_g1"] +  extra_TSIL_interface::F11_der(data);
+	data.SE_2["F12_g1"] = data.SE_2["F12_g1"] +  extra_TSIL_interface::F12_der(data);	
+}
+
+
+void MSSM::compute_tsil_iterative()
+{	
+	Self_energy se;
+	se.run_tsil(data);
+	
+	double m_F11 = iterative_ms_bar_mass(data,"F11_g1");
+	double m_F12 = iterative_ms_bar_mass(data,"F12_g1");
+	
+	if (data.do_tsil_all)
+	{
+		data.SE_2["F11_g1"] = m_F11 - data.MChi;
+		data.SE_2["F12_g1"] = m_F12 - data.MChi;
+	}
+	else
+	{
+		data.SE_1["F11_g1"] = m_F11 - data.MChi;
+		data.SE_1["F12_g1"] = m_F12 - data.MChi;
+	}	
+
 }

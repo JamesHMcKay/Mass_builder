@@ -340,12 +340,12 @@ double iterative_mass(Data data, string particle,int loop_order)
     }
     
     iteration++;
-    //cout<< "\r" << "M_pole - p = " << diff << " GeV";
-    //std::cout << std::flush;
+    cout<< "\r" << "M_pole - p = " << diff << " GeV";
+    std::cout << std::flush;
   } while (diff > precision  && iteration < 50000);
   
-  //cout<< "\r" << "M_pole - p = " << diff << " GeV";
-  //cout << "\n";
+  cout<< "\r" << "M_pole - p = " << diff << " GeV";
+  cout << "\n";
   
   
   if (iteration == 50000)
@@ -366,13 +366,13 @@ void plot_M(Data data)
   
   ofstream myfile;
   myfile.open ("models/MSSM/output/mass_splittings.txt");
-  int pts = 100;
+  int pts = 10;
   double n = 0;
   double M = 0;
   int status = 0;
   
-  double max_M = 1e6; // (GeV)
-  double min_M = 10; // (GeV)
+  double max_M = 1e4; // (GeV)
+  double min_M = 1e3; // (GeV)
   
   double logMax = log10(max_M);
   double logMin = log10(min_M);
@@ -391,31 +391,22 @@ void plot_M(Data data)
     data.mz = mz_in;
     data.mw = mw_in;
     
-    
-    data.Q = pow(2*M,2);
+    data.Q = pow(M,2);
     
     // compute explicit mass splitting
-    set_SM_parameters_1loop(data);
+    //set_SM_parameters_1loop(data);
     data.P = M;
     Self_energy se;
     se.run_tsil(data);
     
-    //double delta_m_explicit_2loop = (data.SE_1["F12_g1"]+data.SE_2["F12_g1"]) - (data.SE_1["F11_g1"]+data.SE_2["F11_g1"]) - extra_TSIL_interface::add_derivatives(data);
-    
-    double delta_m_explicit_1loop = (data.SE_1["F12_g1"]) - (data.SE_1["F11_g1"]);
+    double delta_m_explicit_2loop = (data.SE_1["F12_g1"]+data.SE_2["F12_g1"]) - (data.SE_1["F11_g1"]+data.SE_2["F11_g1"]) - extra_TSIL_interface::add_derivatives(data);
     
     // compute iterative mass splitting
     
-    double it_1loop_F11 = iterative_mass(data,"F11_g1",1);
-    double it_1loop_F12 = iterative_mass(data,"F12_g1",1);
+    double delta_m_iterative_2loop = iterative_mass(data,"F12_g1",2) - iterative_mass(data,"F11_g1",2);
     
     
-    //double delta_m_iterative_2loop = iterative_mass(data,"F12_g1",2) - iterative_mass(data,"F11_g1",2);
-    
-    double delta_m_iterative_1loop = it_1loop_F12 - it_1loop_F11;
-    
-    
-    myfile << M << " " << delta_m_explicit_1loop <<  " " << delta_m_iterative_1loop << endl;
+    myfile << M << " " << delta_m_explicit_2loop <<  " " << delta_m_iterative_2loop << endl;
     status=(float(i)/pts)*100;
     cout<< "\r" << "computing mass splittings . . . " << status << "% complete ";
     std::cout << std::flush;
@@ -455,9 +446,9 @@ void print_masses(Data data)
   cout << "One-loop self energy (neutral) " <<data.SE_1["F11_g1"] << endl;
   
   
-  double F11_iterative_2loop = 0;//iterative_mass(data, "F11_g1" ,2);
+  double F11_iterative_2loop = iterative_mass(data, "F11_g1" ,2);
   
-  double F12_iterative_2loop = 0;//iterative_mass(data, "F12_g1" ,2);
+  double F12_iterative_2loop = iterative_mass(data, "F12_g1" ,2);
   
   data.do_tsil_all = false;
   
@@ -484,13 +475,6 @@ void print_masses(Data data)
   
 }
 
-
-
-
-
-
-
-
 int main(int argc, char *argv[])
 {
   User_input user(argc,argv);
@@ -502,9 +486,9 @@ int main(int argc, char *argv[])
   
   
 
-  //print_masses(data);
+  print_masses(data);
   
-  plot_M(data);
+  //plot_M(data);
   
   
   
