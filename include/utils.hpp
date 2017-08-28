@@ -20,6 +20,10 @@ using namespace std;
 
 namespace utils
 {
+
+	std::vector<std::string> remove_xi(std::vector<std::string> input);
+  
+  std::vector<std::string> remove_multiplication(std::vector<std::string> input);
   
   int get_loop_order(string type);
   
@@ -36,6 +40,8 @@ namespace utils
   bool check_done(std::string &result, int mpi_process);
   
   bool check_done_quiet(int mpi_process);
+  
+  bool ContainsXi(std::string input);
   
   string part_name_simple(string particle_name_full);
   

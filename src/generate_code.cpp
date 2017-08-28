@@ -62,7 +62,10 @@ void Generate_code::generate_data_hpp()
 
   for (int i=0;i<nm;i++)
   {
-    data_h << "  long double "<< masses[i]<<";"<<endl;
+    //if (!containsXi(masses[i])
+    //{
+		data_h << "  long double "<< masses[i]<<";"<<endl;
+		//}
   }
 
 
@@ -182,6 +185,8 @@ void Generate_code::decalare_var_tsil(ofstream &main_output)
 
 
   get_data(masses,temp_vec, nm,file_masses);
+  masses = remove_xi(masses);
+  nm = masses.size();
   main_output << "  TSIL_REAL ";
   for (int i=0;i<nm;i++)
   {
@@ -261,6 +266,10 @@ void Generate_code::decalare_var(ofstream &main_output)
 
 
   get_data(masses,temp_vec, nm,file_masses);
+  //masses = remove_multiplication(masses);
+  masses = remove_xi(masses);
+  nm = masses.size();
+  
   main_output << "    long double ";
   for (int i=0;i<nm;i++)
   {
@@ -599,8 +608,20 @@ void Generate_code::generate_code()
   string c_file_masses = "models/" + model+"/masses.txt";
   file_masses = c_file_masses.c_str();
   get_data(masses_input,id_input,na,file_masses);
+  // remove any "*" symbols in masses list from gauge parameters (like mw*Xi -> mwXi)
+  std::vector<std::string> masses_test = remove_multiplication(masses_input);
+  masses_input = masses_test;
+  
+  
+	for (int i = 0; i < na ; i++)
+	{
+		cout << masses_input[i] << " -> " << masses_test[i] << endl;
+	}
+  
+  
+  
   base_map = set_bases(masses_input, id_input);
-
+	
 
   generate_self_energy_hpp();
 

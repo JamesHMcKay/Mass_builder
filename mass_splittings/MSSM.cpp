@@ -234,7 +234,7 @@ double iterative_ms_bar_mass(Data data, string particle)
   long double M_pole = data.MChi;
   data.P = M_tree;
   long double diff = 1;
-  long double precision = 1e-5;
+  long double precision = 1e-6;
   int iteration = 0;
   do
   {
@@ -257,12 +257,12 @@ double iterative_ms_bar_mass(Data data, string particle)
     std::cout << std::flush;
     
     iteration++;
-  } while (diff > precision  && iteration < 5000);
+  } while (diff > precision  && iteration < 500);
   
   cout<< "\r" << "M_pole - p = " << diff << " GeV";
   cout << "\n";
   
-  if (iteration == 5000)
+  if (iteration == 500)
   {
     cout << "pole mass did not converge" << endl;
   }

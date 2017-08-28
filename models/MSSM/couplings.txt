@@ -22,10 +22,13 @@ Cz1 1.
 Cz2 -2.*cw
 Cw1 -2.
 Cw2 -2.
+mwXi mw*Xi
+mzXi mz*Xi
+maXi ma*Xi
+mwXi2 TSIL_POW(mwXi,2)
+mzXi2 TSIL_POW(mzXi,2)
+maXi2 TSIL_POW(maXi,2)
+Xi
 v
 alpha
 MassBuilderJEpsilon
-#e g1*g2/TSIL_POW(g1*g1+g2*g2,0.5)
-#g1 2.*mw/v
-#g2 g1*sw/cw
-#g g2

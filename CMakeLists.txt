@@ -71,6 +71,7 @@ set(SRC_MSSM examples/MSSM.cpp)
 set(SRC_itMSSM examples/itMSSM.cpp)
 set(SRC_VDM examples/VDM.cpp)
 set(SRC_QED examples/QED.cpp)
+set(SRC_QED2 examples/QED2.cpp)
 set(SRC_MDM examples/MDM.cpp)
 
 set(SRC_MASS_SPLITTINGS mass_splittings/splittings.cpp mass_splittings/MSSM.cpp mass_splittings/MSSM.hpp mass_splittings/figures.cpp mass_splittings/figures.hpp)
@@ -142,7 +143,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${FS_CXX_FLAGS}")
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${flexiblesusy_LDFLAGS}")
 
 # The main Mass Builder executable
-add_executable(mass_builder ${FS_INCLUDE} ${SRC_MB} ${SRC_FILES_GEN} ${HEADER_FILES_GEN} ${HEADER_MB} ${TSIL_HEADER_FILE} ${SRC_FILES} ${HEADER_FILES} ${GENERATED_SRC_FILES})
+add_executable(mass_builder ${SRC_MB} ${SRC_FILES_GEN} ${HEADER_FILES_GEN} ${HEADER_MB} ${TSIL_HEADER_FILE} ${SRC_FILES} ${HEADER_FILES} ${GENERATED_SRC_FILES})
 
 # Add example executables for each of the models
 add_executable(Scalar EXCLUDE_FROM_ALL ${SRC_Scalar} ${SRC_FILES_GEN} ${HEADER_FILES_GEN} ${TSIL_HEADER_FILE} ${SRC_FILES} ${HEADER_FILES} ${GENERATED_SRC_FILES})
@@ -155,12 +156,15 @@ add_executable(VDM EXCLUDE_FROM_ALL ${SRC_VDM} ${SRC_FILES_GEN} ${HEADER_FILES_G
 
 add_executable(QED EXCLUDE_FROM_ALL ${SRC_QED} ${SRC_FILES_GEN} ${HEADER_FILES_GEN} ${TSIL_HEADER_FILE} ${SRC_FILES} ${HEADER_FILES} ${GENERATED_SRC_FILES})
 
+add_executable(QED2 EXCLUDE_FROM_ALL ${SRC_QED2} ${SRC_FILES_GEN} ${HEADER_FILES_GEN} ${TSIL_HEADER_FILE} ${SRC_FILES} ${HEADER_FILES} ${GENERATED_SRC_FILES})
+
 add_executable(MDM EXCLUDE_FROM_ALL ${SRC_MDM} ${SRC_FILES_GEN} ${HEADER_FILES_GEN} ${TSIL_HEADER_FILE} ${SRC_FILES} ${HEADER_FILES} ${GENERATED_SRC_FILES})
 
 
 add_executable(splittings EXCLUDE_FROM_ALL ${FS_INCLUDE} ${SRC_MASS_SPLITTINGS} ${SRC_FILES_GEN} ${HEADER_FILES_GEN} ${TSIL_HEADER_FILE} ${SRC_FILES} ${HEADER_FILES} ${GENERATED_SRC_FILES})
 
-add_dependencies(mass_builder flexiblesusy)
+
+
 
 # Mass Builder required the WSTP and MPI libraries
 TARGET_LINK_LIBRARIES(mass_builder libtsil.a ${MPI_LIBRARIES} ${LIBRARIES})
@@ -184,6 +188,8 @@ TARGET_LINK_LIBRARIES(VDM libtsil.a)
 TARGET_LINK_LIBRARIES(Scalar libtsil.a)
 
 TARGET_LINK_LIBRARIES(QED libtsil.a)
+
+TARGET_LINK_LIBRARIES(QED2 libtsil.a)
 
 if (CMAKE_COMPILER_IS_GNUCXX)
     message(status "Setting GCC flags")

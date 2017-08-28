@@ -1,7 +1,7 @@
 P 1e4
 Q 1e6
 MChi 1e4
-ma 0.001
+ma 0.01
 mw 80.385
 mz 91.1876
 mt 163.3
@@ -10,3 +10,4 @@ mh 125.5
 MassBuilderJEpsilon 0.0
 mf 1
 alpha 0.00781592
+Xi 1

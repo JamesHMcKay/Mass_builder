@@ -28,7 +28,9 @@ int main(int argc, char *argv[])
   
   Figures fig;
   
-  fig.plot_M(data);
+  //fig.plot_M_flexiblesusy(data);
+  
+  fig.plot_uncertainties(data);
   
   return 0;
 }

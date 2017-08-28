@@ -544,8 +544,16 @@ namespace utils
     string truncated = "True";
     if (options.vector){ truncated = "False";}
     
-    input+="amp0 = FCFAConvert[CreateFeynAmp[subdiags0,Truncated -> " + truncated + "], IncomingMomenta -> {p}, OutgoingMomenta -> {p}, LoopMomenta -> {k1, k2} ,UndoChiralSplittings -> True,TransversePolarizationVectors -> {p},DropSumOver -> True, List -> False,ChangeDimension -> D] // Contract // FCTraceFactor;";
+    input+="amp0 = FCFAConvert[";
+    input+="CreateFeynAmp[subdiags0,Truncated -> " + truncated + ",";
+    input+="GaugeRules -> {}], ";
+    input+="IncomingMomenta -> {p}, OutgoingMomenta -> {p}, LoopMomenta -> {k1, k2} ,";
+    input+="UndoChiralSplittings -> True,TransversePolarizationVectors -> {p}, ";
+    input+="DropSumOver -> True, List -> False,ChangeDimension -> D] // Contract // FCTraceFactor;";
+    
     // GaugeRules -> {GaugeXi[Z] -> 0, GaugeXi[A] -> 0, GaugeXi[W] -> 0, GaugeXi[P] -> 0,GaugeXi[Wp] -> 0} // add as option to CreateFeynAmp for Landau gauge
+    
+    input+="amp0 = amp0 /. GaugeXi[Z] -> Xi^2 /. GaugeXi[A] -> Xi^2 /. GaugeXi[W] -> Xi^2 /. GaugeXi[P] -> Xi^2 /. GaugeXi[Wp] -> Xi^2; ";
     
     
     // correct for additional factors of Pi introduced by FeynArts
@@ -661,7 +669,7 @@ namespace utils
     }
     else
     {
-      input+="amp1 = ampSE1 //FDS[#,l1,l2]&;";
+      input+="amp1 = ampsSE1 //FDS[#,k1,k2]&;";
       
       input+="SetOptions[Eps, Dimension -> D];";
       
@@ -694,9 +702,56 @@ namespace utils
     input+="SEm = (1/4) DiracTrace[ SE ];";
     input+="SE = p*SEk+SEm;"; // TODO make this general (this only works for vectors because SEk is just zero and the p^2 comes through SEm)
     input+="SE = SE /. Pair[Momentum[Polarization[p, -I, Transversality -> True], D], Momentum[Polarization[p, I, Transversality -> True], D]] -> -1 ;";
+    input+="SE = SE /. Sqrt[Xi^2]->Xi;"; // avoid doing a simplify (with specified Xi > 0) just to change this
     // uncomment the following line if using a different gauge choice
     //input+="SEn = SEn /. GaugeXi[Z] -> 0 /. GaugeXi[P] -> 0 /. GaugeXi[Wp] -> 0  /. GaugeXi[S[1]] -> 0 /. GaugeXi[S[2]] -> 0 /. GaugeXi[S[3]] -> 0 ;\n"
   }
+  
+  
+  
+  bool ContainsXi(std::string input)
+  {
+    bool containsXi = false;
+		if (input.find("Xi") != std::string::npos)
+		{
+			containsXi = true;
+		}
+    return containsXi;
+  }
+  
+  
+  std::vector<std::string> remove_xi(std::vector<std::string> input)
+  {
+		int nm = input.size();
+		std::string from = "*";
+		std::string to = "";
+		std::vector<string> output;
+		for (int i = 0; i < nm ; i++)
+		{
+			if (!ContainsXi(input[i]))
+			{
+				output.push_back(input[i]);
+			}
+		}
+		
+		return output;
+	}
+  
+  
+  std::vector<std::string> remove_multiplication(std::vector<std::string> input)
+  {
+		int nm = input.size();
+		std::string from = "*";
+		std::string to = "";
+		for (int i = 0; i < nm ; i++)
+		{
+			ReplaceAll(input[i],from, to);
+		}
+		
+		return input;
+	}
+  
+  
   
   bool check_done_quiet(int mpi_process)
   {

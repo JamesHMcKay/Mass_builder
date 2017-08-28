@@ -6,3 +6,6 @@ mh h
 null n
 mf f
 mt t
+mw*Xi wx
+mz*Xi zx
+ma*Xi ax

@@ -21,6 +21,8 @@ public:
 	void plot_M(Data data);
 	
 	void plot_M_flexiblesusy(Data data);
+	
+	void plot_uncertainties(Data data);
   
 };
 
