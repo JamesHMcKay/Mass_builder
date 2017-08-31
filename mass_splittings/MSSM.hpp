@@ -15,8 +15,10 @@ public:
    
   MSSM(Data data) : data(data) {};
   
+  MSSM(){};
+  
   // run FlexibleSUSY and update data structure with couplings and self energies
-  void compute_spectra_flexiblesusy();
+  bool compute_spectra_flexiblesusy();
   
   // set parameters according to method in Ibe et al. (2013)
   void compute_spectra_MB_1loop();

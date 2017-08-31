@@ -545,15 +545,14 @@ namespace utils
     if (options.vector){ truncated = "False";}
     
     input+="amp0 = FCFAConvert[";
-    input+="CreateFeynAmp[subdiags0,Truncated -> " + truncated + ",";
-    input+="GaugeRules -> {}], ";
+    input+="CreateFeynAmp[subdiags0,Truncated -> " + truncated;
+    //input+=", GaugeRules -> {}";
+    input+="], ";
     input+="IncomingMomenta -> {p}, OutgoingMomenta -> {p}, LoopMomenta -> {k1, k2} ,";
     input+="UndoChiralSplittings -> True,TransversePolarizationVectors -> {p}, ";
     input+="DropSumOver -> True, List -> False,ChangeDimension -> D] // Contract // FCTraceFactor;";
     
-    // GaugeRules -> {GaugeXi[Z] -> 0, GaugeXi[A] -> 0, GaugeXi[W] -> 0, GaugeXi[P] -> 0,GaugeXi[Wp] -> 0} // add as option to CreateFeynAmp for Landau gauge
-    
-    input+="amp0 = amp0 /. GaugeXi[Z] -> Xi^2 /. GaugeXi[A] -> Xi^2 /. GaugeXi[W] -> Xi^2 /. GaugeXi[P] -> Xi^2 /. GaugeXi[Wp] -> Xi^2; ";
+    //input+="amp0 = amp0 /. GaugeXi[Z] -> Xi^2 /. GaugeXi[A] -> Xi^2 /. GaugeXi[W] -> Xi^2 /. GaugeXi[P] -> Xi^2 /. GaugeXi[Wp] -> Xi^2; ";
     
     
     // correct for additional factors of Pi introduced by FeynArts

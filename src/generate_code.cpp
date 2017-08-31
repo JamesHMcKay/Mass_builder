@@ -432,7 +432,7 @@ void Generate_code::generate_particle_src(std::string particle,int subgroup)
     functions << "    " << couplings_all[i] << " = integral."<<couplings_all[i]<<";\n";
   }
   functions<<"\n"
-  << "    Q2 = data.Q;\n"
+  << "    Q2 = pow(data.Q,2);\n"
   << "    p=data.P;\n";
 
 
@@ -613,13 +613,6 @@ void Generate_code::generate_code()
   masses_input = masses_test;
   
   
-	for (int i = 0; i < na ; i++)
-	{
-		cout << masses_input[i] << " -> " << masses_test[i] << endl;
-	}
-  
-  
-  
   base_map = set_bases(masses_input, id_input);
 	
 
@@ -652,7 +645,7 @@ void Generate_code::generate_code()
   }
   main_output<<";"<<endl;
   main_output<< "\n";
-  main_output<< "   TSIL_REAL Q2 = data.Q;\n";
+  main_output<< "   TSIL_REAL Q2 = pow(data.Q,2);\n";
   main_output<< "   TSIL_REAL s = pow(data.P,2);\n";
 
   main_output<< "   MassBuilderCTM1 = 0;\n";

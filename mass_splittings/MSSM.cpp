@@ -234,7 +234,7 @@ double iterative_ms_bar_mass(Data data, string particle)
   long double M_pole = data.MChi;
   data.P = M_tree;
   long double diff = 1;
-  long double precision = 1e-6;
+  long double precision = 1e-8;
   int iteration = 0;
   do
   {
@@ -250,21 +250,22 @@ double iterative_ms_bar_mass(Data data, string particle)
       M_pole = M_tree + data.SE_1[particle];
     }
     
-    diff = abs(M_pole - data.P);    
+    diff = abs(M_pole - data.P);
     data.P = M_pole;
     
-    cout<< "\r" << "M_pole - p = " << diff << " GeV";
-    std::cout << std::flush;
+    //cout<< "\r" << "M_pole - p = " << diff << " GeV";
+    //std::cout << std::flush;
     
     iteration++;
   } while (diff > precision  && iteration < 500);
   
-  cout<< "\r" << "M_pole - p = " << diff << " GeV";
-  cout << "\n";
+  //cout<< "\r" << "M_pole - p = " << diff << " GeV";
+  //cout << "\n";
   
   if (iteration == 500)
   {
     cout << "pole mass did not converge" << endl;
+    return 0;
   }
     
   return M_pole;
@@ -281,7 +282,7 @@ void MSSM::compute_spectra_MB_1loop()
   //double A = (7./(30.*Pi)); // SM
   double alpha_mz = data.alpha;
   double mu0 = data.mz;
-  double mu = pow(data.Q,0.5);
+  double mu = data.Q;//pow(data.Q,0.5);
   
   data.alpha = pow(   1.0/alpha_mz -  A * log( mu/mu0) , -1);
   
@@ -295,7 +296,7 @@ void MSSM::compute_spectra_MB_2loop()
   Self_energy se;
   
   // matching (?) of SM to Wino model
-  data.alpha = data.alpha*( 1.0-real(extra_TSIL_interface::gammagamma_Chi(data,TSIL_POW(data.Q,0.5))) /data.Q );
+  data.alpha = data.alpha*( 1.0-real(extra_TSIL_interface::gammagamma_Chi(data,data.Q)) /pow(data.Q,2) );
   
   // determine MS bar input parameters at Q
   // only recompute the 1-loop functions for efficiency
@@ -317,7 +318,7 @@ void MSSM::compute_spectra_MB_2loop()
 }
 
 
-void MSSM::compute_spectra_flexiblesusy()
+bool MSSM::compute_spectra_flexiblesusy()
 {
 	Spectrum_generator_settings spectrum_generator_settings;
   
@@ -337,7 +338,7 @@ void MSSM::compute_spectra_flexiblesusy()
   spectrum_generator.set_settings(spectrum_generator_settings);
   spectrum_generator.set_parameter_output_scale(slha_io.get_parameter_output_scale());
   
-  oneset.setPoleMt(data.mt);
+  //oneset.setPoleMt(data.mt);
   
   oneset.toMz();
   
@@ -345,6 +346,8 @@ void MSSM::compute_spectra_flexiblesusy()
 	input.Qin=data.Q;
   input.HiggsIN = 0.5*pow(data.mh,2);
   input.YcIN = 0.5*data.MChi;
+  
+  
   spectrum_generator.run(oneset, input);
 	
 	std::ostringstream warnings;
@@ -359,6 +362,8 @@ void MSSM::compute_spectra_flexiblesusy()
 		problems.print_problems(problems_str);
 		
 		cout<< FORMAT_SPINFO(4,problems_str.str()) << endl;
+		
+		return error;
 	}
 	EW_triplet_slha<Two_scale> model(spectrum_generator.get_model());
 	  
@@ -366,11 +371,23 @@ void MSSM::compute_spectra_flexiblesusy()
   
   // MS bar masses
   
-  //data.mw = EW_triplet physical
+  data.mw = model.get_MVWp();
+  data.mz = model.get_MVZ();
+  data.mh = model.get_Mhh();
+  data.mt = model.get_MFu(2);
+  data.v = model.get_v();
+  
+  double g1 = pow(3./5.,0.5)*model.get_g1();
+  double g2 = model.get_g2();
+  
+  data.alpha = pow(g1*g2,2) / (4 * Pi * (g1*g1 + g2*g2));
+  
+  //data.sw = Sin(model.get_ZZ(0,0)); // not used
   
 	data.SE_1["F11_g1"] = model.get_MFn_pole_slha() - data.MChi;
 	data.SE_1["F12_g1"] = model.get_MFc_pole_slha() - data.MChi;
-    
+  
+  return error;
 }
 
 
@@ -393,7 +410,14 @@ void MSSM::compute_tsil_iterative()
 	double m_F11 = iterative_ms_bar_mass(data,"F11_g1");
 	double m_F12 = iterative_ms_bar_mass(data,"F12_g1");
 	
-	if (data.do_tsil_all)
+	if ( (m_F11 == 0 ) || (m_F12 == 0 ) )
+	{
+		data.SE_1["F11_g1"] = 0;
+		data.SE_1["F12_g1"] = 0;
+		data.SE_2["F11_g1"] = 0;
+		data.SE_2["F12_g1"] = 0;
+	}
+	else if (data.do_tsil_all)
 	{
 		data.SE_2["F11_g1"] = m_F11 - data.MChi;
 		data.SE_2["F12_g1"] = m_F12 - data.MChi;

@@ -74,7 +74,7 @@ set(SRC_QED examples/QED.cpp)
 set(SRC_QED2 examples/QED2.cpp)
 set(SRC_MDM examples/MDM.cpp)
 
-set(SRC_MASS_SPLITTINGS mass_splittings/splittings.cpp mass_splittings/MSSM.cpp mass_splittings/MSSM.hpp mass_splittings/figures.cpp mass_splittings/figures.hpp)
+set(SRC_MASS_SPLITTINGS mass_splittings/decays.hpp mass_splittings/decays.cpp mass_splittings/splittings.cpp mass_splittings/MSSM.cpp mass_splittings/MSSM.hpp mass_splittings/figures.cpp mass_splittings/figures.hpp)
 
 
 set(FS_INCLUDE include/flexiblesusy.hpp flexiblesusy/src/utils.h)

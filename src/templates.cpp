@@ -102,7 +102,7 @@ namespace templates
     << "#define PI 4.0L*atan(1.0L)\n"
     << "#endif\n"
     << "// define subroutines here\n"
-    << "  TSIL_REAL Q2,Q;\n"
+    << "  TSIL_REAL Q2;\n"
     << "  TSIL_REAL p;\n"
     << "  TSIL_COMPLEXCPP Log(TSIL_REAL a){complex<double> s(a/Q2,-0.000);return log(s);}\n"
     << "  TSIL_REAL Power(TSIL_REAL a, int b){return TSIL_POW(a,b);}\n"
