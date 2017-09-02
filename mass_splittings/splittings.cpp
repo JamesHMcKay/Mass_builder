@@ -12,7 +12,9 @@
 #include "self_energy.hpp"
 #include "cmake_variables.hpp"
 #include "figures.hpp"
-#include "MSSM.hpp"
+#include "mssm_spectrum.hpp"
+#include "ew_triplet_spectrum.hpp"
+#include "mdm_spectrum.hpp"
 
 using namespace std;
 
@@ -26,7 +28,11 @@ int main(int argc, char *argv[])
   
   Data data(options);
   
-  Figures fig;
+  MSSM_spectrum spec(data);
+  spec.compute_spectra_flexiblesusy();
+  
+  
+  Figures<MDM_spectrum> fig;
   
   //fig.plot_M(data);
   
@@ -36,7 +42,7 @@ int main(int argc, char *argv[])
   
   fig.plot_M_flexiblesusy(data);
   
-  fig.plot_uncertainties(data);
+  //fig.plot_uncertainties(data);
   
 	//fig.test(data);
   

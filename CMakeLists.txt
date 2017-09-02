@@ -6,7 +6,7 @@ message(status "${CMAKE_CURRENT_SOURCE_DIR}")
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${PROJECT_SOURCE_DIR}/cmake)
 
 # Check for Mathematica
-include(FindMathematica.cmake)
+include(cmake/FindMathematica.cmake)
 if(Mathematica_FOUND)
   message("${BoldYellow}   Found Mathematica")
   if(Mathematica_WSTP_FOUND)
@@ -74,21 +74,19 @@ set(SRC_QED examples/QED.cpp)
 set(SRC_QED2 examples/QED2.cpp)
 set(SRC_MDM examples/MDM.cpp)
 
-set(SRC_MASS_SPLITTINGS mass_splittings/decays.hpp mass_splittings/decays.cpp mass_splittings/splittings.cpp mass_splittings/MSSM.cpp mass_splittings/MSSM.hpp mass_splittings/figures.cpp mass_splittings/figures.hpp)
+set(MS mass_splittings)
 
+set(SRC_MASS_SPLITTINGS ${MS}/decays.hpp ${MS}/decays.cpp ${MS}/splittings.cpp ${MS}/mssm_spectrum.cpp ${MS}/mssm_spectrum.hpp ${MS}/ew_triplet_spectrum.cpp ${MS}/ew_triplet_spectrum.hpp ${MS}/mdm_spectrum.cpp ${MS}/mdm_spectrum.hpp ${MS}/figures.cpp ${MS}/figures.hpp)
 
 set(FS_INCLUDE include/flexiblesusy.hpp flexiblesusy/src/utils.h)
 
 # include generated source files
 include(src/CMakeLists.txt)
 
-
-
 # include flexiblesusy
-include(contrib.cmake)
+include(cmake/flexiblesusy.cmake)
 
-
-LINK_DIRECTORIES(${TSIL_PATH} ${PROJECT_SOURCE_DIR}/flexiblesusy/src/ ${PROJECT_SOURCE_DIR}/flexiblesusy/models/EW_triplet/ ${EIGEN3_INCLUDE_DIR})
+LINK_DIRECTORIES(${TSIL_PATH} ${PROJECT_SOURCE_DIR}/flexiblesusy/src/ ${PROJECT_SOURCE_DIR}/flexiblesusy/models/EW_triplet/ ${PROJECT_SOURCE_DIR}/flexiblesusy/models/MSSM/ ${EIGEN3_INCLUDE_DIR})
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 set(CMAKE_CXX_FLAGS -L.)
@@ -177,7 +175,7 @@ Mathematica_ABSOLUTIZE_LIBRARY_DEPENDENCIES(splittings)
 # Examples only require the TSIL libraries
 TARGET_LINK_LIBRARIES(MSSM libflexisusy.a libEW_triplet.a libtsil.a ${LIBRARIES} ${Boost_LIBRARIES} )
 
-TARGET_LINK_LIBRARIES(splittings libflexisusy.a libEW_triplet.a libtsil.a ${LIBRARIES} ${Boost_LIBRARIES} )
+TARGET_LINK_LIBRARIES(splittings libflexisusy.a libMSSM.a libEW_triplet.a libtsil.a ${LIBRARIES} ${Boost_LIBRARIES} )
 
 TARGET_LINK_LIBRARIES(itMSSM libtsil.a)
 

@@ -2,7 +2,6 @@
 #define DECAYS_H
 
 #include "data.hpp"
-#include "MSSM.hpp"
 
 using namespace std;
 
@@ -15,7 +14,6 @@ class Decays
 {
 	private:
 	Data data;
-	MSSM mssm;
 	int method;
 	
 	long double Pi = PI;

@@ -1,10 +1,10 @@
-#ifndef MSSM_H
-#define MSSM_H
+#ifndef EW_TRIPLET_H
+#define EW_TRIPLET_H
 
 #include "data.hpp"
 
 
-class MSSM
+class EW_triplet_spectrum
 {
 private:
 		
@@ -13,9 +13,9 @@ public:
   // Mass Builder data structure
   Data data;
    
-  MSSM(Data data) : data(data) {};
+  EW_triplet_spectrum(Data data) : data(data) {};
   
-  MSSM(){};
+  EW_triplet_spectrum(){};
   
   // run FlexibleSUSY and update data structure with couplings and self energies
   bool compute_spectra_flexiblesusy();
@@ -30,6 +30,16 @@ public:
   
   // temporary for now, get difference of 1-loop derivatives
   double add_1loop_der(Data &data);
+  
+  // compute the iterative pole mass
+  double iterative_ms_bar_mass(Data data, string particle);
+  
+  double get_deltam();
+  double get_deltam_2loop();
+  
+  double get_charged_mass();
+  
+  double get_neutral_mass();
   
 };
 

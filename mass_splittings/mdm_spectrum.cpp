@@ -1,15 +1,15 @@
 /*
  Mass Builder
  
- -- MSSM.cpp --
+ -- mdm_spectrum.cpp --
 
- Contains functions for computing MSSM spectrum from FlexibleSUSY
+ Contains functions for computing MDM spectrum from FlexibleSUSY
  and additional interface to TSIL for derivatives of one-loop
  energies
   
  */
 
-#include "MSSM.hpp"
+#include "mdm_spectrum.hpp"
 
 #include "data.hpp"
 #include "self_energy.hpp"
@@ -24,13 +24,13 @@
 #include "flexiblesusy.hpp"
 #define ALGORITHM1 Two_scale
 
-#include "flexiblesusy/models/EW_triplet/EW_triplet_input_parameters.hpp"
-#include "flexiblesusy/models/EW_triplet/EW_triplet_slha_io.hpp"
-#include "flexiblesusy/models/EW_triplet/EW_triplet_spectrum_generator.hpp"
-#include "flexiblesusy/models/EW_triplet/EW_triplet_two_scale_model.hpp"
-#include "flexiblesusy/models/EW_triplet/EW_triplet_two_scale_model_slha.hpp"
-#include "flexiblesusy/models/EW_triplet/EW_triplet_physical.hpp"
-#include "flexiblesusy/models/EW_triplet/EW_triplet_info.hpp"
+#include "flexiblesusy/models/MDM/MDM_input_parameters.hpp"
+#include "flexiblesusy/models/MDM/MDM_slha_io.hpp"
+#include "flexiblesusy/models/MDM/MDM_spectrum_generator.hpp"
+#include "flexiblesusy/models/MDM/MDM_two_scale_model.hpp"
+#include "flexiblesusy/models/MDM/MDM_two_scale_model_slha.hpp"
+#include "flexiblesusy/models/MDM/MDM_physical.hpp"
+#include "flexiblesusy/models/MDM/MDM_info.hpp"
 
  
 using namespace flexiblesusy;
@@ -39,7 +39,7 @@ using namespace softsusy;
 
 using namespace std;
 
-namespace extra_TSIL_interface
+namespace extra_TSIL_interface_MDM
 {
 #include TSIL_PATH
   using namespace std;
@@ -220,15 +220,15 @@ namespace extra_TSIL_interface
   
 }
 
-double MSSM::add_1loop_der(Data &data)
+double MDM_spectrum::add_1loop_der(Data &data)
 {
 	
-	return extra_TSIL_interface::add_derivatives(data);
+	return extra_TSIL_interface_MDM::add_derivatives(data);
 	
 }
 
 
-double iterative_ms_bar_mass(Data data, string particle)
+double MDM_spectrum::iterative_ms_bar_mass(Data data, string particle)
 {
   long double M_tree = data.MChi;
   long double M_pole = data.MChi;
@@ -272,7 +272,7 @@ double iterative_ms_bar_mass(Data data, string particle)
 }
 
 // determine MSbar parameters
-void MSSM::compute_spectra_MB_1loop()
+void MDM_spectrum::compute_spectra_MB_1loop()
 {
   Self_energy se;
   
@@ -291,12 +291,12 @@ void MSSM::compute_spectra_MB_1loop()
 }
 
 // determine MSbar parameters
-void MSSM::compute_spectra_MB_2loop()
+void MDM_spectrum::compute_spectra_MB_2loop()
 {
   Self_energy se;
   
   // matching (?) of SM to Wino model
-  data.alpha = data.alpha*( 1.0-real(extra_TSIL_interface::gammagamma_Chi(data,data.Q)) /pow(data.Q,2) );
+  data.alpha = data.alpha*( 1.0-real(extra_TSIL_interface_MDM::gammagamma_Chi(data,data.Q)) /pow(data.Q,2) );
   
   // determine MS bar input parameters at Q
   // only recompute the 1-loop functions for efficiency
@@ -311,24 +311,24 @@ void MSSM::compute_spectra_MB_2loop()
   data.mz = pow( pow(data.mz,2) - real(data.SE_1["V2"]) ,0.5);
   
   // need to iterate to determine MS bar mass for MChi to match equation (9) of Ibe et al.
-  //data.MChi = iterative_ms_bar_mass(data, "F11_g1");
+  //data.MChi = iterative_ms_bar_mass(data, "F7");
   
   data.P = data.MChi;
   data.do_tsil_all = true;
 }
 
 
-bool MSSM::compute_spectra_flexiblesusy()
+bool MDM_spectrum::compute_spectra_flexiblesusy()
 {
 	Spectrum_generator_settings spectrum_generator_settings;
   
   QedQcd oneset;
-  EW_triplet_input_parameters input;
-  EW_triplet_spectrum_generator<Two_scale> spectrum_generator;
+  MDM_input_parameters input;
+  MDM_spectrum_generator<Two_scale> spectrum_generator;
   
-  EW_triplet_slha_io slha_io;
+  MDM_slha_io slha_io;
   
-  const std::string slha_file="flexiblesusy/models/EW_triplet/LesHouches.in.EW_triplet";
+  const std::string slha_file="flexiblesusy/models/MDM/LesHouches.in.MDM";
   
   slha_io.read_from_file(slha_file);
   slha_io.fill(oneset);
@@ -351,7 +351,7 @@ bool MSSM::compute_spectra_flexiblesusy()
   spectrum_generator.run(oneset, input);
 	
 	std::ostringstream warnings;
-	const Problems<EW_triplet_info::NUMBER_OF_PARTICLES>& problems
+	const Problems<MDM_info::NUMBER_OF_PARTICLES>& problems
 	= spectrum_generator.get_problems();
 	const bool error = problems.have_problem();
 	problems.print_warnings(warnings);
@@ -365,7 +365,7 @@ bool MSSM::compute_spectra_flexiblesusy()
 		
 		return error;
 	}
-	EW_triplet_slha<Two_scale> model(spectrum_generator.get_model());
+	MDM_slha<Two_scale> model(spectrum_generator.get_model());
 	  
   // update data struct with computed spectrum
   
@@ -384,48 +384,87 @@ bool MSSM::compute_spectra_flexiblesusy()
   
   //data.sw = Sin(model.get_ZZ(0,0)); // not used
   
-	data.SE_1["F11_g1"] = model.get_MFn_pole_slha() - data.MChi;
-	data.SE_1["F12_g1"] = model.get_MFc_pole_slha() - data.MChi;
-  
+	data.SE_1["F7"] = model.get_MFn_pole_slha() - data.MChi;
+	data.SE_1["F5"] = model.get_MFc_pole_slha() - data.MChi;
+	
   return error;
 }
 
 
-void MSSM::compute_tsil()
+void MDM_spectrum::compute_tsil()
 {
 	Self_energy se;
 	se.run_tsil(data);	
 	
 	// add derivatives of 1-loop self energies
-	data.SE_2["F11_g1"] = data.SE_2["F11_g1"] +  extra_TSIL_interface::F11_der(data);
-	data.SE_2["F12_g1"] = data.SE_2["F12_g1"] +  extra_TSIL_interface::F12_der(data);	
+	data.SE_2["F7"] = data.SE_2["F7"] +  extra_TSIL_interface_MDM::F11_der(data);
+	data.SE_2["F6"] = data.SE_2["F6"] +  extra_TSIL_interface_MDM::F12_der(data);	
+
+
+	if (!data.do_tsil_all)
+	{
+		data.SE_2["F7"] = 0;
+		data.SE_2["F6"] = 0;
+	}	
+	
 }
 
 
-void MSSM::compute_tsil_iterative()
+void MDM_spectrum::compute_tsil_iterative()
 {	
 	Self_energy se;
 	se.run_tsil(data);
 	
-	double m_F11 = iterative_ms_bar_mass(data,"F11_g1");
-	double m_F12 = iterative_ms_bar_mass(data,"F12_g1");
+	double m_F7 = iterative_ms_bar_mass(data,"F7");
+	double m_F6 = iterative_ms_bar_mass(data,"F6");
 	
-	if ( (m_F11 == 0 ) || (m_F12 == 0 ) )
+	if ( (m_F7 == 0 ) || (m_F6 == 0 ) )
 	{
-		data.SE_1["F11_g1"] = 0;
-		data.SE_1["F12_g1"] = 0;
-		data.SE_2["F11_g1"] = 0;
-		data.SE_2["F12_g1"] = 0;
+		data.SE_1["F7"] = 0;
+		data.SE_1["F6"] = 0;
+		data.SE_2["F7"] = 0;
+		data.SE_2["F6"] = 0;
 	}
 	else if (data.do_tsil_all)
 	{
-		data.SE_2["F11_g1"] = m_F11 - data.MChi;
-		data.SE_2["F12_g1"] = m_F12 - data.MChi;
+		data.SE_2["F7"] = m_F7 - data.MChi;
+		data.SE_2["F6"] = m_F6 - data.MChi;
 	}
 	else
 	{
-		data.SE_1["F11_g1"] = m_F11 - data.MChi;
-		data.SE_1["F12_g1"] = m_F12 - data.MChi;
+		data.SE_1["F7"] = m_F7 - data.MChi;
+		data.SE_1["F6"] = m_F6 - data.MChi;
 	}	
 
+}
+
+
+double MDM_spectrum::get_deltam()
+{
+	return data.SE_1["F5"] - data.SE_1["F7"];
+}
+
+double MDM_spectrum::get_deltam_2loop()
+{
+	return data.SE_1["F5_g1"] + data.SE_2["F5_g1"] - data.SE_2["F7_g1"] - data.SE_1["F7_g1"];
+}
+
+double MDM_spectrum::get_deltam2()
+{
+	return data.SE_1["F6_g1"] - data.SE_1["F7_g1"];
+}
+
+double MDM_spectrum::get_double_charged_mass()
+{
+	return data.MChi + data.SE_1["F6_g1"] + data.SE_1["F6_g1"];
+}
+
+double MDM_spectrum::get_charged_mass()
+{
+	return data.MChi + data.SE_1["F5_g1"] + data.SE_1["F5_g1"];
+}
+
+double MDM_spectrum::get_neutral_mass()
+{
+	return data.MChi + data.SE_1["F7_g1"] + data.SE_1["F7_g1"];
 }

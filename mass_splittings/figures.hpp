@@ -10,9 +10,15 @@
 #include "self_energy.hpp"
 #include "cmake_variables.hpp"
 
-#include "MSSM.hpp"
+#include "mssm_spectrum.hpp"
+
+#include "ew_triplet_spectrum.hpp"
+#include "mdm_spectrum.hpp"
+
+
 #include "decays.hpp"
 
+template <class T>
 class Figures
 {
 private:
@@ -25,14 +31,16 @@ public:
 	
 	void plot_M(Data data);
 	
+	//template <class T>
 	void plot_M_flexiblesusy(Data data);
 	
+	//template <class T>
 	void plot_uncertainties(Data data);
-	
-	void test(Data data);
 	
 	void plot_M_flexiblesusy_2loop(Data data);
   
 };
+
+
 
 #endif
