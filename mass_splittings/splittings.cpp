@@ -33,13 +33,13 @@ int main(int argc, char *argv[])
   
   Figures<EW_triplet_spectrum> fig;
   
-  fig.plot_M(data);
+  //fig.plot_M(data);
   
   //fig.plot_decays(data);
   
   //fig.plot_M_flexiblesusy_2loop(data);
   
-  //fig.plot_M_flexiblesusy(data);
+  fig.plot_M_flexiblesusy(data);
   
   //fig.plot_uncertainties(data);
   
