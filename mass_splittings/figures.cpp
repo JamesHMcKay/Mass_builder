@@ -407,7 +407,7 @@ void Figures<T>::plot_M(Data data)
 {
   ofstream myfile;
   myfile.open ("models/MSSM/output/mass_splittings.txt");
-  int pts = 100;
+  int pts = 10;
   double n = 0;
   int status = 0;
   double max_M = 4000; // (GeV)
@@ -415,7 +415,7 @@ void Figures<T>::plot_M(Data data)
   double logMax = log10(max_M);
   double logMin = log10(min_M);
   data.mt = 163.3;
-  data.Q = pow(163.3,2);
+  data.Q = 163.3;//pow(163.3,2);
   for (int i = 0; i < pts+1 ; i++)
   {
     n = (i)*(logMax - logMin)/pts + logMin;
@@ -424,11 +424,12 @@ void Figures<T>::plot_M(Data data)
     T mssm_1loop(data);
     mssm_1loop.compute_spectra_MB_1loop();
     mssm_1loop.compute_tsil();
-    double delta_m_1 = mssm_1loop.data.SE_1["F12_g1"] - mssm_1loop.data.SE_1["F11_g1"];
+    double delta_m_1 = mssm_1loop.get_deltam();
+    
     T mssm_2loop(data);
     mssm_2loop.compute_spectra_MB_2loop();
     mssm_2loop.compute_tsil();
-    double delta_m_2 = (mssm_2loop.data.SE_1["F12_g1"] - mssm_2loop.data.SE_1["F11_g1"]) + ( mssm_2loop.data.SE_2["F12_g1"] - mssm_2loop.data.SE_2["F11_g1"]);
+    double delta_m_2 = mssm_2loop.get_deltam_2loop();
     myfile << data.MChi << " " << delta_m_1 <<  " " << delta_m_2 << endl;
     status=(float(i)/pts)*100;
     cout<< "\r" << "computing mass splittings . . . " << status << "% complete ";
@@ -499,7 +500,7 @@ void Figures<T>::plot_M_flexiblesusy(Data data)
 			spec.compute_spectra_flexiblesusy();
 			
 			T spec_iterative = spec;
-      //mssm_iterative.compute_tsil_iterative();
+      spec_iterative.compute_tsil_iterative();
 			
 			mass_splittings_iterative << " " << spec_iterative.get_deltam();
 			

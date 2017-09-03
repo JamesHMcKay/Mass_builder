@@ -314,6 +314,11 @@ void Generate_code::decalare_var(ofstream &main_output)
 }
 
 
+inline bool exists (const std::string& name) {
+    ifstream f(name.c_str());
+    return f.good();
+}
+
 void Generate_code::generate_particle_src(std::string particle,int subgroup)
 {
   particle_name =  part_name_simple(particle);
@@ -325,10 +330,11 @@ void Generate_code::generate_particle_src(std::string particle,int subgroup)
   functions.open (src_file_name);
 
   cout << "writing source file = " << src_file_name << endl;
-
+	
   self_energy_src_preamble(functions, particle_name, subgroup);
-
+	
   decalare_var_tsil(functions);
+  
 
   functions << "\n";
 
@@ -354,6 +360,8 @@ void Generate_code::generate_particle_src(std::string particle,int subgroup)
       functions<< "{" << endl;
 
       ifstream infile(coeff_integrals);
+      
+      
 
       string content = "";
       int i;
