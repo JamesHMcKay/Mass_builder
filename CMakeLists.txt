@@ -133,7 +133,7 @@ else()
   message(FATAL_ERROR "FlexibleSUSY requires the GSL libraries.")
 endif()
 
-set(LIBRARIES ${LIBRARIES} ${GSL_LIBRARIES})
+#set(LIBRARIES ${LIBRARIES} ${GSL_LIBRARIES})
 
 
 
@@ -157,22 +157,15 @@ add_executable(MDM EXCLUDE_FROM_ALL ${SRC_MDM} ${SRC_FILES_GEN} ${HEADER_FILES_G
 add_executable(splittings EXCLUDE_FROM_ALL ${FS_INCLUDE} ${SRC_MASS_SPLITTINGS} ${SRC_FILES_GEN} ${HEADER_FILES_GEN} ${TSIL_HEADER_FILE} ${SRC_FILES} ${HEADER_FILES} ${GENERATED_SRC_FILES})
 
 
-
-
 # Mass Builder required the WSTP and MPI libraries
 TARGET_LINK_LIBRARIES(mass_builder libtsil.a ${MPI_LIBRARIES} ${LIBRARIES})
 
 Mathematica_ABSOLUTIZE_LIBRARY_DEPENDENCIES(mass_builder)
-Mathematica_ABSOLUTIZE_LIBRARY_DEPENDENCIES(MSSM)
 Mathematica_ABSOLUTIZE_LIBRARY_DEPENDENCIES(splittings)
 
-
 # Examples only require the TSIL libraries
-TARGET_LINK_LIBRARIES(MSSM libflexisusy.a libEW_triplet.a libtsil.a ${LIBRARIES} ${Boost_LIBRARIES} )
 
-TARGET_LINK_LIBRARIES(splittings libflexisusy.a libMSSM.a libEW_triplet.a libtsil.a ${LIBRARIES} ${Boost_LIBRARIES} )
-
-TARGET_LINK_LIBRARIES(itMSSM libtsil.a)
+TARGET_LINK_LIBRARIES(splittings libflexisusy.a libMSSM.a libEW_triplet.a libtsil.a ${GSL_LIBRARIES} ${LIBRARIES} ${Boost_LIBRARIES} )
 
 TARGET_LINK_LIBRARIES(MDM libtsil.a)
 
