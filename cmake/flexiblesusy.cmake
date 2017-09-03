@@ -53,7 +53,6 @@ set(FS_OPTIONS ${FS_OPTIONS}
 		 --disable-threads
 		#--enable-verbose flag causes verbose output at runtime as well. Maybe set it dynamically somehow in future.
 	 )
-message("FS OPTIONS = ${FS_OPTIONS}")
 
 # Set the models (spectrum generators) existing in flexiblesusy (could autogen this, but that would build some things we don't need)
 set(BUILT_FS_MODELS EW_triplet MSSM MDM)

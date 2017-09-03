@@ -27,10 +27,10 @@
 #include "compute_amp.hpp"
 
 
-inline double sqr(double a) { return a * a; }
-#include "flexiblesusy/src/utils.h"
+//inline double sqr(double a) { return a * a; }
+//#include "flexiblesusy/src/utils.h"
 
-#include "flexiblesusy.hpp"
+//#include "flexiblesusy.hpp"
 
 using namespace std;
 using namespace utils;

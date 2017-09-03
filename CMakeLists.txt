@@ -51,19 +51,7 @@ if(NOT EXISTS ${outhdr})
   configure_file("${PROJECT_SOURCE_DIR}/src/self_energy.cpp.in" ${outhdr})
 endif()
 
-
 ###### the below is relevant for a build using FlexibleSUSY
-
-include_directories(flexiblesusy/src/)
-
-
-set(FS_INCLUDE include/flexiblesusy.hpp flexiblesusy/src/utils.h)
-# include flexiblesusy
-include(cmake/flexiblesusy.cmake)
-
-set(MS mass_splittings)
-set(SRC_MASS_SPLITTINGS ${MS}/decays.hpp ${MS}/decays.cpp ${MS}/splittings.cpp ${MS}/mssm_spectrum.cpp ${MS}/mssm_spectrum.hpp ${MS}/ew_triplet_spectrum.cpp ${MS}/ew_triplet_spectrum.hpp ${MS}/mdm_spectrum.cpp ${MS}/mdm_spectrum.hpp ${MS}/figures.cpp ${MS}/figures.hpp)
-
 
 # Check for Eigen
 find_package(Eigen3 3.1.0)
@@ -72,10 +60,10 @@ if(EIGEN3_FOUND)
   message("-- Eigen version: ${EIGEN3_VERSION}")
 else()
   message("${BoldRed}   Eigen v3.1.0 or greater not found.")
-  message(FATAL_ERROR "Eigen not found -- this is required for FlexibleSUSY functionality")
+  message("${BoldYellow} Eigen not found -- this is required for FlexibleSUSY functionality")
 endif()
 
-message("Eigen found in ${EIGEN3_INCLUDE_DIR}")
+message("${BoldYellow} Eigen found in ${EIGEN3_INCLUDE_DIR}")
 
 
 # find boost (currently hardcoded to my system)
@@ -85,13 +73,8 @@ if(Boost_FOUND)
   include_directories("${Boost_INCLUDE_DIR}")
 	#link_directories("${Boost_LIBRARY_DIR}")
 else()
-  message(FATAL_ERROR "Boost not found -- required for mass splittings plotting functions")
+  message("${BoldYellow} Boost not found -- required for mass splittings plotting functions")
 endif()
-
-#set(Boost_INCLUDE_DIR /usr/local/Cellar/boost/1.59.0/include)
-#set(Boost_LIBRARY_DIR /usr/local/Cellar/boost/1.59.0/lib)
-
-#find_package(Boost COMPONENTS system filesystem REQUIRED)
 
 # Check for Gnu Scientific Library (GSL)
 include(cmake/FindGSL.cmake)
@@ -100,16 +83,19 @@ if(GSL_FOUND)
     include_directories("${GSL_INCLUDE_DIRS}")
   endif()
 else()
-  message(FATAL_ERROR "FlexibleSUSY requires the GSL libraries.")
+  message("FlexibleSUSY requires the GSL libraries.")
 endif()
 
+# if all required packages are found then link the directories
 
-#########
-
-
-
-
-
+if (GSL_FOUND AND Boost_FOUND AND EIGEN3_FOUND)
+	include_directories(flexiblesusy/src/)
+	set(FS_INCLUDE include/flexiblesusy.hpp flexiblesusy/src/utils.h)
+	# include flexiblesusy
+	include(cmake/flexiblesusy.cmake)
+	set(MS mass_splittings)
+	set(SRC_MASS_SPLITTINGS ${MS}/decays.hpp ${MS}/decays.cpp ${MS}/splittings.cpp ${MS}/mssm_spectrum.cpp ${MS}/mssm_spectrum.hpp ${MS}/ew_triplet_spectrum.cpp ${MS}/ew_triplet_spectrum.hpp ${MS}/mdm_spectrum.cpp ${MS}/mdm_spectrum.hpp ${MS}/figures.cpp ${MS}/figures.hpp)
+endif()
 
 
 include_directories(src include ${Mathematica_WSTP_INCLUDE_DIR})
@@ -182,7 +168,6 @@ Mathematica_ABSOLUTIZE_LIBRARY_DEPENDENCIES(mass_builder)
 
 # Examples only require the TSIL libraries
 
-
 TARGET_LINK_LIBRARIES(MDM libtsil.a)
 
 TARGET_LINK_LIBRARIES(VDM libtsil.a)
@@ -194,7 +179,7 @@ TARGET_LINK_LIBRARIES(QED libtsil.a)
 TARGET_LINK_LIBRARIES(QED2 libtsil.a)
 
 
-
+# mass splittings target
 LINK_DIRECTORIES(${PROJECT_SOURCE_DIR}/flexiblesusy/src/ ${PROJECT_SOURCE_DIR}/flexiblesusy/models/EW_triplet/ ${PROJECT_SOURCE_DIR}/flexiblesusy/models/MSSM/ ${EIGEN3_INCLUDE_DIR})
 add_executable(splittings EXCLUDE_FROM_ALL ${FS_INCLUDE} ${SRC_MASS_SPLITTINGS} ${SRC_FILES_GEN} ${HEADER_FILES_GEN} ${TSIL_HEADER_FILE} ${SRC_FILES} ${HEADER_FILES} ${GENERATED_SRC_FILES})
 Mathematica_ABSOLUTIZE_LIBRARY_DEPENDENCIES(splittings)
