@@ -719,11 +719,23 @@ namespace utils
   
   void remove_fake_IR_divergence(std::string &input, std::vector<std::string> masses)
   {
+		std::string massesSmall[4] = {"ma","mf","md","mu"};
+		bool small_mass = false;
+    
 		input+= "massesSmall = List[";
 		
-		for (unsigned int i = 0; i < masses.size()-1; i++)
+		for (unsigned int i = 0; i < masses.size(); i++)
 		{
-			if (masses[i]=="ma")
+			small_mass = false;
+			for (int j = 0; j < 4 ; j++)
+			{
+				if (masses[i] == massesSmall[j])
+				{
+					small_mass = true;
+				}
+			}
+			
+			if ( small_mass && (i < masses.size()-1))
 			{
 				input+= "1,";
 			}
@@ -732,7 +744,8 @@ namespace utils
 				input+= "0,";
 			}
 		}
-		if (masses[masses.size()-1]=="ma")
+		
+		if (small_mass)
 		{
 			input+= "1];";
 		}
