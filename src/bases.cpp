@@ -206,10 +206,20 @@ std::map <std::string, Bases > set_bases(std::vector<string> masses, std::vector
   }
   
   
+  std::string massesSmall[4] = {"ma","mf","md","mu"};
   
   for (int i1 = 0; i1 < n ; i1++)
   {
-		if (masses[i1]=="ma" || masses[i1]=="null")
+		bool small_mass = false;
+		for (int j = 0; j < 4 ; j++)
+		{
+			if (masses[i1] == massesSmall[j])
+			{
+				small_mass = true;
+			}
+		}
+			
+		if (small_mass)
 		{
 	    for (int i2 = 0; i2 < n ; i2++)
 	    {

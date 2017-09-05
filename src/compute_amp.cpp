@@ -69,44 +69,50 @@ bool Compute_amp::calc_diagram()
     cout << "using previously computed amplitude " << endl;
     templates::print_math_header(input);
     utils::get_saved_amplitude(input,options,masses_input[0]);
-    send_to_math(input);
+    send_to_math(input); 
+    // need to get amplitude to find required masses
+    print_math_body_1(input,options,get_cwd());
+    send_to_math(input); // will return amplitude as a string
   }
-  
   else
   {
     cout << "computing amplitude " << endl;
     templates::print_math_header(input);
     utils::print_math_body_1(input,options,get_cwd());
     
-	  send_to_math(input);
-	  const char* amplitude;
-	  if (!options.verbose)
+	  send_to_math(input); // will return amplitude as a string
+	}
+	
+  const char* amplitude;
+  if (!options.verbose)
+  {
+	  if(!WSGetString((WSLINK)pHandle, &amplitude))
 	  {
-		  if(!WSGetString((WSLINK)pHandle, &amplitude))
-		  {
-		    cout << "Error getting amplitude from WSTP" << endl;
-		  }
-	    
-	    std::pair <vector<string>,vector<string>> required = get_required_masses(masses_input,id_input, amplitude);
-	        
-			masses_req = required.first;
-			id_req = required.second;
-	        
-	    cout << "required masses are: ";
-	    
-	    for (unsigned int i = 0; i<masses_req.size(); i++)
-	    {
-				cout << " " << masses_req[i];
-			}
-	        
-	    cout << endl;
-		}
-		else
-		{
-			masses_req = masses_input;
-			id_req = id_input;
-		}
+	    cout << "Error getting amplitude from WSTP" << endl;
+	  }
     
+    std::pair <vector<string>,vector<string>> required = get_required_masses(masses_input,id_input, amplitude);
+        
+		masses_req = required.first;
+		id_req = required.second;
+        
+    cout << "required masses are: ";
+    
+    for (unsigned int i = 0; i<masses_req.size(); i++)
+    {
+			cout << " " << masses_req[i];
+		}
+        
+    cout << endl;
+	}
+	else
+	{
+		masses_req = masses_input;
+		id_req = id_input;
+	}
+    
+  if (check_if_available(options) && !options.force)
+  {  
     utils::print_math_body_2(input,options,masses_req);
     
     // send input to Mathematica
