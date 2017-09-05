@@ -827,6 +827,12 @@ namespace utils
       }
     }
     
+    if (masses_out.size()==0)
+    {
+			masses_out.push_back("none");
+			id_out.push_back("n");
+		}
+    
     std::pair <vector<string>,vector<string>> result;
     
     result.first = masses_out;

@@ -1,7 +1,6 @@
 # all relevant one and two-loop diagrams
 F[11,{1}] 1 1
 F[11,{1}] 2 1
-F[11,{1}] 3 1
 F[12,{1}] 1 1
 F[12,{1}] 2 1
 F[12,{1}] 3 1
