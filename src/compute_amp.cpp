@@ -29,6 +29,15 @@ bool Compute_amp::calc_diagram()
 {
   bool success = 0;
   
+  if (options.verbose)
+  {
+		debug_out.open ("debug.m");
+		debug_out << "(* ::Package:: *)" << endl;
+		debug_out << "Quit[]" << endl;
+		debug_out << "(* ::Section:: *)" << endl;
+	}
+	
+  
   // print diagram details (number, particle, ...) to terminal
   print_diagram_info(options);
   
@@ -41,17 +50,20 @@ bool Compute_amp::calc_diagram()
   int na;
   get_data(masses_input,id_input,na,file_masses);
   
+  vector<string> masses_req, id_req;
+  
   // create WSTP link and compute amplitude
-  create_wstp_link();
+  if (!options.verbose)
+  {
+		create_wstp_link();
+	}
+  
   load_libraries();
   
   // create string containing input to Mathematica
   std::string input;
   
-  
-  
   // check if this diagram has already been computed (need to check available diagrams list and the existence of the math file)
-  
   if (check_if_available(options) && !options.force)
   {
     cout << "using previously computed amplitude " << endl;
@@ -64,7 +76,39 @@ bool Compute_amp::calc_diagram()
   {
     cout << "computing amplitude " << endl;
     templates::print_math_header(input);
-    utils::print_math_body(input,options,get_cwd(),masses_input);
+    utils::print_math_body_1(input,options,get_cwd());
+    
+	  send_to_math(input);
+	  const char* amplitude;
+	  if (!options.verbose)
+	  {
+		  if(!WSGetString((WSLINK)pHandle, &amplitude))
+		  {
+		    cout << "Error getting amplitude from WSTP" << endl;
+		  }
+	    
+	    std::pair <vector<string>,vector<string>> required = get_required_masses(masses_input,id_input, amplitude);
+	        
+			masses_req = required.first;
+			id_req = required.second;
+	        
+	    cout << "required masses are: ";
+	    
+	    for (unsigned int i = 0; i<masses_req.size(); i++)
+	    {
+				cout << " " << masses_req[i];
+			}
+	        
+	    cout << endl;
+		}
+		else
+		{
+			masses_req = masses_input;
+			id_req = id_input;
+		}
+    
+    utils::print_math_body_2(input,options,masses_req);
+    
     // send input to Mathematica
     send_to_math(input);
     
@@ -100,14 +144,22 @@ bool Compute_amp::calc_diagram()
   }
   
   get_finite_amplitude(input,options);
+
+	remove_fake_IR_divergence(input,masses_req);
   
   send_to_math(input);
+  
+  if (options.verbose)
+  {
+		return true;
+	}
+  
   
   // extract non-zero coefficients
   // send List of all possible basis integrals and get list back of coefficients
   
   // create std::map<std::string, Bases> containing all Bases objects
-  full_basis = set_bases(masses_input, id_input);
+  full_basis = set_bases(masses_req, id_req);
   // obtain a corresponding vector<string> of unique Bases identifiers
   full_basis_id = extract_keys(full_basis);
   nb = full_basis_id.size();
@@ -125,7 +177,6 @@ bool Compute_amp::calc_diagram()
   math_1 << "{\""<<full_basis_id[nb-1]<<" \", CForm[C"<<full_basis_id[nb-1]<<"  /. DiracGamma[Momentum[p]] -> p], \"\"}" << endl;
   math_1 << " }, \"Table\", \"FieldSeparators\" -> \" \", \"TextDelimiters\" -> \"\"];" << endl;
   math_1.close();
-  
   
   // call the .m file in Mathematica
   input+= "AppendTo[$Path, \"" + get_cwd() + "/output/\"];";
@@ -195,7 +246,6 @@ bool Compute_amp::calc_diagram()
   math_2 << " }, \"Table\", \"FieldSeparators\" -> \" \", \"TextDelimiters\" -> \"\"];" << endl;
   math_2.close();
   
-  
   // ask Mathematica to evaluate math_2.m
   filename = add_mpi_ext("output/math_2", options.mpi_process, "m");
   input += "<< " + filename + ";";
@@ -249,8 +299,6 @@ bool Compute_amp::calc_diagram()
   }
   
   np = prod_id.size();
-  
-  
   
   // generate final .m file to construct the amplitude
   ofstream math_3;
@@ -319,9 +367,12 @@ bool Compute_amp::calc_diagram()
   
   input += "Quit[]";
   send_to_math(input);
+  if (!options.verbose)
+  {
+		WSClose(link);
+		cout << "WSTP link closed successfully" << endl;
+	}
   
-  WSClose(link);
-  cout << "WSTP link closed successfully" << endl;
   
   
   ///// organise output data////////
@@ -341,10 +392,10 @@ bool Compute_amp::calc_diagram()
   const char *coeff_integrals = c_coeff_integrals.c_str();
   ofstream coeff_integrals_out;
   coeff_integrals_out.open (coeff_integrals);
-  format_coeff("4",reduced_basis,  reduced_basis_id, masses_input, id_input);
+  format_coeff("4",reduced_basis,  reduced_basis_id, masses_req, id_req);
   if (remainder != "0")
   {
-    format_coeff(remainder,masses_input,id_input);
+    format_coeff(remainder,masses_req,id_req);
     coeff_integrals_out << "  TSIL_COMPLEXCPP C0 = " << remainder << ";" <<endl;
   }
   for (int i = 0; i < nbr;i++)
@@ -376,14 +427,14 @@ bool Compute_amp::calc_diagram()
   
   ofstream coeff_products_out;
   coeff_products_out.open (coeff_products);
-  format_coeff("4",reduced_prod_map,  reduced_prod_names, masses_input, id_input);
+  format_coeff("4",reduced_prod_map,  reduced_prod_names, masses_req, id_req);
   for (unsigned int i = 0; i < reduced_prod_names.size();i++)
   {
     coeff_products_out << "  TSIL_COMPLEXCPP C" << reduced_prod_names[i] << " = " << reduced_prod_map[reduced_prod_names[i]].coefficient << ";" <<endl;
   }
   coeff_products_out.close();
   
-  
+
   //  SUMMATION
   
   

@@ -54,16 +54,17 @@ endif()
 ###### the below is relevant for a build using FlexibleSUSY
 
 # Check for Eigen
-find_package(Eigen3 3.1.0)
+find_package(Eigen3 9.1.0)
 if(EIGEN3_FOUND)
   include_directories("${EIGEN3_INCLUDE_DIR}")
   message("-- Eigen version: ${EIGEN3_VERSION}")
+  message("${BoldYellow} Eigen found in ${EIGEN3_INCLUDE_DIR}")
 else()
   message("${BoldRed}   Eigen v3.1.0 or greater not found.")
   message("${BoldYellow} Eigen not found -- this is required for FlexibleSUSY functionality")
 endif()
 
-message("${BoldYellow} Eigen found in ${EIGEN3_INCLUDE_DIR}")
+
 
 
 # find boost (currently hardcoded to my system)

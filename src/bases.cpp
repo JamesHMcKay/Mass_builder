@@ -206,6 +206,23 @@ std::map <std::string, Bases > set_bases(std::vector<string> masses, std::vector
   }
   
   
+  
+  for (int i1 = 0; i1 < n ; i1++)
+  {
+		if (masses[i1]=="ma" || masses[i1]=="null")
+		{
+	    for (int i2 = 0; i2 < n ; i2++)
+	    {
+	      for (int i3 = i2; i3 < n ; i3++)
+	      {
+	        Bases t("TBAR",masses[i1],masses[i2],masses[i3]);
+	        bases_map["TBAR"+id[i1]+id[i2]+id[i3]]= t;
+	      }
+	    }
+		}
+  }
+  
+  
   vector<string> bases_names = extract_keys(bases_map);
   for (unsigned int i =0;i<bases_names.size();i++)
   {

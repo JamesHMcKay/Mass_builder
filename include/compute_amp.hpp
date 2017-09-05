@@ -21,6 +21,7 @@ private:
   vector<string> full_basis_id;
   int np;
   bool multi_particle;
+  ofstream debug_out;
   
   Options options;
   string tag;
@@ -94,11 +95,7 @@ public:
   // Load required Mathematica libraries
   void load_libraries()
   {
-    
-    WSNewPacket(link);
-    WSPutFunction(link, "ToExpression", 1);
-    
-    string cwd = getcwd(NULL,0);
+		string cwd = getcwd(NULL,0);
     
     std::string input;
     
@@ -108,13 +105,23 @@ public:
     input+= "<< FeynCalc/FeynCalc.m;";
     input+= "AppendTo[$Path, \"" + cwd + "/src/\"];";
     input+= "<< MassBuilder.m;";
+		
     if (options.verbose)
     {
-      cout << input << endl;
-    }
-    WSPutString(link, input.c_str());
-    
-    wait_for_packet();
+			ReplaceAll(input,";","; \n ");
+			debug_out << input << endl;
+			debug_out << "   " << endl;
+			debug_out << "(* ::Section:: *)" << endl;
+		}
+		else
+		{
+	    WSNewPacket(link);
+	    WSPutFunction(link, "ToExpression", 1);
+	    
+	    WSPutString(link, input.c_str());
+	    
+	    wait_for_packet();
+	   }
   }
   
   // Wait to receive a packet from the kernel
@@ -134,14 +141,19 @@ public:
   // Send a string to be evaluated in Mathematica via WSTP
   void send_to_math(std::string &input)
   {
-    WSNewPacket(link);
-    WSPutFunction(link, "ToExpression", 1);
-    WSPutString(link, input.c_str());
     if (options.verbose)
     {
-      cout << input << endl;
+			ReplaceAll(input,";","; \n ");
+      debug_out << input << endl;
     }
-    wait_for_packet();
+    else
+	  {
+	    WSNewPacket(link);
+	    WSPutFunction(link, "ToExpression", 1);
+	    WSPutString(link, input.c_str());
+	    
+	    wait_for_packet();
+		}
     input = "";
   }
   

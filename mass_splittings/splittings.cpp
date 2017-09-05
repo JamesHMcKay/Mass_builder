@@ -28,8 +28,12 @@ int main(int argc, char *argv[])
   
   Data data(options);
   
-  MSSM_spectrum spec(data);
-  spec.compute_spectra_flexiblesusy();
+  cout.precision(17);
+  EW_triplet_spectrum spec(data);
+  spec.compute_tsil();
+  cout << "mass splitting = " <<  spec.get_deltam_2loop() << endl;
+  //spec.compute_spectra_flexiblesusy();
+  
   
   Figures<EW_triplet_spectrum> fig;
   
@@ -39,7 +43,7 @@ int main(int argc, char *argv[])
   
   //fig.plot_M_flexiblesusy_2loop(data);
   
-  fig.plot_M_flexiblesusy(data);
+  //fig.plot_M_flexiblesusy(data);
   
   //fig.plot_uncertainties(data);
   

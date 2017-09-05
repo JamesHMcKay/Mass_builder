@@ -182,6 +182,7 @@ start:;
     }
   }
   
+  // option to not evaluate the following two-loop integrals
   myfile << "  if (data.do_tsil_all)" << endl;
   myfile << "  {" << endl;
   
@@ -334,6 +335,22 @@ std::vector<Bases> eval_obj::get_integrals()
   add_integral("T","Txvu", x, v, u );
   add_integral("T","Tzvy", z, v, y );
   add_integral("T","Tvux", v, u, x );
+  
+  // Tbar integrals
+  
+  add_integral("TBAR","TBARvyz", v, y, z );
+  add_integral("TBAR","TBARuxv", u, x, v );
+  add_integral("TBAR","TBARyzv", y, z, v );
+  add_integral("TBAR","TBARxuv", x, u, v );
+  add_integral("TBAR","TBARzyv", z, y, v );
+  add_integral("TBAR","TBARvxu", v, x, u );
+  // permutations of T integrals are last two arguments swapped
+  add_integral("TBAR","TBARvzy", v, z, y );
+  add_integral("TBAR","TBARuvx", u, v, x );
+  add_integral("TBAR","TBARyvz", y, v, z );
+  add_integral("TBAR","TBARxvu", x, v, u );
+  add_integral("TBAR","TBARzvy", z, v, y );
+  add_integral("TBAR","TBARvux", v, u, x );  
   
   add_integral("B","Bxz",x,z);
   add_integral("B","Bzx",z,x);

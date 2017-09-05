@@ -507,7 +507,7 @@ namespace utils
   
   
   
-  void print_math_body(std::string &input,Options options,string cwd,std::vector<std::string> masses)
+  void print_math_body_1(std::string &input,Options options,string cwd)
   {
     int loop_order = options.loop_order;
     string particle_1 = options.particle_1;
@@ -575,8 +575,18 @@ namespace utils
         input+= "amp0 = amp0*256*Pi^8;";
       }
     }
-    
-        
+  
+		input += "ToString[amp0,InputForm]";
+  
+  }
+
+	void print_math_body_2(std::string &input,Options options,std::vector<std::string> masses)    
+	{
+		int loop_order = options.loop_order;
+    string particle_1 = options.particle_1;
+    string particle_2 = options.particle_2;
+    string diagram = options.diagram;
+    string model = options.model;
     
     input+= "masses = List["  +  masses[0];
     if (masses.size()>1)
@@ -707,6 +717,38 @@ namespace utils
   }
   
   
+  void remove_fake_IR_divergence(std::string &input, std::vector<std::string> masses)
+  {
+		input+= "massesSmall = List[";
+		
+		for (unsigned int i = 0; i < masses.size()-1; i++)
+		{
+			if (masses[i]=="ma")
+			{
+				input+= "1,";
+			}
+			else
+			{
+				input+= "0,";
+			}
+		}
+		if (masses[masses.size()-1]=="ma")
+		{
+			input+= "1];";
+		}
+		else
+		{
+			input+= "0];";
+		}
+		
+		input+= "SelfEnergyFinite = Simplify[implementTbar[SelfEnergyFinite,";
+		input+= "masses, massesSmall,MassBuilderA, MassBuilderB, MassBuilderT],TimeConstraint->100000];";
+		
+		// do a test with and without this for F11 34
+		//input+= "SelfEnergyFinite = Limit[SelfEnergyFinite, ma->0, Analytic -> True ];";
+	}
+  
+  
   
   bool ContainsXi(std::string input)
   {
@@ -750,7 +792,36 @@ namespace utils
 		return input;
 	}
   
-  
+  // find the masses that appear in the amplitude (given a list of options)
+  std::pair <vector<string>,vector<string>> get_required_masses(vector<string> masses_in, vector<string> id_in, string amp)
+  {
+		int nm = masses_in.size();
+		vector<string> masses_out;
+		vector<string> id_out;
+		
+		for (int i = 0; i<nm; i++)
+    {
+			string str = " " + masses_in[i] + "]";
+			if (masses_in[i] == "null" )
+			{
+				str = " 0]";
+			}
+			
+      if (amp.find(str) != std::string::npos)
+      {
+        masses_out.push_back(masses_in[i]);
+        id_out.push_back(id_in[i]);
+      }
+    }
+    
+    std::pair <vector<string>,vector<string>> result;
+    
+    result.first = masses_out;
+    result.second = id_out;
+    
+    return result;
+    
+	}
   
   bool check_done_quiet(int mpi_process)
   {
@@ -762,9 +833,9 @@ namespace utils
     // need to check if the result contains a basis integral
     bool success = true;
     
-    std::string bad_list[5] = {"TFI","TBI","TVI","TAI","TJI"};
+    std::string bad_list[6] = {"TFI","TBI","TVI","TAI","TJI","MassBuilderTBAR"};
     
-    for (int i = 0; i<5; i++)
+    for (int i = 0; i<6; i++)
     {
       if (result.find(bad_list[i]) != std::string::npos)
       {
@@ -785,9 +856,9 @@ namespace utils
     // need to check if the result contains a basis integral
     bool success = true;
     
-    std::string bad_list[5] = {"TFI","TBI","TVI","TAI","TJI"};
+    std::string bad_list[6] = {"TFI","TBI","TVI","TAI","TJI","MassBuilderTBAR"};
     
-    for (int i = 0; i<5; i++)
+    for (int i = 0; i<6; i++)
     {
       if (result.find(bad_list[i]) != std::string::npos)
       {
@@ -969,6 +1040,10 @@ namespace utils
       {
         myfile << id << " = " << "TJI["<<D<<", " << momentum << ", {{2, " << base.e1 << "}, {1, " << base.e2 << "}, {1, " << base.e3 << "}}];" << endl;
       }
+      if (type == "TBAR")
+      {
+        myfile << id << " = " << "MassBuilderTBAR[" << base.e1 << ", " << base.e2 << ", " << base.e3 << "];" << endl;
+      }
       if (type == "J")
       {
         myfile << id << " = " << "TJI["<<D<<", " << momentum << ", {{1, " << base.e1 << "}, {1, " << base.e2 << "}, {1, " << base.e3 << "}}];" << endl;
@@ -983,11 +1058,6 @@ namespace utils
     myfile << "C"<< id << "2 = Simplify[Coefficient["<<SEn<<", " << id << ", 2],TimeConstraint->100000];" << endl;
   }
   
-  
-  
-  
-  
-  
   // print the basis integrals out in Mathematica notation
   void print_math_basis(std::map<std::string, Bases> base_map, ofstream &myfile, string target, string D)
   {
@@ -999,11 +1069,6 @@ namespace utils
       print_base(myfile, base_temp, bases_names[i], target,D);
     }
   }
-  
-  
-  
-  
-  
   
   void print_base_product(ofstream &myfile,Bases base_1,Bases base_2,string SEn, string D)
   {
@@ -1021,6 +1086,7 @@ namespace utils
     if (type1=="B") myfile << "TBI["<<D<<", " << momentum << " , {{1, " << base_1.e1 << "}, {1, " << base_1.e2 << "}}]";
     if (type1=="J") myfile << "TJI["<<D<<", " << momentum << ", {{1, " << base_1.e1 << "}, {1, " << base_1.e2 << "}, {1, " << base_1.e3 << "}}]";
     if (type1=="T") myfile << "TJI["<<D<<", " << momentum << ", {{2, " << base_1.e1 << "}, {1, " << base_1.e2 << "}, {1, " << base_1.e3 << "}}]";
+    if (type1=="TBAR") myfile << "MassBuilderTBAR[" << base_1.e1 << ", " << base_1.e2 << ", " << base_1.e3 << "]";
     if (type1=="K") myfile << "TJI["<<D<<", 0, {{1, " << base_1.e1 << "}, {1, " << base_1.e2 << "}, {1, " << base_1.e3 << "}}];";
     if (type1=="V") myfile << "TVI["<<D<<", " << momentum << ", {{1, " << base_1.e1 << "}, {1, " << base_1.e2 << "}, {1, " << base_1.e3 << "}, {1, " << base_1.e4 << "}}]";
     //if (type1=="F") myfile << "TFI["<<D<<", Pair[Momentum[p,D],Momentum[p,D]], {{1, " << base_1.e1 << "}, {1, " << base_1.e2 << "}, {1, " << base_1.e3 << "}, {1, " << base_1.e4 << "},{1, " << base_1.e5 << "}}]";
@@ -1029,6 +1095,7 @@ namespace utils
     if (type2=="B") myfile << "TBI["<<D<<", " << momentum << ", {{1, " << base_2.e1 << "}, {1, " << base_2.e2 << "}}];";
     if (type2=="J") myfile << "TJI["<<D<<", " << momentum << ", {{1, " << base_2.e1 << "}, {1, " << base_2.e2 << "}, {1, " << base_2.e3 << "}}];";
     if (type2=="T") myfile << "TJI["<<D<<", " << momentum << ", {{2, " << base_2.e1 << "}, {1, " << base_2.e2 << "}, {1, " << base_2.e3 << "}}];";
+    if (type2=="TBAR") myfile << "MassBuilderTBAR[" << base_2.e1 << ", " << base_2.e2 << ", " << base_2.e3 << "]";
     if (type2=="K") myfile << "TJI["<<D<<", 0, {{1, " << base_2.e1 << "}, {1, " << base_2.e2 << "}, {1, " << base_2.e3 << "}}];;";
     if (type2=="V") myfile << "TVI["<<D<<", " << momentum << ", {{1, " << base_2.e1 << "}, {1, " << base_2.e2 << "}, {1, " << base_2.e3 << "}, {1, " << base_2.e4 << "}}];";
     //if (type2=="F") myfile << "TFI["<<D<<", Pair[Momentum[p,D],Momentum[p,D]], {{1, " << base_1.e1 << "}, {1, " << base_1.e2 << "}, {1, " << base_1.e3 << "}, {1, " << base_1.e4 << "},{1, " << base_1.e5 << "}}]";
@@ -1061,8 +1128,6 @@ namespace utils
     }
   }
   
-  
-  
   void ReplaceAll(std::string &input, const std::string& from, const std::string& to)
   {
     size_t start_pos = 0;
@@ -1072,7 +1137,6 @@ namespace utils
       start_pos += to.length();
     }
   }
-  
   
   void print_doTSIL(ofstream &myfile,Bases base)
   {
@@ -1108,6 +1172,14 @@ namespace utils
       myfile << "  TSIL_Evaluate (&bar, s);" << endl;
       myfile << "  " << name << "= -TSIL_GetFunction (&bar,\"Txuv" <<"\");"<< endl;
     }
+		if (type == "TBAR")
+    {
+      string A = base.e1,B=base.e2,C=base.e3;
+      myfile << "  TSIL_SetParametersST (&bar," << A << "2, " << B << "2, " << C <<"2, Q2);" << endl;
+      myfile << "  TSIL_Evaluate (&bar, s);" << endl;
+      // note minus sign accounted for in MassBuilder.m
+      myfile << "  " << name << "= TSIL_GetFunction (&bar,\"TBARxuv" <<"\");"<< endl;
+    }    
     if (type == "F")
     {
       string A = base.e1,B=base.e2,C=base.e3,D=base.e4,E=base.e5;
@@ -1123,195 +1195,6 @@ namespace utils
       myfile << "  " << name << "= -TSIL_GetFunction (&bar,\"Uzxyv" <<"\");"<< endl;
     }
     
-  }
-  
-  
-  
-  // expressing basis integrals as finite + divergent parts
-  // x -> x^2 unless in a TXI function call
-  // TSIL -> TARCER
-  // A(x)       =   ia TAI(x,y)
-  // B(x,y)     = - ia TBI(x,y)
-  // I(x,y,z)   =   a^2 TJI[0,{1,1,1}] = a^2 K(x,y,z)
-  // S(x,y,z)   =   a^2 TJI[s,{1,1,1}] = a^2 J(x,y,z)
-  // T(x,y,z)   = - a^2 TJI[s,{2,1,1}] = a^2 T(x,y,z)
-  // U(x,y,z,u) = - a^2 TVI[s,{1,1,1,1},{u,x,z,y}] = a^2 V(u,x,z,y)
-  
-  
-  void finite_A(ofstream &myfile, string x, string id)
-  {
-    myfile << id << " = " <<  id << "4 +  ( ";
-    
-    myfile << " I*" << x <<"^2 /epsilon";
-    myfile << ")";
-    
-    if (add_epsilon_terms)
-    {
-      myfile << " - I * epsilon * Ae[ " << x << " ] " << endl;
-    }
-    else
-    {
-      myfile << endl;
-    }
-    
-  }
-  
-  void finite_B(ofstream &myfile, string x, string y, string id)
-  {
-    myfile << id << " = " <<  id << "4 +  ( ";
-    
-    myfile << " I/epsilon";
-    myfile << ")";
-    
-    if (add_epsilon_terms)
-    {
-      myfile << " + I * epsilon * Be[" << x << " , " << y << "]" << endl;
-    }
-    else
-    {
-      myfile << endl;
-    }
-    
-  }
-  
-  void finite_J(ofstream &myfile, string x, string y, string z, string id)
-  {
-    myfile << id << " = " <<  id << "4 + ( ";
-    
-    myfile << " - (" << x << "^2 + " << y << "^2 + " << z << "^2 )/ (2* epsilon^2)";
-    myfile << " + (- ("<<x<<"^2 +"<<y<<"^2 +"<<z<<"^2)/2 + Pair[Momentum[p],Momentum[p]]/4 )/epsilon";
-    myfile << " + ( I*TAI[4, 0, {1, " << x << "}] + I*TAI[4, 0, {1, " << y << "}] + I*TAI[4, 0, {1, " << z << "}] )/epsilon";
-    myfile << " ) ";
-    
-    if (add_epsilon_terms)
-    {
-      myfile << " + Ae[ " << x << " ] + " << " Ae[ " << y << " ] + Ae[ " << z << " ] " << endl;
-    }
-    else
-    {
-      myfile << endl;
-    }
-    
-  }
-  
-  void finite_T(ofstream &myfile, string x, string id)
-  {
-    myfile << id << " = " <<  id << "4 + ( ";
-    
-    myfile << " -1/(2*epsilon^2) + 1/(2*epsilon)";
-    myfile << " + ((I*TAI[4, 0, {1, "<<x<<"}])/"<<x<<"^2 )/epsilon"; // was the x^2 not being ^ a typo? very late change here
-    myfile << " - ((I*TAI[4, 0, {1, "<<x<<"}])/"<<x<<"^2 )";  // was the x^2 not being ^ a typo? very late change here
-    myfile << " ) ";
-    
-    if (add_epsilon_terms)
-    {
-      myfile << " + Ae[ " << x << " ]/"<< x <<"^2" << endl;
-    }
-    else
-    {
-      myfile << endl;
-    }
-    
-  }
-  
-  void finite_K(ofstream &myfile, string x, string y, string z, string id)
-  {
-    myfile << id << " = " <<  id << "4 +  ( ";
-    
-    myfile << " - (" << x << "^2 + " << y << "^2 + " << z << "^2 )/ (2* epsilon^2)";
-    myfile << " - (" << x << "^2 + " << y << "^2 + " << z << "^2 )/  ( 2*epsilon)";
-    myfile << "+  (  I*TAI[4, 0, {1, "<<x<<"}]";
-    myfile << "  + I*TAI[4, 0, {1, "<<y<<"}]";
-    myfile << "  + I*TAI[4, 0, {1, "<<z<<"}]";
-    myfile << "    )/epsilon ";
-    myfile << " ) ";
-    
-    if (add_epsilon_terms)
-    {
-      myfile << " + Ae[ " << x << " ] + " << " Ae[ " << y << " ] + Ae[ " << z << " ] " << endl;
-    }
-    else
-    {
-      myfile << endl;
-    }
-    
-    
-  }
-  
-  
-  void finite_V(ofstream &myfile, string y, string u, string id)
-  {
-    myfile << id << " = " <<  id << "4 + ( ";
-    
-    myfile << "-1/(2*epsilon^2) - 1/(2*epsilon)";
-    myfile << " - ( - I * TBI[4, Pair[Momentum[p],Momentum[p]], {{1, " << y << "}, {1, " << u << "}}] ) /epsilon";
-    myfile << " ) ";
-    
-    if (add_epsilon_terms)
-    {
-      myfile << " - Be[" << y << " , " << u << "]" << endl;
-    }
-    else
-    {
-      myfile << endl;
-    }
-    
-    
-  }
-  
-  
-  void print_finite_base(ofstream &myfile, Bases base, string id)
-  {
-    string type = base.type;
-    
-    if (type == "F")
-    {
-      myfile << id << "4 = " << "TFI[4, Pair[Momentum[p],Momentum[p]], {{1, " << base.e1  << "}, {1, " << base.e2 << "}, {1, " << base.e3 << "}, {1, " << base.e4 << "}, {1, " << base.e5 << "}}];" << endl;
-      myfile << id << " = " << id << "4 " << endl;
-    }
-    if (type == "A")
-    {
-      myfile << id << "4 = " <<  "TAI[4, 0, {1, " << base.e1 << "}];" << endl;
-      finite_A(myfile,base.e1,id);
-    }
-    if (type == "B")
-    {
-      myfile << id << "4 = " << "TBI[4, Pair[Momentum[p],Momentum[p]], {{1, " << base.e1 << "}, {1, " << base.e2 << "}}];" << endl;
-      finite_B(myfile,base.e1,base.e2,id);
-    }
-    if (type == "V")
-    {
-      myfile << id << "4 = " << "TVI[4, Pair[Momentum[p],Momentum[p]], {{1, " << base.e1 << "}, {1, " << base.e2 << "}, {1, " << base.e3 << "}, {1, " << base.e4 << "}}];" << endl;
-      finite_V(myfile, base.e2,base.e4,id);
-    }
-    if (type == "T")
-    {
-      myfile << id << "4 = " << "TJI[4, Pair[Momentum[p],Momentum[p]], {{2, " << base.e1 << "}, {1, " << base.e2 << "}, {1, " << base.e3 << "}}];" << endl;
-      finite_T(myfile,base.e1,id);
-    }
-    if (type == "J")
-    {
-      myfile << id << "4 = " << "TJI[4, Pair[Momentum[p],Momentum[p]], {{1, " << base.e1 << "}, {1, " << base.e2 << "}, {1, " << base.e3 << "}}];" << endl;
-      finite_J(myfile,base.e1,base.e2,base.e3,id);
-    }
-    if (type == "K")
-    {
-      myfile << id << "4 = " << "TJI[4, 0, {{1, " << base.e1 << "}, {1, " << base.e2 << "}, {1, " << base.e3 << "}}];" << endl;
-      finite_K(myfile,base.e1,base.e2,base.e3,id);
-    }
-  }
-  
-  
-  // print the basis integrals out in Mathematica notation
-  void print_finite_basis(std::map<std::string, Bases> base_map, ofstream &myfile)
-  {
-    vector<string> bases_names = extract_keys(base_map);
-    for (unsigned int i = 0; i < bases_names.size();i++)
-    {
-      Bases base_temp;
-      base_temp = base_map[bases_names[i]];
-      print_finite_base(myfile, base_temp, bases_names[i]);
-    }
   }
   
   void timestamp ( )

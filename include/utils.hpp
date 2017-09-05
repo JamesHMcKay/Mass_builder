@@ -20,6 +20,8 @@ using namespace std;
 
 namespace utils
 {
+	
+	std::pair <vector<string>,vector<string>> get_required_masses(vector<string> masses_in, vector<string> id_in, string amp);
 
 	std::vector<std::string> remove_xi(std::vector<std::string> input);
   
@@ -83,9 +85,13 @@ namespace utils
   
   void get_saved_amplitude(std::string &input, Options options, string mass);
   
-  void print_math_body(std::string &input,Options options,string cwd,std::vector<std::string> masses);
+  void print_math_body_1(std::string &input,Options options,string cwd);
+  
+  void print_math_body_2(std::string &input,Options options,std::vector<std::string> masses);
   
   void print_tarcer_recurse(std::string &input);
+  
+  void remove_fake_IR_divergence(std::string &input, std::vector<std::string> masses);
   
   void print_base(ofstream &myfile, Bases base, string id, string SEn,string D);
   
@@ -96,11 +102,6 @@ namespace utils
   void print_math_products(map<string, Bases> base_map, ofstream &myfile, string target, string D);
   
   void print_doTSIL(ofstream &myfile,Bases base);
-  //void print_doTSIL_cout(Bases base);
-  
-  void print_finite_base(ofstream &myfile, Bases base, string id);
-  
-  void print_finite_basis(std::map<std::string, Bases> base_map, ofstream &myfile);
   
   void timestamp();
   

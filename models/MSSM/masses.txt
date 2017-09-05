@@ -1,8 +1,12 @@
-MChi c
+MChi C
 ma a
 mw w
 mz z
 mh h
-null n
 mf f
 mt t
+mu u
+mc c
+md d
+ms s
+mb b

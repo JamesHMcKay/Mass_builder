@@ -28,6 +28,7 @@ maXi ma*Xi
 mwXi2 TSIL_POW(mwXi,2)
 mzXi2 TSIL_POW(mzXi,2)
 maXi2 TSIL_POW(maXi,2)
+MassBuilderQ2 Q2
 Xi
 v
 alpha

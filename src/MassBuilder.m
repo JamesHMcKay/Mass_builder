@@ -21,6 +21,9 @@ addHigherOrderDivergences::useage =
 addHigherOrderDivergencesFermion::useage =
   "addHigherOrderDivergences[amplitude_] := add 1/epsilon^2 order tree-level counter-terms that aren't included by FeynArts for a Fermionic particle "
 
+implementTbar::useage =
+"implement_Tbar[amplitde_,masses_,massesSmall_,A_,T_] := remove fake IR divergences in T integral"
+
 MassBuilderEpsilon;
 MassBuilderZeta;
 MassBuilderP;
@@ -35,6 +38,7 @@ MassBuilderJEpsilon;
 
 MassBuilderAe[m1_];
 MassBuilderBe[m1_,m2_];
+MassBuilderTBAR[m1_,m2_,m3_];
 
 
 Begin["`Private`"]
@@ -181,6 +185,27 @@ addHigherOrderDivergences[amplitude_] := Module[{result},result = amplitude + (-
 addHigherOrderDivergencesFermion[amplitude_] := Module[{result},result = amplitude + (-MassBuilderCTM1 + MassBuilderCTZ1*MassBuilderP + (MassBuilderCTZ2*MassBuilderP - MassBuilderCTM2)/MassBuilderEpsilon)/(16*Pi*Pi);
                                                          result
                                                          ]
+
+(* cancel fake IR divergences *)
+implementTbar[amplitude_,masses_,massesSmall_,A_,B_,T_] := Module[{amp,result},amp = amplitude;
+Do[
+If[massesSmall[[k]]!=0,
+        amp = amp
+      /. A[masses[[k]],4]  ->
+      (
+       I*masses[[k]]^2 * (1 - Log[masses[[k]]^2/MassBuilderQ2])
+      );
+Do[
+   amp = amp	
+   /. T[masses[[k]], masses[[i]], masses[[j]],4]->
+   - MassBuilderTBAR[masses[[k]], masses[[i]], masses[[j]]]
+   - I*Log[masses[[k]]^2/MassBuilderQ2]*B[masses[[i]], masses[[j]],4]
+   ,
+{i, Length[masses]},
+{j, Length[masses]}]]
+,{k, Length[masses]}];
+result = amp;
+result];
 
 End[ ]
 
