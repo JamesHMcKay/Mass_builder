@@ -111,8 +111,12 @@ bool Compute_amp::calc_diagram()
 		id_req = id_input;
 	}
     
-  if (check_if_available(options) && !options.force)
-  {  
+	if (check_if_available(options) && !options.force)
+	{ 
+	 // do nothing
+	}
+	else
+	{ 
     utils::print_math_body_2(input,options,masses_req);
     
     // send input to Mathematica
