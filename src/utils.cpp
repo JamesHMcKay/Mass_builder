@@ -488,9 +488,9 @@ namespace utils
   void get_saved_amplitude(std::string &input, Options options, std::string mass)
   {
     
-    assign_FCGV(input,options);
+    //assign_FCGV(input,options);
     
-    assign_variables(input,options);
+    //assign_variables(input,options);
    
     string tag = make_tag(options);
     
@@ -580,15 +580,10 @@ namespace utils
   
   }
 
-	void print_math_body_2(std::string &input,Options options,std::vector<std::string> masses)    
+
+	void print_masses(std::string &input, std::vector<std::string> masses)
 	{
-		int loop_order = options.loop_order;
-    string particle_1 = options.particle_1;
-    string particle_2 = options.particle_2;
-    string diagram = options.diagram;
-    string model = options.model;
-    
-    input+= "masses = List["  +  masses[0];
+		input+= "masses = List["  +  masses[0];
     if (masses.size()>1)
     {
       for (unsigned int i=1; i < ( masses.size() ) ;i++)
@@ -597,8 +592,6 @@ namespace utils
       }
     }
     input+= "];";
-    
-    
     
     if (masses[0]!="null")
     {
@@ -624,6 +617,20 @@ namespace utils
       }
     }
     input+= "];\n";
+  }
+
+
+
+
+	void print_math_body_2(std::string &input,Options options,std::vector<std::string> masses)    
+	{
+		int loop_order = options.loop_order;
+    string particle_1 = options.particle_1;
+    string particle_2 = options.particle_2;
+    string diagram = options.diagram;
+    string model = options.model;
+    
+    
     
     for (int index = 1; index < 4;index ++)
     {
@@ -739,7 +746,7 @@ namespace utils
 			{
 				input+= "1,";
 			}
-			else
+			else if (i < masses.size()-1)
 			{
 				input+= "0,";
 			}

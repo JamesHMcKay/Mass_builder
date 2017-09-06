@@ -36,7 +36,13 @@ bool Compute_amp::calc_diagram()
 		debug_out << "Quit[]" << endl;
 		debug_out << "(* ::Section:: *)" << endl;
 	}
-	
+	else
+	{
+		log_out.open ("output/log.m");
+		log_out << "(* ::Package:: *)" << endl;
+		log_out << "Quit[]" << endl;
+		log_out << "(* ::Section:: *)" << endl;
+	}
   
   // print diagram details (number, particle, ...) to terminal
   print_diagram_info(options);
@@ -114,9 +120,11 @@ bool Compute_amp::calc_diagram()
 	if (check_if_available(options) && !options.force)
 	{ 
 	 // do nothing
+	 utils::print_masses(input, masses_req);
 	}
 	else
 	{ 
+		utils::print_masses(input, masses_req);
     utils::print_math_body_2(input,options,masses_req);
     
     // send input to Mathematica

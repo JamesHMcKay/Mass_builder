@@ -22,6 +22,7 @@ private:
   int np;
   bool multi_particle;
   ofstream debug_out;
+  ofstream log_out;
   
   Options options;
   string tag;
@@ -122,6 +123,15 @@ public:
 	    
 	    wait_for_packet();
 	   }
+	   if (!options.verbose)
+	   {
+		   // send to log
+		   ReplaceAll(input,";","; \n ");
+			 log_out << input << endl;
+			 log_out << "   " << endl;
+			 log_out << "(* ::Section:: *)" << endl;
+		}
+		input = "";
   }
   
   // Wait to receive a packet from the kernel
@@ -153,6 +163,11 @@ public:
 	    WSPutString(link, input.c_str());
 	    
 	    wait_for_packet();
+		}
+		if (!options.verbose)
+		{
+			ReplaceAll(input,";","; \n ");
+      log_out << input << endl;
 		}
     input = "";
   }
