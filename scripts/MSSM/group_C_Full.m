@@ -852,16 +852,7 @@ Cct2 = makeFiniteAmplitude[C4c+C5c+C6c+C7c+C8c,-2,D];
 {Csum1,Csum2,Nsum1,Nsum2,Cct1,Cct2,Nct1,Nct2}={Csum1,Csum2,Nsum1,Nsum2,Cct1,Cct2,Nct1,Nct2}/. (DiracGamma[Momentum[p, D], D].DiracGamma[6] + DiracGamma[Momentum[p, D], D].DiracGamma[7]) -> p\
 /. MassBuilderP^2 -> Pair[Momentum[p],Momentum[p]]/. MassBuilderP -> Momentum[p]/. MassBuilderEpsilon -> \[Epsilon]/. MassBuilderZeta -> \[Zeta]/. MassBuilderAe[0] -> 0\
 /. D -> 4 - 2 \[Epsilon]/. Pair[p, p] -> p^2/. D -> 4 - 2 \[Epsilon]/. Momentum[p] -> p\
-/. MassBuilderB[MChi, mz] -> TBI[4, MChi^2, {{1, MChi}, {1, mz}}]\
-/. MassBuilderB[mz, MChi] -> TBI[4, MChi^2, {{1, MChi}, {1, mz}}]\
-/. MassBuilderB[MChi, mw] -> TBI[4, MChi^2, {{1, MChi}, {1, mw}}]\
-/. MassBuilderB[mw, MChi] -> TBI[4, MChi^2, {{1, MChi}, {1, mw}}]\
-/. MassBuilderB[ma, MChi] -> TBI[4, MChi^2, {{1, MChi}, {1, ma}}]\
-/. MassBuilderB[MChi, ma] -> TBI[4, MChi^2, {{1, MChi}, {1, ma}}]\
-/. MassBuilderB[mf, MChi] -> TBI[4, MChi^2, {{1, MChi}, {1, mf}}]\
-/. MassBuilderB[MChi, mf] -> TBI[4, MChi^2, {{1, MChi}, {1, mf}}]\
-/. MassBuilderB[mt, MChi] -> TBI[4, MChi^2, {{1, MChi}, {1, mt}}]\
-/. MassBuilderB[MChi, mt] -> TBI[4, MChi^2, {{1, MChi}, {1, mt}}]\
+/. MassBuilderB[m1_, m2_] -> TBI[4, MChi^2, {{1, m1}, {1, m2}}]\
 /.p->MChi/.STW->sw/.CTW->cw;
 sw=Sin[\[Theta]];
 cw=Cos[\[Theta]];
@@ -870,13 +861,13 @@ cw=Cos[\[Theta]];
 Simplify[Csum2+Cct2 -Nsum2-Nct2/.mz->mw/cw]
 
 
-Simplify[ Nsum1+Nct1/.mz->mw/cw]
+result1=Simplify[Csum2+Cct2/.mz->mw/cw,TimeConstraint->100000]
+result2=Simplify[Nsum2+Nct2/.mz->mw/cw,TimeConstraint->100000]
+result3=Simplify[Nsum1+Nct1/.mz->mw/cw,TimeConstraint->100000]
+result4=Simplify[Csum1+Cct1/.mz->mw/cw,TimeConstraint->100000]
 
 
-Simplify[Csum1+Cct1/.mz->mw/cw,TimeConstraint->100000]
-
-
- Simplify[Coefficient[Csum1+Cct1/.mz->mw/cw,TBI[4, MChi^2, {{1, MChi}, {1, mf}}]]]
+ Simplify[Coefficient[Csum1+Cct1/.mz->mw/cw,TBI[4, MChi^2, {{1, MChi}, {1, mw}}]]]
 
 
 CForm[FullSimplify[dZW1]]
@@ -904,7 +895,7 @@ CForm[FullSimplify[dZAZ1]]
 CForm[FullSimplify[dZZZ1]]
 
 
-FullSimplify[dZW1]
+CForm[FullSimplify[dZW1]]
 
 
 (* Check that counter-term couplings agree with Ibe et al. (2013) *)

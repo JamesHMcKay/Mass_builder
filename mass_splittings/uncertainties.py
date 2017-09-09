@@ -81,9 +81,9 @@ plt.ylim([0,250])
 
 # get the value of Xi
 Mass=np.genfromtxt('models/MSSM/input.txt',usecols=[1])
-Xi = Mass[12]
+Xi = Mass[11]
 
-
+print("Xi = " +  str(Xi))
 
 
 if (Xi == 3):
@@ -91,7 +91,7 @@ if (Xi == 3):
 	plt.savefig("mass_splittings/figures/deltam_uncertainties_xi_3.pdf")
 
 if (Xi == 1):
-	plt.annotate(r'Feynman-\' t Hooft gauge $(\xi = 1)$', xy=(20,20), xytext=(20,20),fontsize=16)
+	plt.annotate(r'Feynman-\'\,t Hooft gauge $(\xi = 1)$', xy=(20,20), xytext=(20,20),fontsize=16)
 	plt.savefig("mass_splittings/figures/deltam_uncertainties_xi_1.pdf")
 
 if (Xi == 0):

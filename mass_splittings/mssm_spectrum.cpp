@@ -79,11 +79,11 @@ namespace extra_TSIL_interface_MSSM
   
   void DoTSIL(Data data)
   {
-    alpha=data.alpha, cw = data.cw,   cw2 = data.cw2,   sw = data.sw,   sw2 = data.sw2,   STW = data.STW,   CTW = data.CTW,   e = data.e,   d1Z = data.d1Z,   d1m = data.d1m,   d2Z = data.d2Z,   d2m = data.d2m,   dZW1 = data.dZW1,   dMWsq1 = data.dMWsq1,   dMZsq1 = data.dMZsq1,   dZAA1 = data.dZAA1,   dZZA1 = data.dZZA1,   dZAZ1 = data.dZAZ1,   dZZZ1 = data.dZZZ1,   dg2 = data.dg2,   Ca = data.Ca,   Cz1 = data.Cz1,   Cz2 = data.Cz2,   Cw1 = data.Cw1,   Cw2 = data.Cw2,   v = data.v,   MassBuilderJEpsilon = data.MassBuilderJEpsilon ;
+    alpha = data.alpha, cw = data.cw,   cw2 = data.cw2,   sw = data.sw,   sw2 = data.sw2,   STW = data.STW,   CTW = data.CTW,   e = data.e;
     
     TSIL_REAL Q2 = pow(data.Q,2);
     TSIL_REAL s = pow(data.P,2);
-    MChi = data.MChi, MChi2 = TSIL_POW(data.MChi, 2) ,   ma = data.ma, ma2 = TSIL_POW(data.ma, 2) ,   mw = data.mw, mw2 = TSIL_POW(data.mw, 2) ,   mz = data.mz, mz2 = TSIL_POW(data.mz, 2) ,   mh = data.mh, mh2 = TSIL_POW(data.mh, 2) ,   null = data.null, null2 = TSIL_POW(data.null, 2) ,   mf = data.mf, mf2 = TSIL_POW(data.mf, 2) ,   mt = data.mt , mt2 = TSIL_POW(data.mt, 2) ;
+    MChi = data.MChi, MChi2 = TSIL_POW(data.MChi, 2) ,   ma = data.ma, ma2 = TSIL_POW(data.ma, 2) ,   mw = data.mw, mw2 = TSIL_POW(data.mw, 2) ,   mz = data.mz, mz2 = TSIL_POW(data.mz, 2) ;
     
     dcomp ii=-1;ii=sqrt(ii);i=ii;
     Pi=PI;
@@ -118,62 +118,26 @@ namespace extra_TSIL_interface_MSSM
     dBwc = c*TSIL_dBds_(mw2,MChi2,s,Q2);
     dBzc = c*TSIL_dBds_(mz2,MChi2,s,Q2);
     dBca = c*TSIL_dBds_(ma2,MChi2,s,Q2);
-    
     dBac = c*TSIL_dBds_(ma2,MChi2,s,Q2);
     
   }
   
-  double add_derivatives(Data &data)
-  {
-    DoTSIL(data);
-    
-    p = data.P;
-    
-    
-    TSIL_COMPLEXCPP result = (Power(e,4)*MChi*(-(((Ac - Aw - Power(MChi,2) + 2*Bcw*Power(MChi,2) + Bcw*Power(mw,2))*
-                                                  (Ac*Power(MChi,2) - Aw*Power(MChi,2) - Power(MChi,4) - 4*dBwc*Power(MChi,6) + Bcw*Power(MChi,2)*Power(mw,2) -
-                                                   2*dBwc*Power(MChi,4)*Power(mw,2)))/Power(MChi,6)) +
-                                               ((2 + 8*dBwc*Power(MChi,2) + 8*Power(cw,2)*dBzc*Power(MChi,2) -
-                                                 (2*(Ac - Aw - Bcw*Power(MChi,2) + 2*dBwc*Power(MChi,4) + Bcw*Power(mw,2) - dBwc*Power(MChi,2)*Power(mw,2)))/Power(MChi,2) +
-                                                 (Ac - Aw - Bcw*(2*Power(MChi,2) - Power(mw,2)))/Power(MChi,2) -
-                                                 (2*Power(cw,2)*(Ac - Az - Bcz*Power(MChi,2) + 2*dBzc*Power(MChi,4) + Bcz*Power(mz,2) - dBzc*Power(MChi,2)*Power(mz,2)))/
-                                                 Power(MChi,2) + (Power(cw,2)*(Ac - Az - Bcz*(2*Power(MChi,2) - Power(mz,2))))/Power(MChi,2) +
-                                                 8*dBac*Power(MChi,2)*Power(sw,2) - (2*(-Aa + Ac + Bca*Power(ma,2) - Bca*Power(MChi,2) - dBac*Power(ma,2)*Power(MChi,2) +
-                                                                                        2*dBac*Power(MChi,4))*Power(sw,2))/Power(MChi,2) +
-                                                 ((-Aa + Ac - Bca*(-Power(ma,2) + 2*Power(MChi,2)))*Power(sw,2))/Power(MChi,2))*
-                                                (Aw + Az*Power(cw,2) + 2*Power(MChi,2) - 2*Bcw*Power(MChi,2) - 2*Bcz*Power(cw,2)*Power(MChi,2) - Bcw*Power(mw,2) -
-                                                 Bcz*Power(cw,2)*Power(mz,2) + Aa*Power(sw,2) - Bca*Power(ma,2)*Power(sw,2) - 2*Bca*Power(MChi,2)*Power(sw,2) -
-                                                 Ac*(1 + Power(cw,2) + Power(sw,2))))/(4.*Power(MChi,2))))/(64.*Power(Pi,4)*Power(sw,4));
-    
-    return real(result);
-  }
-  
-  
   double F11_der(Data data)
   {
-    
     DoTSIL(data);
-    
     p = data.P;
-    
     
     TSIL_COMPLEXCPP result = (Power(e,4)*(Ac - Aw - Power(MChi,2) + 2*Bcw*Power(MChi,2) + Bcw*Power(mw,2))*
                               (-Ac + Aw + Power(MChi,2) + 4*dBwc*Power(MChi,4) - Bcw*Power(mw,2) + 2*dBwc*Power(MChi,2)*Power(mw,2)))/
     (64.*Power(MChi,3)*Power(Pi,4)*Power(sw,4));
     
     return real(result);
-    
   }
-  
-  
   
   double F12_der(Data data)
   {
-    
     DoTSIL(data);
-    
     p = data.P;
-    
     
     TSIL_COMPLEXCPP result = (Power(e,4)*(Aw*Power(cw,2) + Power(MChi,2) + Power(cw,2)*Power(MChi,2) + 4*Power(cw,2)*dBwc*Power(MChi,4) + 4*dBzc*Power(MChi,4) -
                                           Bcw*Power(cw,2)*Power(mw,2) + 2*Power(cw,2)*dBwc*Power(MChi,2)*Power(mw,2) - Bcz*Power(mz,2) + 2*dBzc*Power(MChi,2)*Power(mz,2) +
@@ -191,11 +155,7 @@ namespace extra_TSIL_interface_MSSM
                                Ac*(Power(-1 + Power(sw,2),2) + Power(cw,2)*(1 + Power(sw,2)))))/(256.*Power(cw,4)*Power(MChi,3)*Power(Pi,4)*Power(sw,4));
     
     return real(result);
-    
   }
-  
-  
-  
   
   TSIL_COMPLEXCPP  gammagamma_Chi(Data data,double Q)
   {
@@ -219,14 +179,6 @@ namespace extra_TSIL_interface_MSSM
   }
   
 }
-
-double MSSM_spectrum::add_1loop_der(Data &data)
-{
-	
-	return extra_TSIL_interface_MSSM::add_derivatives(data);
-	
-}
-
 
 double MSSM_spectrum::iterative_ms_bar_mass(Data data, string particle)
 {

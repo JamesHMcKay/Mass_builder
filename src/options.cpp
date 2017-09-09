@@ -35,7 +35,6 @@ void User_input::call_user_guide()
 
 void User_input::user_interface()
 {
-
   string io;
   if (find_string("-c")){ options.counter_terms = true;}
   if (find_string("-v")){ options.verbose = true;}
@@ -50,9 +49,19 @@ void User_input::user_interface()
     string input = "loop order";
     if (find_and_read_string("-l",input))
     {
-      if (input == "2"){ options.loop_order = 2;}
-      else if (input == "1"){ options.loop_order = 1;}
-      else {cout <<"This loop order is not supported please enter 1 or 2"<<endl;}
+      if (input == "2")
+      {
+				options.loop_order = 2;
+			}
+      else if (input == "1")
+      {
+				options.loop_order = 1; 
+				options.onshell = false;
+			}
+      else 
+      {
+				cout <<"This loop order is not supported please enter 1 or 2"<<endl;
+			}
     }
   }
 
@@ -61,7 +70,7 @@ void User_input::user_interface()
     string input = "model name";
     if (find_and_read_string("-m",input)){options.model = input;}
     
-    if (options.model == "MSSM" || options.model == "itMSSM" || options.model == "itMSSMmassless")
+    if (options.model == "MSSM" || options.model == "itMSSM" || options.model == "mMSSM" || options.model == "xiMSSM")
     {
       options.restrictions = "WinoLimit,WinoCouplings";
     }

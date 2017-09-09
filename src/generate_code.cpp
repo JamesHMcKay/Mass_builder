@@ -27,10 +27,27 @@ void Generate_code::generate_self_energy_hpp()
 
   se_hpp<<"    Integrals (){}\n"
   <<"    void DoTSIL(Data data);\n"
+  
+	// define function to check basis integrals have been evaluated
+	<<"		void check_integrals()\n"
+	<<"		{\n"
+	<<"			for (int i = 0; i < " << integrals.size() << ";i++)\n"
+	<<"			{\n";
+	
+	for (unsigned int i = 0; i < integrals.size(); i++)
+	{
+		se_hpp <<"				if (" << integrals[i] << "==-9.0L)\n"
+		<<"				{\n"
+		<<"					cout << \"WARNING << " << integrals[i] <<" not defined \" << endl; \n"
+		<<"         " << integrals[i] << " = 0.0L;\n"
+		<<"				}\n";
+	}
+	
+  se_hpp<<"			}\n"
+	<<"		}\n"
   <<"  };\n"
   <<"}\n";
 }
-
 
 
 void Generate_code::generate_data_hpp()
@@ -235,8 +252,8 @@ void Generate_code::decalare_var(ofstream &main_output)
   for (unsigned int i =0; i<integrals.size() ; i++)
   {
     count = count + 1;
-    if (i!=(integrals.size()-1) && count !=5) {main_output << integrals[i] << ", ";}
-    else{main_output << integrals[i] << " ";}
+    if (i!=(integrals.size()-1) && count !=5) {main_output << integrals[i] << "= -9.0L , ";}
+    else{main_output << integrals[i] << "= -9.0L ";}
     if (count == 5) {count = 0; main_output << ";"<<endl; if (i!=(integrals.size()-1)){main_output<<"    std::complex<long double> ";}}
   }
   if (count != 0){main_output<< ";"<<endl;}
@@ -356,7 +373,7 @@ void Generate_code::generate_particle_src(std::string particle,int subgroup)
       const char *coeff_products = c_coeff_products.c_str();
       const char *summation = c_summation.c_str();
 
-      functions<< "TSIL_COMPLEXCPP  diagram"<<"_"<< particle_name << "_" << tag << "_" << level << "()" <<endl;
+      functions<< "TSIL_COMPLEXCPP  diagram"<<"_"<< particle_name << "_" << clean(tag) << "_" << level << "()" <<endl;
       functions<< "{" << endl;
 
       ifstream infile(coeff_integrals);
@@ -485,7 +502,7 @@ void Generate_code::generate_particle_src(std::string particle,int subgroup)
       if (get_loop_order(levels[d]) == 1 )
       {
 
-        functions<< " + diagram"<<"_"<< particle_name << "_" << tags[d] << "_" << levels[d] << "()";
+        functions<< " + diagram"<<"_"<< particle_name << "_" << clean(tags[d]) << "_" << levels[d] << "()";
 
         tag = tags[d];
       }
@@ -510,7 +527,7 @@ void Generate_code::generate_particle_src(std::string particle,int subgroup)
       if (get_loop_order(levels[d]) == 2 )
       {
 
-        functions<< " + diagram"<<"_"<< particle_name << "_" << tags[d] << "_" << levels[d] << "()";
+        functions<< " + diagram"<<"_"<< particle_name << "_" << clean(tags[d]) << "_" << levels[d] << "()";
 
         tag = tags[d];
       }
@@ -532,11 +549,11 @@ void Generate_code::generate_particle_src(std::string particle,int subgroup)
       {
         if (get_loop_order(levels[d]) == 2 )
         {
-        functions<< "  cout << \""<< levels[d] << "-loop diagram"<<" "<< particle_name << "_" <<  tags[d] << " = \" << real(diagram" <<"_"<< particle_name << "_" << tags[d] << "_" << levels[d] << "())/(TSIL_POW(16.0L,2)*TSIL_POW(PI,4))<<endl;"<<endl;
+        functions<< "  cout << \""<< levels[d] << "-loop diagram"<<" "<< particle_name << "_" <<  clean(tags[d]) << " = \" << real(diagram" <<"_"<< particle_name << "_" << clean(tags[d]) << "_" << levels[d] << "())/(TSIL_POW(16.0L,2)*TSIL_POW(PI,4))<<endl;"<<endl;
         }
         if (get_loop_order(levels[d]) == 1 )
         {
-        functions<< "  cout << \""<< levels[d] << "-loop diagram"<<" "<< particle_name << "_" <<  tags[d] << " = \" << real(diagram" <<"_"<< particle_name << "_" << tags[d] << "_" << levels[d] << "())/(16.0L*TSIL_POW(PI,2)) <<endl;"<<endl;
+        functions<< "  cout << \""<< levels[d] << "-loop diagram"<<" "<< particle_name << "_" <<  clean(tags[d]) << " = \" << real(diagram" <<"_"<< particle_name << "_" << clean(tags[d]) << "_" << levels[d] << "())/(16.0L*TSIL_POW(PI,2)) <<endl;"<<endl;
         }
       }
     }
@@ -550,11 +567,11 @@ void Generate_code::generate_particle_src(std::string particle,int subgroup)
     {
       if (get_loop_order(levels[d]) == 2 )
       {
-      functions<< "  table << \""<< particle_name  << " & "<<" "<< levels[d] << " & " <<  tags[d] << " & \" << real(diagram" <<"_"<< particle_name << "_" << tags[d] << "_" << levels[d] << "())/(TSIL_POW(16.0L,2)*TSIL_POW(PI,4)) << \" \\\\\\\\ \" <<endl;"<<endl;
+      functions<< "  table << \""<< particle_name  << " & "<<" "<< levels[d] << " & " <<  clean(tags[d]) << " & \" << real(diagram" <<"_"<< particle_name << "_" << clean(tags[d]) << "_" << levels[d] << "())/(TSIL_POW(16.0L,2)*TSIL_POW(PI,4)) << \" \\\\\\\\ \" <<endl;"<<endl;
       }
       if (get_loop_order(levels[d]) == 1 )
       {
-      functions<< "  table << \""<< particle_name << " & "<<" "<< levels[d] << " & " <<  tags[d] << " & \" << real(diagram" <<"_"<< particle_name << "_" << tags[d] << "_" << levels[d] << "())/(16.0L*TSIL_POW(PI,2)) << \" \\\\\\\\ \" <<endl;"<<endl;
+      functions<< "  table << \""<< particle_name << " & "<<" "<< levels[d] << " & " <<  clean(tags[d]) << " & \" << real(diagram" <<"_"<< particle_name << "_" << clean(tags[d]) << "_" << levels[d] << "())/(16.0L*TSIL_POW(PI,2)) << \" \\\\\\\\ \" <<endl;"<<endl;
       }
     }
   }
@@ -721,7 +738,11 @@ void Generate_code::generate_code()
     }
 
   }
-
+	
+	main_output << "    if (data.do_tsil_all)" << endl;
+	main_output << "    {" << endl;
+	main_output << "      check_integrals();" << endl;
+	main_output << "    }" << endl;
   main_output << "  }"  << endl;
   main_output << "}"  << endl;
   main_output << "\n";

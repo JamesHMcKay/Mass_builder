@@ -28,16 +28,32 @@ int main(int argc, char *argv[])
   
   Data data(options);
   
-  cout.precision(17);
-  EW_triplet_spectrum spec(data);
-  spec.compute_tsil();
-  cout << "mass splitting = " <<  spec.get_deltam_2loop() << endl;
-  //spec.compute_spectra_flexiblesusy();
   
+  //cout.precision(17);
+  
+  EW_triplet_spectrum spec(data);
+  spec.compute_spectra_flexiblesusy();
+  //spec.compute_spectra_MB_2loop();
+  spec.compute_tsil();
+  cout << "--- explicit --- " << endl;
+  cout << "1-loop mass splitting = " <<  spec.get_deltam() << endl;
+  cout << "2-loop mass splitting = " <<  spec.get_deltam_2loop() << endl;
+  /*
+  EW_triplet_spectrum spec2(data);
+  spec2.compute_spectra_flexiblesusy();
+  //spec.compute_spectra_MB_2loop();
+  spec2.compute_tsil_iterative();
+  
+  cout << "--- iterative --- " << endl;
+  cout << "1-loop mass splitting = " <<  spec2.get_deltam() << endl;
+  cout << "2-loop mass splitting = " <<  spec2.get_deltam_2loop() << endl;
+  */
   
   Figures<EW_triplet_spectrum> fig;
   
-  //fig.plot_M(data);
+  //fig.plot_M_2loop_iterative(data);
+  
+  //fig.plot_Q(data);
   
   //fig.plot_decays(data);
   

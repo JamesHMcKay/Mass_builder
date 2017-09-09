@@ -15,8 +15,9 @@ plt.rc('font', family='Computer Modern Roman',weight='normal')
 
 # get the value of Xi
 Mass=np.genfromtxt('models/MSSM/input.txt',usecols=[1])
-Xi = Mass[12]
+Xi = Mass[11]
 
+print("Xi = " +  str(Xi))
 
 #### plot pole masses 
 
@@ -70,7 +71,7 @@ if (Xi == 3):
 	plt.annotate(r'Fried-Yennie gauge $(\xi = 3)$', xy=(20,0.87), xytext=(20,0.87),fontsize=16)
 	plt.savefig("mass_splittings/figures/pole_masses_n_xi_3.pdf")
 if (Xi == 1):
-	plt.annotate(r'Feynman-\'t Hooft gauge $(\xi = 1)$', xy=(20,0.87), xytext=(20,0.87),fontsize=16)
+	plt.annotate(r'Feynman-\'\,t Hooft gauge $(\xi = 1)$', xy=(20,0.87), xytext=(20,0.87),fontsize=16)
 	plt.savefig("mass_splittings/figures/pole_masses_n_xi_1.pdf")
 if (Xi == 0):
 	plt.annotate(r'Landau gauge $(\xi = 0)$', xy=(20,0.87), xytext=(20,0.87),fontsize=16)
@@ -128,7 +129,7 @@ if (Xi == 3):
 	plt.annotate(r'Fried-Yennie gauge $(\xi = 3)$', xy=(20,0.87), xytext=(20,0.87),fontsize=16)
 	plt.savefig("mass_splittings/figures/pole_masses_c_xi_3.pdf")
 if (Xi == 1):
-	plt.annotate(r'Feynman-\'t Hooft gauge $(\xi = 1)$', xy=(20,0.87), xytext=(20,0.87),fontsize=16)
+	plt.annotate(r'Feynman-\'\,t Hooft gauge $(\xi = 1)$', xy=(20,0.87), xytext=(20,0.87),fontsize=16)
 	plt.savefig("mass_splittings/figures/pole_masses_c_xi_1.pdf")
 if (Xi == 0):
 	plt.annotate(r'Landau gauge $(\xi = 0)$', xy=(20,0.87), xytext=(20,0.87),fontsize=16)

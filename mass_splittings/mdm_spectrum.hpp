@@ -28,9 +28,6 @@ public:
   void compute_tsil();
   void compute_tsil_iterative();
   
-  // temporary for now, get difference of 1-loop derivatives
-  double add_1loop_der(Data &data);
-  
   // compute the iterative pole mass
   double iterative_ms_bar_mass(Data data, string particle);  
   

@@ -267,7 +267,7 @@ void Figures<T>::plot_uncertainties(Data data)
 	Decays decays(data);
   
   // number of points to plot
-  int pts = 30; // 150
+  int pts =  150;
   for (int i=1;i<pts+1;i++)
 	{
 		
@@ -369,8 +369,8 @@ void Figures<T>::plot_Q(Data data)
 {
   ofstream myfile;
   myfile.open ("models/MSSM/output/mass_splittings_Q.txt");
-  int pts = 15;
-  double M = 1000;
+  int pts = 5;
+  double M = 1e4;
   int status = 0;
   double max_Q = 400; // (GeV)
   double min_Q = 50; // (GeV)
@@ -379,18 +379,20 @@ void Figures<T>::plot_Q(Data data)
   for (int i = 0; i < pts+1 ; i++)
   {
     data.mt = 163.3;  
-    data.Q = pow((i)*(max_Q - min_Q)/pts + min_Q,2);
+    data.Q = (i)*(max_Q - min_Q)/pts + min_Q;
     data.do_tsil_all = false;
     T mssm_1loop(data);
-    mssm_1loop.compute_spectra_MB_1loop();
+    //mssm_1loop.compute_spectra_MB_1loop();
+    mssm_1loop.compute_spectra_flexiblesusy();
     mssm_1loop.compute_tsil();
     double delta_m_1 = mssm_1loop.get_deltam();
     data.do_tsil_all = true;
     T mssm_2loop(data);
-    mssm_2loop.compute_spectra_MB_2loop();
+    //mssm_2loop.compute_spectra_MB_2loop();
+    mssm_2loop.compute_spectra_flexiblesusy();
     mssm_2loop.compute_tsil();
-    double delta_m_2 = mssm_2loop.get_deltam();
-    myfile << pow(data.Q,0.5) << " " << delta_m_1 <<  " " << delta_m_2 << endl;
+    double delta_m_2 = mssm_2loop.get_deltam_2loop();
+    myfile << data.Q << " " << delta_m_1 <<  " " << delta_m_2 << endl;
     status=(float(i)/pts)*100;
     cout<< "\r" << "computing mass splittings . . . " << status << "% complete ";
     std::cout << std::flush;
@@ -422,12 +424,16 @@ void Figures<T>::plot_M(Data data)
     data.MChi = pow(10,n);
     data.P = data.MChi;
     T mssm_1loop(data);
-    mssm_1loop.compute_spectra_MB_1loop();
+    mssm_1loop.compute_spectra_flexiblesusy();
+    //mssm_1loop.compute_spectra_MB_1loop();
+    data.do_tsil_all = false;
     mssm_1loop.compute_tsil();
     double delta_m_1 = mssm_1loop.get_deltam();
     
+    data.do_tsil_all = true;
     T mssm_2loop(data);
-    mssm_2loop.compute_spectra_MB_2loop();
+    //mssm_2loop.compute_spectra_MB_2loop();
+    mssm_2loop.compute_spectra_flexiblesusy();
     mssm_2loop.compute_tsil();
     double delta_m_2 = mssm_2loop.get_deltam_2loop();
     myfile << data.MChi << " " << delta_m_1 <<  " " << delta_m_2 << endl;
@@ -470,7 +476,7 @@ void Figures<T>::plot_M_flexiblesusy(Data data)
   std::vector<double> Q(5);
   
   // number of points to plot
-  int pts = 30;
+  int pts = 200;
   for (int i=0;i<pts+1;i++)
   {
     double n = i*(logMax - logMin)/pts + logMin;
@@ -539,7 +545,7 @@ template <class T>
 void Figures<T>::plot_M_flexiblesusy_2loop(Data data)
 { 
   ofstream mass_splittings_explicit;
-  mass_splittings_explicit.open ("mass_splittings/data/mass_splittings_explicit.txt");
+  mass_splittings_explicit.open ("mass_splittings/data/mass_splittings_explicit_2loop.txt");
  
   // set range of plot
   long double logMax = log10(1.0e4L);
@@ -548,7 +554,7 @@ void Figures<T>::plot_M_flexiblesusy_2loop(Data data)
   std::vector<double> Q(5);
   
   // number of points to plot
-  int pts = 20;
+  int pts = 10;
   for (int i=0;i<pts+1;i++)
   {
     double n = i*(logMax - logMin)/pts + logMin;
@@ -574,7 +580,7 @@ void Figures<T>::plot_M_flexiblesusy_2loop(Data data)
 			T mssm_explicit = mssm;
       mssm_explicit.compute_tsil();
 			
-			mass_splittings_explicit << " " << mssm_explicit.data.SE_1["F12_g1"]+mssm_explicit.data.SE_2["F12_g1"] - mssm_explicit.data.SE_1["F11_g1"]+mssm_explicit.data.SE_2["F11_g1"];
+			mass_splittings_explicit << " " << mssm_explicit.get_deltam_2loop();
 			
 		}
     
@@ -583,6 +589,54 @@ void Figures<T>::plot_M_flexiblesusy_2loop(Data data)
   mass_splittings_explicit.close();
   
 }
+
+template <class T>
+void Figures<T>::plot_M_2loop_iterative(Data data)
+{ 
+  ofstream mass_splittings_iterative;
+  mass_splittings_iterative.open ("mass_splittings/data/mass_splittings_iterative_2loop.txt");
+ 
+  // set range of plot
+  long double logMax = log10(1.0e4L);
+  long double logMin = log10(2.0e3L);
+  
+  std::vector<double> Q(5);
+  
+  // number of points to plot
+  int pts = 3;
+  for (int i=0;i<pts+1;i++)
+  {
+    double n = i*(logMax - logMin)/pts + logMin;
+    double M = pow(10.0L,n);
+    
+    data.MChi = M;
+    data.P = data.MChi;
+    
+    Q[0] = 2.0 * 173.15;
+    Q[1] = 0.5 * 173.15;
+    
+    
+    mass_splittings_iterative << M ;
+    
+    for (int i = 0; i < 2 ; i++)
+    {
+			data.Q = Q[i];
+			T mssm(data);
+			mssm.compute_spectra_flexiblesusy();
+			
+			T mssm_iterative = mssm;
+      mssm_iterative.compute_tsil_iterative();
+			
+			mass_splittings_iterative << " " << mssm_iterative.get_deltam_2loop();
+			
+		}
+    
+		mass_splittings_iterative << endl;
+  }
+  mass_splittings_iterative.close();
+  
+}
+
 
 template class Figures<MSSM_spectrum>;
 template class Figures<EW_triplet_spectrum>;

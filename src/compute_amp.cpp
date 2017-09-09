@@ -162,8 +162,8 @@ bool Compute_amp::calc_diagram()
   }
   
   get_finite_amplitude(input,options);
-
-	remove_fake_IR_divergence(input,masses_req);
+  
+  remove_fake_IR_divergence(input,masses_req);
   
   send_to_math(input);
   

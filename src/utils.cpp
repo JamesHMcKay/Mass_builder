@@ -37,6 +37,17 @@ namespace utils
     return loop_order;
   }
   
+  // transform tag into suitable form
+  // {a,b,c} -> group_a_b_c
+  std::string clean(std::string input)
+  {
+		ReplaceAll(input,"{", "group_");
+		ReplaceAll(input,",", "_");
+		ReplaceAll(input,"}", "");
+		return input;
+	}
+  
+  
   const char * add_mpi_ext(std::string name, int process, std::string ext)
   {
     const char* file_tmp = "_";
@@ -576,7 +587,7 @@ namespace utils
       }
     }
   
-		input += "ToString[amp0,InputForm]";
+		input += "ToString[amp0/.Sqrt[Xi^2]->Xi,InputForm]";
   
   }
 

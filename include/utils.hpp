@@ -23,6 +23,8 @@ namespace utils
 	
 	void print_masses(std::string &input, std::vector<std::string> masses);
 	
+	std::string clean(std::string input);
+	
 	std::pair <vector<string>,vector<string>> get_required_masses(vector<string> masses_in, vector<string> id_in, string amp);
 
 	std::vector<std::string> remove_xi(std::vector<std::string> input);

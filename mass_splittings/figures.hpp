@@ -31,13 +31,13 @@ public:
 	
 	void plot_M(Data data);
 	
-	//template <class T>
 	void plot_M_flexiblesusy(Data data);
 	
-	//template <class T>
 	void plot_uncertainties(Data data);
 	
 	void plot_M_flexiblesusy_2loop(Data data);
+	
+	void plot_M_2loop_iterative(Data data);
   
 };
 

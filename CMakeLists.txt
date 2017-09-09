@@ -28,6 +28,10 @@ if(Mathematica_FOUND AND Mathematica_WSTP_FOUND)
   set(LIBRARIES ${LIBRARIES} ${Mathematica_WSTP_LIBRARIES} ${Mathematica_MathLink_LIBRARY})
 endif()
 
+SET(FS "true" CACHE STRING "true")
+
+message("compile FS = " ${FS})
+
 set(TSIL_PATH "" CACHE STRING "The path to the TSIL file")
 get_filename_component(TSIL_PATH ${TSIL_PATH} REALPATH)
 
@@ -54,7 +58,7 @@ endif()
 ###### the below is relevant for a build using FlexibleSUSY
 
 # Check for Eigen
-find_package(Eigen3 9.1.0)
+find_package(Eigen3 3.1.0)
 if(EIGEN3_FOUND)
   include_directories("${EIGEN3_INCLUDE_DIR}")
   message("-- Eigen version: ${EIGEN3_VERSION}")
@@ -89,7 +93,7 @@ endif()
 
 # if all required packages are found then link the directories
 
-if (GSL_FOUND AND Boost_FOUND AND EIGEN3_FOUND)
+if (GSL_FOUND AND Boost_FOUND AND EIGEN3_FOUND AND FS)
 	include_directories(flexiblesusy/src/)
 	set(FS_INCLUDE include/flexiblesusy.hpp flexiblesusy/src/utils.h)
 	# include flexiblesusy
