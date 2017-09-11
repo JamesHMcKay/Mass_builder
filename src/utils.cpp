@@ -506,7 +506,7 @@ namespace utils
     string tag = make_tag(options);
     
     // define kinematics
-    if (options.onshell)
+    if (options.onshell && (options.loop_order!=1))
     {
       input+="SPD[p, p] = " + mass + "^2;";
       input+="Pair[Momentum[p], Momentum[p]] = " + mass + "^2;";
@@ -663,7 +663,7 @@ namespace utils
     }
     
     // define kinematics
-    if (options.onshell)
+    if (options.onshell && (options.loop_order!=1))
     {
       input+="SPD[p, p] = " + masses[0] + "^2;";
       input+="Pair[Momentum[p], Momentum[p]] = " + masses[0] + "^2;";

@@ -1,7 +1,7 @@
-P 5e3
+P 1e5
 Q 100
-MChi 5e3
-ma 0.01
+MChi 1e5
+ma 1e-1
 mw 80.385
 mz 91.1876
 mt 163.3
@@ -9,11 +9,10 @@ v 246
 mh 125.5
 mf 0.001
 alpha 0.00781592
-Xi 1
+Xi 3
 mu 0.01
 mc 1.5
 md 0.01
 ms 0.2
 mb 4.7
-MassBuilderTest 1
 #null 0.0

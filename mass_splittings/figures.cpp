@@ -72,6 +72,62 @@ double get_bad_Q(Data data, double lower, double upper)
 
 
 template <class T>
+double get_mc(double scale, void *params)
+{
+	Data data = *(Data*)params;
+	
+	data.Q = scale;
+	
+	T spec(data);
+	spec.compute_spectra_flexiblesusy();
+  spec.compute_tsil_iterative();
+	
+  return spec.get_charged_mass();
+}
+
+template <class T>
+double get_mn(double scale, void *params)
+{
+	Data data = *(Data*)params;
+	
+	data.Q = scale;
+	
+	T spec(data);
+	spec.compute_spectra_flexiblesusy();
+  spec.compute_tsil_iterative();
+	
+  return spec.get_neutral_mass();
+}
+
+template <class T>
+double get_mn_low(double scale, void *params)
+{
+	Data data = *(Data*)params;
+	
+	data.Q = scale;
+	
+	T spec(data);
+	spec.compute_spectra_flexiblesusy();
+  spec.compute_tsil();
+	
+  return spec.get_neutral_mass();
+}
+
+template <class T>
+double get_mc_low(double scale, void *params)
+{
+	Data data = *(Data*)params;
+	
+	data.Q = scale;
+	
+	T spec(data);
+	spec.compute_spectra_flexiblesusy();
+  spec.compute_tsil();
+	
+  return spec.get_charged_mass();
+}
+
+template <class T>
 double get_min_Q(double scale, void *params)
 {
 	Data data = *(Data*)params;
@@ -246,6 +302,10 @@ template <class T>
 void Figures<T>::plot_uncertainties(Data data)
 {
 	data.do_tsil_all = false;
+	
+	ofstream pole_masses;
+	pole_masses.open("mass_splittings/data/uncertainties_pole_masses.txt");
+	
 	ofstream myfile;
 	myfile.open ("mass_splittings/data/uncertainties.txt");
 	
@@ -349,15 +409,24 @@ void Figures<T>::plot_uncertainties(Data data)
 
 		decays_explicit << " " << decays.calc_lifetime(-get_max_Q_low<T>(maxQ_non_iterative,&data));
 
-		// plot with respect to pole mass, factor of 2 involved in FS model definition
+		// plot with respect to tree-level mass
 		myfile << data.MChi << " " << get_min_Q<T>(minQ_iterative,&data) << " " << -get_max_Q<T>(maxQ_iterative,&data);
 		myfile << " " << get_min_Q_low<T>(minQ_non_iterative,&data) << " " << -get_max_Q_low<T>(maxQ_non_iterative,&data) << endl;
+		
+		pole_masses << data.MChi;
+		pole_masses << " " << get_mn_low<T>(minQ_non_iterative,&data) << " " << get_mn_low<T>(maxQ_non_iterative,&data);
+		pole_masses << " " << get_mc_low<T>(minQ_non_iterative,&data) << " " << get_mc_low<T>(maxQ_non_iterative,&data);
+		
+		pole_masses << " " << get_mn<T>(minQ_iterative,&data) << " " << get_mn<T>(maxQ_iterative,&data);
+		pole_masses << " " << get_mc<T>(minQ_iterative,&data) << " " << get_mc<T>(maxQ_iterative,&data);
+		pole_masses << endl;
 		
 		decays_explicit << endl;
 		decays_iterative << endl;
 		
 	}
 	
+	pole_masses.close();
 	myfile.close();
 	decays_explicit.close();
 	decays_iterative.close();
@@ -540,56 +609,6 @@ void Figures<T>::plot_M_flexiblesusy(Data data)
   
 }
 
-
-template <class T>
-void Figures<T>::plot_M_flexiblesusy_2loop(Data data)
-{ 
-  ofstream mass_splittings_explicit;
-  mass_splittings_explicit.open ("mass_splittings/data/mass_splittings_explicit_2loop.txt");
- 
-  // set range of plot
-  long double logMax = log10(1.0e4L);
-  long double logMin = log10(10.0L);
-  
-  std::vector<double> Q(5);
-  
-  // number of points to plot
-  int pts = 10;
-  for (int i=0;i<pts+1;i++)
-  {
-    double n = i*(logMax - logMin)/pts + logMin;
-    double M = pow(10.0L,n);
-    
-    data.MChi = M;
-    data.P = data.MChi;
-    
-    Q[0] = 2.0 * 173.15;
-    Q[1] = 0.5 * 173.15;
-    Q[2] = 0.5 * M ;
-    Q[3] = M ;
-    Q[4] = 2.0 * M;
-    
-    mass_splittings_explicit << M ;
-    
-    for (int i = 0; i < 5 ; i++)
-    {
-			data.Q = Q[i];
-			T mssm(data);
-			mssm.compute_spectra_flexiblesusy();
-			
-			T mssm_explicit = mssm;
-      mssm_explicit.compute_tsil();
-			
-			mass_splittings_explicit << " " << mssm_explicit.get_deltam_2loop();
-			
-		}
-    
-		mass_splittings_explicit << endl;
-  }
-  mass_splittings_explicit.close();
-  
-}
-
 template <class T>
 void Figures<T>::plot_M_2loop_iterative(Data data)
 { 
@@ -597,13 +616,13 @@ void Figures<T>::plot_M_2loop_iterative(Data data)
   mass_splittings_iterative.open ("mass_splittings/data/mass_splittings_iterative_2loop.txt");
  
   // set range of plot
-  long double logMax = log10(1.0e4L);
-  long double logMin = log10(2.0e3L);
+  long double logMax = log10(1.0e5L);
+  long double logMin = log10(100.0);
   
-  std::vector<double> Q(5);
+  std::vector<double> Q(5),cutoff(5);
   
   // number of points to plot
-  int pts = 3;
+  int pts = 100;
   for (int i=0;i<pts+1;i++)
   {
     double n = i*(logMax - logMin)/pts + logMin;
@@ -612,28 +631,102 @@ void Figures<T>::plot_M_2loop_iterative(Data data)
     data.MChi = M;
     data.P = data.MChi;
     
-    Q[0] = 2.0 * 173.15;
-    Q[1] = 0.5 * 173.15;
+    Q[0] = 10;
+    Q[1] = 100;
+    Q[2] = 500;
+    Q[3] = 1000;
     
+    cutoff[0] = 10;
+    cutoff[1] = 1000;
+    cutoff[2] = 3000;
+    cutoff[3] = 3000;
     
     mass_splittings_iterative << M ;
     
-    for (int i = 0; i < 2 ; i++)
+    for (int i = 0; i < 4 ; i++)
     {
-			data.Q = Q[i];
-			T mssm(data);
-			mssm.compute_spectra_flexiblesusy();
-			
-			T mssm_iterative = mssm;
-      mssm_iterative.compute_tsil_iterative();
-			
-			mass_splittings_iterative << " " << mssm_iterative.get_deltam_2loop();
+			if (cutoff[i] < M)
+			{
+				data.Q = Q[i];
+				T mssm(data);
+				mssm.compute_spectra_flexiblesusy();
+				
+				T mssm_iterative = mssm;
+	      mssm_iterative.compute_tsil_iterative();
+				
+				mass_splittings_iterative << " " << mssm_iterative.get_deltam_2loop();
+			}
+			else
+			{
+				mass_splittings_iterative << " " << -1.0;
+			}
 			
 		}
     
 		mass_splittings_iterative << endl;
   }
   mass_splittings_iterative.close();
+  
+}
+
+
+template <class T>
+void Figures<T>::plot_M_2loop_explicit(Data data)
+{ 
+  ofstream mass_splittings_explicit;
+  mass_splittings_explicit.open ("mass_splittings/data/mass_splittings_explicit_2loop.txt");
+ 
+  // set range of plot
+  long double logMax = log10(1.0e5L);
+  long double logMin = log10(100.0);
+  
+  std::vector<double> Q(5),cutoff(5);
+  
+  // number of points to plot
+  int pts = 50;
+  for (int i=0;i<pts+1;i++)
+  {
+    double n = i*(logMax - logMin)/pts + logMin;
+    double M = pow(10.0L,n);
+    
+    data.MChi = M;
+    data.P = data.MChi;
+    
+    Q[0] = 10;
+    Q[1] = 100;
+    Q[2] = 500;
+    Q[3] = 1000;
+    
+    cutoff[0] = 0;
+    cutoff[1] = 0;
+    cutoff[2] = 0;
+    cutoff[3] = 0;
+    
+    mass_splittings_explicit << M ;
+    
+    for (int i = 0; i < 4 ; i++)
+    {
+			if (cutoff[i] < M)
+			{
+				data.Q = Q[i];
+				T mssm(data);
+				mssm.compute_spectra_flexiblesusy();
+				
+				T mssm_explicit = mssm;
+	      mssm_explicit.compute_tsil();
+				
+				mass_splittings_explicit << " " << mssm_explicit.get_deltam_2loop();
+			}
+			else
+			{
+				mass_splittings_explicit << " " << -1.0;
+			}
+			
+		}
+    
+		mass_splittings_explicit << endl;
+  }
+  mass_splittings_explicit.close();
   
 }
 

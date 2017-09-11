@@ -139,8 +139,8 @@ figData = pylab.figure()
 ax = pylab.gca()
 
 # plot something, it doesn't matter what
-pylab.plot(x2,ylower,'-',color='grey',label="iterative uncertainty") #
-pylab.plot(x2,ymid,'-',color='lightgrey',label="non-iterative uncertainty") #
+pylab.plot(x2,ylower,'-',color='red',alpha=0.5,label="iterative uncertainty") #
+pylab.plot(x2,ymid,'-',color='yellow',alpha=0.5,label="non-iterative uncertainty") #
 
 
 # create a second figure for the legend

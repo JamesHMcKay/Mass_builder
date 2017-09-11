@@ -201,7 +201,7 @@ double EW_triplet_spectrum::iterative_ms_bar_mass(Data data, string particle)
   long double M_pole = data.MChi;
   data.P = M_tree;
   long double diff = 1;
-  long double precision = 1e-8;
+  long double precision = 1e-6;
   int iteration = 0;
   do
   {
@@ -220,16 +220,16 @@ double EW_triplet_spectrum::iterative_ms_bar_mass(Data data, string particle)
     diff = abs(M_pole - data.P);
     data.P = M_pole;
     
-    //cout<< "\r" << "M_pole - p = " << diff << " GeV";
-    //std::cout << std::flush;
+    cout<< "\r" << "M_pole - p = " << diff << " GeV";
+    std::cout << std::flush;
     
     iteration++;
-  } while (diff > precision  && iteration < 500);
+  } while (diff > precision  && iteration < 30);
   
-  //cout<< "\r" << "M_pole - p = " << diff << " GeV";
-  //cout << "\n";
+  cout<< "\r" << "M_pole - p = " << diff << " GeV";
+  cout << "\n";
   
-  if (iteration == 500)
+  if (iteration == 30)
   {
     cout << "pole mass did not converge" << endl;
     return 0;
@@ -345,6 +345,7 @@ bool EW_triplet_spectrum::compute_spectra_flexiblesusy()
   
   data.mw = model.get_MVWp();
   data.mz = model.get_MVZ();
+  
   //data.mh = model.get_Mhh();
 	//data.mt = model.get_MFu(2);
   //data.v = model.get_v();
@@ -385,9 +386,13 @@ void EW_triplet_spectrum::compute_tsil_iterative()
 {	
 	Self_energy se;
 	se.run_tsil(data);
-	
+	double m_F12;
 	double m_F11 = iterative_ms_bar_mass(data,"F11_g1");
-	double m_F12 = iterative_ms_bar_mass(data,"F12_g1");
+
+	if (m_F11 != 0)
+	{
+		m_F12 = iterative_ms_bar_mass(data,"F12_g1");	
+	}
 	
 	if ( (m_F11 == 0 ) || (m_F12 == 0 ) )
 	{

@@ -8,9 +8,9 @@ from scipy import interpolate
 from scipy import integrate
 from scipy import special
 
-from matplotlib import rc
-rc('text', usetex=True)
-plt.rc('font', family='Computer Modern Roman',weight='normal')
+#from matplotlib import rc
+#rc('text', usetex=True)
+#plt.rc('font', family='Computer Modern Roman',weight='normal')
 
 
 # get the value of Xi
@@ -38,8 +38,18 @@ plt.plot(x,yupper1/x,'-',color='green',label="$Q=0.5 M$") #
 plt.plot(x,yupper2/x,'-',color='blue',label="$Q= M$") #
 plt.plot(x,yupper3/x,'-',color='black',label="$Q=2 M$") #
 
-plt.fill_between(x, ylower/x, yupper1/x,color='grey')
-plt.fill_between(x, yupper3/x, ymid/x,color='grey')
+# create vector with maximum and minimum values
+
+
+maximum = zeros(size(x))
+minimum = zeros(size(x))
+
+for i in range(0,len(x)):
+	maximum[i] = max(A[i,1:6])
+	minimum[i] = min(A[i,1:6])
+
+
+plt.fill_between(x, minimum/x,maximum/x,color='red',alpha=0.5)
 
 A=np.genfromtxt('mass_splittings/data/pole_mass_n_explicit.txt',usecols=[0,1,2,3,4,5])
 x=A[:,0]
@@ -56,8 +66,18 @@ plt.plot(x,yupper2/x,'--',color='blue',label="$Q= M$") #
 plt.plot(x,yupper3/x,'--',color='black',label="$Q=2 M$") #
 
 
-plt.fill_between(x, ylower/x, yupper1/x,color='lightgrey')
-plt.fill_between(x, yupper3/x, ymid/x,color='lightgrey')
+# create vector with maximum and minimum values
+
+
+maximum = zeros(size(x))
+minimum = zeros(size(x))
+
+for i in range(0,len(x)):
+	maximum[i] = max(A[i,1:6])
+	minimum[i] = min(A[i,1:6])
+
+
+plt.fill_between(x, minimum/x,maximum/x,color='yellow',alpha=0.4)
 
 
 xlabel(r"Degenerate mass, $\hat{M}$ (GeV)",fontsize=14)
@@ -94,8 +114,19 @@ plt.plot(x,yupper1/x,'-',color='green',label="$Q=0.5 M$") #
 plt.plot(x,yupper2/x,'-',color='blue',label="$Q= M$") #
 plt.plot(x,yupper3/x,'-',color='black',label="$Q=2 M$") #
 
-plt.fill_between(x, ylower/x, yupper1/x,color='grey')
-plt.fill_between(x, yupper3/x, ymid/x,color='grey')
+
+# create vector with maximum and minimum values
+
+
+maximum = zeros(size(x))
+minimum = zeros(size(x))
+
+for i in range(0,len(x)):
+	maximum[i] = max(A[i,1:6])
+	minimum[i] = min(A[i,1:6])
+
+
+plt.fill_between(x, minimum/x,maximum/x,color='red',alpha=0.5)
 
 
 A=np.genfromtxt('mass_splittings/data/pole_mass_c_explicit.txt',usecols=[0,1,2,3,4,5])
@@ -112,10 +143,18 @@ plt.plot(x,yupper1/x,'--',color='green',label="$Q=0.5 M$") #
 plt.plot(x,yupper2/x,'--',color='blue',label="$Q= M$") #
 plt.plot(x,yupper3/x,'--',color='black',label="$Q=2 M$") #
 
-plt.fill_between(x, ylower/x, yupper1/x,color='lightgrey')
-plt.fill_between(x, yupper3/x, ymid/x,color='lightgrey')
+# create vector with maximum and minimum values
 
 
+maximum = zeros(size(x))
+minimum = zeros(size(x))
+
+for i in range(0,len(x)):
+	maximum[i] = max(A[i,1:6])
+	minimum[i] = min(A[i,1:6])
+
+
+plt.fill_between(x, minimum/x,maximum/x,color='yellow',alpha=0.4)
 
 xlabel(r"Degenerate mass, $\hat{M}$ (GeV)",fontsize=14)
 ylabel(r"$M^+_p /\hat{M}$",fontsize=14)
