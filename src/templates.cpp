@@ -107,7 +107,7 @@ namespace templates
     << "  TSIL_REAL p;\n"
     << "  bool exclude_photon_pole = false;\n"
     << "  TSIL_COMPLEXCPP Log(TSIL_REAL a){\n"
-    << "  if (a < 1e-6){return 0.0L;}\n"
+    << "  if (a < 1e-12){return 1.0L;}\n"
 		<< "  else\n"
 		<< "  {\n"    
     << "  complex<double> s(a/Q2,-0.000);return log(s);}}\n"
