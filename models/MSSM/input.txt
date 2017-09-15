@@ -1,7 +1,7 @@
 P 1e4
 Q 173
 MChi 1e4
-ma 1e-10
+ma 1e-200
 mw 80.385
 mz 91.1876
 mt 163.3
@@ -22,4 +22,3 @@ MassBuilderJEpsilon 0.0
 #ms 0.2
 #mb 4.7
 null 0.0
-exclude_photon_pole 1

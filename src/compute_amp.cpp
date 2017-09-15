@@ -171,7 +171,7 @@ bool Compute_amp::calc_diagram()
   
   if(std::find(masses_req.begin(), masses_req.end(), "ma") != masses_req.end()) 
   {
-    input += "amp1 = Simplify[Coefficient[SelfEnergyFinite,ma,-2],TimeConstraint->100000];";
+    input += "amp1 = Simplify[Coefficient[SelfEnergyFinite/. MassBuilderA[ma,4]-> (ma^2 MassBuilderA[ma,4]),ma,-2],TimeConstraint->100000];";
     seperate_amp = true;
 	} else 
 	{
