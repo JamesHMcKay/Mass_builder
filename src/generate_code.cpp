@@ -459,7 +459,8 @@ void Generate_code::generate_particle_src(std::string particle,int subgroup)
   }
   functions<<"\n"
   << "    Q2 = pow(data.Q,2);\n"
-  << "    p=data.P;\n";
+  << "    p=data.P;\n"
+  << "    exclude_photon_pole = data.exclude_photon_pole;\n";
 
 
   // set values of integrals

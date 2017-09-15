@@ -158,6 +158,8 @@ void User_input::user_interface()
   
   if (find_string("offshell")){ options.onshell = false;}
   
+  if (find_string("excludephotonpole")){ options.exclude_photon_pole = true;}
+  
   if (find_string("TARCER")){ options.fire = false;}
   
   if (options.particle_1!=options.particle_2)

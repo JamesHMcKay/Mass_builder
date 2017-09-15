@@ -582,7 +582,7 @@ bool Compute_amp::calc_diagram()
   if (seperate_amp)
   {
 		
-		summation_out << "  if (data.exclude_photon_pole);\n"
+		summation_out << "  if (exclude_photon_pole)\n"
 		<< "  {\n"
 		<< "    return result2;\n"
 		<< "  }\n"
