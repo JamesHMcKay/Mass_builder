@@ -259,24 +259,28 @@ bool Compute_amp::calc_diagram()
   // print the bases to the .m file
   print_math_basis(reduced_basis,math_2, "amp1","4","amp2");
   
-  // construct the amplitude as coefficients multiplied by basis integrals
-  math_2 << "SelfEnergyTrial = 0 ";
+  // construct the amplitudes as coefficients multiplied by basis integrals
+  math_2 << "Amp1Trial = 0 ";
   for (int i = 0; i<nbr;i++)
   {
     math_2 << " + "<<reduced_basis_id[i]<< " * C1"<<reduced_basis_id[i]; // use the terms we know are non-zero
-    math_2 << " + "<<reduced_basis_id[i]<< " * C2"<<reduced_basis_id[i]; // use the terms we know are non-zero
   }
   math_2 << ";"<<endl;
   
-  // evaluate the difference between the trial and actual amplitude
-  math_2 << "difference = Simplify[SelfEnergyFinite-SelfEnergyTrial];"<<endl;
-
-  // save the difference to a text file for reference
-  math_2 << "Export[\""<<get_cwd()<<"/output/result_"<< options.mpi_process << ".txt\", difference];" << endl;
+  math_2 << "Amp2Trial = 0 ";
+  for (int i = 0; i<nbr;i++)
+  {
+    math_2 << " + "<<reduced_basis_id[i]<< " * C2"<<reduced_basis_id[i]; // use the terms we know are non-zero
+  }
+  math_2 << ";"<<endl;  
   
-  // evaluate the coefficients for the difference (see what basis integrals appear in the difference contains)
+  // evaluate the difference between the trial and actual amplitude
+  math_2 << "difference1 = Simplify[amp1-Amp1Trial];"<<endl;
+  math_2 << "difference2 = Simplify[amp2-Amp2Trial];"<<endl;
+
+  // evaluate the coefficients for the differences (see what basis integrals appear in the difference contains)
   // and write this to file
-  print_math_basis(full_basis,math_2, "difference",dimension);
+  print_math_basis(full_basis,math_2, "difference1",dimension,"difference2");
   math_2 << "Export[\""<<get_cwd()<<"/output/output2_"<< options.mpi_process << ".txt\", {" << endl;
   for (int i = 0; i < nb-1;i++)
   {

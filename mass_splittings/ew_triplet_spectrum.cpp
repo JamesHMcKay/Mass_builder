@@ -14,8 +14,6 @@
 #include "data.hpp"
 #include "self_energy.hpp"
 #include "cmake_variables.hpp"
-
-//inline double sqr(double a) { return a * a; }
 #include "flexiblesusy/src/utils.h"
 
 #include "spectrum_generator_settings.hpp"
@@ -46,7 +44,11 @@ namespace extra_TSIL_interface_EW_triplet
   TSIL_DATA bar;  
   TSIL_REAL Q2,Q;
   TSIL_REAL p;
-  TSIL_COMPLEXCPP Log(TSIL_REAL a){complex<double> s(a/Q2,-0.000);return log(s);}
+  TSIL_COMPLEXCPP Log(TSIL_REAL a){
+  if (a < 1e-12){return 1.0L;}
+  else
+  {
+  complex<double> s(a/Q2,-0.000);return log(s);}}
   TSIL_REAL Power(TSIL_REAL a, int b){return TSIL_POW(a,b);}
   TSIL_COMPLEXCPP Power(TSIL_COMPLEXCPP a, int b){return pow(a,b);}
   TSIL_REAL Sin(TSIL_REAL a){return sin(a);}
