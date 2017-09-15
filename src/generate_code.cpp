@@ -92,6 +92,7 @@ void Generate_code::generate_data_hpp()
   data_h << "  std::map<std::string, double> M_tree;"<< endl;
   data_h << "  long double P, Q;" << endl;
   data_h << "  bool do_tsil_all = true;" << endl;
+  data_h << "  bool exclude_photon_pole = false;" << endl;
   data_h << "  std::vector<std::string> avail_part = {\"";
   for (unsigned int i=0;i<particle_names_short_reduced.size()-1;i++)
   {

@@ -302,18 +302,25 @@ template <class T>
 void Figures<T>::plot_uncertainties(Data data)
 {
 	data.do_tsil_all = false;
+	int xi_int = data.Xi;
 	
-	ofstream pole_masses;
-	pole_masses.open("mass_splittings/data/uncertainties_pole_masses.txt");
+	string c_uncertainties = "mass_splittings/data/uncertainties_" + to_string(xi_int) + ".txt";
+  const char *unc_file = c_uncertainties.c_str();
+  
+  string c_decay_it = "mass_splittings/data/decays_iterative_" + to_string(xi_int) + ".txt";
+  const char *decay_it_file = c_decay_it.c_str();
+    
+  string c_decay_ex = "mass_splittings/data/decays_explicit_" + to_string(xi_int) + ".txt";
+  const char *decay_ex_file = c_decay_ex.c_str();
 	
 	ofstream myfile;
-	myfile.open ("mass_splittings/data/uncertainties.txt");
+	myfile.open (unc_file);
 	
 	ofstream decays_iterative;
-  decays_iterative.open ("mass_splittings/data/decays_iterative.txt");
+  decays_iterative.open (decay_it_file);
   
   ofstream decays_explicit;
-  decays_explicit.open ("mass_splittings/data/decays_explicit.txt");  
+  decays_explicit.open (decay_ex_file);  
   
   // set range of plot
   long double logMax = log10(10000);
@@ -413,20 +420,12 @@ void Figures<T>::plot_uncertainties(Data data)
 		myfile << data.MChi << " " << get_min_Q<T>(minQ_iterative,&data) << " " << -get_max_Q<T>(maxQ_iterative,&data);
 		myfile << " " << get_min_Q_low<T>(minQ_non_iterative,&data) << " " << -get_max_Q_low<T>(maxQ_non_iterative,&data) << endl;
 		
-		pole_masses << data.MChi;
-		pole_masses << " " << get_mn_low<T>(minQ_non_iterative,&data) << " " << get_mn_low<T>(maxQ_non_iterative,&data);
-		pole_masses << " " << get_mc_low<T>(minQ_non_iterative,&data) << " " << get_mc_low<T>(maxQ_non_iterative,&data);
-		
-		pole_masses << " " << get_mn<T>(minQ_iterative,&data) << " " << get_mn<T>(maxQ_iterative,&data);
-		pole_masses << " " << get_mc<T>(minQ_iterative,&data) << " " << get_mc<T>(maxQ_iterative,&data);
-		pole_masses << endl;
 		
 		decays_explicit << endl;
 		decays_iterative << endl;
 		
 	}
 	
-	pole_masses.close();
 	myfile.close();
 	decays_explicit.close();
 	decays_iterative.close();
@@ -437,28 +436,28 @@ template <class T>
 void Figures<T>::plot_Q(Data data)
 {
   ofstream myfile;
-  myfile.open ("models/MSSM/output/mass_splittings_Q.txt");
+  myfile.open ("mass_splittings/data2/deltam_Q.txt");
   int pts = 5;
-  double M = 1e4;
+  //double M = 1e3;
   int status = 0;
   double max_Q = 400; // (GeV)
   double min_Q = 50; // (GeV)
-  data.MChi = M;
-  data.P = M;
+  //data.MChi = M;
+  //data.P = M;
   for (int i = 0; i < pts+1 ; i++)
   {
     data.mt = 163.3;  
     data.Q = (i)*(max_Q - min_Q)/pts + min_Q;
     data.do_tsil_all = false;
     T mssm_1loop(data);
-    //mssm_1loop.compute_spectra_MB_1loop();
-    mssm_1loop.compute_spectra_flexiblesusy();
+    mssm_1loop.compute_spectra_MB_1loop();
+    //mssm_1loop.compute_spectra_flexiblesusy();
     mssm_1loop.compute_tsil();
     double delta_m_1 = mssm_1loop.get_deltam();
     data.do_tsil_all = true;
     T mssm_2loop(data);
-    //mssm_2loop.compute_spectra_MB_2loop();
-    mssm_2loop.compute_spectra_flexiblesusy();
+    mssm_2loop.compute_spectra_MB_2loop();
+    //mssm_2loop.compute_spectra_flexiblesusy();
     mssm_2loop.compute_tsil();
     double delta_m_2 = mssm_2loop.get_deltam_2loop();
     myfile << data.Q << " " << delta_m_1 <<  " " << delta_m_2 << endl;
@@ -477,7 +476,7 @@ template <class T>
 void Figures<T>::plot_M(Data data)
 {
   ofstream myfile;
-  myfile.open ("models/MSSM/output/mass_splittings.txt");
+  myfile.open ("mass_splittings/data2/deltam_M.txt");
   int pts = 10;
   double n = 0;
   int status = 0;
@@ -520,23 +519,45 @@ template <class T>
 void Figures<T>::plot_M_flexiblesusy(Data data)
 { 
 	data.do_tsil_all = false;
+	
+	int xi_int = data.Xi;
+	
+	string c_deltam_it = "mass_splittings/data/mass_splittings_iterative_" + to_string(xi_int) + ".txt";
+  const char *deltam_it_file = c_deltam_it.c_str();
+  
+	string c_deltam_ex = "mass_splittings/data/mass_splittings_explicit_" + to_string(xi_int) + ".txt";
+  const char *deltam_ex_file = c_deltam_ex.c_str();
+  
+	string c_pole_mass_c_it = "mass_splittings/data/pole_mass_c_iterative_" + to_string(xi_int) + ".txt";
+  const char *pole_mass_c_it_file = c_pole_mass_c_it.c_str();
+  
+	string c_pole_mass_n_it = "mass_splittings/data/pole_mass_n_iterative_" + to_string(xi_int) + ".txt";
+  const char *pole_mass_n_it_file = c_pole_mass_n_it.c_str();
+  
+	string c_pole_mass_c_ex = "mass_splittings/data/pole_mass_c_explicit_" + to_string(xi_int) + ".txt";
+  const char *pole_mass_c_ex_file = c_pole_mass_c_ex.c_str();
+  
+	string c_pole_mass_n_ex = "mass_splittings/data/pole_mass_n_explicit_" + to_string(xi_int) + ".txt";
+  const char *pole_mass_n_ex_file = c_pole_mass_n_ex.c_str();          
+	
+	
   ofstream mass_splittings_iterative;
-  mass_splittings_iterative.open ("mass_splittings/data/mass_splittings_iterative.txt");
- 
-  ofstream pole_mass_n_iterative;
-  pole_mass_n_iterative.open ("mass_splittings/data/pole_mass_n_iterative.txt");
- 
-	ofstream pole_mass_c_iterative;
-  pole_mass_c_iterative.open ("mass_splittings/data/pole_mass_c_iterative.txt");
+  mass_splittings_iterative.open (deltam_it_file);
   
   ofstream mass_splittings_explicit;
-  mass_splittings_explicit.open ("mass_splittings/data/mass_splittings_explicit.txt");
+  mass_splittings_explicit.open (deltam_ex_file);  
  
+  ofstream pole_mass_n_iterative;
+  pole_mass_n_iterative.open (pole_mass_n_it_file);
+ 
+	ofstream pole_mass_c_iterative;
+  pole_mass_c_iterative.open (pole_mass_c_it_file);
+  
   ofstream pole_mass_n_explicit;
-  pole_mass_n_explicit.open ("mass_splittings/data/pole_mass_n_explicit.txt");
+  pole_mass_n_explicit.open (pole_mass_n_ex_file);
  
 	ofstream pole_mass_c_explicit;
-  pole_mass_c_explicit.open ("mass_splittings/data/pole_mass_c_explicit.txt");  
+  pole_mass_c_explicit.open (pole_mass_c_ex_file);  
  
   // set range of plot
   long double logMax = log10(1.0e4L);

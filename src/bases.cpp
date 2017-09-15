@@ -250,7 +250,9 @@ std::map <std::string, Bases > remove_zeros(std::map <std::string, Bases > base_
   for (unsigned int i = 0; i < bases_names.size();i++)
   {
     string coeff = base_map[bases_names[i]].coefficient;
-    if ( char_to_string(coeff[2]) != "0") // the character choosen depends on the amount of white space used
+    string coeff1 = base_map[bases_names[i]].coefficient1;
+    string coeff2 = base_map[bases_names[i]].coefficient2;
+    if ( char_to_string(coeff[2]) != "0" || char_to_string(coeff1[2]) != "0" || char_to_string(coeff2[2]) != "0") // the character choosen depends on the amount of white space used
     {
       new_base_map[bases_names[i]] = base_map[bases_names[i]];
     }
@@ -272,111 +274,126 @@ std::map <std::string, Bases > remove_type_F(std::map <std::string, Bases > base
 }
 
 
+void format_coeff(string &coefficient, string dimension,std::vector<std::string> masses, std::vector<std::string> id)
+{
+	int nm = masses.size();  
+  string from="",to="";
+  
+	for (int i = 0; i<nm; i++)
+  {
+		for (int j = 0; j<nm; j++)
+		{
+			from = "TBI["+dimension+", p^2, {{1, "+masses[i]+"}, {1, " + masses[j] + "}}]";
+			to = "B"+id[j]+id[i];
+			ReplaceAll(coefficient,from, to);
+			
+			from = "TBI("+dimension+",Pair(Momentum(p),Momentum(p)),List(List(1,"+masses[i]+"),List(1," + masses[j] + ")))";
+			to = "B"+id[j]+id[i];
+			ReplaceAll(coefficient,from, to);
+
+			
+			from = "TBI("+dimension+",Power("+masses[0]+",2),List(List(1,"+masses[i]+"),List(1," + masses[j] + ")))";
+			to = "B"+id[j]+id[i];
+			ReplaceAll(coefficient,from, to);
+
+			
+			from = "MassBuilderB("+masses[i]+","+masses[j]+")";
+			to = "B"+id[j]+id[i];
+			ReplaceAll(coefficient,from, to);
+			
+		}
+      
+      
+		from = "TBI("+dimension+",Power("+masses[0]+",2),List(List(1,"+masses[i]+"),List(1,0)))";
+		to = "Bn"+id[i];
+		ReplaceAll(coefficient,from, to);
+		
+		from = "TBI("+dimension+",Pair(Momentum(p),Momentum(p)),List(List(1,"+masses[i]+"),List(1,0)))";
+		to = "Bn"+id[i];
+		ReplaceAll(coefficient,from, to);
+		
+		from = "TAI("+dimension+",0,List(List(1,"+masses[i]+")))";
+		to = "A"+id[i];
+		ReplaceAll(coefficient,from, to);
+		
+		from = "MassBuilderA(" + masses[i] + ")";
+		to = "A"+id[i];
+		ReplaceAll(coefficient,from, to);
+		
+		from = "TAI["+dimension+", 0, {{1, "+masses[i]+"}}]";
+		to = "A"+id[i];
+		ReplaceAll(coefficient,from, to);
+		
+		from = "MajoranaSpinor(p,"+masses[i]+")";
+		to = "1.0L";
+		
+		ReplaceAll(coefficient,from, to);
+		
+		from = "Spinor(Momentum(p),"+masses[i]+",1)";
+		to = "1.0L";
+		ReplaceAll(coefficient,from, to);
+		
+		from = "Dot(1.0,1.0)";
+		to = "1.0L";
+		ReplaceAll(coefficient,from, to);
+		from = "Dot(1.0L,1.0L)";
+		to = "1.0L";
+		ReplaceAll(coefficient,from, to);
+   }
+    
+				
+	from = "Pair(Momentum(p),Momentum(p))";
+	to = "Power(p,2)";
+	ReplaceAll(coefficient,from, to);
+	
+	from = "DiracGamma(6)";
+	to = "0.5L";
+	ReplaceAll(coefficient,from, to);
+	
+	from = "DiracGamma(7)";
+	to = "0.5L";
+	ReplaceAll(coefficient,from, to);
+	
+	
+	from = "MassBuilderAe";
+	to = "Ae";
+	ReplaceAll(coefficient,from, to);
+	
+			
+	from = "MassBuilderBe";
+	to = "Be";
+	ReplaceAll(coefficient,from, to);
+	
+	
+	from = "MassBuilderP";
+	to = "p";
+	ReplaceAll(coefficient,from, to); 
+}
+
+
+
+
 // reformat the coefficient to change Mathematica expressions into readable C++ input
 void format_coeff(string dimension, std::map <std::string, Bases > &base_map, std::vector<std::string> bases_names,std::vector<std::string> masses, std::vector<std::string> id)
 {
   int nb = bases_names.size();
-  int nm = masses.size();
-  
-  // deal with TAI and TBI objects that frequently appear in the coefficients
-  string from="",to="";
-  
 
-  
   for (int k = 0; k<nb ; k++)
   {
     string coefficient = base_map[bases_names[k]].coefficient;
-    for (int i = 0; i<nm; i++)
-    {
-      for (int j = 0; j<nm; j++)
-      {
-        from = "TBI["+dimension+", p^2, {{1, "+masses[i]+"}, {1, " + masses[j] + "}}]";
-        to = "B"+id[j]+id[i];
-        ReplaceAll(coefficient,from, to);
-        
-        from = "TBI("+dimension+",Pair(Momentum(p),Momentum(p)),List(List(1,"+masses[i]+"),List(1," + masses[j] + ")))";
-        to = "B"+id[j]+id[i];
-        ReplaceAll(coefficient,from, to);
-
-        
-        from = "TBI("+dimension+",Power("+masses[0]+",2),List(List(1,"+masses[i]+"),List(1," + masses[j] + ")))";
-        to = "B"+id[j]+id[i];
-        ReplaceAll(coefficient,from, to);
-
-        
-        from = "MassBuilderB("+masses[i]+","+masses[j]+")";
-        to = "B"+id[j]+id[i];
-        ReplaceAll(coefficient,from, to);
-        
-      }
-      
-      
-      from = "TBI("+dimension+",Power("+masses[0]+",2),List(List(1,"+masses[i]+"),List(1,0)))";
-      to = "Bn"+id[i];
-      ReplaceAll(coefficient,from, to);
-      
-      from = "TBI("+dimension+",Pair(Momentum(p),Momentum(p)),List(List(1,"+masses[i]+"),List(1,0)))";
-      to = "Bn"+id[i];
-      ReplaceAll(coefficient,from, to);
-      
-      from = "TAI("+dimension+",0,List(List(1,"+masses[i]+")))";
-      to = "A"+id[i];
-      ReplaceAll(coefficient,from, to);
-      
-      from = "MassBuilderA(" + masses[i] + ")";
-      to = "A"+id[i];
-      ReplaceAll(coefficient,from, to);
-      
-      from = "TAI["+dimension+", 0, {{1, "+masses[i]+"}}]";
-      to = "A"+id[i];
-      ReplaceAll(coefficient,from, to);
-      
-      from = "MajoranaSpinor(p,"+masses[i]+")";
-      to = "1.0L";
-      
-      ReplaceAll(coefficient,from, to);
-      
-      from = "Spinor(Momentum(p),"+masses[i]+",1)";
-      to = "1.0L";
-      ReplaceAll(coefficient,from, to);
-      
-      from = "Dot(1.0,1.0)";
-      to = "1.0L";
-      ReplaceAll(coefficient,from, to);
-      from = "Dot(1.0L,1.0L)";
-      to = "1.0L";
-      ReplaceAll(coefficient,from, to);
-    }
-    
-          
-    from = "Pair(Momentum(p),Momentum(p))";
-    to = "Power(p,2)";
-    ReplaceAll(coefficient,from, to);
-    
-    from = "DiracGamma(6)";
-    to = "0.5L";
-    ReplaceAll(coefficient,from, to);
-    
-    from = "DiracGamma(7)";
-    to = "0.5L";
-    ReplaceAll(coefficient,from, to);
-    
-    
-    from = "MassBuilderAe";
-    to = "Ae";
-    ReplaceAll(coefficient,from, to);
-    
-        
-    from = "MassBuilderBe";
-    to = "Be";
-    ReplaceAll(coefficient,from, to);
-    
-    
-    from = "MassBuilderP";
-    to = "p";
-    ReplaceAll(coefficient,from, to);
- 
+    format_coeff(coefficient,dimension,masses,id);
     base_map[bases_names[k]].coefficient = coefficient;
+    
+    string coefficient1 = base_map[bases_names[k]].coefficient1;
+    format_coeff(coefficient1,dimension,masses,id);
+    base_map[bases_names[k]].coefficient1 = coefficient1;
+    
+    
+    string coefficient2 = base_map[bases_names[k]].coefficient2;
+    format_coeff(coefficient2,dimension,masses,id);
+    base_map[bases_names[k]].coefficient2 = coefficient2;
+    
+    
   }
 }
 

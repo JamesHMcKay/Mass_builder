@@ -23,7 +23,9 @@ public:
   
   string id1="",id2="";
   
-  string coefficient = "";
+  string coefficient = "  0";
+  string coefficient1 = "  0";
+  string coefficient2 = "  0";
   
   string short_name = "";
   
@@ -74,6 +76,8 @@ std::map<std::string, Bases> set_bases(std::vector<string> masses, std::vector<s
 std::map <std::string, Bases > remove_zeros(std::map <std::string, Bases > base_map, std::vector<std::string> base_names);
 
 std::map <std::string, Bases > remove_type_F(std::map <std::string, Bases > base_map, std::vector<std::string> base_names);
+
+void format_coeff(string &coefficient, string dimension,std::vector<std::string> masses, std::vector<std::string> id);
 
 void format_coeff(std::string dimension, std::map <std::string, Bases > &base_map, std::vector<std::string> bases_names,std::vector<std::string> masses,std::vector<std::string> id);
 

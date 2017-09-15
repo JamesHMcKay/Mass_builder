@@ -70,7 +70,7 @@ void User_input::user_interface()
     string input = "model name";
     if (find_and_read_string("-m",input)){options.model = input;}
     
-    if (options.model == "MSSM" || options.model == "itMSSM" || options.model == "mMSSM" || options.model == "xiMSSM")
+    if (options.model.find("MSSM") != std::string::npos)
     {
       options.restrictions = "WinoLimit,WinoCouplings";
     }

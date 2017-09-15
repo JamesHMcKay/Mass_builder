@@ -167,11 +167,24 @@ bool Compute_amp::calc_diagram()
   
   send_to_math(input);
   
+  // split amplitude into order(1) and order(1/ma^2)
+  
+  if(std::find(masses_req.begin(), masses_req.end(), "ma") != masses_req.end()) 
+  {
+    input += "amp1 = Simplify[Coefficient[SelfEnergyFinite,ma,-2],TimeConstraint->100000];";
+    seperate_amp = true;
+	} else 
+	{
+    input += "amp1 = 0;";
+	}
+  
+  input += "amp2 = Simplify[SelfEnergyFinite - amp1/ma^2,TimeConstraint->100000];";
+  send_to_math(input);
+  
   if (options.verbose)
   {
 		return true;
 	}
-  
   
   // extract non-zero coefficients
   // send List of all possible basis integrals and get list back of coefficients
@@ -185,14 +198,16 @@ bool Compute_amp::calc_diagram()
   // generate a .m file to call within Mathematica (since it is a very long list)
   ofstream math_1;
   math_1.open (add_mpi_ext("output/math_1", options.mpi_process, "m"));
-  print_math_basis(full_basis,math_1,"SelfEnergyFinite","4");
+  print_math_basis(full_basis,math_1,"amp1","4","amp2");
   math_1 << "Export[\""<<get_cwd()<<"/output/output_"<< options.mpi_process << ".txt\", {" << endl;
   
   for (int i = 0; i < nb-1;i++)
   {
-    math_1 << "{\""<<full_basis_id[i]<<" \", CForm[C"<<full_basis_id[i]<<" /. DiracGamma[Momentum[p]] -> p], \"\"}," << endl;
-  }
-  math_1 << "{\""<<full_basis_id[nb-1]<<" \", CForm[C"<<full_basis_id[nb-1]<<"  /. DiracGamma[Momentum[p]] -> p], \"\"}" << endl;
+    math_1 << "{\""<<full_basis_id[i]<<" \", CForm[C1"<<full_basis_id[i]<<" /. DiracGamma[Momentum[p]] -> p], \"\"}," << endl;
+		math_1 << "{\""<<full_basis_id[i]<<" \", CForm[C2"<<full_basis_id[i]<<" /. DiracGamma[Momentum[p]] -> p], \"\"}," << endl;
+	}
+  math_1 << "{\""<<full_basis_id[nb-1]<<" \", CForm[C1"<<full_basis_id[nb-1]<<"  /. DiracGamma[Momentum[p]] -> p], \"\"}," << endl;
+  math_1 << "{\""<<full_basis_id[nb-1]<<" \", CForm[C2"<<full_basis_id[nb-1]<<"  /. DiracGamma[Momentum[p]] -> p], \"\"}" << endl;
   math_1 << " }, \"Table\", \"FieldSeparators\" -> \" \", \"TextDelimiters\" -> \"\"];" << endl;
   math_1.close();
   
@@ -216,11 +231,17 @@ bool Compute_amp::calc_diagram()
   const char *file_integrals2 = c_file_integrals2.c_str();
   get_data(output_string, coeff_new, temp_int,file_integrals2, true);
   
+  
+  
   // assign the coefficients computed by Mathematica to each Bases object
-  for (int i=0; i<temp_int; i++)
+  for (int i=0; i<temp_int-1; i+=2)
   {
-    full_basis[output_string[i]].coefficient = coeff_new[i];
+    full_basis[output_string[i]].coefficient1 = coeff_new[i];
+    full_basis[output_string[i]].coefficient2 = coeff_new[i+1];
   }
+  
+  
+  
   
   // discard all the Bases objects that have a zero coefficient
   reduced_basis  = remove_zeros(full_basis, full_basis_id);
@@ -236,13 +257,14 @@ bool Compute_amp::calc_diagram()
   math_2.open (add_mpi_ext("output/math_2", options.mpi_process, "m"));
   
   // print the bases to the .m file
-  print_math_basis(reduced_basis,math_2, "SelfEnergyFinite","4");
+  print_math_basis(reduced_basis,math_2, "amp1","4","amp2");
   
   // construct the amplitude as coefficients multiplied by basis integrals
   math_2 << "SelfEnergyTrial = 0 ";
   for (int i = 0; i<nbr;i++)
   {
-    math_2 << " + "<<reduced_basis_id[i]<< " * C"<<reduced_basis_id[i]; // use the terms we know are non-zero
+    math_2 << " + "<<reduced_basis_id[i]<< " * C1"<<reduced_basis_id[i]; // use the terms we know are non-zero
+    math_2 << " + "<<reduced_basis_id[i]<< " * C2"<<reduced_basis_id[i]; // use the terms we know are non-zero
   }
   math_2 << ";"<<endl;
   
@@ -258,9 +280,9 @@ bool Compute_amp::calc_diagram()
   math_2 << "Export[\""<<get_cwd()<<"/output/output2_"<< options.mpi_process << ".txt\", {" << endl;
   for (int i = 0; i < nb-1;i++)
   {
-    math_2 << "{\""<<full_basis_id[i]<<" \", CForm[C"<<full_basis_id[i]<<" + C" <<full_basis_id[i] <<"2  /. DiracGamma[Momentum[p]] -> p], \"\"}," << endl;
+    math_2 << "{\""<<full_basis_id[i]<<" \", CForm[C1"<<full_basis_id[i]<<" + C2"<<full_basis_id[i]<<" + C1" <<full_basis_id[i] <<"2 + C2" <<full_basis_id[i] <<"2  /. DiracGamma[Momentum[p]] -> p], \"\"}," << endl;
   }
-  math_2 << "{\""<<full_basis_id[nb-1]<<" \", CForm[C"<<full_basis_id[nb-1]<<" + C"<< full_basis_id[nb-1] <<"2  /. DiracGamma[Momentum[p]] -> p], \"\"}" << endl;
+  math_2 << "{\""<<full_basis_id[nb-1]<<" \", CForm[C1"<<full_basis_id[nb-1]<<" + C2"<<full_basis_id[nb-1]<<" + C1" <<full_basis_id[nb-1] <<"2 + C2" <<full_basis_id[nb-1] <<"2   /. DiracGamma[Momentum[p]] -> p], \"\"}" << endl;
   math_2 << " }, \"Table\", \"FieldSeparators\" -> \" \", \"TextDelimiters\" -> \"\"];" << endl;
   math_2.close();
   
@@ -318,58 +340,80 @@ bool Compute_amp::calc_diagram()
   
   np = prod_id.size();
   
+  
+
+  
+  
   // generate final .m file to construct the amplitude
   ofstream math_3;
   math_3.open (add_mpi_ext("output/math_3", options.mpi_process, "m"));
   
-  print_math_basis(reduced_basis,math_3,"SelfEnergyFinite","4");
-  print_math_basis(prod_basis,math_3,"SelfEnergyFinite","4");
-  print_math_products(prod_basis,math_3,"SelfEnergyFinite","4");
+  print_math_basis(reduced_basis,math_3,"amp1","4","amp2");
+  print_math_basis(prod_basis,math_3,"amp1","4","amp2");
+  print_math_products(prod_basis,math_3,"amp1","4","amp2");
   
-  math_3 << "SelfEnergyTrial = 0 ";
+  math_3 << "SelfEnergyTrial1 = 0 ";
   // consider basis integrals that are not products
   for (int i = 0; i<nbr;i++)
   {
-    math_3 << " + "<<reduced_basis_id[i]<< " * C"<<reduced_basis_id[i];
+    math_3 << " + "<<reduced_basis_id[i]<< " * C1"<<reduced_basis_id[i];
   }
   // consider the products of basis integrals
   for (int i = 0; i<np ; i++)
   {
     for (int j = 0; j<np ; j++)
     {
-      math_3 << " + "<< prod_id[i] << prod_id[j] << " * C"<<prod_id[i]<< prod_id[j];
+      math_3 << " + "<< prod_id[i] << prod_id[j] << " * C1"<<prod_id[i]<< prod_id[j];
     }
   }
   math_3 << ";"<<endl;
   
+  
+   math_3 << "SelfEnergyTrial2 = 0 ";
+  // consider basis integrals that are not products
+  for (int i = 0; i<nbr;i++)
+  {
+    math_3 << " + "<<reduced_basis_id[i]<< " * C2"<<reduced_basis_id[i];
+  }
+  // consider the products of basis integrals
+  for (int i = 0; i<np ; i++)
+  {
+    for (int j = 0; j<np ; j++)
+    {
+      math_3 << " + "<< prod_id[i] << prod_id[j] << " * C2"<<prod_id[i]<< prod_id[j];
+    }
+  }
+  math_3 << ";"<<endl;
+  
+  
   // evaluate the difference between the constructed amplitude and the original amplitude
-  math_3 << "diff = Simplify[SelfEnergyFinite-SelfEnergyTrial];\n";
+  math_3 << "diff1 = Simplify[amp1-SelfEnergyTrial1];\n";
+  math_3 << "diff2 = Simplify[amp2-SelfEnergyTrial2];\n";
 
   // save the result to a text file
-  math_3 << "Export[\""<<get_cwd()<<"/output/result_"<< options.mpi_process << ".txt\", CForm[diff/. DiracGamma[Momentum[p]] -> p] ]" << endl;
-  math_3<< "remainder = diff;"<<endl;
-  // save the remainder to a Mathematica data file
-  math_3<< "DumpSave[\""<<get_cwd()<<"/output/remainder_"<< options.mpi_process << ".mx\", remainder];"<<endl;
+  math_3 << "Export[\""<<get_cwd()<<"/output/result1_"<< options.mpi_process << ".txt\", CForm[diff1/. DiracGamma[Momentum[p]] -> p] ]" << endl;
+  math_3 << "Export[\""<<get_cwd()<<"/output/result2_"<< options.mpi_process << ".txt\", CForm[diff2/. DiracGamma[Momentum[p]] -> p] ]" << endl;
+  
+  
   math_3 << "Export[\""<<get_cwd()<<"/output/output_products_"<< options.mpi_process << ".txt\", {" << endl;
   
   products_map.clear();
-  
-  bool cform = true;
+    
   // write out the final coefficients in C++ form
   for (int i = 0; i<np;i++)
   {
     for (int j = 0; j<np;j++)
     {
-      if (!cform)
+      math_3 << "{\""<<prod_id[i] << prod_id[j] <<" \",CForm[C1"<<prod_id[i] << prod_id[j] <<"  /. DiracGamma[Momentum[p]] -> p], \"\"}," << endl;
+      if ((i==np-1) && (j==np-1))
       {
-        if ((i==np-1) && (j==np-1)){ math_3 << "{\""<<prod_id[i] << prod_id[j] <<" \",C"<<prod_id[i] << prod_id[j] <<"  /. DiracGamma[Momentum[p]] -> p, \"\"}" << endl;}
-        else {math_3 << "{\""<<prod_id[i] << prod_id[j] <<" \",C"<<prod_id[i] << prod_id[j] <<" /. DiracGamma[Momentum[p]] -> p, \"\"}," << endl;}
-      }
-      else
+				 math_3 << "{\""<<prod_id[i] << prod_id[j] <<" \",CForm[C2"<<prod_id[i] << prod_id[j] <<"  /. DiracGamma[Momentum[p]] -> p], \"\"}" << endl;
+			}
+      else 
       {
-        if ((i==np-1) && (j==np-1)){ math_3 << "{\""<<prod_id[i] << prod_id[j] <<" \",CForm[C"<<prod_id[i] << prod_id[j] <<"  /. DiracGamma[Momentum[p]] -> p], \"\"}" << endl;}
-        else {math_3 << "{\""<<prod_id[i] << prod_id[j] <<" \",CForm[C"<<prod_id[i] << prod_id[j] <<" /. DiracGamma[Momentum[p]] -> p], \"\"}," << endl;}
-      }
+				math_3 << "{\""<<prod_id[i] << prod_id[j] <<" \",CForm[C2"<<prod_id[i] << prod_id[j] <<" /. DiracGamma[Momentum[p]] -> p], \"\"}," << endl;
+			}
+			
       Bases_product product(prod_basis[prod_id[i]],prod_basis[prod_id[j]],prod_id[i],prod_id[j]);
       products_map[prod_id[i] + prod_id[j]] = product;
     }
@@ -396,12 +440,13 @@ bool Compute_amp::calc_diagram()
   ///// organise output data////////
   
   // check if the remainder contains any basis integrals
-  string remainder;
-  success = check_done(remainder,options.mpi_process);
+  string remainder1,remainder2;
+  success = check_done(remainder1,remainder2,options.mpi_process);
   
 
   
-  ReplaceAll(remainder,"Pair(Momentum(p),Momentum(p))", "(-Power(p,2))");
+  ReplaceAll(remainder1,"Pair(Momentum(p),Momentum(p))", "(-Power(p,2))");
+  ReplaceAll(remainder2,"Pair(Momentum(p),Momentum(p))", "(-Power(p,2))");
   
   // BASIS INTEGRAL COEFFICIENTS //
   
@@ -411,14 +456,23 @@ bool Compute_amp::calc_diagram()
   ofstream coeff_integrals_out;
   coeff_integrals_out.open (coeff_integrals);
   format_coeff("4",reduced_basis,  reduced_basis_id, masses_req, id_req);
-  if (remainder != "0")
+  if (remainder1 != "0")
   {
-    format_coeff(remainder,masses_req,id_req);
-    coeff_integrals_out << "  TSIL_COMPLEXCPP C0 = " << remainder << ";" <<endl;
+    format_coeff(remainder1,masses_req,id_req);
+    coeff_integrals_out << "  TSIL_COMPLEXCPP C10 = " << remainder1 << ";" <<endl;
   }
+  if (remainder2 != "0")
+  {
+    format_coeff(remainder2,masses_req,id_req);
+    coeff_integrals_out << "  TSIL_COMPLEXCPP C20 = " << remainder2 << ";" <<endl;
+  }  
   for (int i = 0; i < nbr;i++)
   {
-    coeff_integrals_out << "  TSIL_COMPLEXCPP C" << reduced_basis_id[i] << " = " << reduced_basis[reduced_basis_id[i]].coefficient << ";" <<endl;
+    if (seperate_amp)
+    {
+			coeff_integrals_out << "  TSIL_COMPLEXCPP C1" << reduced_basis_id[i] << " = " << reduced_basis[reduced_basis_id[i]].coefficient1 << ";" <<endl;
+		}
+		coeff_integrals_out << "  TSIL_COMPLEXCPP C2" << reduced_basis_id[i] << " = " << reduced_basis[reduced_basis_id[i]].coefficient2 << ";" <<endl;
   }
   coeff_integrals_out.close();
   
@@ -432,9 +486,12 @@ bool Compute_amp::calc_diagram()
   
   get_data(name_products, coeff_products_new, temp_int,file_integrals3, true);
   std::map <std::string, Bases > prod_map = products_container(prod_id);
-  for (int i=0; i<temp_int; i++)
+  
+  for (int i=0; i<temp_int-1; i+=2)
   {
-    prod_map[name_products[i]].coefficient = coeff_products_new[i];
+		prod_map[name_products[i]].coefficient1 = coeff_products_new[i];
+    prod_map[name_products[i]].coefficient2 = coeff_products_new[i+1];
+    
   }
   std::map <std::string, Bases > reduced_prod_map = remove_zeros(prod_map, extract_keys(prod_map));
   vector<string> reduced_prod_names = extract_keys(reduced_prod_map);
@@ -448,7 +505,11 @@ bool Compute_amp::calc_diagram()
   format_coeff("4",reduced_prod_map,  reduced_prod_names, masses_req, id_req);
   for (unsigned int i = 0; i < reduced_prod_names.size();i++)
   {
-    coeff_products_out << "  TSIL_COMPLEXCPP C" << reduced_prod_names[i] << " = " << reduced_prod_map[reduced_prod_names[i]].coefficient << ";" <<endl;
+    if (seperate_amp)
+    {
+			coeff_products_out << "  TSIL_COMPLEXCPP C1" << reduced_prod_names[i] << " = " << reduced_prod_map[reduced_prod_names[i]].coefficient1 << ";" <<endl;
+		}
+		coeff_products_out << "  TSIL_COMPLEXCPP C2" << reduced_prod_names[i] << " = " << reduced_prod_map[reduced_prod_names[i]].coefficient2 << ";" <<endl;
   }
   coeff_products_out.close();
   
@@ -462,30 +523,78 @@ bool Compute_amp::calc_diagram()
   
   ofstream summation_out;
   summation_out.open (summation);
-  summation_out << "  return ";
-  if (remainder != "0")
+  
+  if (seperate_amp)
   {
-    summation_out << " + C0 ";
+	  summation_out << "  TSIL_COMPLEXCPP result1 = ( ";
+	  if (remainder1 != "0")
+	  {
+	    summation_out << " + C10 ";
+	  }
+	  
+	  for (int i = 0; i<nbr;i++)
+	  {
+	    summation_out  << " + "<<reduced_basis_id[i]<< " * C1"<<reduced_basis_id[i];
+	  }
+	  for (unsigned int i = 0; i<reduced_prod_names.size();i++)
+	  {
+	    Bases temp_base;
+	    temp_base = reduced_prod_map[reduced_prod_names[i]];
+	    summation_out << " + "<< temp_base.e1 << " * " << temp_base.e2 << " * C1" << reduced_prod_names[i];
+	  }
+	  
+	  if ((nbr==0) && (reduced_prod_names.size()==0) && (remainder1 == "0") && (remainder2 == "0"))
+	  {
+	    summation_out << "0";
+	  }
+	  
+	  summation_out << ")/Power(ma,2);"<<endl;
+	}
+  
+  
+  summation_out << "  TSIL_COMPLEXCPP result2 = ";
+
+  
+  if (remainder2 != "0")
+  {
+    summation_out << " + C20 ";
   }
   
   
   for (int i = 0; i<nbr;i++)
   {
-    summation_out  << " + "<<reduced_basis_id[i]<< " * C"<<reduced_basis_id[i];
+    summation_out  << " + "<<reduced_basis_id[i]<< " * C2"<<reduced_basis_id[i];
   }
   for (unsigned int i = 0; i<reduced_prod_names.size();i++)
   {
     Bases temp_base;
     temp_base = reduced_prod_map[reduced_prod_names[i]];
-    summation_out << " + "<< temp_base.e1 << " * " << temp_base.e2 << " * C" << reduced_prod_names[i];
+    summation_out << " + "<< temp_base.e1 << " * " << temp_base.e2 << " * C2" << reduced_prod_names[i];
   }
   
-  if ((nbr==0) && (reduced_prod_names.size()==0) && (remainder == "0"))
+  if ((nbr==0) && (reduced_prod_names.size()==0) && (remainder1 == "0") && (remainder2 == "0"))
   {
     summation_out << "0";
   }
   
   summation_out << ";"<<endl;
+  
+  if (seperate_amp)
+  {
+		
+		summation_out << "  if (data.exclude_photon_pole);\n"
+		<< "  {\n"
+		<< "    return result2;\n"
+		<< "  }\n"
+		<< "  else\n"
+		<< "  {\n"
+		<< "    return result1 + result2;\n"
+		<< "  }\n";
+	}
+	else
+	{
+		summation_out << "  return result2;"<<endl;
+	}
   summation_out.close();
   
   
@@ -568,6 +677,21 @@ std::string draw_all_diagrams(std::string &input, Options options)
 void Compute_amp::generate_figures()
 {
   vector<std::string> particles, diagrams;
+  
+  if (options.verbose)
+  {
+		debug_out.open ("debug.m");
+		debug_out << "(* ::Package:: *)" << endl;
+		debug_out << "Quit[]" << endl;
+		debug_out << "(* ::Section:: *)" << endl;
+	}
+	else
+	{
+		log_out.open ("output/log.m");
+		log_out << "(* ::Package:: *)" << endl;
+		log_out << "Quit[]" << endl;
+		log_out << "(* ::Section:: *)" << endl;
+	}
   
   std::string input;
   draw_all_diagrams(input,options);

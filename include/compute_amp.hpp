@@ -21,6 +21,7 @@ private:
   vector<string> full_basis_id;
   int np;
   bool multi_particle;
+  bool seperate_amp = false;
   ofstream debug_out;
   ofstream log_out;
   

@@ -862,11 +862,13 @@ namespace utils
   
   bool check_done_quiet(int mpi_process)
   {
-    std::ifstream file(add_mpi_ext("output/result",mpi_process,"txt"));
-    std::string str;
+    std::ifstream file1(add_mpi_ext("output/result1",mpi_process,"txt"));
+    std::ifstream file2(add_mpi_ext("output/result2",mpi_process,"txt"));
+    std::string str1,str2;
     std::string result;
-    std::getline(file, str);
-    result += str;
+    std::getline(file1, str1);
+    std::getline(file2, str2);
+    result += str1 + str2;
     // need to check if the result contains a basis integral
     bool success = true;
     
@@ -884,12 +886,16 @@ namespace utils
     return success;
   }
   
-  bool check_done(string &result, int mpi_process)
+  bool check_done(string &result1,string &result2, int mpi_process)
   {
-    std::ifstream file(add_mpi_ext("output/result",mpi_process,"txt"));
-    std::string str;
-    std::getline(file, str);
-    result += str;
+		ifstream file1(add_mpi_ext("output/result1",mpi_process,"txt"));
+    ifstream file2(add_mpi_ext("output/result2",mpi_process,"txt"));
+    string str1,str2; 
+    getline(file1, str1);
+    getline(file2, str2);
+    string result = str1 + str2;
+    result1 += str1;
+    result2 += str2;
     // need to check if the result contains a basis integral
     bool success = true;
     
@@ -1046,7 +1052,7 @@ namespace utils
   }
   
   
-  void print_base(ofstream &myfile, Bases base, string id, string SEn, string D)
+  void print_base(ofstream &myfile, Bases base, string id, string target, string D, string target2)
   {
     string type = base.type;
     string momentum = "Pair[Momentum[p],Momentum[p]]";
@@ -1055,7 +1061,7 @@ namespace utils
       momentum = "Pair[Momentum[p,D],Momentum[p,D]]";
     }
     
-    if (SEn != "diff")
+    if (target != "diff")
     {
       if (type == "F")
       {
@@ -1091,23 +1097,30 @@ namespace utils
       }
     }
     
-    myfile << "C"<< id << " = Simplify[Coefficient["<<SEn<<", " << id << ", 1],TimeConstraint->100000];" << endl;
-    myfile << "C"<< id << "2 = Simplify[Coefficient["<<SEn<<", " << id << ", 2],TimeConstraint->100000];" << endl;
+    myfile << "C1"<< id << " = Simplify[Coefficient["<<target<<", " << id << ", 1],TimeConstraint->100000];" << endl;
+    myfile << "C1"<< id << "2 = Simplify[Coefficient["<<target<<", " << id << ", 2],TimeConstraint->100000];" << endl;
+    
+    if (target2!="")
+    {
+			myfile << "C2"<< id << " = Simplify[Coefficient["<<target2<<", " << id << ", 1],TimeConstraint->100000];" << endl;
+			myfile << "C2"<< id << "2 = Simplify[Coefficient["<<target2<<", " << id << ", 2],TimeConstraint->100000];" << endl;
+	  }
+    
   }
   
   // print the basis integrals out in Mathematica notation
-  void print_math_basis(std::map<std::string, Bases> base_map, ofstream &myfile, string target, string D)
+  void print_math_basis(std::map<std::string, Bases> base_map, ofstream &myfile, string target, string D,string target2)
   {
     vector<string> bases_names = extract_keys(base_map);
     for (unsigned int i = 0; i < bases_names.size();i++)
     {
       Bases base_temp;
       base_temp = base_map[bases_names[i]];
-      print_base(myfile, base_temp, bases_names[i], target,D);
+      print_base(myfile, base_temp, bases_names[i], target, D, target2);
     }
   }
   
-  void print_base_product(ofstream &myfile,Bases base_1,Bases base_2,string SEn, string D)
+  void print_base_product(ofstream &myfile,Bases base_1,Bases base_2,string target, string D, string target2)
   {
     string type1 = base_1.type;
     string type2 = base_2.type;
@@ -1124,7 +1137,7 @@ namespace utils
     if (type1=="J") myfile << "TJI["<<D<<", " << momentum << ", {{1, " << base_1.e1 << "}, {1, " << base_1.e2 << "}, {1, " << base_1.e3 << "}}]";
     if (type1=="T") myfile << "TJI["<<D<<", " << momentum << ", {{2, " << base_1.e1 << "}, {1, " << base_1.e2 << "}, {1, " << base_1.e3 << "}}]";
     if (type1=="TBAR") myfile << "MassBuilderTBAR[" << base_1.e1 << ", " << base_1.e2 << ", " << base_1.e3 << "]";
-    if (type1=="K") myfile << "TJI["<<D<<", 0, {{1, " << base_1.e1 << "}, {1, " << base_1.e2 << "}, {1, " << base_1.e3 << "}}];";
+    if (type1=="K") myfile << "TJI["<<D<<", 0, {{1, " << base_1.e1 << "}, {1, " << base_1.e2 << "}, {1, " << base_1.e3 << "}}]";
     if (type1=="V") myfile << "TVI["<<D<<", " << momentum << ", {{1, " << base_1.e1 << "}, {1, " << base_1.e2 << "}, {1, " << base_1.e3 << "}, {1, " << base_1.e4 << "}}]";
     //if (type1=="F") myfile << "TFI["<<D<<", Pair[Momentum[p,D],Momentum[p,D]], {{1, " << base_1.e1 << "}, {1, " << base_1.e2 << "}, {1, " << base_1.e3 << "}, {1, " << base_1.e4 << "},{1, " << base_1.e5 << "}}]";
     myfile << " * ";
@@ -1132,18 +1145,26 @@ namespace utils
     if (type2=="B") myfile << "TBI["<<D<<", " << momentum << ", {{1, " << base_2.e1 << "}, {1, " << base_2.e2 << "}}];";
     if (type2=="J") myfile << "TJI["<<D<<", " << momentum << ", {{1, " << base_2.e1 << "}, {1, " << base_2.e2 << "}, {1, " << base_2.e3 << "}}];";
     if (type2=="T") myfile << "TJI["<<D<<", " << momentum << ", {{2, " << base_2.e1 << "}, {1, " << base_2.e2 << "}, {1, " << base_2.e3 << "}}];";
-    if (type2=="TBAR") myfile << "MassBuilderTBAR[" << base_2.e1 << ", " << base_2.e2 << ", " << base_2.e3 << "]";
-    if (type2=="K") myfile << "TJI["<<D<<", 0, {{1, " << base_2.e1 << "}, {1, " << base_2.e2 << "}, {1, " << base_2.e3 << "}}];;";
+    if (type2=="TBAR") myfile << "MassBuilderTBAR[" << base_2.e1 << ", " << base_2.e2 << ", " << base_2.e3 << "];";
+    if (type2=="K") myfile << "TJI["<<D<<", 0, {{1, " << base_2.e1 << "}, {1, " << base_2.e2 << "}, {1, " << base_2.e3 << "}}];";
     if (type2=="V") myfile << "TVI["<<D<<", " << momentum << ", {{1, " << base_2.e1 << "}, {1, " << base_2.e2 << "}, {1, " << base_2.e3 << "}, {1, " << base_2.e4 << "}}];";
     //if (type2=="F") myfile << "TFI["<<D<<", Pair[Momentum[p,D],Momentum[p,D]], {{1, " << base_1.e1 << "}, {1, " << base_1.e2 << "}, {1, " << base_1.e3 << "}, {1, " << base_1.e4 << "},{1, " << base_1.e5 << "}}]";
     myfile << endl;
-    if (base_1.short_name==base_2.short_name) myfile << "C"<< base_1.short_name << base_2.short_name << " = Coefficient["<<SEn<<","<< base_1.short_name << ", 2];" << endl;
-    else myfile << "C"<< base_1.short_name << base_2.short_name << " = - (1/2)* Coefficient["<<SEn<<","<< base_1.short_name << base_2.short_name << ", 1];" << endl;
+    
+    
+    if (base_1.short_name==base_2.short_name) myfile << "C1"<< base_1.short_name << base_2.short_name << " = Coefficient["<<target<<","<< base_1.short_name << ", 2];" << endl;
+    else myfile << "C1"<< base_1.short_name << base_2.short_name << " = - (1/2)* Coefficient["<<target<<","<< base_1.short_name << base_2.short_name << ", 1];" << endl;
+		if (target2!="")
+		{
+			if (base_1.short_name==base_2.short_name) myfile << "C2"<< base_1.short_name << base_2.short_name << " = Coefficient["<<target2<<","<< base_1.short_name << ", 2];" << endl;
+			else myfile << "C2"<< base_1.short_name << base_2.short_name << " = - (1/2)* Coefficient["<<target2<<","<< base_1.short_name << base_2.short_name << ", 1];" << endl;
+		}
+  
   end:;
   }
   
   
-  void print_math_products(std::map<std::string, Bases> base_map, ofstream &myfile, string target, string D)
+  void print_math_products(std::map<std::string, Bases> base_map, ofstream &myfile, string target, string D, string target2)
   {
     vector<string> bases_names = extract_keys(base_map);
     int n = bases_names.size();
@@ -1159,7 +1180,7 @@ namespace utils
         base_2 = base_map[bases_names[j]];
         base_2.short_name = bases_names[j];  // TODO make this an automatic get and set function perhaps, could do short_names nicer
         
-        print_base_product(myfile,base_1,base_2,target,D);
+        print_base_product(myfile,base_1,base_2,target,D,target2);
         
       }
     }
@@ -1179,6 +1200,18 @@ namespace utils
   {
     string type = base.type;
     string name = base.short_name;
+    
+    if (type == "const" || type == "A" || type == "B")
+    {
+			// do nothing
+		}
+		else
+		{
+			myfile << " if (data.do_tsil_all) " << endl;
+			myfile << " { " << endl;
+		}
+    
+    
     if (type == "const")
     {
       myfile << "  const" << " = 1.0L"<<endl;
@@ -1231,6 +1264,17 @@ namespace utils
       myfile << "  TSIL_Evaluate (&bar, s);" << endl;
       myfile << "  " << name << "= -TSIL_GetFunction (&bar,\"Uzxyv" <<"\");"<< endl;
     }
+    
+        
+    if (type == "const" || type == "A" || type == "B")
+    {
+			// do nothing
+		}
+		else
+		{
+			myfile << " } " << endl;
+		}
+    
     
   }
   

@@ -602,15 +602,13 @@ CForm[FullSimplify[dZZA1]]
 
 (* ::InheritFromParent:: *)
 (**)
+(**)
 
 
 CForm[FullSimplify[dZAZ1]]
 
 
 CForm[FullSimplify[dZZZ1]]
-
-
-CForm[FullSimplify[dZAA1]]
 
 
 (* Check that counter-term couplings agree with Ibe et al. (2013) *)

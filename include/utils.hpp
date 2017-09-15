@@ -43,7 +43,7 @@ namespace utils
   
   vector<int> find_string_lengths(vector<string> input);
   
-  bool check_done(std::string &result, int mpi_process);
+  bool check_done(std::string &result1,std::string &result2, int mpi_process);
   
   bool check_done_quiet(int mpi_process);
   
@@ -97,13 +97,13 @@ namespace utils
   
   void remove_fake_IR_divergence(std::string &input, std::vector<std::string> masses);
   
-  void print_base(ofstream &myfile, Bases base, string id, string SEn,string D);
+  void print_base(ofstream &myfile, Bases base, string id, string target,string D, string target2);
   
   void get_finite_amplitude(std::string &input, Options options);
   
-  void print_math_basis(map<string, Bases> base_map, ofstream &myfile , string target, string D);
+  void print_math_basis(map<string, Bases> base_map, ofstream &myfile , string target, string D, string target2 = "");
   
-  void print_math_products(map<string, Bases> base_map, ofstream &myfile, string target, string D);
+  void print_math_products(map<string, Bases> base_map, ofstream &myfile, string target, string D, string target2 = "");
   
   void print_doTSIL(ofstream &myfile,Bases base);
   

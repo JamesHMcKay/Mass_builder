@@ -97,7 +97,7 @@ namespace extra_TSIL_interface_EW_triplet
     
     TSIL_REAL a = -1., b = 1., c = 1.;
     
-    Aa = a*TSIL_A_ (ma2 , Q2);
+    Aa = a*TSIL_A_ (TSIL_POW(data.ma, 2) , Q2);
     
     Ac = a*TSIL_A_ (MChi2 , Q2);
     
@@ -117,9 +117,9 @@ namespace extra_TSIL_interface_EW_triplet
     
     dBwc = c*TSIL_dBds_(mw2,MChi2,s,Q2);
     dBzc = c*TSIL_dBds_(mz2,MChi2,s,Q2);
-    dBca = c*TSIL_dBds_(ma2,MChi2,s,Q2);
+    dBca = c*TSIL_dBds_(TSIL_POW(data.ma, 2),MChi2,s,Q2);
     
-    dBac = c*TSIL_dBds_(ma2,MChi2,s,Q2);
+    dBac = c*TSIL_dBds_(TSIL_POW(data.ma, 2),MChi2,s,Q2);
     
   }
   
@@ -175,7 +175,8 @@ namespace extra_TSIL_interface_EW_triplet
   {
     DoTSIL(data);
     
-    p = Q;// TSIL_POW(data.Q,0.5);
+    p = Q;
+        
     TSIL_REAL Q2 = pow(Q,2);
     
     TSIL_COMPLEXCPP AcMB = -i*TSIL_A_ (MChi2 ,  Q2);
@@ -201,7 +202,7 @@ double EW_triplet_spectrum::iterative_ms_bar_mass(Data data, string particle)
   long double M_pole = data.MChi;
   data.P = M_tree;
   long double diff = 1;
-  long double precision = 1e-6;
+  long double precision = 1e-8;
   int iteration = 0;
   do
   {
@@ -220,16 +221,16 @@ double EW_triplet_spectrum::iterative_ms_bar_mass(Data data, string particle)
     diff = abs(M_pole - data.P);
     data.P = M_pole;
     
-    cout<< "\r" << "M_pole - p = " << diff << " GeV";
-    std::cout << std::flush;
+   // cout<< "\r" << "M_pole - p = " << diff << " GeV";
+   // std::cout << std::flush;
     
     iteration++;
-  } while (diff > precision  && iteration < 30);
+  } while (diff > precision  && iteration < 200);
   
-  cout<< "\r" << "M_pole - p = " << diff << " GeV";
-  cout << "\n";
+  //cout<< "\r" << "M_pole - p = " << diff << " GeV";
+  //cout << "\n";
   
-  if (iteration == 30)
+  if (iteration == 200)
   {
     cout << "pole mass did not converge" << endl;
     return 0;
@@ -237,6 +238,7 @@ double EW_triplet_spectrum::iterative_ms_bar_mass(Data data, string particle)
     
   return M_pole;
 }
+
 
 // determine MSbar parameters
 void EW_triplet_spectrum::compute_spectra_MB_1loop()
@@ -261,31 +263,118 @@ void EW_triplet_spectrum::compute_spectra_MB_1loop()
 void EW_triplet_spectrum::compute_spectra_MB_2loop()
 {
   Self_energy se;
-  
-  // matching (?) of SM to Wino model
-  data.alpha = data.alpha*( 1.0-real(extra_TSIL_interface_EW_triplet::gammagamma_Chi(data,data.Q)) /pow(data.Q,2) );
-  
+  long double tol = 1e-8;
+ 
   // determine MS bar input parameters at Q
   // only recompute the 1-loop functions for efficiency
   data.do_tsil_all = false;
+  long double MChi_pole = data.MChi;
+  long double mw_pole = data.mw;
+  long double mz_pole = data.mz;
+  long double ma_pole = data.ma;
+  long double alpha_SM = data.alpha;
+  double diff = 1000;
   
-  data.P = data.mw;
+  Data data_original = data;
+  
+  long double mwMS = 0.0;
+  long double mzMS = 0.0;
+  long double maMS = 0.0;
+  long double MChiMS = 0.0;
+  long double alphaMS = 0.0;
+  
+  
+  
+  for (int k = 0 ; k < 10 ; k ++)
+  {
+		
+		/////  get mw ms bar mass
+		data.P = mw_pole;
+		diff = 100;
+	  while (diff > tol)
+	  {
+			se.run_tsil(data);
+			mwMS  = pow( pow(mw_pole,2) - real(data.SE_1["V3"]),0.5 );
+			diff = abs(mwMS - data.mw);
+			data.mw = mwMS;
+		}
+	  cout << "mwMS = " << mwMS << endl;
+	  ///// get mz ms bar mass
+		data.P = mz_pole;
+		diff = 100;
+	  while (diff > tol)
+	  {
+			se.run_tsil(data);
+			mzMS = pow( pow(mz_pole,2) - real(data.SE_1["V2"]),0.5 );
+			diff = abs(mzMS - data.mz);
+			data.mz = mzMS;
+		}
+		cout << "mzMS = " << mzMS << endl;
+		/*
+		///// get ma ms bar mass
+		data.P = ma_pole;
+		diff = 100;
+	  while (diff > tol*1e-5)
+	  {
+			se.run_tsil(data);
+			maMS = pow( pow(ma_pole,2) - real(data.SE_1["V1"]),0.5 );
+			diff = abs(maMS - data.ma);
+			data.ma = maMS;
+			cout << "diff = " << diff << " maMS = " << maMS << endl;
+		}
+		*/
+	  //// get M_Chi ms bar mass
+	  
+		data.P = MChi_pole;
+		diff = 100;
+	  while (diff > tol)
+	  {
+			se.run_tsil(data);
+			MChiMS  =  MChi_pole - real(data.SE_1["F11_g1"]);
+			diff = abs(MChiMS - data.MChi);
+			data.MChi = MChiMS;
+		}
+		
+		cout << "MChiMS = " << MChiMS << endl;
+		
+		// matching of SM to Wino model
+		diff = 100;
+		data.P = data.Q;
+		while (diff > tol*1e-5)
+		{
+			alphaMS = alpha_SM*( 1.0-real(extra_TSIL_interface_EW_triplet::gammagamma_Chi(data,data.Q)) /pow(data.Q,2) );
+			diff = abs(data.alpha - alphaMS);
+			data.alpha = alphaMS;
+		}
+		
+		cout << "Ms bar masses = " << MChiMS << " " << mwMS << " " << mzMS << endl;
+	}
+	
+  // check we got the correct pole masses
+  data.P = mw_pole;
   se.run_tsil(data);
-  data.mw = pow( pow(data.mw,2) - real(data.SE_1["V3"]),0.5 );
+  cout << "mw_pole = " << pow( pow(data.mw,2) + real(data.SE_1["V3"]),0.5 ) << endl;
   
-  data.P = data.mz;
-  se.run_tsil(data);
-  data.mz = pow( pow(data.mz,2) - real(data.SE_1["V2"]) ,0.5);
+  data.P = mz_pole;
+  se.run_tsil(data);  
+  cout << "mz_pole = " << pow( pow(data.mz,2) + real(data.SE_1["V2"]),0.5 ) << endl;
+  /*
+  data.P = ma_pole;
+  se.run_tsil(data);  
+  cout << "ma_pole = " << pow( pow(data.ma,2) + real(data.SE_1["V1"]),0.5 ) << endl;
+*/
+  data.P = MChi_pole;
+  se.run_tsil(data);  
+  cout << "MChi_pole = " <<  data.MChi + real(data.SE_1["F11_g1"])  << endl;
   
-  // need to iterate to determine MS bar mass for MChi to match equation (9) of Ibe et al.
-  //data.MChi = iterative_ms_bar_mass(data, "F11_g1");
+  cout << "alpha_SM = " << data.alpha/ ( 1.0-real(extra_TSIL_interface_EW_triplet::gammagamma_Chi(data,data.Q)) /pow(data.Q,2) ) << endl;
+  
+  data.mw = mwMS;
+  data.mz = mzMS;
+  data.MChi = MChiMS;
   
   data.P = data.MChi;
   data.do_tsil_all = true;
-  
-  cout << "mz = " << data.mz << endl;
-  cout << "mw = " << data.mw << endl;
-  cout << "alpha = " << data.alpha << endl;
   
 }
 
