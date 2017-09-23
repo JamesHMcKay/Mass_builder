@@ -437,30 +437,29 @@ void Figures<T>::plot_Q(Data data)
 {
   ofstream myfile;
   myfile.open ("mass_splittings/data2/deltam_Q.txt");
-  int pts = 5;
-  //double M = 1e3;
+  int pts = 10;
   int status = 0;
-  double max_Q = 400; // (GeV)
+  double max_Q = 1000; // (GeV)
   double min_Q = 50; // (GeV)
-  //data.MChi = M;
-  //data.P = M;
   for (int i = 0; i < pts+1 ; i++)
   {
     data.mt = 163.3;  
     data.Q = (i)*(max_Q - min_Q)/pts + min_Q;
+    
     data.do_tsil_all = false;
     T mssm_1loop(data);
-    mssm_1loop.compute_spectra_MB_1loop();
-    //mssm_1loop.compute_spectra_flexiblesusy();
+    mssm_1loop.compute_spectra_flexiblesusy();
     mssm_1loop.compute_tsil();
     double delta_m_1 = mssm_1loop.get_deltam();
+    
     data.do_tsil_all = true;
     T mssm_2loop(data);
-    mssm_2loop.compute_spectra_MB_2loop();
-    //mssm_2loop.compute_spectra_flexiblesusy();
+    mssm_2loop.compute_spectra_flexiblesusy();
     mssm_2loop.compute_tsil();
-    double delta_m_2 = mssm_2loop.get_deltam_2loop();
-    myfile << data.Q << " " << delta_m_1 <<  " " << delta_m_2 << endl;
+    
+    double delta_m_2 = mssm_2loop.get_deltam_2loop() + mssm_2loop.get_deltam() ;
+    
+    myfile << data.Q << " " <<   delta_m_1 <<  " " << delta_m_2 << endl;
     status=(float(i)/pts)*100;
     cout<< "\r" << "computing mass splittings . . . " << status << "% complete ";
     std::cout << std::flush;
@@ -477,33 +476,35 @@ void Figures<T>::plot_M(Data data)
 {
   ofstream myfile;
   myfile.open ("mass_splittings/data2/deltam_M.txt");
-  int pts = 10;
+  int pts = 6;
   double n = 0;
   int status = 0;
-  double max_M = 4000; // (GeV)
+  double max_M = 5000; // (GeV)
   double min_M = 90; // (GeV)
   double logMax = log10(max_M);
   double logMin = log10(min_M);
   data.mt = 163.3;
-  data.Q = 163.3;//pow(163.3,2);
+  //data.Q = 163.3;//pow(163.3,2);
   for (int i = 0; i < pts+1 ; i++)
   {
     n = (i)*(logMax - logMin)/pts + logMin;
     data.MChi = pow(10,n);
     data.P = data.MChi;
+    data.do_tsil_all = false;
     T mssm_1loop(data);
     mssm_1loop.compute_spectra_flexiblesusy();
     //mssm_1loop.compute_spectra_MB_1loop();
-    data.do_tsil_all = false;
     mssm_1loop.compute_tsil();
     double delta_m_1 = mssm_1loop.get_deltam();
     
     data.do_tsil_all = true;
     T mssm_2loop(data);
     //mssm_2loop.compute_spectra_MB_2loop();
+    
+    mssm_2loop.data.do_tsil_all = true;
     mssm_2loop.compute_spectra_flexiblesusy();
     mssm_2loop.compute_tsil();
-    double delta_m_2 = mssm_2loop.get_deltam_2loop();
+    double delta_m_2 = mssm_2loop.get_deltam_2loop()+ delta_m_1;
     myfile << data.MChi << " " << delta_m_1 <<  " " << delta_m_2 << endl;
     status=(float(i)/pts)*100;
     cout<< "\r" << "computing mass splittings . . . " << status << "% complete ";
@@ -630,12 +631,37 @@ void Figures<T>::plot_M_flexiblesusy(Data data)
   
 }
 
+
 template <class T>
-void Figures<T>::plot_M_2loop_iterative(Data data)
+void Figures<T>::plot_2loop_uncertainties(Data data, bool do_iteration)
 { 
   ofstream mass_splittings_iterative;
   mass_splittings_iterative.open ("mass_splittings/data/mass_splittings_iterative_2loop.txt");
- 
+
+  ofstream mass_splittings_explicit;
+  mass_splittings_explicit.open ("mass_splittings/data/mass_splittings_explicit_2loop.txt"); 
+  
+  ofstream mass_splittings_1loop;
+  mass_splittings_1loop.open ("mass_splittings/data2/mass_splitting_1loop.txt");    
+  
+	ofstream pole_mass_n_1loop;
+  pole_mass_n_1loop.open ("mass_splittings/data2/pole_mass_n_1loop.txt");
+  
+  ofstream pole_mass_c_1loop;
+  pole_mass_c_1loop.open ("mass_splittings/data2/pole_mass_c_1loop.txt");  
+  
+  ofstream pole_mass_n_2loop;
+  pole_mass_n_2loop.open ("mass_splittings/data2/pole_mass_n_2loop.txt");  
+  
+  ofstream pole_mass_c_2loop;
+  pole_mass_c_2loop.open ("mass_splittings/data2/pole_mass_c_2loop.txt");   
+  
+  ofstream pole_mass_n_2loop_it;
+  pole_mass_n_2loop_it.open ("mass_splittings/data2/pole_mass_n_2loop_it.txt");  
+  
+  ofstream pole_mass_c_2loop_it;
+  pole_mass_c_2loop_it.open ("mass_splittings/data2/pole_mass_c_2loop_it.txt");     
+
   // set range of plot
   long double logMax = log10(1.0e5L);
   long double logMin = log10(100.0);
@@ -643,7 +669,7 @@ void Figures<T>::plot_M_2loop_iterative(Data data)
   std::vector<double> Q(5),cutoff(5);
   
   // number of points to plot
-  int pts = 100;
+  int pts = 20;
   for (int i=0;i<pts+1;i++)
   {
     double n = i*(logMax - logMin)/pts + logMin;
@@ -658,98 +684,81 @@ void Figures<T>::plot_M_2loop_iterative(Data data)
     Q[3] = 1000;
     
     cutoff[0] = 10;
-    cutoff[1] = 1000;
-    cutoff[2] = 3000;
-    cutoff[3] = 3000;
+    cutoff[1] = 10;
+    cutoff[2] = 10;
+    cutoff[3] = 10;
     
     mass_splittings_iterative << M ;
+    mass_splittings_explicit << M ;
+    mass_splittings_1loop << M;
+    pole_mass_n_2loop_it << M;
+    pole_mass_c_2loop_it << M;
+    pole_mass_n_1loop << M;
+    pole_mass_c_1loop << M;
+    pole_mass_n_2loop << M;
+    pole_mass_c_2loop << M;
     
     for (int i = 0; i < 4 ; i++)
     {
-			if (cutoff[i] < M)
+			data.Q = Q[i];
+			T spec(data);
+			spec.compute_spectra_flexiblesusy();
+			// do iterative calculation
+			
+			if (cutoff[i] < M && do_iteration)
 			{
-				data.Q = Q[i];
-				T mssm(data);
-				mssm.compute_spectra_flexiblesusy();
+				T spec_iterative = spec;
+	      spec_iterative.compute_tsil_iterative();
 				
-				T mssm_iterative = mssm;
-	      mssm_iterative.compute_tsil_iterative();
+				mass_splittings_iterative << " " << spec_iterative.get_deltam() + spec_iterative.get_deltam_2loop();
 				
-				mass_splittings_iterative << " " << mssm_iterative.get_deltam_2loop();
+				pole_mass_n_2loop_it << " " << spec_iterative.get_neutral_mass_2loop();
+				pole_mass_c_2loop_it << " " << spec_iterative.get_charged_mass_2loop();				
 			}
 			else
 			{
 				mass_splittings_iterative << " " << -1.0;
+				pole_mass_n_2loop_it << " " << -1.0;
+				pole_mass_c_2loop_it << " " << -1.0;	
 			}
+			
+			// do explicit calculation
+	  	T spec_explicit = spec;
+	    spec_explicit.compute_tsil();
+				
+			mass_splittings_explicit << " " << spec_explicit.get_deltam_2loop() + spec_explicit.get_deltam();
+			pole_mass_n_2loop << " " << spec_explicit.get_neutral_mass_2loop();
+			pole_mass_c_2loop << " " << spec_explicit.get_charged_mass_2loop();	
+			pole_mass_n_1loop << " " << spec_explicit.get_charged_mass();	
+			pole_mass_c_1loop << " " << spec_explicit.get_charged_mass();	
+			mass_splittings_1loop << " " << spec_explicit.get_deltam();
 			
 		}
     
 		mass_splittings_iterative << endl;
-  }
-  mass_splittings_iterative.close();
-  
-}
-
-
-template <class T>
-void Figures<T>::plot_M_2loop_explicit(Data data)
-{ 
-  ofstream mass_splittings_explicit;
-  mass_splittings_explicit.open ("mass_splittings/data/mass_splittings_explicit_2loop.txt");
- 
-  // set range of plot
-  long double logMax = log10(1.0e5L);
-  long double logMin = log10(100.0);
-  
-  std::vector<double> Q(5),cutoff(5);
-  
-  // number of points to plot
-  int pts = 50;
-  for (int i=0;i<pts+1;i++)
-  {
-    double n = i*(logMax - logMin)/pts + logMin;
-    double M = pow(10.0L,n);
-    
-    data.MChi = M;
-    data.P = data.MChi;
-    
-    Q[0] = 10;
-    Q[1] = 100;
-    Q[2] = 500;
-    Q[3] = 1000;
-    
-    cutoff[0] = 0;
-    cutoff[1] = 0;
-    cutoff[2] = 0;
-    cutoff[3] = 0;
-    
-    mass_splittings_explicit << M ;
-    
-    for (int i = 0; i < 4 ; i++)
-    {
-			if (cutoff[i] < M)
-			{
-				data.Q = Q[i];
-				T mssm(data);
-				mssm.compute_spectra_flexiblesusy();
-				
-				T mssm_explicit = mssm;
-	      mssm_explicit.compute_tsil();
-				
-				mass_splittings_explicit << " " << mssm_explicit.get_deltam_2loop();
-			}
-			else
-			{
-				mass_splittings_explicit << " " << -1.0;
-			}
-			
-		}
-    
 		mass_splittings_explicit << endl;
+		pole_mass_n_2loop << endl;
+		pole_mass_n_2loop_it << endl;
+		pole_mass_c_2loop << endl;	
+		pole_mass_c_2loop_it << endl;	
+		pole_mass_n_1loop << endl;
+		pole_mass_c_1loop << endl;
+		mass_splittings_1loop << endl;
   }
+  
+  mass_splittings_iterative.close();
   mass_splittings_explicit.close();
+  mass_splittings_1loop.close();
+  pole_mass_n_1loop.close();
+	pole_mass_c_1loop.close(); 
+  pole_mass_n_2loop.close();
+	pole_mass_c_2loop.close(); 
+  pole_mass_n_2loop_it.close();
+	pole_mass_c_2loop_it.close(); 	
   
 }
+
+
 
 
 template class Figures<MSSM_spectrum>;

@@ -35,9 +35,7 @@ public:
 	
 	void plot_uncertainties(Data data);
 	
-	void plot_M_2loop_iterative(Data data);
-	
-	void plot_M_2loop_explicit(Data data);
+	void plot_2loop_uncertainties(Data data, bool do_iteration);
   
 };
 

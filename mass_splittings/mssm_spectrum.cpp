@@ -402,12 +402,22 @@ double MSSM_spectrum::get_deltam_2loop()
 
 double MSSM_spectrum::get_charged_mass()
 {
-	return data.MChi + data.SE_1["F12_g1"] + data.SE_1["F12_g1"];
+	return data.MChi + data.SE_1["F12_g1"] ;
 }
 
 double MSSM_spectrum::get_neutral_mass()
 {
-	return data.MChi + data.SE_1["F11_g1"] + data.SE_1["F11_g1"];
+	return data.MChi + data.SE_1["F11_g1"] ;
+}
+
+double MSSM_spectrum::get_charged_mass_2loop()
+{
+	return data.MChi + data.SE_1["F12_g1"] + data.SE_2["F12_g1"];
+}
+
+double MSSM_spectrum::get_neutral_mass_2loop()
+{
+	return data.MChi + data.SE_1["F11_g1"] + data.SE_2["F11_g1"];
 }
 
 

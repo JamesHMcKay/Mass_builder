@@ -196,11 +196,11 @@ addHigherOrderDivergencesFermion[amplitude_] := Module[{result},result = amplitu
 implementTbar[amplitude_,masses_,massesSmall_,A_,B_,T_] := Module[{amp,result},amp = amplitude;
 Do[
 If[massesSmall[[k]]!=0,
-       (* amp = amp
+        amp = amp
       /. A[masses[[k]],4]  ->
       (
         - I * masses[[k]]^2 * (Log[masses[[k]]^2]-1)
-      ); *)
+      );
 Do[
    amp = amp	
    /. T[masses[[k]], masses[[i]], masses[[j]],4]->

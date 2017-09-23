@@ -27,16 +27,22 @@ int main(int argc, char *argv[])
   if (options.input_list == "") {cout << "please enter an input list" << endl; return 0;}
   
   Data data(options);
-  
+  /*
   
   EW_triplet_spectrum spec(data);
-  //spec.compute_spectra_flexiblesusy();
-  //spec.compute_spectra_MB_2loop();
+  
+  spec.compute_spectra_MB_1loop();
   spec.compute_tsil();
+  
+  double one_loop_splitting =  spec.get_deltam();
+  
+  EW_triplet_spectrum spec2(data);
+  spec2.compute_spectra_MB_2loop();
+  spec2.compute_tsil();
   cout << "--- explicit --- " << endl;
-  cout << "1-loop mass splitting = " <<  spec.get_deltam() << endl;
-  cout << "2-loop mass splitting = " <<  spec.get_deltam_2loop() << endl;
-  /*
+  //cout << "1-loop mass splitting = " <<  spec.get_deltam() << endl;
+  cout << "2-loop mass splitting = " <<  spec2.get_deltam_2loop() - spec2.get_deltam() + one_loop_splitting << endl;
+  cout << "2-loop mass splitting = " <<  spec2.get_deltam_2loop() << endl;
   EW_triplet_spectrum spec2(data);
   spec2.compute_spectra_flexiblesusy();
   //spec.compute_spectra_MB_2loop();
@@ -48,6 +54,8 @@ int main(int argc, char *argv[])
   */
   
   Figures<EW_triplet_spectrum> fig;
+  
+  fig.plot_2loop_uncertainties(data,true);
   
   //fig.plot_M_2loop_explicit(data);
   

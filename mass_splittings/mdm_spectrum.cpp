@@ -435,3 +435,13 @@ double MDM_spectrum::get_neutral_mass()
 {
 	return data.MChi + data.SE_1["F7_g1"] ;
 }
+
+double MDM_spectrum::get_charged_mass_2loop()
+{
+	return data.MChi + data.SE_1["F5_g1"]+data.SE_2["F5_g1"];
+}
+
+double MDM_spectrum::get_neutral_mass_2loop()
+{
+	return data.MChi + data.SE_1["F7_g1"] + data.SE_2["F7_g1"] ;
+}

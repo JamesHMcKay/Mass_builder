@@ -38,6 +38,11 @@ public:
   
   double get_neutral_mass();
   
+
+  double get_charged_mass_2loop();
+  
+  double get_neutral_mass_2loop();  
+  
 };
 
 #endif
