@@ -26,7 +26,7 @@ public:
   
   // compute self energies using TSIL
   void compute_tsil();
-  void compute_tsil_iterative();
+  bool compute_tsil_iterative();
   
   // compute the iterative pole mass
   double iterative_ms_bar_mass(Data data, string particle);

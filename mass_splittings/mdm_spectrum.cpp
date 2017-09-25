@@ -377,13 +377,27 @@ void MDM_spectrum::compute_tsil()
 }
 
 
-void MDM_spectrum::compute_tsil_iterative()
+bool MDM_spectrum::compute_tsil_iterative()
 {	
 	Self_energy se;
 	se.run_tsil(data);
 	
 	double m_F7 = iterative_ms_bar_mass(data,"F7");
-	double m_F6 = iterative_ms_bar_mass(data,"F6");
+	double m_F6 = 0.0L;
+	
+	if (m_F7 == 0)
+	{
+		return false;
+	}
+	
+	if (m_F7 != 0)
+	{
+		m_F6 = iterative_ms_bar_mass(data,"F6_g1");
+		if (m_F6 == 0)
+		{
+			return false;
+		}
+	}
 	
 	if ( (m_F7 == 0 ) || (m_F6 == 0 ) )
 	{
@@ -402,7 +416,7 @@ void MDM_spectrum::compute_tsil_iterative()
 		data.SE_1["F7"] = m_F7 - data.MChi;
 		data.SE_1["F6"] = m_F6 - data.MChi;
 	}	
-
+return true;
 }
 
 

@@ -493,18 +493,15 @@ void Figures<T>::plot_M(Data data)
     data.do_tsil_all = false;
     T mssm_1loop(data);
     mssm_1loop.compute_spectra_flexiblesusy();
-    //mssm_1loop.compute_spectra_MB_1loop();
     mssm_1loop.compute_tsil();
     double delta_m_1 = mssm_1loop.get_deltam();
     
     data.do_tsil_all = true;
     T mssm_2loop(data);
-    //mssm_2loop.compute_spectra_MB_2loop();
     
-    mssm_2loop.data.do_tsil_all = true;
     mssm_2loop.compute_spectra_flexiblesusy();
     mssm_2loop.compute_tsil();
-    double delta_m_2 = mssm_2loop.get_deltam_2loop()+ delta_m_1;
+    double delta_m_2 = mssm_2loop.get_deltam_2loop()+ mssm_2loop.get_deltam();
     myfile << data.MChi << " " << delta_m_1 <<  " " << delta_m_2 << endl;
     status=(float(i)/pts)*100;
     cout<< "\r" << "computing mass splittings . . . " << status << "% complete ";
@@ -597,13 +594,19 @@ void Figures<T>::plot_M_flexiblesusy(Data data)
 			spec.compute_spectra_flexiblesusy();
 			
 			T spec_iterative = spec;
-      spec_iterative.compute_tsil_iterative();
-			
-			mass_splittings_iterative << " " << spec_iterative.get_deltam();
-			
-			pole_mass_n_iterative << " " << spec_iterative.get_neutral_mass();
-			pole_mass_c_iterative << " " << spec_iterative.get_charged_mass();
-			
+      bool error = spec_iterative.compute_tsil_iterative();
+      if (!error)
+      {
+							mass_splittings_iterative << " " << 0.0;			
+							pole_mass_n_iterative << " " << 0.0;
+							pole_mass_c_iterative << " " << 0.0;
+			}
+			else
+			{
+				mass_splittings_iterative << " " << spec_iterative.get_deltam();			
+				pole_mass_n_iterative << " " << spec_iterative.get_neutral_mass();
+				pole_mass_c_iterative << " " << spec_iterative.get_charged_mass();
+			}
 			T spec_explicit = spec;
       spec_explicit.compute_tsil();
 			
@@ -633,43 +636,198 @@ void Figures<T>::plot_M_flexiblesusy(Data data)
 
 
 template <class T>
-void Figures<T>::plot_2loop_uncertainties(Data data, bool do_iteration)
+void Figures<T>::plot_M_flexiblesusy_2loop(Data data, string group,bool do_iteration)
 { 
-  ofstream mass_splittings_iterative;
-  mass_splittings_iterative.open ("mass_splittings/data/mass_splittings_iterative_2loop.txt");
-
-  ofstream mass_splittings_explicit;
-  mass_splittings_explicit.open ("mass_splittings/data/mass_splittings_explicit_2loop.txt"); 
+		
+	string c_file_1 = "mass_splittings/data2/pole_mass_unc_2loop_n_" + group + ".txt";
+  const char *file_1 = c_file_1.c_str();	
+		
+	string c_file_2 = "mass_splittings/data2/pole_mass_unc_2loop_c_" + group + ".txt";
+  const char *file_2 = c_file_2.c_str();	
+    		
+	string c_file_3 = "mass_splittings/data2/pole_mass_unc_1loop_n_" + group + ".txt";
+  const char *file_3 = c_file_3.c_str();	
+		
+	string c_file_4 = "mass_splittings/data2/pole_mass_unc_1loop_c_" + group + ".txt";
+  const char *file_4 = c_file_4.c_str();	
+    		
+	string c_file_5 = "mass_splittings/data2/deltam_1loop_" + group + ".txt";
+  const char *file_5 = c_file_5.c_str();	
   
-  ofstream mass_splittings_1loop;
-  mass_splittings_1loop.open ("mass_splittings/data2/mass_splitting_1loop.txt");    
-  
-	ofstream pole_mass_n_1loop;
-  pole_mass_n_1loop.open ("mass_splittings/data2/pole_mass_n_1loop.txt");
-  
-  ofstream pole_mass_c_1loop;
-  pole_mass_c_1loop.open ("mass_splittings/data2/pole_mass_c_1loop.txt");  
-  
+	string c_file_6 = "mass_splittings/data2/deltam_2loop_" + group + ".txt";
+  const char *file_6 = c_file_6.c_str();	  
+	
   ofstream pole_mass_n_2loop;
-  pole_mass_n_2loop.open ("mass_splittings/data2/pole_mass_n_2loop.txt");  
-  
-  ofstream pole_mass_c_2loop;
-  pole_mass_c_2loop.open ("mass_splittings/data2/pole_mass_c_2loop.txt");   
+  pole_mass_n_2loop.open (file_1);
+ 
+	ofstream pole_mass_c_2loop;
+  pole_mass_c_2loop.open (file_2);
   
   ofstream pole_mass_n_2loop_it;
-  pole_mass_n_2loop_it.open ("mass_splittings/data2/pole_mass_n_2loop_it.txt");  
-  
   ofstream pole_mass_c_2loop_it;
-  pole_mass_c_2loop_it.open ("mass_splittings/data2/pole_mass_c_2loop_it.txt");     
+  if (do_iteration)
+  {
+		pole_mass_n_2loop_it.open ("mass_splittings/data2/pole_mass_unc_2loop_n_it.txt");
+		pole_mass_c_2loop_it.open ("mass_splittings/data2/pole_mass_unc_2loop_c_it.txt");  
+	}
 
-  // set range of plot
-  long double logMax = log10(1.0e5L);
-  long double logMin = log10(100.0);
+	ofstream pole_mass_n_1loop;
+  pole_mass_n_1loop.open (file_3);
+ 
+	ofstream pole_mass_c_1loop;
+  pole_mass_c_1loop.open (file_4);
   
-  std::vector<double> Q(5),cutoff(5);
+  ofstream deltam_1loop;
+  deltam_1loop.open (file_5);
+  
+  ofstream deltam_2loop;
+  deltam_2loop.open (file_6);  
+  
+  ofstream deltam_2loop_it;
+  if (do_iteration)
+  {
+		deltam_2loop_it.open ("mass_splittings/data2/deltam_2loop_it.txt");    
+  }
+ 
+  // set range of plot
+  long double logMax = log10(1.0e4L);
+  long double logMin = log10(100.0L);
+  
+  std::vector<double> Q(5);
   
   // number of points to plot
-  int pts = 20;
+  int pts = 40;
+  for (int i=0;i<pts+1;i++)
+  {
+    double n = i*(logMax - logMin)/pts + logMin;
+    double M = pow(10.0L,n);
+    
+    data.MChi = M;
+    data.P = data.MChi;
+    
+    Q[0] = 2.0 * 173.15;
+    Q[1] = 0.5 * 173.15;
+    Q[2] = 0.5 * M ;
+    Q[3] = M ;
+    Q[4] = 2.0 * M;
+    
+    pole_mass_n_2loop << M ;
+    pole_mass_c_2loop << M ;
+    
+    pole_mass_n_1loop << M ;
+    pole_mass_c_1loop << M ;
+    
+    deltam_1loop << M ;
+    deltam_2loop << M ;
+    
+    if (do_iteration)
+    {
+			deltam_2loop_it << M ;
+			pole_mass_n_2loop_it << M ;
+			pole_mass_c_2loop_it << M ;
+		}
+    
+    for (int i = 0; i < 5 ; i++)
+    {
+			data.Q = Q[i];
+			data.do_tsil_all = true;
+			T spec(data);
+			if (group == "ABa") // use this to try using 1-loop renormalisation (only alpha not masses)
+	  	{
+				spec.data.do_tsil_all = false;
+				spec.compute_spectra_flexiblesusy();
+				spec.data.do_tsil_all = true;
+			}
+			else
+			{
+				spec.compute_spectra_flexiblesusy();
+			}
+			
+			// do explicit calculation
+			data.do_tsil_all = false;
+	  	T spec_1loop(data);
+	  	spec_1loop.compute_spectra_flexiblesusy();
+	    spec_1loop.compute_tsil();
+	    deltam_1loop << " " << spec_1loop.get_deltam();
+	    
+	  	T spec_explicit = spec;
+	    spec_explicit.compute_tsil();
+				
+			pole_mass_n_2loop << " " << spec_explicit.get_neutral_mass_2loop();
+			pole_mass_c_2loop << " " << spec_explicit.get_charged_mass_2loop();	
+			pole_mass_n_1loop << " " << spec_explicit.get_neutral_mass();	
+			pole_mass_c_1loop << " " << spec_explicit.get_charged_mass();
+			
+			deltam_2loop << " " << spec_explicit.get_deltam_2loop()+spec_explicit.get_deltam();
+			
+			// do iterative calculation
+			
+			if (do_iteration) // && data.Q < 1000 && data.MChi > 1000)
+			{
+				T spec_iterative = spec;
+	      bool error = spec_iterative.compute_tsil_iterative();
+	      if (!error)
+	      {
+					deltam_2loop_it << " " << 0.0L;
+					pole_mass_n_2loop_it << " " << 0.0L;
+					pole_mass_c_2loop_it << " " << 0.0L;
+				}
+				else
+				{
+					deltam_2loop_it << " " << spec_iterative.get_deltam() + spec_iterative.get_deltam_2loop();
+					pole_mass_n_2loop_it << " " << spec_iterative.get_neutral_mass_2loop();
+					pole_mass_c_2loop_it << " " << spec_iterative.get_charged_mass_2loop();				
+				}
+			}
+			
+			
+		}
+    
+    pole_mass_n_2loop << endl;
+    pole_mass_c_2loop << endl;
+    
+    pole_mass_n_1loop << endl;    
+		pole_mass_c_1loop << endl;
+		
+		deltam_1loop << endl;
+		deltam_2loop << endl;
+		if (do_iteration)
+		{
+			deltam_2loop_it << endl;
+			pole_mass_n_2loop_it << endl;
+			pole_mass_c_2loop_it << endl;		
+		}
+		
+  }
+  
+  pole_mass_n_2loop.close();
+  pole_mass_c_2loop.close();
+  pole_mass_n_2loop_it.close();
+  pole_mass_c_2loop_it.close();  
+  pole_mass_n_1loop.close();
+  pole_mass_c_1loop.close();
+  
+  deltam_1loop.close();
+  deltam_2loop.close();
+  deltam_2loop_it.close();
+  
+}
+
+
+template <class T>
+void Figures<T>::plot_deltam_2loop(Data data)
+{ 
+  ofstream deltam_2loop_it;
+  deltam_2loop_it.open ("mass_splittings/data2/deltam_2loop_it.txt");    
+ 
+  // set range of plot
+  long double logMax = log10(1.0e5L);
+  long double logMin = log10(1000.0L);
+  
+  std::vector<double> Q(5),cutoff(5);
+  bool error = false;
+  // number of points to plot
+  int pts = 50;
   for (int i=0;i<pts+1;i++)
   {
     double n = i*(logMax - logMin)/pts + logMin;
@@ -680,85 +838,53 @@ void Figures<T>::plot_2loop_uncertainties(Data data, bool do_iteration)
     
     Q[0] = 10;
     Q[1] = 100;
-    Q[2] = 500;
-    Q[3] = 1000;
+    Q[2] = 1000 ;
+    cutoff[0] = 0.0;
+    cutoff[1] = 0.0;
+    cutoff[2] = 5000;
     
-    cutoff[0] = 10;
-    cutoff[1] = 10;
-    cutoff[2] = 10;
-    cutoff[3] = 10;
+		deltam_2loop_it << M ;
     
-    mass_splittings_iterative << M ;
-    mass_splittings_explicit << M ;
-    mass_splittings_1loop << M;
-    pole_mass_n_2loop_it << M;
-    pole_mass_c_2loop_it << M;
-    pole_mass_n_1loop << M;
-    pole_mass_c_1loop << M;
-    pole_mass_n_2loop << M;
-    pole_mass_c_2loop << M;
-    
-    for (int i = 0; i < 4 ; i++)
+    for (int i = 0; i < 3 ; i++)
     {
 			data.Q = Q[i];
 			T spec(data);
 			spec.compute_spectra_flexiblesusy();
-			// do iterative calculation
 			
-			if (cutoff[i] < M && do_iteration)
+			T spec_iterative = spec;
+			if (M > cutoff[i])
 			{
-				T spec_iterative = spec;
-	      spec_iterative.compute_tsil_iterative();
-				
-				mass_splittings_iterative << " " << spec_iterative.get_deltam() + spec_iterative.get_deltam_2loop();
-				
-				pole_mass_n_2loop_it << " " << spec_iterative.get_neutral_mass_2loop();
-				pole_mass_c_2loop_it << " " << spec_iterative.get_charged_mass_2loop();				
+				error = spec_iterative.compute_tsil_iterative();
 			}
 			else
 			{
-				mass_splittings_iterative << " " << -1.0;
-				pole_mass_n_2loop_it << " " << -1.0;
-				pole_mass_c_2loop_it << " " << -1.0;	
+				error = false;
 			}
 			
-			// do explicit calculation
-	  	T spec_explicit = spec;
-	    spec_explicit.compute_tsil();
-				
-			mass_splittings_explicit << " " << spec_explicit.get_deltam_2loop() + spec_explicit.get_deltam();
-			pole_mass_n_2loop << " " << spec_explicit.get_neutral_mass_2loop();
-			pole_mass_c_2loop << " " << spec_explicit.get_charged_mass_2loop();	
-			pole_mass_n_1loop << " " << spec_explicit.get_charged_mass();	
-			pole_mass_c_1loop << " " << spec_explicit.get_charged_mass();	
-			mass_splittings_1loop << " " << spec_explicit.get_deltam();
+      if (!error)
+      {
+				deltam_2loop_it << " " << 0.0L;
+			}
+			else
+			{
+				if (spec_iterative.get_deltam_2loop() < 1.0)
+				{
+					deltam_2loop_it << " " << spec_iterative.get_deltam() + spec_iterative.get_deltam_2loop();
+				}
+				else
+				{
+					deltam_2loop_it << " " << 0.0L;
+				}
+			}
 			
 		}
-    
-		mass_splittings_iterative << endl;
-		mass_splittings_explicit << endl;
-		pole_mass_n_2loop << endl;
-		pole_mass_n_2loop_it << endl;
-		pole_mass_c_2loop << endl;	
-		pole_mass_c_2loop_it << endl;	
-		pole_mass_n_1loop << endl;
-		pole_mass_c_1loop << endl;
-		mass_splittings_1loop << endl;
+		
+		deltam_2loop_it << endl;
+		
   }
   
-  mass_splittings_iterative.close();
-  mass_splittings_explicit.close();
-  mass_splittings_1loop.close();
-  pole_mass_n_1loop.close();
-	pole_mass_c_1loop.close(); 
-  pole_mass_n_2loop.close();
-	pole_mass_c_2loop.close(); 
-  pole_mass_n_2loop_it.close();
-	pole_mass_c_2loop_it.close(); 	
-  
+  deltam_2loop_it.close();
 }
-
-
 
 
 template class Figures<MSSM_spectrum>;

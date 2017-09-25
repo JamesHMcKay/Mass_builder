@@ -66,18 +66,84 @@ if (Xi == 3):
 	A=np.genfromtxt('mass_splittings/data/mass_splittings_iterative_3.txt',usecols=[0,1,2,3,4,5])
 
 
-x2=A[:,0]
+x22=A[:,0]
 ylower=A[:,1]*1000
 ymid=A[:,2]*1000
 yupper1=A[:,3]*1000
 yupper2=A[:,4]*1000
 yupper3=A[:,5]*1000
 
-plt.plot(x2,ylower,'-',color='red',label="$Q=2 m_t$",linewidth=1.2) #
-plt.plot(x2,ymid,'-',color='black',label="$Q=0.5 m_t$",linewidth=1.2) #
-plt.plot(x2,yupper1,'-',color='yellow',label="$Q=0.5 M$",linewidth=1.2) #
-plt.plot(x2,yupper2,'-',color='blue',label="$Q=1 M$",linewidth=1.2) #
-plt.plot(x2,yupper3,'-',color='#ff7f00',label="$Q=2 M$",linewidth=1.2) #
+
+y1=A[:,1]*1000
+y2=A[:,2]*1000
+y3=A[:,3]*1000
+y4=A[:,4]*1000
+y5=A[:,5]*1000
+
+k1 = 0
+k2 = 0
+k3 = 0
+k4 = 0
+k5 = 0
+z1 = zeros(size(x22))
+z2 = zeros(size(x22))
+z3 = zeros(size(x22))
+z4 = zeros(size(x22))
+z5 = zeros(size(x22))
+x1 = zeros(size(x22))
+x2 = zeros(size(x22))
+x3 = zeros(size(x22))
+x4 = zeros(size(x22))
+x5 = zeros(size(x22))
+
+for i in range(0,len(x22)):
+	if (y1[i] != 0):
+		z1[k1] = y1[i]
+		x1[k1] = x22[i]
+		k1 = k1 + 1
+	if (y2[i] != 0):
+		z2[k2] = y2[i]
+		x2[k2] = x22[i]
+		k2 = k2 + 1		
+	if (y3[i] != 0):
+		z3[k3] = y3[i]
+		x3[k3] = x22[i]	
+		k3 = k3 + 1	
+	if (y4[i] != 0):
+		z4[k4] = y4[i]
+		x4[k4] = x22[i]	
+		k4 = k4 + 1
+	if (y5[i] != 0):
+		z5[k5] = y5[i]
+		x5[k5] = x22[i]	
+		k5 = k5 + 1		
+		
+
+z1 = np.trim_zeros(z1)
+z2 = np.trim_zeros(z2)
+z3 = np.trim_zeros(z3)
+z4 = np.trim_zeros(z4)
+z5 = np.trim_zeros(z5)
+x1 = np.trim_zeros(x1)
+x2 = np.trim_zeros(x2)
+x3 = np.trim_zeros(x3)
+x4 = np.trim_zeros(x4)
+x5 = np.trim_zeros(x5)
+
+
+plt.plot(x1,z1,'-',color='red',linewidth=1.2) #
+plt.plot(x2,z2,'-',color='black',linewidth=1.2) #
+plt.plot(x3,z3,'-',color='yellow',linewidth=1.2) #
+plt.plot(x4,z4,'-',color='blue',linewidth=1.2) #
+plt.plot(x5,z5,'-',color='#ff7f00',linewidth=1.2) #
+
+
+
+#plt.plot(x2,ylower,'-',color='red',label="$Q=2 m_t$",linewidth=1.2) #
+#plt.plot(x2,ymid,'-',color='black',label="$Q=0.5 m_t$",linewidth=1.2) #
+#plt.plot(x2,yupper1,'-',color='yellow',label="$Q=0.5 M$",linewidth=1.2) #
+#plt.plot(x2,yupper2,'-',color='blue',label="$Q=1 M$",linewidth=1.2) #
+#plt.plot(x2,yupper3,'-',color='#ff7f00',label="$Q=2 M$",linewidth=1.2) #
 
 if (Xi == 0):
 	A=np.genfromtxt('mass_splittings/data/mass_splittings_explicit_0.txt',usecols=[0,1,2,3,4,5])
@@ -93,6 +159,13 @@ ymid=A[:,2]*1000
 yupper1=A[:,3]*1000
 yupper2=A[:,4]*1000
 yupper3=A[:,5]*1000
+
+#plt.plot(x2,ylower,'--',color='red',label="$Q=2 m_t$",linewidth=1.2) #
+#plt.plot(x2,ymid,'--',color='black',label="$Q=0.5 m_t$",linewidth=1.2) #
+#plt.plot(x2,yupper1,'--',color='yellow',label="$Q=0.5 M$",linewidth=1.2) #
+#plt.plot(x2,yupper2,'--',color='blue',label="$Q=1 M$",linewidth=1.2) #
+#plt.plot(x2,yupper3,'--',color='#ff7f00',label="$Q=2 M$",linewidth=1.2) #
+
 
 
 xlabel(r"Degenerate mass, $\hat{M}$ $($GeV$)$",fontsize=18)

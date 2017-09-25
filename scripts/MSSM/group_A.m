@@ -19,7 +19,7 @@ AppendTo[$Path, "/Users/jamesmckay/Documents/Programs/Mass_builder/src/"];
 
 
 SetOptions[DiracSlash,Dimension->D,FeynCalcInternal->True];SetOptions[DiracTrace,DiracTraceEvaluate->True];null=0;MassBuilderA[mass_,D_]:=TAI[D,0,{{1,mass}}];MassBuilderB[mass1_,mass2_,D_]:=TBI[D,Pair[Momentum[p,D],Momentum[p,D]],{{1,mass1},{1,mass2}}];MassBuilderJ[mass1_,mass2_,mass3_,D_]:=TJI[D,Pair[Momentum[p,D],Momentum[p,D]],{{1,mass1},{1,mass2},{1,mass3}}];MassBuilderT[mass1_,mass2_,mass3_,D_]:=TJI[D,Pair[Momentum[p,D],Momentum[p,D]],{{2,mass1},{1,mass2},{1,mass3}}];MassBuilderK[mass1_,mass2_,mass3_,D_]:=TJI[D,0,{{1,mass1},{1,mass2},{1,mass3}}];MassBuilderV[mass1_,mass2_,mass3_,mass4_,D_]:=TVI[D,Pair[Momentum[p,D],Momentum[p,D]],{{1,mass1},{1,mass2},{1,mass3},{1,mass4}}];MassBuilderF[mass1_,mass2_,mass3_,mass4_,mass5_,D_]:=TFI[D,Pair[Momentum[p,D],Momentum[p,D]],{{1,mass1},{1,mass2},{1,mass3},{1,mass4},{1,mass5}}];FCGV["EL"]=e;FCGV["SW"]=sw;FCGV["CW"]=cw;FCGV["MW"]=mw;FCGV["MZ"]=mz;FCGV["ME"]=me;FCGV["MM"]=mm;FCGV["ML"]=ml;FCGV["MU"]=mu;FCGV["MT"]=mt;FCGV["MD"]=md;FCGV["MS"]=ms;FCGV["MB"]=mb;ZNeu[1,1]=0;ZNeu[1,2]=1;ZNeu[1,3]=0;ZNeu[1,4]=0;ZNeu[2,1]=0;ZNeu[2,2]=0;ZNeu[2,3]=0;ZNeu[2,4]=0;ZNeu[3,1]=0;ZNeu[3,2]=0;ZNeu[3,3]=0;ZNeu[3,4]=0;ZNeu[4,1]=0;ZNeu[4,2]=0;ZNeu[4,3]=0;ZNeu[4,4]=0;UCha[1,1]=1;UCha[1,2]=0;UCha[2,1]=0;UCha[2,2]=0;VCha[1,1]=1;VCha[1,2]=0;VCha[2,1]=0;VCha[2,2]=0;CKM=IndexDelta;MCha[1]=MChi;MCha[2]=MChi;MNeu[1]=MChi;MNeu[2]=MChi;Mh0=mh;SBA=1;
-SPD[p,p]=MChi^2;Pair[Momentum[p],Momentum[p]]=MChi^2;
+(*SPD[p,p]=MChi^2;Pair[Momentum[p],Momentum[p]]=MChi^2;*)
 
 
 (* ::Subsection:: *)
@@ -94,7 +94,7 @@ sumC2=makeFiniteAmplitude[C1+C2+C3+C4+C5+C6+C7+C8+C9,-2,D];
 /. MassBuilderB[mw, MChi] -> TBI[4, MChi^2, {{1, MChi}, {1, mw}}]\
 /. MassBuilderB[ma, MChi] -> TBI[4, MChi^2, {{1, MChi}, {1, ma}}]\
 /. MassBuilderB[MChi, ma] -> TBI[4, MChi^2, {{1, MChi}, {1, ma}}]\
-/.p->MChi/. ma->0/.STW->sw/.CTW->cw;
+/.(*p->MChi/. *)ma->0/.STW->sw/.CTW->cw;
 
 
 eq6=Coefficient[FullSimplify[sumN1,{sw^2+cw^2==1,Cw1==-2,Cw2==-2}],TAI[4, 0, {1, mw}]]
@@ -115,10 +115,8 @@ sol2=Solve[{eq2==0,eq4==0,eq5==0,eq7==0},{Ca,Cz2}]
 
 Set@@@sol2[[1]];
 
-(*Cw1+Cw2==-4;*)
-
-sw=Sin[Theta];
-cw=Cos[Theta];
+(*sw=Sin[Theta];
+cw=Cos[Theta];*)
 
 
 eq1=FullSimplify[sumN1-sumC1/.dg2->4*e^3/sw^3,{sw^2+cw^2==1,Cw1+Cw2==-4}]
@@ -134,7 +132,14 @@ eq1=FullSimplify[sumC2/.dg2->4*e^3/sw^3,{sw^2+cw^2==1,Cw1+Cw2==-4}]
 dg2*kappa
 
 
-eq1=Simplify[sumN0-sumC0/.dg2->4*e^3/sw^3,{sw^2+cw^2==1,Cw1+Cw2==-4}]
+sw=Sin[Theta];
+cw=Cos[Theta];
 
 
-sumN0-sumC0/.dg2->4*e^3/sw^3
+eq1=FullSimplify[sumN1/.dg2->4*e^3/sw^3,{sw^2+cw^2==1,Cw1+Cw2==-4}]
+eq1=FullSimplify[sumN2/.dg2->4*e^3/sw^3,{sw^2+cw^2==1,Cw1+Cw2==-4}]
+eq1=FullSimplify[sumC1/.dg2->4*e^3/sw^3,{sw^2+cw^2==1,Cw1+Cw2==-4}]
+eq1=FullSimplify[sumC2/.dg2->4*e^3/sw^3,{sw^2+cw^2==1,Cw1+Cw2==-4}]
+
+
+

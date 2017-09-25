@@ -362,13 +362,26 @@ void MSSM_spectrum::compute_tsil()
 }
 
 
-void MSSM_spectrum::compute_tsil_iterative()
+bool MSSM_spectrum::compute_tsil_iterative()
 {	
 	Self_energy se;
 	se.run_tsil(data);
-	
+	double m_F12;
 	double m_F11 = iterative_ms_bar_mass(data,"F11_g1");
-	double m_F12 = iterative_ms_bar_mass(data,"F12_g1");
+
+	if (m_F11 == 0)
+	{
+		return false;
+	}
+
+	if (m_F11 != 0)
+	{
+		m_F12 = iterative_ms_bar_mass(data,"F12_g1");
+		if (m_F12 == 0)
+		{
+			return false;
+		}
+	}
 	
 	if ( (m_F11 == 0 ) || (m_F12 == 0 ) )
 	{
@@ -381,12 +394,16 @@ void MSSM_spectrum::compute_tsil_iterative()
 	{
 		data.SE_2["F11_g1"] = m_F11 - data.MChi;
 		data.SE_2["F12_g1"] = m_F12 - data.MChi;
+		data.SE_1["F11_g1"] = 0;
+		data.SE_1["F12_g1"] = 0;
 	}
 	else
 	{
 		data.SE_1["F11_g1"] = m_F11 - data.MChi;
 		data.SE_1["F12_g1"] = m_F12 - data.MChi;
 	}	
+
+	return true;	
 
 }
 

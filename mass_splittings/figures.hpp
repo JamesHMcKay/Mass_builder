@@ -36,6 +36,10 @@ public:
 	void plot_uncertainties(Data data);
 	
 	void plot_2loop_uncertainties(Data data, bool do_iteration);
+	
+	void plot_M_flexiblesusy_2loop(Data data, string group, bool do_iteration);
+	
+	void plot_deltam_2loop(Data data);
   
 };
 
