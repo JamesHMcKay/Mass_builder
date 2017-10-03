@@ -30,6 +30,7 @@
 #include "flexiblesusy/models/EW_triplet/EW_triplet_physical.hpp"
 #include "flexiblesusy/models/EW_triplet/EW_triplet_info.hpp"
 
+//#define DEBUG
  
 using namespace flexiblesusy;
 using namespace softsusy;
@@ -129,7 +130,6 @@ namespace extra_TSIL_interface_EW_triplet
     
     p = data.P;
     
-    
     TSIL_COMPLEXCPP result = (Power(e,4)*(Ac - Aw - Power(MChi,2) + 2*Bcw*Power(MChi,2) + Bcw*Power(mw,2))*
                               (-Ac + Aw + Power(MChi,2) + 4*dBwc*Power(MChi,4) - Bcw*Power(mw,2) + 2*dBwc*Power(MChi,2)*Power(mw,2)))/
     (64.*Power(MChi,3)*Power(Pi,4)*Power(sw,4));
@@ -173,6 +173,77 @@ namespace extra_TSIL_interface_EW_triplet
   
   
   
+  
+  double F11_der_it(Data data)
+  {
+    
+    DoTSIL(data);
+    
+    p = data.P;
+    TSIL_REAL s = pow(p,2);
+    
+    TSIL_COMPLEXCPP result = (Power(e,4)*MChi*(-Ac + Aw + 2*MChi*Sqrt(s) - s + 
+       Bcw*(Power(MChi,2) - Power(mw,2) - 4*MChi*Sqrt(s) + s))*
+     (Ac - Aw - s + Bcw*(-Power(MChi,2) + Power(mw,2) + s) + 
+       2*dBwc*s*(Power(MChi,2) - Power(mw,2) - 4*MChi*Sqrt(s) + s)))/
+   (64.*Power(Pi,4)*Power(s,2)*Power(sw,4));
+    
+    
+    return real(result);
+    
+  }
+  
+  
+  
+  double F12_der_it(Data data)
+  {
+    
+    DoTSIL(data);
+    
+    p = data.P;
+    TSIL_REAL s = pow(p,2);
+    
+    
+    TSIL_COMPLEXCPP result = (Power(e,4)*MChi*(-Ac + Az - Ac*Power(cw,2) + Aw*Power(cw,2) + Bcz*Power(MChi,2) - Bcz*Power(mz,2) + 
+       2*MChi*Sqrt(s) - 4*Bcz*MChi*Sqrt(s) + 2*Power(cw,2)*MChi*Sqrt(s) - s + Bcz*s - 
+       Power(cw,2)*s + Bcw*Power(cw,2)*(Power(MChi,2) - Power(mw,2) - 4*MChi*Sqrt(s) + s) + 
+       2*Ac*Power(sw,2) - 2*Az*Power(sw,2) + Aa*Power(cw,2)*Power(sw,2) - 
+       Ac*Power(cw,2)*Power(sw,2) - 2*Bcz*Power(MChi,2)*Power(sw,2) + 
+       2*Bcz*Power(mz,2)*Power(sw,2) - 4*MChi*Sqrt(s)*Power(sw,2) + 8*Bcz*MChi*Sqrt(s)*Power(sw,2) + 
+       2*Power(cw,2)*MChi*Sqrt(s)*Power(sw,2) + 2*s*Power(sw,2) - 2*Bcz*s*Power(sw,2) - 
+       Power(cw,2)*s*Power(sw,2) + Bca*Power(cw,2)*
+        (-Power(ma,2) + Power(MChi,2) - 4*MChi*Sqrt(s) + s)*Power(sw,2) - Ac*Power(sw,4) + 
+       Az*Power(sw,4) + Bcz*Power(MChi,2)*Power(sw,4) - Bcz*Power(mz,2)*Power(sw,4) + 
+       2*MChi*Sqrt(s)*Power(sw,4) - 4*Bcz*MChi*Sqrt(s)*Power(sw,4) - s*Power(sw,4) + 
+       Bcz*s*Power(sw,4))*(Ac - Az + Ac*Power(cw,2) - Aw*Power(cw,2) - Bcz*Power(MChi,2) + 
+       Bcz*Power(mz,2) - s + Bcz*s - Power(cw,2)*s + 2*Power(cw,2)*dBwc*Power(MChi,2)*s + 
+       2*dBzc*Power(MChi,2)*s - 2*Power(cw,2)*dBwc*Power(mw,2)*s - 2*dBzc*Power(mz,2)*s - 
+       8*Power(cw,2)*dBwc*MChi*Power(s,1.5) - 8*dBzc*MChi*Power(s,1.5) + 
+       2*Power(cw,2)*dBwc*Power(s,2) + 2*dBzc*Power(s,2) + 
+       Bcw*Power(cw,2)*(-Power(MChi,2) + Power(mw,2) + s) - 2*Ac*Power(sw,2) + 2*Az*Power(sw,2) - 
+       Aa*Power(cw,2)*Power(sw,2) + Ac*Power(cw,2)*Power(sw,2) + 2*Bcz*Power(MChi,2)*Power(sw,2) - 
+       2*Bcz*Power(mz,2)*Power(sw,2) + 2*s*Power(sw,2) - 2*Bcz*s*Power(sw,2) - 
+       Power(cw,2)*s*Power(sw,2) - 2*Power(cw,2)*dBac*Power(ma,2)*s*Power(sw,2) + 
+       2*Power(cw,2)*dBac*Power(MChi,2)*s*Power(sw,2) - 4*dBzc*Power(MChi,2)*s*Power(sw,2) + 
+       4*dBzc*Power(mz,2)*s*Power(sw,2) - 8*Power(cw,2)*dBac*MChi*Power(s,1.5)*Power(sw,2) + 
+       16*dBzc*MChi*Power(s,1.5)*Power(sw,2) + 2*Power(cw,2)*dBac*Power(s,2)*Power(sw,2) - 
+       4*dBzc*Power(s,2)*Power(sw,2) + Bca*Power(cw,2)*(Power(ma,2) - Power(MChi,2) + s)*
+        Power(sw,2) + Ac*Power(sw,4) - Az*Power(sw,4) - Bcz*Power(MChi,2)*Power(sw,4) + 
+       Bcz*Power(mz,2)*Power(sw,4) - s*Power(sw,4) + Bcz*s*Power(sw,4) + 
+       2*dBzc*Power(MChi,2)*s*Power(sw,4) - 2*dBzc*Power(mz,2)*s*Power(sw,4) - 
+       8*dBzc*MChi*Power(s,1.5)*Power(sw,4) + 2*dBzc*Power(s,2)*Power(sw,4)))/
+   (256.*Power(cw,4)*Power(Pi,4)*Power(s,2)*Power(sw,4));
+    
+    
+    return real(result);
+    
+  }
+  
+  
+  
+  
+  
+  
   TSIL_COMPLEXCPP  gammagamma_Chi(Data data,double Q)
   {
     DoTSIL(data);
@@ -204,7 +275,7 @@ double EW_triplet_spectrum::iterative_ms_bar_mass(Data data, string particle)
   long double M_pole = data.MChi;
   data.P = M_tree;
   long double diff = 1;
-  long double precision = 1e-8;
+  long double precision = 1e-7;
   int iteration = 0;
   do
   {
@@ -223,23 +294,27 @@ double EW_triplet_spectrum::iterative_ms_bar_mass(Data data, string particle)
     diff = abs(M_pole - data.P);
     data.P = M_pole;
     
-    //cout<< "\r" << "M_pole - p = " << diff << " GeV";
-    //std::cout << std::flush;
-
-		if (iteration > 20 && diff > 1e-3)
+    #ifdef DEBUG
+    cout<< "\r" << "M_pole - p = " << diff << " GeV";
+    std::cout << std::flush;
+		#endif
+		if (iteration > 40 && diff > 1e-3)
 		{
 			iteration = 49 ; 
 		}
     
     iteration++;
   } while (diff > precision  && iteration < 50);
-  
-  //cout<< "\r" << "M_pole - p = " << diff << " GeV";
-  //cout << "\n";
+  #ifdef DEBUG
+  cout<< "\r" << "M_pole - p = " << diff << " GeV";
+  cout << "\n";
+  #endif
   
   if (iteration == 50)
   {
-    //cout << "pole mass did not converge" << endl;
+		#ifdef DEBUG
+    cout << "pole mass did not converge" << endl;
+    #endif
     return 0;
   }
     
@@ -266,6 +341,7 @@ void EW_triplet_spectrum::compute_spectra_MB_1loop()
   
 }
 
+/*
 // determine MSbar parameters
 void EW_triplet_spectrum::compute_spectra_MB_2loop()
 {
@@ -274,9 +350,6 @@ void EW_triplet_spectrum::compute_spectra_MB_2loop()
  
   // determine MS bar input parameters at Q
   // only recompute the 1-loop functions for efficiency
-  
-  
-  
   
   data.do_tsil_all = false;
   long double MChi_pole = data.MChi;
@@ -344,11 +417,42 @@ void EW_triplet_spectrum::compute_spectra_MB_2loop()
   data.mw = mwMS;
   data.mz = mzMS;
   data.MChi = MChiMS;
+  data.alpha = alphaMS;
   
   data.P = data.MChi;
   
   data.do_tsil_all = true;
   
+}
+*/
+
+
+
+// determine MSbar parameters
+void EW_triplet_spectrum::compute_spectra_MB_2loop()
+{
+  Self_energy se;
+  
+  // matching (?) of SM to Wino model
+  data.alpha = data.alpha*( 1.0-real(extra_TSIL_interface_EW_triplet::gammagamma_Chi(data,data.Q)) /pow(data.Q,2) );
+  
+  // determine MS bar input parameters at Q
+  // only recompute the 1-loop functions for efficiency
+  data.do_tsil_all = false;
+  
+  data.P = data.mw;
+  se.run_tsil(data);
+  data.mw = pow( pow(data.mw,2) - real(data.SE_1["V3"]),0.5 );
+  
+  data.P = data.mz;
+  se.run_tsil(data);
+  data.mz = pow( pow(data.mz,2) - real(data.SE_1["V2"]) ,0.5);
+  
+  // need to iterate to determine MS bar mass for MChi to match equation (9) of Ibe et al.
+  data.MChi = iterative_ms_bar_mass(data, "F11");
+  
+  data.P = data.MChi;
+  data.do_tsil_all = true;
 }
 
 
@@ -411,6 +515,7 @@ bool EW_triplet_spectrum::compute_spectra_flexiblesusy()
 		data.mw = model.get_MVWp();
 		data.mz = model.get_MVZ();
   }
+  /*
   double thetaW = ArcCos(Abs(model.get_ZZ(0,0)));
   data.sw = Sin(thetaW);
   data.cw = Cos(thetaW);
@@ -418,7 +523,7 @@ bool EW_triplet_spectrum::compute_spectra_flexiblesusy()
   data.mh = model.get_Mhh();
 	//data.mt = model.get_MFu(2);
   data.v = model.get_v();
-  
+  */
   double g1 = pow(3./5.,0.5)*model.get_g1();
   double g2 = model.get_g2();
   
@@ -493,6 +598,26 @@ bool EW_triplet_spectrum::compute_tsil_iterative()
 	return true;
 }
 
+
+double EW_triplet_spectrum::get_F12_der()
+{
+	return extra_TSIL_interface_EW_triplet::F12_der(data);
+}
+
+double EW_triplet_spectrum::get_F11_der()
+{
+	return extra_TSIL_interface_EW_triplet::F11_der(data);
+}
+
+double EW_triplet_spectrum::get_F12_der_it()
+{
+	return extra_TSIL_interface_EW_triplet::F12_der(data);
+}
+
+double EW_triplet_spectrum::get_F11_der_it()
+{
+	return extra_TSIL_interface_EW_triplet::F11_der(data);
+}
 
 
 double EW_triplet_spectrum::get_deltam()

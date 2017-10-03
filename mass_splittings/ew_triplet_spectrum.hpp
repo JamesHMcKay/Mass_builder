@@ -40,6 +40,12 @@ public:
   double get_neutral_mass();
   double get_neutral_mass_2loop();
   
+  double get_F11_der();
+  double get_F12_der();
+  
+  double get_F11_der_it();
+  double get_F12_der_it();
+    
 };
 
 #endif

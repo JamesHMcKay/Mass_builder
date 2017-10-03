@@ -40,7 +40,7 @@ public:
 	void plot_M_flexiblesusy_2loop(Data data, string group, bool do_iteration);
 	
 	void plot_deltam_2loop(Data data);
-  
+	
 };
 
 

@@ -170,7 +170,7 @@ for i in range(0,len(x)):
 	minimum[i] = 1000*min(A[i,1:6])
 
 
-plt.fill_between(x, minimum,maximum,color='green',alpha=0.7,label='one-loop',zorder=50)
+plt.fill_between(x, minimum,maximum,color='green',alpha=0.5,label='one-loop',zorder=50)
 
 
 
@@ -185,11 +185,11 @@ yupper1=A[:,3]*1000
 yupper2=A[:,4]*1000
 yupper3=A[:,5]*1000
 
-plt.plot(x,ylower,'-.',color='red',linewidth=1.2)
-plt.plot(x,ymid,'-.',color='black',linewidth=1.2)
-plt.plot(x,yupper1,'-.',color='yellow',linewidth=1.2)
-plt.plot(x,yupper2,'-.',color='blue',linewidth=1.2)
-plt.plot(x,yupper3,'-.',color='#ff7f00',linewidth=1.2)
+plt.plot(x,ylower,'-',color='red',linewidth=1.1,zorder=200)
+plt.plot(x,ymid,'-',color='black',linewidth=1.1,zorder=200)
+plt.plot(x,yupper1,'-',color='yellow',linewidth=1.1,zorder=200)
+plt.plot(x,yupper2,'-',color='blue',linewidth=1.1,zorder=200)
+plt.plot(x,yupper3,'-',color='#ff7f00',linewidth=1.1,zorder=200)
 
 
 # create vector with maximum and minimum values
@@ -203,7 +203,7 @@ for i in range(0,len(x)):
 	minimum[i] = 1000*min(A[i,1:6])
 
 
-plt.fill_between(x, minimum,maximum,color='red',alpha=0.2,label='partial two-loop')
+plt.fill_between(x, minimum,maximum,color='red',alpha=0.5,label='partial two-loop',zorder=200)
 
 
 
@@ -236,25 +236,25 @@ plt.fill_between(x, minimum,maximum,color='grey',alpha=0.6,label='two-loop',zord
 
 
 plt.xlim([100,1e4])
-#plt.ylim([140,177])
-plt.ylim([0,250])
+plt.ylim([150,180])
 
 
 
 xlabel(r"Degenerate mass, $\hat{M}$ $($GeV$)$",fontsize=18)
-ylabel(r"$\Delta M = M_p^+ - M_p^0$  $($MeV$)$",fontsize=18)
+ylabel(r"$\Delta M = M_{\mathrm{pole}}^+ - M_{\mathrm{pole}}^0$  $($MeV$)$",fontsize=18)
 
 plt.xscale('log')
 
 plt.tick_params(labelsize=14)
 
-leg = plt.legend(loc='lower right')
+#leg = plt.legend(loc='lower right')
 
-for legobj in leg.legendHandles:
-    legobj.set_linewidth(0.0)
+#for legobj in leg.legendHandles:
+#    legobj.set_linewidth(0.0)
 
 
-plt.annotate(r"Feynman-'t Hooft gauge $(\xi = 1)$", xy=(850,150), xytext=(850,150),fontsize=16)
+plt.annotate(r"Feynman-'t Hooft gauge $(\xi = 1)$", xy=(850,154), xytext=(850,154),fontsize=16)
+plt.annotate(r"Non-iterative mass splittings", xy=(850,152), xytext=(850,152),fontsize=16)
 
 plt.savefig("mass_splittings/figures2/deltam_2loop_explicit.pdf")
 
@@ -269,8 +269,12 @@ figData = pylab.figure()
 ax = pylab.gca()
 
 # plot something, it doesn't matter what
-pylab.plot(x,x,'-',color='#7fbf7f',label="iterative uncertainty") #
-pylab.plot(x,x,'-',color='grey',alpha=0.5,label="non-iterative uncertainty") #
+pylab.plot(x,x,'-',color='green',alpha=0.5,label="one-loop") #
+pylab.plot(x,x,'-',color='red',alpha=0.5,label="partial two-loop") #
+pylab.plot(x,x,'-',color='grey',alpha=0.6,label="two-loop") #
+
+
+
 
 # create a second figure for the legend
 figLegend = pylab.figure(figsize = (8.5,0.6))
@@ -283,5 +287,5 @@ for legobj in leg.legendHandles:
 
 
 # save the two figures to files
-figLegend.savefig("mass_splittings/figures//legend_3.pdf")
+figLegend.savefig("mass_splittings/figures2//legend_4.pdf")
 

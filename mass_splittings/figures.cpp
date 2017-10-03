@@ -281,6 +281,7 @@ double find_min_Q(gsl_function F, double lower, double upper,Data data, bool min
 		min = gsl_min_fminimizer_x_minimum (s);
 		lower = gsl_min_fminimizer_x_lower (s);
 		upper = gsl_min_fminimizer_x_upper (s);
+		cout << "lower = " << lower << " upper = " << upper << endl;
 		
 		status = gsl_min_test_interval (lower, upper, 0.00001, 0.00001);
 		
@@ -476,7 +477,7 @@ void Figures<T>::plot_M(Data data)
 {
   ofstream myfile;
   myfile.open ("mass_splittings/data2/deltam_M.txt");
-  int pts = 6;
+  int pts = 12;
   double n = 0;
   int status = 0;
   double max_M = 5000; // (GeV)
@@ -492,14 +493,16 @@ void Figures<T>::plot_M(Data data)
     data.P = data.MChi;
     data.do_tsil_all = false;
     T mssm_1loop(data);
-    mssm_1loop.compute_spectra_flexiblesusy();
+    //mssm_1loop.compute_spectra_flexiblesusy();
+    mssm_1loop.compute_spectra_MB_1loop();
     mssm_1loop.compute_tsil();
     double delta_m_1 = mssm_1loop.get_deltam();
     
     data.do_tsil_all = true;
     T mssm_2loop(data);
     
-    mssm_2loop.compute_spectra_flexiblesusy();
+    //mssm_2loop.compute_spectra_flexiblesusy();
+    mssm_2loop.compute_spectra_MB_2loop();
     mssm_2loop.compute_tsil();
     double delta_m_2 = mssm_2loop.get_deltam_2loop()+ mssm_2loop.get_deltam();
     myfile << data.MChi << " " << delta_m_1 <<  " " << delta_m_2 << endl;
@@ -696,7 +699,7 @@ void Figures<T>::plot_M_flexiblesusy_2loop(Data data, string group,bool do_itera
   std::vector<double> Q(5);
   
   // number of points to plot
-  int pts = 40;
+  int pts = 10;
   for (int i=0;i<pts+1;i++)
   {
     double n = i*(logMax - logMin)/pts + logMin;
@@ -821,13 +824,13 @@ void Figures<T>::plot_deltam_2loop(Data data)
   deltam_2loop_it.open ("mass_splittings/data2/deltam_2loop_it.txt");    
  
   // set range of plot
-  long double logMax = log10(1.0e5L);
-  long double logMin = log10(1000.0L);
+  long double logMax = log10(1.0e4L);
+  long double logMin = log10(10.0L);
   
-  std::vector<double> Q(5),cutoff(5);
+  std::vector<double> Q(5);
   bool error = false;
   // number of points to plot
-  int pts = 50;
+  int pts = 30; // 50;
   for (int i=0;i<pts+1;i++)
   {
     double n = i*(logMax - logMin)/pts + logMin;
@@ -836,30 +839,24 @@ void Figures<T>::plot_deltam_2loop(Data data)
     data.MChi = M;
     data.P = data.MChi;
     
-    Q[0] = 10;
-    Q[1] = 100;
-    Q[2] = 1000 ;
-    cutoff[0] = 0.0;
-    cutoff[1] = 0.0;
-    cutoff[2] = 5000;
+    Q[0] = 2.0 * 173.15;
+    Q[1] = 0.5 * 173.15;
+    Q[2] = 0.5 * M ;
+    Q[3] = M ;
+    Q[4] = 2.0 * M;
+    
     
 		deltam_2loop_it << M ;
     
-    for (int i = 0; i < 3 ; i++)
+    for (int i = 0; i < 5 ; i++)
     {
 			data.Q = Q[i];
 			T spec(data);
 			spec.compute_spectra_flexiblesusy();
 			
 			T spec_iterative = spec;
-			if (M > cutoff[i])
-			{
-				error = spec_iterative.compute_tsil_iterative();
-			}
-			else
-			{
-				error = false;
-			}
+
+			error = spec_iterative.compute_tsil_iterative();
 			
       if (!error)
       {

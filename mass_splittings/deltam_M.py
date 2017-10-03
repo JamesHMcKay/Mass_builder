@@ -44,7 +44,7 @@ plt.plot(x,y2,'-',color='green',label='2-loop') #
 
 plt.xlim([100,5000])
 plt.ylim([145,175])
-
+leg = plt.legend(loc='lower left')
 ax.set_xscale('log')
 
 xlabel(r"Degenerate mass $M$ (GeV)",fontsize=18)
@@ -69,8 +69,9 @@ r=np.linspace(90,4000)
 
 plt.plot(r,f(log(r)),'-',color='black')
 
-plt.plot(x,y2,'x',color='red')
+plt.plot(x,y2,'x',color='red',label="1-loop")
 plt.plot(x,y2,'-',color='green',label='2-loop') #
+
 
 
 plt.xlim([90,4000])

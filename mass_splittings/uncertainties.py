@@ -160,16 +160,10 @@ yupper1=A[:,3]*1000
 yupper2=A[:,4]*1000
 yupper3=A[:,5]*1000
 
-#plt.plot(x2,ylower,'--',color='red',label="$Q=2 m_t$",linewidth=1.2) #
-#plt.plot(x2,ymid,'--',color='black',label="$Q=0.5 m_t$",linewidth=1.2) #
-#plt.plot(x2,yupper1,'--',color='yellow',label="$Q=0.5 M$",linewidth=1.2) #
-#plt.plot(x2,yupper2,'--',color='blue',label="$Q=1 M$",linewidth=1.2) #
-#plt.plot(x2,yupper3,'--',color='#ff7f00',label="$Q=2 M$",linewidth=1.2) #
-
-
 
 xlabel(r"Degenerate mass, $\hat{M}$ $($GeV$)$",fontsize=18)
-ylabel(r"$\Delta M = M_p^+ - M_p^0$  $($MeV$)$",fontsize=18)
+ylabel(r"$\Delta M = M_{\mathrm{pole}}^+ - M_{\mathrm{pole}}^0$  $($MeV$)$",fontsize=18)
+
 
 plt.tick_params(labelsize=14)
 
@@ -204,9 +198,9 @@ ax = pylab.gca()
 
 plt.plot(x2,ylower,'-',color='red',label="$Q=2 m_t$") #
 plt.plot(x2,ymid,'-',color='black',label="$Q=m_t/2$")
-plt.plot(x2,yupper1,'-',color='yellow',label="$Q=M/2$")#
-plt.plot(x2,yupper2,'-',color='blue',label="$Q= M$")
-plt.plot(x2,yupper3,'-',color='#ff7f00',label="$Q=2 M$")
+plt.plot(x2,yupper1,'-',color='yellow',label="$Q=\hat{M}/2$")#
+plt.plot(x2,yupper2,'-',color='blue',label="$Q= \hat{M}$")
+plt.plot(x2,yupper3,'-',color='#ff7f00',label="$Q=2 \hat{M}$")
 
 
 

@@ -48,6 +48,8 @@ int main(int argc, char *argv[])
   
   Figures<EW_triplet_spectrum> fig;
   
+  //fig.plot_M(data);
+  
   //fig.plot_2loop_uncertainties(data,false);
   
   //fig.plot_M_2loop_explicit(data);
@@ -58,7 +60,7 @@ int main(int argc, char *argv[])
   
   //fig.plot_decays(data);
   
-  fig.plot_M_flexiblesusy(data);
+  //fig.plot_M_flexiblesusy(data);
   //fig.plot_M_flexiblesusy_2loop(data,"AB",false);
   
   //fig.plot_deltam_2loop(data);

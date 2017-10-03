@@ -12,13 +12,10 @@
  */
 
 #include "data.hpp"
-#include "calc_amplitudes.hpp"
-#include "generate_code.hpp"
 #include "self_energy.hpp"
 
 
 using namespace std;
-using namespace utils;
 
 
 double iterative_mass_V5(Data data)
@@ -44,7 +41,7 @@ double iterative_mass_V5(Data data)
     diff = abs(mass - data.P);
 
     data.P = mass;
-    data.Q = mass;
+    //data.Q = mass;
     
     iteration++;
   }
@@ -81,7 +78,7 @@ double iterative_mass_V6(Data data)
     diff = abs(mass - data.P);
 
     data.P = mass;
-    data.Q = mass;
+    //data.Q = mass;
     
     iteration++;
   }
@@ -102,7 +99,6 @@ double pole_mass_V5(Data data)
   se.run_tsil(data);
   double Mp = pow(abs(data.MVp*data.MVp + (data.SE_1["V5"])),0.5);
   
-  
   if (data.MVp*data.MVp + (data.SE_1["V5"]) < 0)
   {
     cout << "explicit pole mass less than zero!" << endl;
@@ -118,6 +114,10 @@ double pole_mass_V6(Data data)
   se.run_tsil(data);
   double Mp = pow(abs(data.MV0*data.MV0 + (data.SE_1["V6"])),0.5);
   
+  if (data.MVp*data.MVp + (data.SE_1["V6"]) < 0)
+  {
+    cout << "explicit pole mass less than zero!" << endl;
+  }
   return Mp;
 }
 
@@ -133,50 +133,41 @@ int main(int argc, char *argv[])
   
   Self_energy se;
   Data data(options);
+  ofstream deltam;
+  deltam.open ("models/VDM/output/mass_splittings.txt");
   
-  ofstream myfile;
-  ofstream myfile2;
-  myfile.open ("models/VDM/output/mass_splittings.txt");
-  myfile2.open ("models/VDM/output/masses.txt");
-  int pts = 300;
-  double n = 0;
-  double M=0;
-  int status = 0;
-  for (int i = 0; i < pts ; i++)
+    // set range of plot
+  long double logMax = log10(1.0e4L);
+  long double logMin = log10(10.0L);
+  
+  std::vector<double> Q(5);
+  
+  // number of points to plot
+  int pts = 100;
+  for (int i=0;i<pts+1;i++)
   {
-    n=(float(i)/float(pts))*5;
-    M= pow(10,n)+10;
-    data.MVp=M;
-    data.MV0=M;
-    data.P = M;
-    data.Q = pow(M,2);
-    
-    // calculate iterative deltaM with Q^2 = 100
-    double delta_m_it= iterative_mass_V5(data) - iterative_mass_V6(data);
-    data.MVp=M;
-    data.MV0=M;
+    double n = i*(logMax - logMin)/pts + logMin;
+    double M = pow(10.0L,n);
+    data.MVp = M;
+    data.MV0 = M;
     data.P = M;
     
-    // calculate deltaM with Q^2 = 100
+    Q[0] = 2.0 * 173.15;
+    Q[1] = 0.5 * 173.15;
+    Q[2] = 0.5 * M ;
+    Q[3] = M ;
+    Q[4] = 2.0 * M;
     
-    data.Q = 100;
-    double delta_m= pole_mass_V5(data) - pole_mass_V6(data);
+    deltam << M ;
     
-    // calculate deltaM with Q^2 = M^2
-    data.Q = pow(M,2);
-    double delta_m2= pole_mass_V5(data) - pole_mass_V6(data);
-    
-    myfile << M << " " << delta_m_it << " " << delta_m << " " << delta_m2 << endl;
-    
-    
-    myfile2 << M << " " << pole_mass_V5(data) << " " << pole_mass_V6(data) << endl;
-    status=(float(i)/pts)*100;
-    cout<< "\r" << "computing mass splittings . . . " << status << "% complete ";
-    std::cout << std::flush;
+    for (int i = 0; i < 5 ; i++)
+    {
+			data.Q = Q[i];
+	    deltam << " " << pole_mass_V5(data) - pole_mass_V6(data);
+		}
+		
+		deltam << endl;
   }
-  status=100;
-  cout<< "\r" << "computing mass splittings . . . " << status << "% complete ";
-  cout << "\n";
   
   
   cout << "VDM mass splitting routine complete" << endl;
@@ -185,8 +176,7 @@ int main(int argc, char *argv[])
   cout << "to make plot in this directory "<< endl;
   
   
-  myfile.close();
-  myfile2.close();
+	deltam.close();
   
   return 0;
 }

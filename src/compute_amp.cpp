@@ -396,7 +396,9 @@ bool Compute_amp::calc_diagram()
 
   // save the result to a text file
   math_3 << "Export[\""<<get_cwd()<<"/output/result1_"<< options.mpi_process << ".txt\", CForm[diff1/. DiracGamma[Momentum[p]] -> p] ]" << endl;
-  math_3 << "Export[\""<<get_cwd()<<"/output/result2_"<< options.mpi_process << ".txt\", CForm[diff2/. DiracGamma[Momentum[p]] -> p] ]" << endl;
+  math_3 << "Export[\""<<get_cwd()<<"/output/result2_"<< options.mpi_process << ".txt\", CForm[diff2/. Pair[Momentum[p], Momentum[p]]->p^2] ]" << endl;
+  
+  math_3 << "DumpSave[\""<<get_cwd()<<"/output/diff"<< options.mpi_process << ".mx\", diff2  ]" << endl;
   
   
   math_3 << "Export[\""<<get_cwd()<<"/output/output_products_"<< options.mpi_process << ".txt\", {" << endl;

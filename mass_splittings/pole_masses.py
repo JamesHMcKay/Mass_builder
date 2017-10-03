@@ -100,7 +100,7 @@ plt.fill_between(x, minimum/x,maximum/x,color='grey',alpha=0.5)
 
 
 xlabel(r"Degenerate mass, $\hat{M}$ (GeV)",fontsize=18)
-ylabel(r"$M^0_p /\hat{M}$",fontsize=18)
+ylabel(r"$M^0_{\mathrm{pole}} /\hat{M}$",fontsize=18)
 plt.xscale('log')
 
 plt.xlim([min(x),5e3])
@@ -197,7 +197,7 @@ for i in range(0,len(x)):
 plt.fill_between(x, minimum/x,maximum/x,color='grey',alpha=0.5)
 
 xlabel(r"Degenerate mass, $\hat{M}$ (GeV)",fontsize=18)
-ylabel(r"$M^+_p /\hat{M}$",fontsize=18)
+ylabel(r"$M^+_{\mathrm{pole}} /\hat{M}$",fontsize=18)
 
 plt.xscale('log')
 plt.xlim([min(x),5e3])
