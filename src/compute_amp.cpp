@@ -718,8 +718,11 @@ void Compute_amp::generate_figures()
 
 void Compute_amp::solve_1loop(std::string particle,vector<std::string> diagram)
 {
-  
-  
+	string momentum = "Pair[Momentum[p],Momentum[p]]";
+  if (options.fermion)
+  {
+		momentum = "p";
+	}
   int nd = diagram.size();
   
   string dimension = "D";
@@ -731,54 +734,133 @@ void Compute_amp::solve_1loop(std::string particle,vector<std::string> diagram)
   std::string input;
   
 
-  
-  input += "  SEtotal = 0 ;";
+  input += "kappa=1/(16*Pi^2);";
+  input += "SEtotal = 0 ;";
   
   for (int i=0;i<nd;i++)
   {
     
     input += "Get[\"" + get_cwd() + "/models/" + options.model + "/output/math_data_" + particle + "_" + diagram[i] + "_1" + ".mx\"];";
     
-    input += "SEtotal = SEtotal + SelfEnergyFinite;";
+    input += "SEtotal = SEtotal + SelfEnergyFinite*kappa;";
   }
   
-  input += "SEtotal = SEtotal /. D -> 4 - 2*MassBuilderEpsilon;";
-  input += "SE = Coefficient[SEtotal,MassBuilderEpsilon,-1];";
-  input += "SE = Simplify[SE /. MassBuilderEpsilon->0];";
   
+  input += "SE = makeFiniteAmplitude[SEtotal,-1,D];";
   
-  // check for higher orders in 1/epsilon
-  input += "SEhot = Coefficient[SEtotal,MassBuilderEpsilon,-2] + Coefficient[SEtotal,MassBuilderEpsilon,-3];";
+  // get the relevant counter-term amplitude
   
-  input += "ToString[SEhot,CForm];";
+  input += "Get[\"" + get_cwd() + "/models/" + options.model + "/output/math_data_" + particle + "_1_1c" + ".mx\"];";
+  
+  input += "SEct = makeFiniteAmplitude[SelfEnergyFinite*kappa,-1,D]/.MassBuilderCTM1->0/.MassBuilderCTZ1->0;";
+  
+  input += "ToString[SEct,CForm]";
   
   send_to_math(input);
   
-  const char* high_order_terms;
+  const char* counter_term_amplitude;
   
-  if(!WSGetString((WSLINK)pHandle, &high_order_terms))
+  if(!WSGetString((WSLINK)pHandle, &counter_term_amplitude))
   {
     cout << "Error getting string from WSTP" << endl;
   }
   
+  // get the list of couplings from couplings.txt and find which ones are relevant here
   
+  string c_file_couplings = "models/" + options.model + "/couplings.txt";  // need to make this model independent
+  const char *file_couplings = c_file_couplings.c_str();
+	
+	int nc = 0;
+	vector<std::string> couplings, relationships;
+	vector<std::string> required_couplings;
+  get_data(couplings, relationships, nc,file_couplings,true);
+
+  string counter_term_amplitude_str = counter_term_amplitude;
   
-  cout << "Higher order divergences in (1/epsilon) are = " << high_order_terms << endl;
-  
-  input += "ct = FullSimplify[-SE/.Pair[Momentum[p], Momentum[p]]->p^2];";
-  
-  input += "ToString[ct,InputForm]";
-  
-  send_to_math(input);
-  
-  const char* counter_term;
-  
-  if(!WSGetString((WSLINK)pHandle, &counter_term))
+  for (int i=0;i<nc;i++)
   {
-    cout << "Error getting string from WSTP" << endl;
+	
+		if (counter_term_amplitude_str.find(couplings[i]) != std::string::npos)
+		{	
+			stringstream _part_1;
+			string part_1;
+			_part_1 << couplings[i][0];
+			_part_1 >> part_1;
+      
+			if (part_1=="d")
+			{
+				required_couplings.push_back(couplings[i]);
+			}
+		}
   }
+	
+	int nc_req = required_couplings.size();
+
+	cout << "Required couplings are: ";
+	for (int i = 0; i < nc_req; i++)
+	{
+		cout << " " << required_couplings[i];
+	}
+	cout << endl;
+	
+	// throw error if required couplings > 2
+
+	// now solve relevant equations
+	
+	if (nc_req == 2)
+	{
+		input += "eq1 = FullSimplify[Coefficient[SE+SEct," + momentum + "]];";
+		input += "eq2 = FullSimplify[Coefficient[SE+SEct," + momentum + ",0]];";
+		input += "sol = Solve[{eq1==0,eq2==0},{" + required_couplings[0] + "," + required_couplings[1] + "}];";
+		input += "Set @@@ sol[[1]];";
+		send_to_math(input);
+		
+		// get each coupling
+		
+		input += "ToString[" + required_couplings[0] + ",CForm]";
+		send_to_math(input);
   
-  cout << "Counter-term coupling = " << counter_term << endl;
+		const char* coupling_1;
+  
+		if(!WSGetString((WSLINK)pHandle, &coupling_1))
+		{
+			cout << "Error getting string from WSTP" << endl;
+		}
+		cout << required_couplings[0] << " = " << coupling_1 << endl;
+		input += "ToString[" + required_couplings[1] + ",CForm]";
+		send_to_math(input);
+  
+		const char* coupling_2;
+  
+		if(!WSGetString((WSLINK)pHandle, &coupling_2))
+		{
+			cout << "Error getting string from WSTP" << endl;
+		}
+		cout << required_couplings[1] << " = " << coupling_2 << endl;		
+		
+	}
+	else if (nc_req == 1)
+	{
+		input += "eq1 = FullSimplify[SE+SEct];";
+		input += "sol = Solve[{eq1==0},{" + required_couplings[0] + "}];";
+		input += "Set @@@ sol[[1]];";
+		input += "ToString[" + required_couplings[0] + ",CForm]";
+		send_to_math(input);
+  
+		const char* coupling_1;
+  
+		if(!WSGetString((WSLINK)pHandle, &coupling_1))
+		{
+			cout << "Error getting string from WSTP" << endl;
+		}
+		cout << required_couplings[0] << " = " << coupling_1 << endl;
+		
+	}
+	else
+	{
+		cout << "could not determine 1 or 2 counter-term couplings to solve for." << endl;
+	}
+  
   
   input += "Quit[]";
   send_to_math(input);
@@ -800,10 +882,32 @@ void Compute_amp::calc_counter_terms()
   
   // read in available diagrams
   
+  make_tag(options); // this is required to check for fermion
+  if (options.verbose)
+  {
+		debug_out.open ("debug.m");
+		debug_out << "(* ::Package:: *)" << endl;
+		debug_out << "Quit[]" << endl;
+		debug_out << "(* ::Section:: *)" << endl;
+	}
+	else
+	{
+		log_out.open ("output/log.m");
+		log_out << "(* ::Package:: *)" << endl;
+		log_out << "Quit[]" << endl;
+		log_out << "(* ::Section:: *)" << endl;
+	}
+	
+  
   const char *ext = ".txt";
   const char* file_diagrams_tmp = "models/";
   string c_file_diagrams = file_diagrams_tmp + options.model + "/output/avail_diagrams_" + ext;
   const char *file_diagrams = c_file_diagrams.c_str();
+  
+  if (options.input_list!="")
+  {
+		file_diagrams = options.input_list.c_str();
+	}
   
   vector<std::string> tags;
   vector<std::string> particle_names,levels;

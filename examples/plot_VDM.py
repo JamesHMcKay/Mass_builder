@@ -92,7 +92,7 @@ xlabel(r"$\hat{M}_V$ (GeV)",fontsize=18)
 ylabel(r"$\Delta M=M_V^+-M_V^0$ (MeV)",fontsize=18)
 
 
-plt.ylim([0,290])
+plt.ylim([100,250])
 plt.xlim([30,1e4])
 
 leg = plt.legend(loc='lower right')

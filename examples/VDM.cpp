@@ -13,7 +13,12 @@
 
 #include "data.hpp"
 #include "self_energy.hpp"
+  
+#ifndef PI
+#define PI 4.0L*atan(1.0L)
+#endif
 
+double Pi;
 
 using namespace std;
 
@@ -121,6 +126,28 @@ double pole_mass_V6(Data data)
   return Mp;
 }
 
+// determine MSbar parameters
+void compute_spectra(Data &data)
+{
+  
+  double alpha = pow(data.EE,2) / (4.*Pi);
+  
+  cout << "alpha (mz) = " << alpha ;
+  double A = (7./(30.*Pi)); // SM
+  double alpha_mz = alpha;
+  double mu0 = data.MZ;
+  double mu = data.Q;
+  
+  
+  alpha = pow(   1.0/alpha_mz -  A * log( mu/mu0) , -1);
+  
+  cout << ", alpha(" << data.Q << ") = " << alpha << endl;
+  
+  data.EE = pow( (4.*Pi) * alpha , 0.5) ;
+  
+}
+
+
 
 
 int main(int argc, char *argv[])
@@ -141,7 +168,8 @@ int main(int argc, char *argv[])
   long double logMin = log10(10.0L);
   
   std::vector<double> Q(5);
-  
+  double EE_mz = data.EE;
+  Pi = PI;
   // number of points to plot
   int pts = 100;
   for (int i=0;i<pts+1;i++)
@@ -151,7 +179,6 @@ int main(int argc, char *argv[])
     data.MVp = M;
     data.MV0 = M;
     data.P = M;
-    
     Q[0] = 2.0 * 173.15;
     Q[1] = 0.5 * 173.15;
     Q[2] = 0.5 * M ;
@@ -163,7 +190,9 @@ int main(int argc, char *argv[])
     for (int i = 0; i < 5 ; i++)
     {
 			data.Q = Q[i];
+			compute_spectra(data);
 	    deltam << " " << pole_mass_V5(data) - pole_mass_V6(data);
+	    data.EE = EE_mz;
 		}
 		
 		deltam << endl;
