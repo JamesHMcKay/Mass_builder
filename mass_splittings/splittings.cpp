@@ -37,7 +37,7 @@ int main(int argc, char *argv[])
   cout << "--- explicit --- " << endl;
   cout << "1-loop mass splitting = " <<  spec.get_deltam() << endl;
   cout << "2-loop mass splitting = " <<  spec.get_deltam_2loop() + spec.get_deltam() << endl;
-	/*
+  /*
   EW_triplet_spectrum spec2(data);
   spec2.compute_spectra_flexiblesusy();
   spec2.compute_tsil_iterative();
