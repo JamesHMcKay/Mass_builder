@@ -22,7 +22,7 @@ public:
 	bool force = true; 
 	// use FIRE5 before calling TARCER (if false will use TARCER only)
 	bool fire = true;
-	bool exclude_photon_pole = false;
+	bool exclude_photon_pole = true;
 	int loop_order = 2;
 	int n_group = 10;
 	int n_final_states = 1;

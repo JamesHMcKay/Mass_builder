@@ -735,17 +735,8 @@ void Figures<T>::plot_M_flexiblesusy_2loop(Data data, string group,bool do_itera
 			data.Q = Q[i];
 			data.do_tsil_all = true;
 			T spec(data);
-			if (group == "ABa") // use this to try using 1-loop renormalisation (only alpha not masses)
-	  	{
-				spec.data.do_tsil_all = false;
-				spec.compute_spectra_flexiblesusy();
-				spec.data.do_tsil_all = true;
-			}
-			else
-			{
-				spec.compute_spectra_flexiblesusy();
-			}
 			
+			spec.compute_spectra_flexiblesusy();
 			// do explicit calculation
 			data.do_tsil_all = false;
 	  	T spec_1loop(data);

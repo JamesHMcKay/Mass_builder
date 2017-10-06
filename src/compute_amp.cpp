@@ -29,21 +29,8 @@ bool Compute_amp::calc_diagram()
 {
   bool success = 0;
   
-  if (options.verbose)
-  {
-		debug_out.open ("debug.m");
-		debug_out << "(* ::Package:: *)" << endl;
-		debug_out << "Quit[]" << endl;
-		debug_out << "(* ::Section:: *)" << endl;
-	}
-	else
-	{
-		log_out.open ("output/log.m");
-		log_out << "(* ::Package:: *)" << endl;
-		log_out << "Quit[]" << endl;
-		log_out << "(* ::Section:: *)" << endl;
-	}
-  
+	open_log_files();
+	
   // print diagram details (number, particle, ...) to terminal
   print_diagram_info(options);
   
@@ -837,6 +824,18 @@ void Compute_amp::solve_1loop(std::string particle,vector<std::string> diagram)
 			cout << "Error getting string from WSTP" << endl;
 		}
 		cout << required_couplings[1] << " = " << coupling_2 << endl;		
+		for (unsigned int i = 0; i < relationships.size() ; i++)
+		{
+			if (couplings[i] == required_couplings[0])
+			{
+				relationships[i] = coupling_1;
+			}
+			if (couplings[i] == required_couplings[1])
+			{
+				relationships[i] = coupling_2;
+			}
+		}
+		
 		
 	}
 	else if (nc_req == 1)
@@ -854,6 +853,14 @@ void Compute_amp::solve_1loop(std::string particle,vector<std::string> diagram)
 			cout << "Error getting string from WSTP" << endl;
 		}
 		cout << required_couplings[0] << " = " << coupling_1 << endl;
+		for (unsigned int i = 0; i < relationships.size() ; i++)
+		{
+			if (couplings[i] == required_couplings[0])
+			{
+				relationships[i] = coupling_1;
+			}
+		}
+		
 		
 	}
 	else
@@ -868,12 +875,24 @@ void Compute_amp::solve_1loop(std::string particle,vector<std::string> diagram)
   WSClose(link);
   cout << "WSTP link closed successfully" << endl;
   
-
+  
+  // now update the couplings list
+  
+  // we need couplings, relationships, required_couplings, coupling_1 and coupling_2
+  
+  ofstream output;
+  output.open(file_couplings);
+  
+  
+	for (unsigned int i = 0; i < relationships.size() ; i++)
+	{
+		output << couplings[i] << " " << trim_white_space(relationships[i]) << endl;
+	}
+	for (unsigned int i = relationships.size(); i < couplings.size(); i++)
+	{
+		output << couplings[i] << endl;
+	}
 }
-
-
-
-
 
 void Compute_amp::calc_counter_terms()
 {
@@ -883,20 +902,7 @@ void Compute_amp::calc_counter_terms()
   // read in available diagrams
   
   make_tag(options); // this is required to check for fermion
-  if (options.verbose)
-  {
-		debug_out.open ("debug.m");
-		debug_out << "(* ::Package:: *)" << endl;
-		debug_out << "Quit[]" << endl;
-		debug_out << "(* ::Section:: *)" << endl;
-	}
-	else
-	{
-		log_out.open ("output/log.m");
-		log_out << "(* ::Package:: *)" << endl;
-		log_out << "Quit[]" << endl;
-		log_out << "(* ::Section:: *)" << endl;
-	}
+  open_log_files();
 	
   
   const char *ext = ".txt";

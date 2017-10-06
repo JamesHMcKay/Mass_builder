@@ -33,6 +33,8 @@ namespace utils
   
   int get_loop_order(string type);
   
+  std::string trim_white_space(std::string str);
+  
   string get_cwd();
   
   const char * add_mpi_ext(std::string name, int process, std::string ext);

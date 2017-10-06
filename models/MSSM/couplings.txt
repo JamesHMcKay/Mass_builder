@@ -11,11 +11,11 @@ d2Z (4*TSIL_POW(e,2))/TSIL_POW(sw,2)
 d2m (-16*TSIL_POW(e,2)*MChi)/TSIL_POW(sw,2)
 dZW1 (TSIL_POW(e,2)*(-21 + 20*TSIL_POW(cw,2) + 20*TSIL_POW(sw,2)))/(6.*TSIL_POW(sw,2))
 dMWsq1 (TSIL_POW(e,2)*(-2*TSIL_POW(cw,4)*(22*TSIL_POW(mw,2) + 3*TSIL_POW(mz,2)) + 6*TSIL_POW(mw,2)*TSIL_POW(sw,4) + TSIL_POW(cw,2)*(-3*(TSIL_POW(mb,2) + TSIL_POW(mc,2) + TSIL_POW(md,2) + 6*TSIL_POW(mf,2) + TSIL_POW(ms,2) + TSIL_POW(mt,2) + TSIL_POW(mu,2) - 15*TSIL_POW(mw,2)) - 2*(3*TSIL_POW(ma,2) + 19*TSIL_POW(mw,2))*TSIL_POW(sw,2))))/(6.*TSIL_POW(cw,2)*TSIL_POW(sw,2))
-dMZsq1 (TSIL_POW(e,2)*(36*TSIL_POW(mw,2) + TSIL_POW(cw,2)*(-18*(TSIL_POW(mb,2) + TSIL_POW(mc,2) + TSIL_POW(md,2) + 6*TSIL_POW(mf,2) + TSIL_POW(ms,2) + TSIL_POW(mt,2) + TSIL_POW(mu,2) + 4*TSIL_POW(cw,4)*TSIL_POW(mw,2)) + 3*(41 - 39*TSIL_POW(cw,4))*TSIL_POW(mz,2) - 6*(40 + TSIL_POW(cw,2))*TSIL_POW(mz,2)*TSIL_POW(sw,2) + (72*TSIL_POW(mw,2) + 275*TSIL_POW(mz,2))*TSIL_POW(sw,4))))/(36.*TSIL_POW(cw,4)*TSIL_POW(sw,2))
+dMZsq1 -(Power(e,2)*(-12*Power(mw,2) + 24*Power(cw,6)*Power(mw,2) - 17*Power(cw,2)*Power(mz,2) + 39*Power(cw,6)*Power(mz,2) + 32*Power(cw,2)*Power(mz,2)*Power(sw,2) + 2*Power(cw,4)*Power(mz,2)*Power(sw,2) - 24*Power(cw,2)*Power(mw,2)*Power(sw,4) - 17*Power(cw,2)*Power(mz,2)*Power(sw,4)))/(12.*Power(cw,4)*Power(sw,2))
 dZAA1 (-41*TSIL_POW(e,2))/9.
 dZZA1 (-4*TSIL_POW(e,2)*TSIL_POW(mw,2)*(TSIL_POW(cw,2) + TSIL_POW(sw,2)))/(cw*TSIL_POW(mz,2)*sw)
 dZAZ1 (TSIL_POW(e,2)*(TSIL_POW(cw,2)*(36*TSIL_POW(mw,2) + 57*TSIL_POW(mz,2)) + 36*TSIL_POW(mw,2)*TSIL_POW(sw,2) + TSIL_POW(mz,2)*(-60 + 139*TSIL_POW(sw,2))))/(9.*cw*TSIL_POW(mz,2)*sw)
-dZZZ1 (TSIL_POW(e,2)*(3*(-41 + 39*TSIL_POW(cw,4)) + 6*(40 + TSIL_POW(cw,2))*TSIL_POW(sw,2) - 275*TSIL_POW(sw,4)))/(36.*TSIL_POW(cw,2)*TSIL_POW(sw,2))
+dZZZ1 (Power(e,2)*(-17 + 39*Power(cw,4) + 32*Power(sw,2) + 2*Power(cw,2)*Power(sw,2) - 17*Power(sw,4)))/(12.*Power(cw,2)*Power(sw,2))
 dg2 4.0*TSIL_POW(e/sw,3)
 Ca -2.*sw
 Cz1 1.

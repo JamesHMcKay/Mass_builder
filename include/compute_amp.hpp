@@ -173,6 +173,25 @@ public:
     input = "";
   }
   
+  void open_log_files()
+  {
+	  if (options.verbose)
+	  {
+			debug_out.open ("debug.m");
+			debug_out << "(* ::Package:: *)" << endl;
+			debug_out << "Quit[]" << endl;
+			debug_out << "(* ::Section:: *)" << endl;
+		}
+		else
+		{
+			log_out.open ("output/log.m");
+			log_out << "(* ::Package:: *)" << endl;
+			log_out << "Quit[]" << endl;
+			log_out << "(* ::Section:: *)" << endl;
+		}
+	}
+  
+  
   
   // Generate all loop diagrams for specified particle
   void generate_figures();

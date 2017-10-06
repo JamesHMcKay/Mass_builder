@@ -1,7 +1,7 @@
-P 1e4
+P 4e3
 Q 163.3
-MChi 1e4
-ma 1e-1
+MChi 4e3
+ma 1e-5
 mw 80.385
 mz 91.1876
 mt 163.3
@@ -9,15 +9,10 @@ v 246
 mh 125.5
 mf 1e-20
 alpha 0.00781591946
-Xi 9
+Xi 1
 mu 0.01
 mc 1.5
 md 0.01
 ms 0.2
 mb 4.7
 null 0.0
-#md 1e-20
-#mu 1e-20
-#mc 0.001
-#ms 0.001
-#mb 0.001

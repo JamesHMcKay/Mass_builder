@@ -232,6 +232,19 @@ namespace utils
   
   
   
+  std::string trim_white_space(std::string str)
+	{
+		size_t startpos = str.find_first_not_of(" \t");
+		if( string::npos != startpos )
+		{
+			str = str.substr( startpos );
+		}
+		return str;
+	}
+  
+  
+  
+  
   void get_data(vector<std::string> &A, vector<std::string> &B,int &n,const char *filename, bool whole_line)
   {
     n=0;
@@ -272,6 +285,7 @@ namespace utils
         if (whole_line)
         {
           iss2>> A[na]; getline(iss2,B[nb]);
+          //B[nb] = trim_white_space(B[nb]);
         }
         else
         {
