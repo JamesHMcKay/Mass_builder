@@ -60,17 +60,17 @@ y4_smooth = spline(log10(x),y4,log10(xnew1))
 y5_smooth = spline(log10(x),y5,log10(xnew1))
 
 
-plt.plot(xnew1,y1_smooth,'-',color='red',label="$Q=2 m_t$",linewidth=1.1) #
-plt.plot(xnew1,y2_smooth,'-',color='black',label="$Q=m_t/2$",linewidth=1.1)
-plt.plot(xnew1,y3_smooth,'-',color='yellow',label="$Q=\hat{M}/2$",linewidth=1.1)
-plt.plot(xnew1,y4_smooth,'-',color='blue',label="$Q= \hat{M}$",linewidth=1.1)
-plt.plot(xnew1,y5_smooth,'-',color='#ff7f00',label="$Q=2 \hat{M}$",linewidth=1.1)
+plt.plot(xnew1,y1_smooth,'--',color='red',label="$Q=2 m_t$",linewidth=0.9) #
+plt.plot(xnew1,y2_smooth,'--',color='black',label="$Q=m_t/2$",linewidth=0.9)
+plt.plot(xnew1,y3_smooth,'--',color='yellow',label="$Q=\hat{M}/2$",linewidth=0.9)
+plt.plot(xnew1,y4_smooth,'--',color='blue',label="$Q= \hat{M}$",linewidth=0.9)
+plt.plot(xnew1,y5_smooth,'--',color='#ff7f00',label="$Q=2 \hat{M}$",linewidth=0.9)
 
 
 # create vector with maximum and minimum values
 
-A[:,4] = A[:,5]
-A = smooth(A,5000,3)
+#A[:,4] = A[:,5]
+#A = smooth(A,5000,3)
 
 x=A[:,0]
 
@@ -85,20 +85,30 @@ for i in range(0,len(x)):
 	
 plt.fill_between(x, minimum,maximum,color='green',alpha=0.4)
 
-plt.plot(x,(0.210901 )*1000.*ones(size(x)),'-.',color='black',zorder=100,linewidth=1.2) #
+
+# plot the one-loop result
+
+A=np.genfromtxt('models/VDM/output/mass_splittings.txt',usecols=[0,6])
+x=A[:,0]
+y1=A[:,1]*1000
+plt.plot(x,y1,'-',color='black',linewidth=1.3)
+
+
+
+
 plt.xscale('log')
 
 xlabel(r"$\hat{M}_V$ (GeV)",fontsize=18)
 ylabel(r"$\Delta M=M_V^+-M_V^0$ (MeV)",fontsize=18)
 
-
+#plt.ylim([-250,-100])
 plt.ylim([100,250])
 plt.xlim([30,1e4])
 
-leg = plt.legend(loc='lower right')
+#leg = plt.legend(loc='lower right')
 
-for legobj in leg.legendHandles:
-    legobj.set_linewidth(2.0)
+#for legobj in leg.legendHandles:
+#    legobj.set_linewidth(2.0)
 
 
 plt.savefig("mass_splittings.pdf")
