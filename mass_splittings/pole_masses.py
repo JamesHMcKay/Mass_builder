@@ -113,7 +113,7 @@ if (Xi == 3):
 	plt.savefig("mass_splittings/figures/pole_masses_n_xi_3.pdf")
 if (Xi == 1):
 	plt.annotate(r"Feynman-'t Hooft gauge $(\xi = 1)$", xy=(20,0.87), xytext=(20,0.87),fontsize=16)
-	plt.savefig("mass_splittings/figures/pole_masses_n_xi_1.pdf")
+	plt.savefig("mass_splittings/figures/pole_masses_n_xi_1.pdf",transparent=True)
 if (Xi == 0):
 	plt.annotate(r'Landau gauge $(\xi = 0)$', xy=(20,0.87), xytext=(20,0.87),fontsize=16)
 	plt.savefig("mass_splittings/figures/pole_masses_n_xi_0.pdf")
@@ -210,7 +210,7 @@ if (Xi == 3):
 	plt.savefig("mass_splittings/figures/pole_masses_c_xi_3.pdf")
 if (Xi == 1):
 	plt.annotate(r"Feynman-'t Hooft gauge $(\xi = 1)$", xy=(20,0.87), xytext=(20,0.87),fontsize=16)
-	plt.savefig("mass_splittings/figures/pole_masses_c_xi_1.pdf")
+	plt.savefig("mass_splittings/figures/pole_masses_c_xi_1.pdf",transparent=True)
 if (Xi == 0):
 	plt.annotate(r'Landau gauge $(\xi = 0)$', xy=(20,0.87), xytext=(20,0.87),fontsize=16)
 	plt.savefig("mass_splittings/figures/pole_masses_c_xi_0.pdf")

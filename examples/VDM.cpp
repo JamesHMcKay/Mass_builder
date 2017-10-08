@@ -161,7 +161,17 @@ void DoTSIL(Data data)
    (144.*Power(EE,2)*Power(p,2)*Power(Pi,2)*Power(SW,2));
 		
 		
-		TSIL_COMPLEXCPP result1 = 0.5L*(SEc-SEn)/MChi;
+		//TSIL_COMPLEXCPP result1 = -0.5L*(SEc-SEn)/MChi;
+		
+		TSIL_COMPLEXCPP result1 = (Power(EE,2)*(5*Bwp*Power(MChi,4) - 5*Bzp*Power(MChi,4) + 5*Bwp*Power(MW,4) - 5*Bzp*Power(MZ,4) - 16*Bwp*Power(MChi,2)*Power(p,2) + 
+       16*Bzp*Power(MChi,2)*Power(p,2) - 19*Bwp*Power(p,4) + 19*Bzp*Power(p,4) + Aw*(5*Power(MChi,2) - 5*Power(MW,2) + 7*Power(p,2)) + 
+       Power(MW,2)*(5*Ap - 2*(5*Bwp*Power(MChi,2) + 5*Power(p,2) + 8*Bwp*Power(p,2))) + 
+       Power(MZ,2)*(-5*Ap + 2*(5*Bzp*Power(MChi,2) + 5*Power(p,2) + 8*Bzp*Power(p,2))) + 5*Bzp*Power(MZ,4)*Power(SW,2) - 
+       (Bnp - Bzp)*(5*Power(MChi,4) - 16*Power(MChi,2)*Power(p,2) - 19*Power(p,4))*Power(SW,2) + 
+       Power(MZ,2)*(5*Ap - 2*(5*Bzp*Power(MChi,2) + 5*Power(p,2) + 8*Bzp*Power(p,2)))*Power(SW,2) + 
+       Az*(5*Power(MChi,2) - 5*Power(MZ,2) + 7*Power(p,2))*(-1 + Power(SW,2))))/(192.*MChi*Power(p,2)*Power(Pi,2)*Power(SW,2));
+		
+		
 		/*
 		TSIL_COMPLEXCPP result2 = -(1.L/8.L)*(  pow(real(SEc),2) - pow(real(SEn),2) ) /pow(MChi,3);
 		
@@ -182,7 +192,7 @@ void DoTSIL(Data data)
 		//cout << "M = " << MChi <<  ", SEc/M^2 = " << real(SEc/pow(MChi,2)) << ", SEc^2/M^4 " << pow(real(SEc),2) / pow(MChi,4) << endl;
 		*/
 		
-		return real(-result1);
+		return real(result1);
 	}
 }
 

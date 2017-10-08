@@ -181,7 +181,7 @@ if (Xi == 3):
 
 if (Xi == 1):
 	plt.annotate(r"Feynman-'t Hooft gauge $(\xi = 1)$", xy=(20,20), xytext=(20,20),fontsize=16)
-	plt.savefig("mass_splittings/figures/deltam_uncertainties_xi_1.pdf")
+	plt.savefig("mass_splittings/figures/deltam_uncertainties_xi_1.pdf",transparent=True)
 
 if (Xi == 0):
 	plt.annotate(r'Landau gauge $(\xi = 0)$', xy=(20,20), xytext=(20,20),fontsize=16)
@@ -215,7 +215,7 @@ for legobj in leg.legendHandles:
 
 
 # save the two figures to files
-figLegend.savefig("mass_splittings/figures//legend_1.pdf")
+figLegend.savefig("mass_splittings/figures//legend_1.pdf",transparent=True)
 
 
 
@@ -242,6 +242,6 @@ for legobj in leg.legendHandles:
 
 
 # save the two figures to files
-figLegend.savefig("mass_splittings/figures//legend_2.pdf")
+figLegend.savefig("mass_splittings/figures//legend_2.pdf",transparent=True)
 
 
