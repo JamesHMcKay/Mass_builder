@@ -69,12 +69,21 @@ SEn=SEn/.TBI[4,p^2,{{1,MZ},{1,MChi}}]-> I*Bzp\
 DeltaM = FullSimplify[-(SEc-SEn)/(2*MChi)/.p^2->MChi^2/.p^4->MChi^4,{CW^2+SW^2==1,CTW==MW/MZ}]
 
 
-FullSimplify[Coefficient[DeltaM,Bwp,1]]
-FullSimplify[Coefficient[DeltaM,Bzp,1]]
-FullSimplify[Coefficient[DeltaM,Bnp,1]]
-FullSimplify[Coefficient[DeltaM,Az,1]]
-FullSimplify[Coefficient[DeltaM,Aw,1]]
-FullSimplify[Coefficient[DeltaM,Ap,1]]
+CBwp=FullSimplify[Coefficient[DeltaM,Bwp,1]]
+CBzp=FullSimplify[Coefficient[DeltaM,Bzp,1]]
+CBnp=FullSimplify[Coefficient[DeltaM,Bnp,1]]
+CAz=FullSimplify[Coefficient[DeltaM,Az,1]]
+CAw=FullSimplify[Coefficient[DeltaM,Aw,1]]
+CAp=FullSimplify[Coefficient[DeltaM,Ap,1]]
+FullSimplify[ DeltaM - (CBwp*Bwp+CBnp*Bnp+CBzp*Bzp + CAz*Az + CAw*Aw + CAp*Ap)]
 
 
+F[m_] = -(30*MChi^4 + 26*MChi^2*m^2-5*m^4);
+G[m_] = (12*MChi^2-5*m^2);
+DeltaMTest = (EE^2 / (192*Pi^2*MChi^3*SW^2)) * ( Bwp*F[MW]-CW^2*Bzp*F[MZ] + Aw*G[MW]-CW^2*Az*G[MZ] 
++ 5*(MW^2-CW^2*MZ^2)*(Ap-2*MChi^2) + 30*SW^2*MChi^4*Bnp)
 
+
+CW=Cos[\[Theta]];
+SW=Sin[\[Theta]];
+FullSimplify[DeltaM-DeltaMTest/.p->MChi,{CW^2+SW^2==1,CTW==MW/MZ}]

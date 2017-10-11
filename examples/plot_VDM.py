@@ -60,12 +60,16 @@ y4_smooth = spline(log10(x),y4,log10(xnew1))
 y5_smooth = spline(log10(x),y5,log10(xnew1))
 
 
-plt.plot(xnew1,y1_smooth,'--',color='red',label="$Q=2 m_t$",linewidth=0.9) #
-plt.plot(xnew1,y2_smooth,'--',color='black',label="$Q=m_t/2$",linewidth=0.9)
-plt.plot(xnew1,y3_smooth,'--',color='yellow',label="$Q=\hat{M}/2$",linewidth=0.9)
-plt.plot(xnew1,y4_smooth,'--',color='blue',label="$Q= \hat{M}$",linewidth=0.9)
-plt.plot(xnew1,y5_smooth,'--',color='#ff7f00',label="$Q=2 \hat{M}$",linewidth=0.9)
+plt.plot(x,y1,'--',color='red',label="$Q=2 m_t$",linewidth=1.2) #
+#plt.plot(x,y2,'--',color='black',label="$Q=2 m_t$",linewidth=1.2) #
+#plt.plot(x,y3,'--',color='yellow',label="$Q=2 m_t$",linewidth=1.2) #
+#plt.plot(x,y4,'--',color='blue',label="$Q=2 m_t$",linewidth=1.2) #
+#plt.plot(x,y5,'--',color='#ff7f00',label="$Q=2 m_t$",linewidth=1.2) #
 
+plt.plot(xnew1,y2_smooth,'--',color='black',label="$Q=m_t/2$",linewidth=1.2)
+plt.plot(xnew1,y3_smooth,'--',color='yellow',label="$Q=\hat{M}/2$",linewidth=1.2)
+plt.plot(xnew1,y4_smooth,'--',color='blue',label="$Q= \hat{M}$",linewidth=1.2)
+plt.plot(xnew1,y5_smooth,'--',color='#ff7f00',label="$Q=2 \hat{M}$",linewidth=1.2)
 
 # create vector with maximum and minimum values
 

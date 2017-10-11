@@ -132,36 +132,10 @@ void DoTSIL(Data data)
     TSIL_REAL SW2 = data.SW2;
     SW =   TSIL_POW(SW2,0.5);
     
-    TSIL_REAL a = data.a;
+    
 		
 		TSIL_REAL MChi = data.MVp;
 		
-		
-		TSIL_COMPLEXCPP SEc = (-30*Ap*Power(EE,4)*Power(MChi,2) + 15*Aw*Power(EE,4)*Power(MChi,2) + 15*Az*Power(EE,4)*Power(MChi,2) + 
-     15*Bwp*Power(EE,4)*Power(MChi,4) + 15*Bzp*Power(EE,4)*Power(MChi,4) + 15*Bwp*Power(EE,4)*Power(MW,4) + 
-     15*Bzp*Power(EE,4)*Power(MZ,4) + 42*Ap*Power(EE,4)*Power(p,2) + 21*Aw*Power(EE,4)*Power(p,2) + 21*Az*Power(EE,4)*Power(p,2) - 
-     60*Power(EE,4)*Power(MChi,2)*Power(p,2) - 48*Bwp*Power(EE,4)*Power(MChi,2)*Power(p,2) - 
-     48*Bzp*Power(EE,4)*Power(MChi,2)*Power(p,2) - 4*Power(EE,4)*Power(p,4) - 57*Bwp*Power(EE,4)*Power(p,4) - 
-     57*Bzp*Power(EE,4)*Power(p,4) + 3*Power(EE,4)*Power(MW,2)*
-      (5*Ap - 5*Aw - 2*(5*Bwp*Power(MChi,2) + 5*Power(p,2) + 8*Bwp*Power(p,2))) + 
-     3*Power(EE,4)*Power(MZ,2)*(5*Ap - 5*Az - 2*(5*Bzp*Power(MChi,2) + 5*Power(p,2) + 8*Bzp*Power(p,2))) - 
-     15*Bzp*Power(EE,4)*Power(MZ,4)*Power(SW,2) + 3*Power(EE,4)*Power(MZ,2)*
-      (-5*Ap + 5*Az + 2*(5*Bzp*Power(MChi,2) + 5*Power(p,2) + 8*Bzp*Power(p,2)))*Power(SW,2) - 
-     3*Power(EE,2)*(5*Bzp*Power(EE,2)*Power(MChi,4) - 6*a*Ah*Power(p,2) - 12*a*Aw*Power(p,2) - 
-        16*Bzp*Power(EE,2)*Power(MChi,2)*Power(p,2) - 19*Bzp*Power(EE,2)*Power(p,4) + 
-        Bnp*Power(EE,2)*(-5*Power(MChi,4) + 16*Power(MChi,2)*Power(p,2) + 19*Power(p,4)) + 
-        Az*(-6*a*Power(p,2) + Power(EE,2)*(5*Power(MChi,2) + 7*Power(p,2))))*Power(SW,2) + 
-     288*Power(a,2)*Bhp*Power(MW,2)*Power(p,2)*Power(SW,4))/(288.*Power(EE,2)*Power(p,2)*Power(Pi,2)*Power(SW,2));
-     
-     TSIL_COMPLEXCPP SEn = (15*Aw*Power(EE,4)*Power(MChi,2) + 15*Bwp*Power(EE,4)*Power(MChi,4) + 15*Bwp*Power(EE,4)*Power(MW,4) + 21*Aw*Power(EE,4)*Power(p,2) - 
-     30*Power(EE,4)*Power(MChi,2)*Power(p,2) - 48*Bwp*Power(EE,4)*Power(MChi,2)*Power(p,2) - 2*Power(EE,4)*Power(p,4) - 
-     57*Bwp*Power(EE,4)*Power(p,4) - 3*Ap*Power(EE,4)*(5*Power(MChi,2) - 5*Power(MW,2) - 7*Power(p,2)) - 
-     3*Power(EE,4)*Power(MW,2)*(5*Aw + 2*(5*Bwp*Power(MChi,2) + 5*Power(p,2) + 8*Bwp*Power(p,2))) + 
-     9*a*(Ah + 2*Aw + Az)*Power(EE,2)*Power(p,2)*Power(SW,2) + 144*Power(a,2)*Bhp*Power(MW,2)*Power(p,2)*Power(SW,4))/
-   (144.*Power(EE,2)*Power(p,2)*Power(Pi,2)*Power(SW,2));
-		
-		
-		//TSIL_COMPLEXCPP result1 = -0.5L*(SEc-SEn)/MChi;
 		
 		TSIL_COMPLEXCPP result1 = (Power(EE,2)*(5*Bwp*Power(MChi,4) - 5*Bzp*Power(MChi,4) + 5*Bwp*Power(MW,4) - 5*Bzp*Power(MZ,4) - 16*Bwp*Power(MChi,2)*Power(p,2) + 
        16*Bzp*Power(MChi,2)*Power(p,2) - 19*Bwp*Power(p,4) + 19*Bzp*Power(p,4) + Aw*(5*Power(MChi,2) - 5*Power(MW,2) + 7*Power(p,2)) + 
@@ -171,26 +145,6 @@ void DoTSIL(Data data)
        Power(MZ,2)*(5*Ap - 2*(5*Bzp*Power(MChi,2) + 5*Power(p,2) + 8*Bzp*Power(p,2)))*Power(SW,2) + 
        Az*(5*Power(MChi,2) - 5*Power(MZ,2) + 7*Power(p,2))*(-1 + Power(SW,2))))/(192.*MChi*Power(p,2)*Power(Pi,2)*Power(SW,2));
 		
-		
-		/*
-		TSIL_COMPLEXCPP result2 = -(1.L/8.L)*(  pow(real(SEc),2) - pow(real(SEn),2) ) /pow(MChi,3);
-		
-		TSIL_COMPLEXCPP result3 = -(1.L/16.L)*(  pow(real(SEc),3) - pow(real(SEn),3) ) /pow(MChi,5);
-		
-		TSIL_COMPLEXCPP result4 = -(5.L/128.L)*(  pow(real(SEc),4) - pow(real(SEn),4) ) /pow(MChi,7);
-
-		// compute difference between pole mass and expansion
-		
-		double Mpole_expansion = MChi + 0.5L*real(SEn)/MChi ;
-		
-		double Mpole = pow( pow(MChi,2) + real(SEn) , 0.5 ) ;
-		
-		cout <<  "M = " << MChi << ", Mpole = " << Mpole << " , " << Mpole_expansion << " , diff = " << abs(Mpole_expansion-Mpole)  <<  ", SEn/M^2 = " << real(SEn/pow(MChi,2)) << endl;
-		
-		
-		//cout << "M = " << MChi <<  ", SEn/M^2 = " << real(SEn/pow(MChi,2)) << ", SEn^2/M^4 " << pow(real(SEn),2) / pow(MChi,4) << endl;
-		//cout << "M = " << MChi <<  ", SEc/M^2 = " << real(SEc/pow(MChi,2)) << ", SEc^2/M^4 " << pow(real(SEc),2) / pow(MChi,4) << endl;
-		*/
 		
 		return real(result1);
 	}
@@ -263,6 +217,13 @@ void compute_spectra(Data &data)
   
   alpha = pow(   1.0/alpha_mz -  A * log( mu/mu0) , -1);
   //cout << ", alpha(" << data.Q << ") = " << alpha << endl;
+  
+  Data data_Q = data;
+  data_Q.P = data.Q;
+  Self_energy se;
+  se.run_tsil(data_Q);
+  
+  alpha = alpha * ( 1.0 - data.SE_1["V1"] /pow(data.Q,2) );
   
   data.EE = pow( (4.*Pi) * alpha , 0.5) ;
 }
