@@ -64,17 +64,17 @@ f=np.poly1d(fx)
 
 print(np.poly1d(f))
 
-r=np.linspace(90,4000)
+r=np.linspace(log(90),log(4000))
 
 
-plt.plot(r,f(log(r)),'-',color='black')
+plt.plot(exp(r),f(r),'-',color='black')
 
 plt.plot(x,y2,'x',color='red',label="1-loop")
 plt.plot(x,y2,'-',color='green',label='2-loop') #
 
 gx = [-0.181509, 5.41949, -60.8831 , 305.383, -413.315]
 g=np.poly1d(gx)
-plt.plot(r,g(log(r)),'-',color='yellow')
+plt.plot(exp(r),g(r),'-',color='yellow')
 
 
 plt.xlim([90,4000])

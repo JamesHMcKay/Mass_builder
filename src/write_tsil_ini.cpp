@@ -74,13 +74,12 @@ void Print_dotsil::print_to_file(ofstream &myfile)
     
     status=(float(i)/eval_vec.size())*100;
     
-    std::string faces[7] = {":-C",":-(",":-|",":-)",":-D",":-O"};
+    std::string faces[6] = {":-C",":-(",":-|",":-)",":-D",":-O"};
     
-    int fc = floor((status * 7.0)/100);
+    int fc = floor((status * 6.0)/100);
     
-	  cout<< "\r" << "sorting integrals . . . " << status << "% complete " << faces[fc+1];
+	  cout<< "\r" << "sorting integrals . . . " << status << "% complete " << faces[fc];
 	  std::cout << std::flush;
-    
   }
   status=100;
   cout<< "\r" << "sorting integrals . . . " << status << "% complete :-O";

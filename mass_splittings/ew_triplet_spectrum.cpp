@@ -341,7 +341,7 @@ void EW_triplet_spectrum::compute_spectra_MB_1loop()
   
 }
 
-/*
+
 // determine MSbar parameters
 void EW_triplet_spectrum::compute_spectra_MB_2loop()
 {
@@ -424,10 +424,10 @@ void EW_triplet_spectrum::compute_spectra_MB_2loop()
   data.do_tsil_all = true;
   
 }
-*/
 
 
 
+/*
 // determine MSbar parameters
 void EW_triplet_spectrum::compute_spectra_MB_2loop()
 {
@@ -454,7 +454,7 @@ void EW_triplet_spectrum::compute_spectra_MB_2loop()
   data.P = data.MChi;
   data.do_tsil_all = true;
 }
-
+*/
 
 bool EW_triplet_spectrum::compute_spectra_flexiblesusy()
 {
