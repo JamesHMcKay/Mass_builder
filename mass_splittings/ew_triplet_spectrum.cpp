@@ -257,7 +257,7 @@ namespace extra_TSIL_interface_EW_triplet
     // evaluate as s = Q^2
     TSIL_COMPLEXCPP BccMB = i*TSIL_B_ (MChi2, MChi2, Q2, Q2);
     
-    TSIL_COMPLEXCPP C0 = (4*Power(e,2)*(6*Power(MChi,2) - (-Power(p,2))))/9.;
+    TSIL_COMPLEXCPP C0 = (4*Power(e,2)*(6*Power(MChi,2) - (Power(p,2))))/9.;
     TSIL_COMPLEXCPP CAc =   Complex(0,2.6666666666666665)*Power(e,2) ;
     TSIL_COMPLEXCPP CBcc =   Complex(0,-1.3333333333333333)*Power(e,2)*(2*Power(MChi,2) + Power(p,2)) ;
     

@@ -28,8 +28,8 @@ int main(int argc, char *argv[])
   
   Data data(options);
   
-  
   /*
+  
   EW_triplet_spectrum spec(data);
   //spec.compute_spectra_flexiblesusy();
   //spec.compute_spectra_MB_2loop();
@@ -37,9 +37,7 @@ int main(int argc, char *argv[])
   cout << "--- explicit --- " << endl;
   cout << "1-loop mass splitting = " <<  spec.get_deltam() << endl;
   cout << "2-loop mass splitting = " <<  spec.get_deltam_2loop() + spec.get_deltam() << endl;
-  cout << "photon self energy = " << spec.data.SE_1["V1"] << endl;
-  cout << "Z self energy = " << spec.data.SE_1["V2"] << endl;
-  cout << "W self energy = " << spec.data.SE_1["V3"] << endl;
+	
   
   EW_triplet_spectrum spec2(data);
   spec2.compute_spectra_flexiblesusy();
@@ -60,7 +58,7 @@ int main(int argc, char *argv[])
   
   //fig.plot_M_2loop_iterative(data);
   
-  fig.plot_M(data);
+  fig.plot_Q(data);
   
   //fig.plot_decays(data);
   

@@ -449,13 +449,15 @@ void Figures<T>::plot_Q(Data data)
     
     data.do_tsil_all = false;
     T mssm_1loop(data);
-    mssm_1loop.compute_spectra_flexiblesusy();
+    //mssm_1loop.compute_spectra_flexiblesusy();
+    mssm_1loop.compute_spectra_MB_1loop();
     mssm_1loop.compute_tsil();
     double delta_m_1 = mssm_1loop.get_deltam();
     
     data.do_tsil_all = true;
     T mssm_2loop(data);
-    mssm_2loop.compute_spectra_flexiblesusy();
+    //mssm_2loop.compute_spectra_flexiblesusy();
+    mssm_2loop.compute_spectra_MB_2loop();
     mssm_2loop.compute_tsil();
     
     double delta_m_2 = mssm_2loop.get_deltam_2loop() + mssm_2loop.get_deltam() ;
@@ -477,7 +479,7 @@ void Figures<T>::plot_M(Data data)
 {
   ofstream myfile;
   myfile.open ("mass_splittings/data2/deltam_M.txt");
-  int pts = 30;
+  int pts = 10;
   double n = 0;
   int status = 0;
   double max_M = 5000; // (GeV)
