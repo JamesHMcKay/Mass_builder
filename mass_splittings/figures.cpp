@@ -477,7 +477,7 @@ void Figures<T>::plot_M(Data data)
 {
   ofstream myfile;
   myfile.open ("mass_splittings/data2/deltam_M.txt");
-  int pts = 12;
+  int pts = 30;
   double n = 0;
   int status = 0;
   double max_M = 5000; // (GeV)

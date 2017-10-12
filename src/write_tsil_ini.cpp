@@ -70,12 +70,20 @@ void Print_dotsil::print_to_file(ofstream &myfile)
   {
     vector<bool> check_vec = eval_vec[i].get_check_vec(names, base_map);
     V_check_vec[i]=check_vec;
+    
+    
     status=(float(i)/eval_vec.size())*100;
-    cout<< "\r" << "sorting integrals . . . " << status << "% complete ";
-    std::cout << std::flush;
+    
+    std::string faces[7] = {":-C",":-(",":-|",":-)",":-D",":-O"};
+    
+    int fc = floor((status * 7.0)/100);
+    
+	  cout<< "\r" << "sorting integrals . . . " << status << "% complete " << faces[fc+1];
+	  std::cout << std::flush;
+    
   }
   status=100;
-  cout<< "\r" << "sorting integrals . . . " << status << "% complete ";
+  cout<< "\r" << "sorting integrals . . . " << status << "% complete :-O";
   cout << "\n";
   
 start:;

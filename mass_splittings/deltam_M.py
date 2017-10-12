@@ -42,7 +42,7 @@ plt.plot(x,y1,'-',color='red',label='1-loop') #
 
 plt.plot(x,y2,'-',color='green',label='2-loop') #
 
-plt.xlim([100,5000])
+plt.xlim([90,5000])
 plt.ylim([145,175])
 leg = plt.legend(loc='lower left')
 ax.set_xscale('log')
@@ -72,6 +72,9 @@ plt.plot(r,f(log(r)),'-',color='black')
 plt.plot(x,y2,'x',color='red',label="1-loop")
 plt.plot(x,y2,'-',color='green',label='2-loop') #
 
+gx = [-0.181509, 5.41949, -60.8831 , 305.383, -413.315]
+g=np.poly1d(gx)
+plt.plot(r,g(log(r)),'-',color='yellow')
 
 
 plt.xlim([90,4000])

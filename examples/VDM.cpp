@@ -223,7 +223,9 @@ void compute_spectra(Data &data)
   Self_energy se;
   se.run_tsil(data_Q);
   
-  alpha = alpha * ( 1.0 - data.SE_1["V1"] /pow(data.Q,2) );
+  cout << "data.SE_1[V1]  = " << data_Q.SE_1["V1"] << endl;
+  
+  alpha = alpha * ( 1.0 - data_Q.SE_1["V1"] /pow(data.Q,2) );
   
   data.EE = pow( (4.*Pi) * alpha , 0.5) ;
 }
@@ -274,8 +276,9 @@ int main(int argc, char *argv[])
 		}
 		
 		data.Q = 173.15;
+		compute_spectra(data);
 		deltam << " " << extra_TSIL_interface::one_loop_analytic(data);
-		
+		data.EE = EE_mz;
 		//deltam << " " << pole_mass_V5_expansion(data) - pole_mass_V6_expansion(data);
 		
 		deltam << endl;
