@@ -28,84 +28,126 @@ SetOptions[DiracSlash,Dimension->D,FeynCalcInternal->True];SetOptions[DiracTrace
 
 path = "/Users/jamesmckay/Documents/Programs/Mass_builder/";
 kappa=1/(16\[Pi]^2);
-(*sw=Sin[\[Theta]];
-cw=Cos[\[Theta]];*)
+STW=Sin[\[Theta]];
+S2TW=Sin[2*\[Theta]];
+CTW=Cos[\[Theta]];
+C2TW=Cos[2*\[Theta]];
 V3SE = 0;
 ClearScalarProducts[];
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V3_1_1.mx"}]];
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V3_1_1.mx"}]];
 V3SE = V3SE + SelfEnergyFinite*kappa;
 
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V3_2_1.mx"}]];
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V3_2_1.mx"}]];
 V3SE = V3SE + SelfEnergyFinite*kappa;
 
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V3_3_1.mx"}]];
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V3_3_1.mx"}]];
 V3SE = V3SE + SelfEnergyFinite*kappa;
 
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V3_4_1.mx"}]];
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V3_4_1.mx"}]];
 V3SE = V3SE + SelfEnergyFinite*kappa;
 
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V3_5_1.mx"}]];
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V3_5_1.mx"}]];
 V3SE = V3SE + SelfEnergyFinite*kappa;
 
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V3_6_1.mx"}]];
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V3_6_1.mx"}]];
 V3SE = V3SE + SelfEnergyFinite*kappa;
 
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V3_7_1.mx"}]];
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V3_7_1.mx"}]];
 V3SE = V3SE + SelfEnergyFinite*kappa;
 
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V3_8_1.mx"}]];
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V3_8_1.mx"}]];
 V3SE = V3SE + SelfEnergyFinite*kappa;
 
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V3_9_1.mx"}]];
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V3_9_1.mx"}]];
 V3SE = V3SE + SelfEnergyFinite*kappa;
 
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V3_10_1.mx"}]];
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V3_10_1.mx"}]];
 V3SE = V3SE + SelfEnergyFinite*kappa;
 
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V3_11_1.mx"}]];
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V3_11_1.mx"}]];
 V3SE = V3SE + SelfEnergyFinite*kappa;
 
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V3_12_1.mx"}]];
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V3_12_1.mx"}]];
 V3SE = V3SE + SelfEnergyFinite*kappa;
 
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V3_13_1.mx"}]];
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V3_13_1.mx"}]];
 V3SE = V3SE + SelfEnergyFinite*kappa;
 
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V3_14_1.mx"}]];
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V3_14_1.mx"}]];
 V3SE = V3SE + SelfEnergyFinite*kappa;
 
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V3_15_1.mx"}]];
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V3_15_1.mx"}]];
 V3SE = V3SE + SelfEnergyFinite*kappa;
 
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V3_16_1.mx"}]];
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V3_16_1.mx"}]];
 V3SE = V3SE + SelfEnergyFinite*kappa;
 
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V3_17_1.mx"}]];
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V3_17_1.mx"}]];
 V3SE = V3SE + SelfEnergyFinite*kappa;
 
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V3_18_1.mx"}]];
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V3_18_1.mx"}]];
 V3SE = V3SE + SelfEnergyFinite*kappa;
 
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V3_19_1.mx"}]];
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V3_19_1.mx"}]];
 V3SE = V3SE + SelfEnergyFinite*kappa;
 
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V3_20_1.mx"}]];
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V3_20_1.mx"}]];
 V3SE = V3SE + SelfEnergyFinite*kappa;
 
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V3_21_1.mx"}]];
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V3_21_1.mx"}]];
 V3SE = V3SE + SelfEnergyFinite*kappa;
 
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V3_22_1.mx"}]];
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V3_22_1.mx"}]];
 V3SE = V3SE + SelfEnergyFinite*kappa;
 
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V3_23_1.mx"}]];
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V3_23_1.mx"}]];
 V3SE = V3SE + SelfEnergyFinite*kappa;
 
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V3_24_1.mx"}]];
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V3_24_1.mx"}]];
+V3SE = V3SE + SelfEnergyFinite*kappa;
+
+
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V3_25_1.mx"}]];
+V3SE = V3SE + SelfEnergyFinite*kappa;
+
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V3_26_1.mx"}]];
+V3SE = V3SE + SelfEnergyFinite*kappa;
+
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V3_27_1.mx"}]];
+V3SE = V3SE + SelfEnergyFinite*kappa;
+
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V3_28_1.mx"}]];
+V3SE = V3SE + SelfEnergyFinite*kappa;
+
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V3_29_1.mx"}]];
+V3SE = V3SE + SelfEnergyFinite*kappa;
+
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V3_30_1.mx"}]];
+V3SE = V3SE + SelfEnergyFinite*kappa;
+
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V3_31_1.mx"}]];
+V3SE = V3SE + SelfEnergyFinite*kappa;
+
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V3_32_1.mx"}]];
+V3SE = V3SE + SelfEnergyFinite*kappa;
+
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V3_33_1.mx"}]];
+V3SE = V3SE + SelfEnergyFinite*kappa;
+
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V3_34_1.mx"}]];
+V3SE = V3SE + SelfEnergyFinite*kappa;
+
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V3_35_1.mx"}]];
+V3SE = V3SE + SelfEnergyFinite*kappa;
+
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V3_36_1.mx"}]];
+V3SE = V3SE + SelfEnergyFinite*kappa;
+
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V3_37_1.mx"}]];
 V3SE = V3SE + SelfEnergyFinite*kappa;
 
 V3SEdiv = makeFiniteAmplitude[V3SE,-1,D];
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V3_1_1c.mx"}]];
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V3_1_1c.mx"}]];
 V3ct= makeFiniteAmplitude[SelfEnergyFinite*kappa,-1,D]/.MassBuilderCTM1->0/.MassBuilderCTZ1->0;
 eq1 = FullSimplify[Coefficient[V3ct+V3SEdiv,Pair[Momentum[p],Momentum[p]]]];
 eq2 = FullSimplify[Coefficient[V3ct+V3SEdiv,Pair[Momentum[p],Momentum[p]],0]];
@@ -114,212 +156,230 @@ solV3 = Solve[{eq1==0,eq2==0},{dZW1, dMWsq1}]
 
 V2SE = 0;
 ClearScalarProducts[];
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V2_1_1.mx"}]];
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V2_1_1.mx"}]];
 V2SE = V2SE + SelfEnergyFinite*kappa;
 
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V2_2_1.mx"}]];
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V2_2_1.mx"}]];
 V2SE = V2SE + SelfEnergyFinite*kappa;
 
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V2_3_1.mx"}]];
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V2_3_1.mx"}]];
 V2SE = V2SE + SelfEnergyFinite*kappa;
 
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V2_4_1.mx"}]];
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V2_4_1.mx"}]];
 V2SE = V2SE + SelfEnergyFinite*kappa;
 
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V2_5_1.mx"}]];
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V2_5_1.mx"}]];
 V2SE = V2SE + SelfEnergyFinite*kappa;
 
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V2_6_1.mx"}]];
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V2_6_1.mx"}]];
 V2SE = V2SE + SelfEnergyFinite*kappa;
 
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V2_7_1.mx"}]];
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V2_7_1.mx"}]];
 V2SE = V2SE + SelfEnergyFinite*kappa;
 
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V2_8_1.mx"}]];
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V2_8_1.mx"}]];
 V2SE = V2SE + SelfEnergyFinite*kappa;
 
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V2_9_1.mx"}]];
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V2_9_1.mx"}]];
 V2SE = V2SE + SelfEnergyFinite*kappa;
 
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V2_10_1.mx"}]];
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V2_10_1.mx"}]];
 V2SE = V2SE + SelfEnergyFinite*kappa;
 
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V2_11_1.mx"}]];
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V2_11_1.mx"}]];
 V2SE = V2SE + SelfEnergyFinite*kappa;
 
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V2_12_1.mx"}]];
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V2_12_1.mx"}]];
 V2SE = V2SE + SelfEnergyFinite*kappa;
 
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V2_13_1.mx"}]];
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V2_13_1.mx"}]];
 V2SE = V2SE + SelfEnergyFinite*kappa;
 
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V2_14_1.mx"}]];
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V2_14_1.mx"}]];
 V2SE = V2SE + SelfEnergyFinite*kappa;
 
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V2_15_1.mx"}]];
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V2_15_1.mx"}]];
 V2SE = V2SE + SelfEnergyFinite*kappa;
 
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V2_16_1.mx"}]];
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V2_16_1.mx"}]];
 V2SE = V2SE + SelfEnergyFinite*kappa;
 
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V2_17_1.mx"}]];
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V2_17_1.mx"}]];
 V2SE = V2SE + SelfEnergyFinite*kappa;
 
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V2_18_1.mx"}]];
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V2_18_1.mx"}]];
 V2SE = V2SE + SelfEnergyFinite*kappa;
 
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V2_19_1.mx"}]];
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V2_19_1.mx"}]];
 V2SE = V2SE + SelfEnergyFinite*kappa;
 
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V2_20_1.mx"}]];
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V2_20_1.mx"}]];
 V2SE = V2SE + SelfEnergyFinite*kappa;
 
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V2_21_1.mx"}]];
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V2_21_1.mx"}]];
 V2SE = V2SE + SelfEnergyFinite*kappa;
 
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V2_22_1.mx"}]];
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V2_22_1.mx"}]];
 V2SE = V2SE + SelfEnergyFinite*kappa;
 
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V2_23_1.mx"}]];
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V2_23_1.mx"}]];
 V2SE = V2SE + SelfEnergyFinite*kappa;
 
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V2_24_1.mx"}]];
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V2_24_1.mx"}]];
 V2SE = V2SE + SelfEnergyFinite*kappa;
 
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V2_25_1.mx"}]];
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V2_25_1.mx"}]];
 V2SE = V2SE + SelfEnergyFinite*kappa;
+
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V2_26_1.mx"}]];
+V2SE = V2SE + SelfEnergyFinite*kappa;
+
 V2SEdiv = makeFiniteAmplitude[V2SE,-1,D];
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V2_1_1c.mx"}]];
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V2_1_1c.mx"}]];
 V2ct= makeFiniteAmplitude[SelfEnergyFinite*kappa,-1,D]/.MassBuilderCTM1->0/.MassBuilderCTZ1->0;
-eq1 = FullSimplify[Coefficient[V2ct+V2SEdiv,Pair[Momentum[p],Momentum[p]]]];
-eq2 = FullSimplify[Coefficient[V2ct+V2SEdiv,Pair[Momentum[p],Momentum[p]],0]];
+eq1 = FullSimplify[Coefficient[V2ct+V2SEdiv,Pair[Momentum[p],Momentum[p]]]/.g1->g2*STW/CTW/.v->2*mw/g2/.mz->mw/CTW];
+eq2 = FullSimplify[Coefficient[V2ct+V2SEdiv,Pair[Momentum[p],Momentum[p]],0]/.g1->g2*STW/CTW/.v->2*mw/g2/.mz->mw/CTW];
 solV2 = Solve[{eq1==0,eq2==0},{dMZsq1,dZZZ1}]
+
 
 (* photon *) 
 V1SE = 0;
 ClearScalarProducts[];
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V1_1_1.mx"}]];
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V1_1_1.mx"}]];
 V1SE = V1SE + SelfEnergyFinite*kappa;
 
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V1_2_1.mx"}]];
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V1_2_1.mx"}]];
 V1SE = V1SE + SelfEnergyFinite*kappa;
 
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V1_3_1.mx"}]];
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V1_3_1.mx"}]];
 V1SE = V1SE + SelfEnergyFinite*kappa;
 
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V1_4_1.mx"}]];
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V1_4_1.mx"}]];
 V1SE = V1SE + SelfEnergyFinite*kappa;
 
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V1_5_1.mx"}]];
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V1_5_1.mx"}]];
 V1SE = V1SE + SelfEnergyFinite*kappa;
 
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V1_6_1.mx"}]];
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V1_6_1.mx"}]];
 V1SE = V1SE + SelfEnergyFinite*kappa;
 
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V1_7_1.mx"}]];
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V1_7_1.mx"}]];
 V1SE = V1SE + SelfEnergyFinite*kappa;
 
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V1_8_1.mx"}]];
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V1_8_1.mx"}]];
 V1SE = V1SE + SelfEnergyFinite*kappa;
 
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V1_9_1.mx"}]];
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V1_9_1.mx"}]];
 V1SE = V1SE + SelfEnergyFinite*kappa;
 
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V1_10_1.mx"}]];
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V1_10_1.mx"}]];
 V1SE = V1SE + SelfEnergyFinite*kappa;
 
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V1_11_1.mx"}]];
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V1_11_1.mx"}]];
 V1SE = V1SE + SelfEnergyFinite*kappa;
 
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V1_12_1.mx"}]];
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V1_12_1.mx"}]];
 V1SE = V1SE + SelfEnergyFinite*kappa;
 
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V1_13_1.mx"}]];
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V1_13_1.mx"}]];
 V1SE = V1SE + SelfEnergyFinite*kappa;
 
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V1_14_1.mx"}]];
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V1_14_1.mx"}]];
 V1SE = V1SE + SelfEnergyFinite*kappa;
 
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V1_15_1.mx"}]];
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V1_15_1.mx"}]];
 V1SE = V1SE + SelfEnergyFinite*kappa;
 
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V1_16_1.mx"}]];
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V1_16_1.mx"}]];
 V1SE = V1SE + SelfEnergyFinite*kappa;
 
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V1_17_1.mx"}]];
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V1_17_1.mx"}]];
 V1SE = V1SE + SelfEnergyFinite*kappa;
 
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V1_18_1.mx"}]];
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V1_18_1.mx"}]];
 V1SE = V1SE + SelfEnergyFinite*kappa;
+
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V1_19_1.mx"}]];
+V1SE = V1SE + SelfEnergyFinite*kappa;
+
+
 V1SEdiv = makeFiniteAmplitude[V1SE,-1,D];
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V1_1_1c.mx"}]];
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V1_1_1c.mx"}]];
 V1ct= makeFiniteAmplitude[SelfEnergyFinite*kappa,-1,D]/.MassBuilderCTM1->0/.MassBuilderCTZ1->0;
-eq1 = FullSimplify[Coefficient[V1ct+V1SEdiv,Pair[Momentum[p],Momentum[p]]]];
+eq1 = FullSimplify[Coefficient[V1ct+V1SEdiv,Pair[Momentum[p],Momentum[p]]]/.g1->g2*STW/CTW];
 (*solV1 = Solve[{eq1\[Equal]0,eq2\[Equal]0},{dZAA1,dMAsq1}]*)
 solV1 = Solve[{eq1==0},{dZAA1}]
+
+
 
 (* photon Z mixing *) 
 
 V12SE = 0;
 ClearScalarProducts[];
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V1_V2_1_1.mx"}]];
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V1_V2_1_1.mx"}]];
 V12SE = V12SE + SelfEnergyFinite*kappa;
 
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V1_V2_2_1.mx"}]];
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V1_V2_2_1.mx"}]];
 V12SE = V12SE + SelfEnergyFinite*kappa;
 
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V1_V2_3_1.mx"}]];
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V1_V2_3_1.mx"}]];
 V12SE = V12SE + SelfEnergyFinite*kappa;
 
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V1_V2_4_1.mx"}]];
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V1_V2_4_1.mx"}]];
 V12SE = V12SE + SelfEnergyFinite*kappa;
 
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V1_V2_5_1.mx"}]];
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V1_V2_5_1.mx"}]];
 V12SE = V12SE + SelfEnergyFinite*kappa;
 
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V1_V2_6_1.mx"}]];
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V1_V2_6_1.mx"}]];
 V12SE = V12SE + SelfEnergyFinite*kappa;
 
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V1_V2_7_1.mx"}]];
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V1_V2_7_1.mx"}]];
 V12SE = V12SE + SelfEnergyFinite*kappa;
 
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V1_V2_8_1.mx"}]];
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V1_V2_8_1.mx"}]];
 V12SE = V12SE + SelfEnergyFinite*kappa;
 
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V1_V2_9_1.mx"}]];
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V1_V2_9_1.mx"}]];
 V12SE = V12SE + SelfEnergyFinite*kappa;
 
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V1_V2_10_1.mx"}]];
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V1_V2_10_1.mx"}]];
 V12SE = V12SE + SelfEnergyFinite*kappa;
 
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V1_V2_11_1.mx"}]];
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V1_V2_11_1.mx"}]];
 V12SE = V12SE + SelfEnergyFinite*kappa;
 
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V1_V2_12_1.mx"}]];
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V1_V2_12_1.mx"}]];
 V12SE = V12SE + SelfEnergyFinite*kappa;
 
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V1_V2_13_1.mx"}]];
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V1_V2_13_1.mx"}]];
 V12SE = V12SE + SelfEnergyFinite*kappa;
 
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V1_V2_14_1.mx"}]];
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V1_V2_14_1.mx"}]];
 V12SE = V12SE + SelfEnergyFinite*kappa;
 
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V1_V2_15_1.mx"}]];
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V1_V2_15_1.mx"}]];
 V12SE = V12SE + SelfEnergyFinite*kappa;
 
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V1_V2_16_1.mx"}]];
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V1_V2_16_1.mx"}]];
 V12SE = V12SE + SelfEnergyFinite*kappa;
 
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V1_V2_17_1.mx"}]];
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V1_V2_17_1.mx"}]];
 V12SE = V12SE + SelfEnergyFinite*kappa;
 
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V1_V2_18_1.mx"}]];
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V1_V2_18_1.mx"}]];
 V12SE = V12SE + SelfEnergyFinite*kappa;
+
+
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V1_V2_19_1.mx"}]];
+V12SE = V12SE + SelfEnergyFinite*kappa;
+
+
 V12SEdiv = makeFiniteAmplitude[V12SE,-1,D];
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V1_V2_1_1c.mx"}]];
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V1_V2_1_1c.mx"}]];
 V12ct= makeFiniteAmplitude[SelfEnergyFinite*kappa,-1,D]/.MassBuilderCTM1->0/.MassBuilderCTZ1->0;
-eq1 = FullSimplify[Coefficient[V12ct+V12SEdiv,Pair[Momentum[p],Momentum[p]]]];
-eq2 = FullSimplify[Coefficient[V12ct+V12SEdiv,Pair[Momentum[p],Momentum[p]],0]];
+eq1 = FullSimplify[Coefficient[V12ct+V12SEdiv,Pair[Momentum[p],Momentum[p]]]/.g1->g2*STW/CTW/.v->2*mw/g2];
+eq2 = FullSimplify[Coefficient[V12ct+V12SEdiv,Pair[Momentum[p],Momentum[p]],0]/.g1->g2*STW/CTW/.v->2*mw/g2/.mz->mw/CTW];
 solV12 = Solve[{eq1==0,eq2==0},{dZZA1,dZAZ1}]
 
 
@@ -333,550 +393,441 @@ Set @@@ solV12[[1]];
 SPD[p,p]=MChi^2;Pair[Momentum[p],Momentum[p]]=MChi^2;
 (* Particle 1 *)
 
-SelfEnergyTotal = 0;
 
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F11_g1_1_2.mx"}]];
-N1 = SelfEnergyFinite*kappa^2;
+SEtotal=0;
+SEtotalc=0;
+ 
+Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F5_{1,2,3,14,15}_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F5_{4,5,6,16}_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F5_{7,8,9,10,11,12}_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F5_13_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F5_{17,18}_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F5_{19,20}_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F5_{21,22}_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F5_{44,45,46}_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F5_47_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F5_48_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F5_49_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F5_50_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F5_51_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F5_52_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F5_{53,54}_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F5_{55,56,57,58,59,60}_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F5_{61,64}_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F5_{62,65}_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F5_{63,66}_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F5_{67,70}_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F5_{68,71}_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F5_{69,72}_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F5_{73,74,75,76}_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F5_{77,78,79,80,81,82}_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F5_83_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F5_84_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F5_85_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F5_86_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F5_87_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F5_88_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F5_{89,90}_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F5_{91,92,93,94,95,96,97,98,99}_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F5_100_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F5_101_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F5_102_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F5_103_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F5_104_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F5_105_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F5_106_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F5_107_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F5_108_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F5_109_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F5_{110,111,112,113,114,115,116,117,118}_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F5_119_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F5_120_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F5_121_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F5_122_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F5_123_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F5_124_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F5_125_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F5_126_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F5_127_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F5_{128,129,130}_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F5_144_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F5_{145,146}_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F5_{147,148}_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F5_{149,150,151,152}_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F5_{153,154}_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F5_{155,156,157,158}_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F5_{159,160}_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F5_{161,162}_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F5_{163,164}_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F5_{165,166}_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F5_{167,168}_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F5_169_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F5_{170,171}_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F5_{172,173,174,175}_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F5_{176,177}_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F5_{178,179}_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F5_{180,181}_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F5_{182,183}_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F5_184_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F5_{185,186}_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F5_187_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F5_{188,189}_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F5_{190,191}_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ 
+ 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F5_5_2c.mx"]; 
+ SEtotalc = SEtotalc + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F5_{6,7}_2c.mx"]; 
+ SEtotalc = SEtotalc + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F5_8_2c.mx"]; 
+ SEtotalc = SEtotalc + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F5_{9,10}_2c.mx"]; 
+ SEtotalc = SEtotalc + SelfEnergyFinite*kappa;
+
+
+Csum1=makeFiniteAmplitude[SEtotal,-1,D];
+Csum2=makeFiniteAmplitude[SEtotal,-2,D];
+
+Cct1 = makeFiniteAmplitude[SEtotalc,-1,D];
+Cct2 = makeFiniteAmplitude[SEtotalc,-2,D];
+
+SEtotal=0;
+SEtotalc=0;
+
+(* Doubly charged particle *)
+
+Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F6_{1,2,3}_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F6_{4,5,6}_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F6_{7,8,9}_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F6_{10,11,12}_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F6_13_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F6_{14,15,16}_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ 
+ 
+ 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F6_{32,33,34}_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F6_35_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F6_36_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F6_37_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F6_38_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F6_39_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F6_40_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F6_{41,42}_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F6_{43,44,45,46,47,48}_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F6_{49,52}_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F6_{50,53}_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F6_{51,54}_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F6_{55,58}_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F6_{56,59}_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F6_{57,60}_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F6_{61,62,63,64}_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F6_{65,66,67,68,69,70}_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F6_71_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F6_72_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F6_73_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F6_74_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F6_75_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F6_76_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F6_{77,78}_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F6_{79,80,81,82,83,84,85,86,87}_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F6_88_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F6_89_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F6_90_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F6_91_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F6_92_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F6_93_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ 
+  Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F6_94_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F6_95_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F6_96_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F6_{97,98}_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ 
+ 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F6_109_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F6_{110,111}_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F6_112_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F6_113_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F6_114_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F6_115_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F6_{116,117}_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F6_{118,119,120,121}_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F6_{122,123}_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F6_{124,126}_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F6_{125,127}_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F6_128_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F6_{129,130}_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F6_{131,132,133,134}_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F6_{135,136}_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F6_137_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F6_138_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F6_139_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F6_140_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F6_{141,142}_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F6_143_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F6_144_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F6_145_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+
+
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F6_4_2c.mx"]; 
+ SEtotalc = SEtotalc + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F6_{5,6}_2c.mx"]; 
+ SEtotalc = SEtotalc + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F6_7_2c.mx"]; 
+ SEtotalc = SEtotalc + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F6_8_2c.mx"]; 
+ SEtotalc = SEtotalc + SelfEnergyFinite*kappa; 
+
+CCsum1=makeFiniteAmplitude[SEtotal,-1,D];
+CCsum2=makeFiniteAmplitude[SEtotal,-2,D];
+
+CCct1 = makeFiniteAmplitude[SEtotalc,-1,D];
+CCct2 = makeFiniteAmplitude[SEtotalc,-2,D];
+(* Neutral particle *)
+
+SEtotal=0;
+SEtotalc=0;
+
+Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F7_{1,2}_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F7_{3,4}_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F7_{5,6,11,12}_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F7_{7,8}_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F7_{9,10}_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ 
+ 
+ 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F7_{21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38}_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F7_{39,48}_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F7_{40,49}_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F7_{41,50}_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F7_{42,51}_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F7_{43,52}_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F7_{44,53}_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F7_{45,54}_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F7_{46,55}_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F7_{47,56}_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F7_{57,58,59,60}_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F7_{69,70,71,72}_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F7_{73,74}_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F7_{75,76}_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F7_{77,78}_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F7_{79,80}_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F7_{81,82}_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F7_{83,84}_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F7_{85,86}_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F7_{87,88}_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F7_{89,90}_2.mx"]; 
+ SEtotal = SEtotal + SelfEnergyFinite*kappa; 
+
+
+ Get["/Users/jamesmckay/Documents/Programs/Mass_builder/models/MDM/output/math_data_F7_{3,4}_2c.mx"]; 
+ SEtotalc = SEtotalc + SelfEnergyFinite*kappa; 
+
+Nsum1=makeFiniteAmplitude[SEtotal,-1,D];
+Nsum2=makeFiniteAmplitude[SEtotal,-2,D];
+
+Nct1 = makeFiniteAmplitude[SEtotalc,-1,D];
+Nct2 = makeFiniteAmplitude[SEtotalc,-2,D];
 
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F11_g1_2_2.mx"}]];
-N2 = SelfEnergyFinite*kappa^2;
 
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F11_g1_3_2.mx"}]];
-N3 = SelfEnergyFinite*kappa^2;
 
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F11_g1_4_2.mx"}]];
-N4 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F11_g1_5_2.mx"}]];
-N5 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F11_g1_6_2.mx"}]];
-N6 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F11_g1_7_2.mx"}]];
-N7 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F11_g1_8_2.mx"}]];
-N8 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F11_g1_9_2.mx"}]];
-N9 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F11_g1_10_2.mx"}]];
-N10 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F11_g1_11_2.mx"}]];
-N11 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F11_g1_12_2.mx"}]];
-N12 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F11_g1_19_2.mx"}]];
-N19 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F11_g1_20_2.mx"}]];
-N20 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F11_g1_21_2.mx"}]];
-N21 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F11_g1_22_2.mx"}]];
-N22 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F11_g1_23_2.mx"}]];
-N23 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F11_g1_24_2.mx"}]];
-N24 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F11_g1_25_2.mx"}]];
-N25 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F11_g1_26_2.mx"}]];
-N26 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F11_g1_27_2.mx"}]];
-N27 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F11_g1_28_2.mx"}]];
-N28 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F11_g1_29_2.mx"}]];
-N29 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F11_g1_30_2.mx"}]];
-N30 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F11_g1_31_2.mx"}]];
-N31 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F11_g1_32_2.mx"}]];
-N32 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F11_g1_39_2.mx"}]];
-N39 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F11_g1_40_2.mx"}]];
-N40 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F11_g1_41_2.mx"}]];
-N41 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F11_g1_42_2.mx"}]];
-N42 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F11_g1_43_2.mx"}]];
-N43 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F11_g1_44_2.mx"}]];
-N44 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F11_g1_45_2.mx"}]];
-N45 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F11_g1_46_2.mx"}]];
-N46 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F11_g1_47_2.mx"}]];
-N47 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F11_g1_48_2.mx"}]];
-N48 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F11_g1_49_2.mx"}]];
-N49 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F11_g1_50_2.mx"}]];
-N50 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F11_g1_51_2.mx"}]];
-N51 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F11_g1_52_2.mx"}]];
-N52 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F11_g1_53_2.mx"}]];
-N53 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F11_g1_54_2.mx"}]];
-N54 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F11_g1_55_2.mx"}]];
-N55 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F11_g1_56_2.mx"}]];
-N56 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F11_g1_57_2.mx"}]];
-N57 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F11_g1_58_2.mx"}]];
-N58 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F11_g1_59_2.mx"}]];
-N59 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F11_g1_60_2.mx"}]];
-N60 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F11_g1_3_2c.mx"}]];
-N3c = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F11_g1_4_2c.mx"}]];
-N4c = SelfEnergyFinite*kappa^2;
-
-Nsum1a = makeFiniteAmplitude[N1+N2+N3+N4+N5+N6+N7+N8+N9+N10+N11+N12,-1,D];
-Nsum1b = makeFiniteAmplitude[N19+N20+N21+N22+N23+N24+N25+N26+N27+N28+N29+N30+N31+N32,-1,D];
-Nsum1c = makeFiniteAmplitude[N39+N40+N41+N42+N43+N44+N45+N46+N47+N48+N49+N50+N51+N52+N53+N54+N55+N56+N57+N58+N59+N60,-1,D];
-
-Nsum1 = Nsum1a+Nsum1b+Nsum1c;
-
-Nsum2a = makeFiniteAmplitude[N1+N2+N3+N4+N5+N6+N7+N8+N9+N10+N11+N12,-2,D];
-Nsum2b = makeFiniteAmplitude[N19+N20+N21+N22+N23+N24+N25+N26+N27+N28+N29+N30+N31+N32,-2,D];
-Nsum2c = makeFiniteAmplitude[N39+N40+N41+N42+N43+N44+N45+N46+N47+N48+N49+N50+N51+N52+N53+N54+N55+N56+N57+N58+N59+N60,-2,D];
-
-Nsum2 = Nsum2a+Nsum2b+Nsum2c;
-
-Nct1 = makeFiniteAmplitude[N3c+N4c,-1,D];
-Nct2 = makeFiniteAmplitude[N3c+N4c,-2,D];
-
-(* Particle 2 *)
-
-SelfEnergyTotal = 0;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_1_2.mx"}]];
-C1 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_2_2.mx"}]];
-C2 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_3_2.mx"}]];
-C3 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_4_2.mx"}]];
-C4 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_5_2.mx"}]];
-C5 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_6_2.mx"}]];
-C6 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_7_2.mx"}]];
-C7 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_8_2.mx"}]];
-C8 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_9_2.mx"}]];
-C9 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_10_2.mx"}]];
-C10 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_11_2.mx"}]];
-C11 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_12_2.mx"}]];
-C12 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_13_2.mx"}]];
-C13 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_14_2.mx"}]];
-C14 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_15_2.mx"}]];
-C15 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_16_2.mx"}]];
-C16 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_26_2.mx"}]];
-C26 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_27_2.mx"}]];
-C27 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_28_2.mx"}]];
-C28 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_29_2.mx"}]];
-C29 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_30_2.mx"}]];
-C30 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_31_2.mx"}]];
-C31 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_32_2.mx"}]];
-C32 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_33_2.mx"}]];
-C33 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_34_2.mx"}]];
-C34 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_35_2.mx"}]];
-C35 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_36_2.mx"}]];
-C36 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_37_2.mx"}]];
-C37 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_38_2.mx"}]];
-C38 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_39_2.mx"}]];
-C39 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_40_2.mx"}]];
-C40 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_41_2.mx"}]];
-C41 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_42_2.mx"}]];
-C42 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_43_2.mx"}]];
-C43 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_44_2.mx"}]];
-C44 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_45_2.mx"}]];
-C45 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_46_2.mx"}]];
-C46 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_47_2.mx"}]];
-C47 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_48_2.mx"}]];
-C48 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_49_2.mx"}]];
-C49 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_50_2.mx"}]];
-C50 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_51_2.mx"}]];
-C51 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_52_2.mx"}]];
-C52 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_53_2.mx"}]];
-C53 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_54_2.mx"}]];
-C54 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_55_2.mx"}]];
-C55 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_56_2.mx"}]];
-C56 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_57_2.mx"}]];
-C57 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_58_2.mx"}]];
-C58 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_59_2.mx"}]];
-C59 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_60_2.mx"}]];
-C60 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_61_2.mx"}]];
-C61 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_62_2.mx"}]];
-C62 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_63_2.mx"}]];
-C63 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_64_2.mx"}]];
-C64 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_65_2.mx"}]];
-C65 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_66_2.mx"}]];
-C66 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_67_2.mx"}]];
-C67 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_68_2.mx"}]];
-C68 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_69_2.mx"}]];
-C69 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_70_2.mx"}]];
-C70 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_71_2.mx"}]];
-C71 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_72_2.mx"}]];
-C72 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_73_2.mx"}]];
-C73 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_74_2.mx"}]];
-C74 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_75_2.mx"}]];
-C75 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_84_2.mx"}]];
-C84 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_85_2.mx"}]];
-C85 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_86_2.mx"}]];
-C86 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_87_2.mx"}]];
-C87 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_88_2.mx"}]];
-C88 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_89_2.mx"}]];
-C89 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_90_2.mx"}]];
-C90 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_91_2.mx"}]];
-C91 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_92_2.mx"}]];
-C92 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_93_2.mx"}]];
-C93 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_94_2.mx"}]];
-C94 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_95_2.mx"}]];
-C95 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_96_2.mx"}]];
-C96 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_97_2.mx"}]];
-C97 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_98_2.mx"}]];
-C98 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_99_2.mx"}]];
-C99 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_100_2.mx"}]];
-C100 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_101_2.mx"}]];
-C101 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_102_2.mx"}]];
-C102 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_103_2.mx"}]];
-C103 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_104_2.mx"}]];
-C104 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_105_2.mx"}]];
-C105 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_106_2.mx"}]];
-C106 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_107_2.mx"}]];
-C107 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_108_2.mx"}]];
-C108 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_109_2.mx"}]];
-C109 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_110_2.mx"}]];
-C110 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_111_2.mx"}]];
-C111 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_112_2.mx"}]];
-C112 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_113_2.mx"}]];
-C113 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_114_2.mx"}]];
-C114 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_115_2.mx"}]];
-C115 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_116_2.mx"}]];
-C116 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_117_2.mx"}]];
-C117 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_118_2.mx"}]];
-C118 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_119_2.mx"}]];
-C119 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_120_2.mx"}]];
-C120 = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_4_2c.mx"}]];
-C4c = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_5_2c.mx"}]];
-C5c = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_6_2c.mx"}]];
-C6c = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_7_2c.mx"}]];
-C7c = SelfEnergyFinite*kappa^2;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_8_2c.mx"}]];
-C8c = SelfEnergyFinite*kappa^2;
-
-Csum1a = makeFiniteAmplitude[C1+C2+C3+C4+C5+C6+C7+C8+C9+C10+C11+C12+C13+C14+C15+C16,-1,D];
-
-Csum1b = makeFiniteAmplitude[C26+C27+C28+C29+C30+C31+C32+C33+C34+C35+C36+C37+C38+C39+C40+C41+C42+C43+C44+C45+C46+C47+C48+\
-C49+C50+C51+C52+C53+C54+C55+C56+C57+C58+C59+C60+C61+C62+C63+C64+C65+C66+C67+C68+C69+C70+C71+C72+C73+C74+C75,-1,D];
-
-Csum1c = makeFiniteAmplitude[C84+C85+C86+C87+C88+C89+C90+C91+C92+C93+C94+C95+C96+C97+C98+C99+C100+C101+C102+C103+C104+C105+\
-C106+C107+C108+C109+C110+C111+C112+C113+C114+C115+C116+C117+C118+C119+C120,-1,D];
-
-Csum1 = Csum1a+Csum1b+Csum1c;
-Csum2a = makeFiniteAmplitude[C1+C2+C3+C4+C5+C6+C7+C8+C9+C10+C11+C12+C13+C14+C15+C16,-2,D];
-
-Csum2b = makeFiniteAmplitude[C26+C27+C28+C29+C30+C31+C32+C33+C34+C35+C36+C37+C38+C39+C40+C41+C42+C43+C44+C45+C46+C47+C48+C49+C50+C51+C52+C53+C54+C55+C56+C57+C58+C59+C60+C61+C62+C63+C64+C65+C66+C67+C68+C69+C70+C71+C72+C73+C74+C75,-2,D];
-
-Csum2c = makeFiniteAmplitude[C84+C85+C86+C87+C88+C89+C90+C91+C92+C93+C94+C95+C96+C97+C98+C99+C100+C101+C102+C103+C104+C105+C106+C107+C108+C109+C110+C111+C112+C113+C114+C115+C116+C117+C118+C119+C120,-2,D];
-
-Csum2 = Csum2a+Csum2b+Csum2c;
-
-
-Cct1 = makeFiniteAmplitude[C4c+C5c+C6c+C7c+C8c,-1,D];
-Cct2 = makeFiniteAmplitude[C4c+C5c+C6c+C7c+C8c,-2,D];
 
 {Csum1,Csum2,Nsum1,Nsum2,Cct1,Cct2,Nct1,Nct2}={Csum1,Csum2,Nsum1,Nsum2,Cct1,Cct2,Nct1,Nct2}/. (DiracGamma[Momentum[p, D], D].DiracGamma[6] + DiracGamma[Momentum[p, D], D].DiracGamma[7]) -> p\
 /. MassBuilderP^2 -> Pair[Momentum[p],Momentum[p]]/. MassBuilderP -> Momentum[p]/. MassBuilderEpsilon -> \[Epsilon]/. MassBuilderZeta -> \[Zeta]/. MassBuilderAe[0] -> 0\
 /. D -> 4 - 2 \[Epsilon]/. Pair[p, p] -> p^2/. D -> 4 - 2 \[Epsilon]/. Momentum[p] -> p\
-/. MassBuilderB[MChi, mz] -> TBI[4, MChi^2, {{1, MChi}, {1, mz}}]\
-/. MassBuilderB[mz, MChi] -> TBI[4, MChi^2, {{1, MChi}, {1, mz}}]\
-/. MassBuilderB[MChi, mw] -> TBI[4, MChi^2, {{1, MChi}, {1, mw}}]\
-/. MassBuilderB[mw, MChi] -> TBI[4, MChi^2, {{1, MChi}, {1, mw}}]\
-/. MassBuilderB[ma, MChi] -> TBI[4, MChi^2, {{1, MChi}, {1, ma}}]\
-/. MassBuilderB[MChi, ma] -> TBI[4, MChi^2, {{1, MChi}, {1, ma}}]\
-/. MassBuilderB[mf, MChi] -> TBI[4, MChi^2, {{1, MChi}, {1, mf}}]\
-/. MassBuilderB[MChi, mf] -> TBI[4, MChi^2, {{1, MChi}, {1, mf}}]\
-/. MassBuilderB[mt, MChi] -> TBI[4, MChi^2, {{1, MChi}, {1, mt}}]\
-/. MassBuilderB[MChi, mt] -> TBI[4, MChi^2, {{1, MChi}, {1, mt}}]\
+/. MassBuilderB[a_, b_] -> TBI[4, MChi^2, {{1, a}, {1, b}}]\
 /.p->MChi/.STW->sw/.CTW->cw;
 sw=Sin[\[Theta]];
 cw=Cos[\[Theta]];
 
 
-Simplify[Csum2+Cct2 -Nsum2-Nct2/.mz->mw/cw]
+Simplify[Csum2+Cct2 -Nsum2-Nct2/.mz->mw/cw/.g1->g2*STW/CTW/.v->2*mw/g2/.mz->mw/CTW]
 
 
-Simplify[ Nsum1+Nct1/.mz->mw/cw]
+Simplify[ Nsum2+Nct2/.mz->mw/cw/.g1->g2*STW/CTW/.v->2*mw/g2/.mz->mw/CTW]
+
+
+Simplify[ Coefficient[Nsum2+Nct2,mf,2]/.mz->mw/cw/.g1->g2*STW/CTW/.v->2*mw/g2/.mz->mw/CTW,TimeConstraint->100000]
 
 
 Simplify[Csum1+Cct1/.mz->mw/cw,TimeConstraint->100000]
 
 
- Simplify[Coefficient[Csum1+Cct1/.mz->mw/cw,TBI[4, MChi^2, {{1, MChi}, {1, mf}}]]]
+ Simplify[Coefficient[Csum1+Cct1/.mz->mw/cw,TBI[4, MChi^2, {{1, MChi}, {1, mz}}]]/.g1->g2*STW/CTW/.v->2*mw/g2/.mz->mw/CTW]
+
+
+Simplify[Coefficient[Nsum1+Nct1/.mz->mw/cw,TBI[4, MChi^2, {{1, MChi}, {1, ma}}]]]
+
+
+Csum2+Cct2
 
 
 CForm[FullSimplify[dZW1]]

@@ -42,15 +42,15 @@ plt.plot(x,y1,'-',color='red',label='1-loop') #
 
 plt.plot(x,y2,'-',color='green',label='2-loop') #
 
-plt.xlim([90,5000])
-plt.ylim([145,175])
+#plt.xlim([90,5000])
+#plt.ylim([145,175])
 leg = plt.legend(loc='lower left')
 ax.set_xscale('log')
 
 xlabel(r"Degenerate mass $M$ (GeV)",fontsize=18)
 ylabel(r"$\Delta M$ (Mev)",fontsize=18)
 
-plt.savefig("mass_splittings/figures2/mass_splittings_MSSM.eps")
+plt.savefig("mass_splittings/figures2/mass_splittings.eps")
 
 # determine a polynomial fit through the 2-loop mass splitting
 
@@ -77,8 +77,8 @@ g=np.poly1d(gx)
 plt.plot(exp(r),g(r),'-',color='yellow')
 
 
-plt.xlim([90,4000])
-plt.ylim([145,172])
+#plt.xlim([90,4000])
+#plt.ylim([145,172])
 ax.set_xscale('log')
 
 plt.savefig("mass_splittings/figures2/interpolation.eps")

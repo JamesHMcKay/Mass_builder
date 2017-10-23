@@ -45,6 +45,10 @@ public:
   
   double get_F11_der_it();
   double get_F12_der_it();
+  
+  // dummy functions to satisfy templated functions
+  double get_deltam2(){return 0;};
+  double get_deltam2_2loop(){return 0;};
     
 };
 

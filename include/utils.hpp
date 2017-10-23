@@ -21,6 +21,8 @@ using namespace std;
 namespace utils
 {
 	
+	void status_bar(double status);
+	
 	void print_masses(std::string &input, std::vector<std::string> masses);
 	
 	std::string clean(std::string input);

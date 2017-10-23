@@ -35,6 +35,7 @@ public:
   double get_deltam_2loop();
   
   double get_deltam2();
+  double get_deltam2_2loop();
   
   double get_charged_mass();
   

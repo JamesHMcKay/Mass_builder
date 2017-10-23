@@ -440,7 +440,7 @@ void Figures<T>::plot_Q(Data data)
   myfile.open ("mass_splittings/data2/deltam_Q.txt");
   int pts = 10;
   int status = 0;
-  double max_Q = 1000; // (GeV)
+  double max_Q = 400; // (GeV)
   double min_Q = 50; // (GeV)
   for (int i = 0; i < pts+1 ; i++)
   {
@@ -482,7 +482,7 @@ void Figures<T>::plot_M(Data data)
   int pts = 10;
   double n = 0;
   int status = 0;
-  double max_M = 5000; // (GeV)
+  double max_M = 1e4; // (GeV)
   double min_M = 90; // (GeV)
   double logMax = log10(max_M);
   double logMin = log10(min_M);
@@ -496,9 +496,9 @@ void Figures<T>::plot_M(Data data)
     data.do_tsil_all = false;
     T mssm_1loop(data);
     //mssm_1loop.compute_spectra_flexiblesusy();
-    mssm_1loop.compute_spectra_MB_1loop();
+    //mssm_1loop.compute_spectra_MB_1loop();
     mssm_1loop.compute_tsil();
-    double delta_m_1 = mssm_1loop.get_deltam();
+    double delta_m_1 = mssm_1loop.get_deltam2();
     
     data.do_tsil_all = true;
     T mssm_2loop(data);
@@ -506,11 +506,11 @@ void Figures<T>::plot_M(Data data)
     //mssm_2loop.compute_spectra_flexiblesusy();
     mssm_2loop.compute_spectra_MB_2loop();
     mssm_2loop.compute_tsil();
-    double delta_m_2 = mssm_2loop.get_deltam_2loop()+ mssm_2loop.get_deltam();
+    double delta_m_2 = mssm_2loop.get_deltam2_2loop()+ mssm_2loop.get_deltam2();
     myfile << data.MChi << " " << delta_m_1 <<  " " << delta_m_2 << endl;
     status=(float(i)/pts)*100;
-    cout<< "\r" << "computing mass splittings . . . " << status << "% complete ";
-    std::cout << std::flush;
+		cout<< "\r" << "computing mass splitting . . . " << status << "% complete ";
+	  std::cout << std::flush;
   }
   status=100;
   cout<< "\r" << "computing mass splittings . . . " << status << "% complete ";
@@ -660,7 +660,13 @@ void Figures<T>::plot_M_flexiblesusy_2loop(Data data, string group,bool do_itera
   const char *file_5 = c_file_5.c_str();	
   
 	string c_file_6 = "mass_splittings/data2/deltam_2loop_" + group + ".txt";
-  const char *file_6 = c_file_6.c_str();	  
+  const char *file_6 = c_file_6.c_str();	 
+  
+	string c_file_7 = "mass_splittings/data2/decays_1loop_" + group + ".txt";
+  const char *file_7 = c_file_7.c_str();	   
+ 
+	string c_file_8 = "mass_splittings/data2/decays_2loop_" + group + ".txt";
+  const char *file_8 = c_file_8.c_str();	     
 	
   ofstream pole_mass_n_2loop;
   pole_mass_n_2loop.open (file_1);
@@ -693,6 +699,23 @@ void Figures<T>::plot_M_flexiblesusy_2loop(Data data, string group,bool do_itera
   {
 		deltam_2loop_it.open ("mass_splittings/data2/deltam_2loop_it.txt");    
   }
+  
+  ofstream deltam2_1loop;
+  ofstream deltam2_2loop;
+  
+  if (group=="MDM")
+  {
+		deltam2_1loop.open("mass_splittings/data2/deltam2_1loop_MDM.txt");
+		deltam2_2loop.open("mass_splittings/data2/deltam2_2loop_MDM.txt");
+	}
+	
+	// output file for decay lifetimes (non-iterative only)
+	
+	ofstream decays_1loop;
+	decays_1loop.open(file_7);
+
+	ofstream decays_2loop;
+	decays_2loop.open(file_8);	
  
   // set range of plot
   long double logMax = log10(1.0e4L);
@@ -724,6 +747,10 @@ void Figures<T>::plot_M_flexiblesusy_2loop(Data data, string group,bool do_itera
     
     deltam_1loop << M ;
     deltam_2loop << M ;
+    deltam2_1loop << M ;
+    deltam2_2loop << M ;    
+    decays_1loop << M ;
+    decays_2loop << M ;
     
     if (do_iteration)
     {
@@ -745,9 +772,16 @@ void Figures<T>::plot_M_flexiblesusy_2loop(Data data, string group,bool do_itera
 	  	spec_1loop.compute_spectra_flexiblesusy();
 	    spec_1loop.compute_tsil();
 	    deltam_1loop << " " << spec_1loop.get_deltam();
+	    			
+			
+			if (group=="MDM")
+			{
+				deltam2_1loop << " " << spec_1loop.get_deltam2();
+			}
 	    
 	  	T spec_explicit = spec;
 	    spec_explicit.compute_tsil();
+	    Decays decays(data);
 				
 			pole_mass_n_2loop << " " << spec_explicit.get_neutral_mass_2loop();
 			pole_mass_c_2loop << " " << spec_explicit.get_charged_mass_2loop();	
@@ -755,6 +789,14 @@ void Figures<T>::plot_M_flexiblesusy_2loop(Data data, string group,bool do_itera
 			pole_mass_c_1loop << " " << spec_explicit.get_charged_mass();
 			
 			deltam_2loop << " " << spec_explicit.get_deltam_2loop()+spec_explicit.get_deltam();
+			
+			decays_1loop << decays.calc_lifetime(spec_explicit.get_deltam());
+			decays_2loop << decays.calc_lifetime(spec_explicit.get_deltam_2loop()+spec_explicit.get_deltam());
+			
+			if (group=="MDM")
+			{
+				deltam2_2loop << " " << spec_explicit.get_deltam2_2loop()+spec_explicit.get_deltam2();
+			}
 			
 			// do iterative calculation
 			
@@ -787,6 +829,12 @@ void Figures<T>::plot_M_flexiblesusy_2loop(Data data, string group,bool do_itera
 		
 		deltam_1loop << endl;
 		deltam_2loop << endl;
+		deltam2_1loop << endl;
+		deltam2_2loop << endl;		
+		
+		decays_1loop << endl;
+		decays_2loop << endl;
+		
 		if (do_iteration)
 		{
 			deltam_2loop_it << endl;
@@ -805,7 +853,11 @@ void Figures<T>::plot_M_flexiblesusy_2loop(Data data, string group,bool do_itera
   
   deltam_1loop.close();
   deltam_2loop.close();
+  deltam2_1loop.close();
+  deltam2_2loop.close();  
   deltam_2loop_it.close();
+  decays_1loop.close();
+  decays_2loop.close();
   
 }
 

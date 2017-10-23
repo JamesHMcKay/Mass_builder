@@ -71,15 +71,9 @@ void Print_dotsil::print_to_file(ofstream &myfile)
     vector<bool> check_vec = eval_vec[i].get_check_vec(names, base_map);
     V_check_vec[i]=check_vec;
     
-    
     status=(float(i)/eval_vec.size())*100;
-    
-    std::string faces[6] = {":-C",":-(",":-|",":-)",":-D",":-O"};
-    
-    int fc = floor((status * 6.0)/100);
-    
-	  cout<< "\r" << "sorting integrals . . . " << status << "% complete " << faces[fc];
-	  std::cout << std::flush;
+    status_bar(status);
+	  
   }
   status=100;
   cout<< "\r" << "sorting integrals . . . " << status << "% complete :-O";
@@ -222,10 +216,21 @@ string Print_dotsil::coeff(string type)
 }
 
 
+eval_obj Print_dotsil::set_ma_zero(eval_obj eo)
+{
+  if(eo.x == "ma"){eo.x="zeros";}
+  if(eo.y == "ma"){eo.y="zeros";}
+  if(eo.z == "ma"){eo.z="zeros";}
+  if(eo.u == "ma"){eo.u="zeros";}
+  if(eo.v == "ma"){eo.v="zeros";}
+  return eo;
+}
+
 
 void Print_dotsil::print_eval_obj(ofstream &myfile,eval_obj &eo, vector<int> &total)
 {
-  myfile << "    TSIL_SetParameters (&bar," << eo.x << "2, " << eo.y << "2, " << eo.z << "2 , " << eo.u << "2 , " << eo.v  << "2, Q2);" << endl;
+	eval_obj eo2 = set_ma_zero(eo);
+  myfile << "    TSIL_SetParameters (&bar," << eo2.x << "2, " << eo2.y << "2, " << eo2.z << "2 , " << eo2.u << "2 , " << eo2.v  << "2, Q2);" << endl;
   myfile << "    TSIL_Evaluate (&bar, s);" << endl;
   
   vector<bool> check_vec = eo.get_check_vec(names, base_map);

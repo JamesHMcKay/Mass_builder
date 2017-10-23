@@ -51,6 +51,7 @@ public:
 
   std::vector<bool> get_check_vec(vector<string> names, std::map<std::string, Bases> base_map);
   void swap_tsil_to_tarcer_V(string &a,string &b,string &c, string &d);
+  
 };
 
 
@@ -76,6 +77,7 @@ public:
   void get_poss_eval(Bases base);
   void add_eval_obj( string x, string y, string z, string u, string v);
   void make_sets();
+  eval_obj set_ma_zero(eval_obj eo);
   void print_total(std::vector<int>);
   string coeff(string type);
   

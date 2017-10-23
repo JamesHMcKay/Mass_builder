@@ -58,6 +58,12 @@ void User_input::user_interface()
 				options.loop_order = 1; 
 				options.onshell = false;
 			}
+			// not actually supported -- used as a temporary option
+			else if (input == "3")
+      {
+				options.loop_order = 3; 
+				options.onshell = false;
+			}			
       else 
       {
 				cout <<"This loop order is not supported please enter 1 or 2"<<endl;
@@ -78,6 +84,10 @@ void User_input::user_interface()
     {
       options.use_lorentz = false;
     }
+    if (options.model == "MDM_triplet")
+    {
+      options.restrictions = "noFermions";
+    }    
 
   }
 

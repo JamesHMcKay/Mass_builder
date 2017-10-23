@@ -702,6 +702,20 @@ void Compute_amp::generate_figures()
 
 
 
+void Compute_amp::make_2loop_list(std::string particle,vector<std::string> diagram,vector<std::string> level)
+{
+  int nd = diagram.size();
+  std::string input;
+
+  for (int i=0;i<nd;i++)
+  {
+    
+    input += "Get[\"" + get_cwd() + "/models/" + options.model + "/output/math_data_" + particle + "_" + diagram[i] + "_" + level[i] + ".mx\"];";
+    
+    input += "SEtotal = SEtotal + SelfEnergyFinite*kappa;";
+  }
+  send_to_math(input);
+}
 
 void Compute_amp::solve_1loop(std::string particle,vector<std::string> diagram)
 {
@@ -794,10 +808,12 @@ void Compute_amp::solve_1loop(std::string particle,vector<std::string> diagram)
 
 	// now solve relevant equations
 	
+  string from="Power",to="TSIL_POW";
+	
 	if (nc_req == 2)
 	{
-		input += "eq1 = FullSimplify[Coefficient[SE+SEct," + momentum + "]];";
-		input += "eq2 = FullSimplify[Coefficient[SE+SEct," + momentum + ",0]];";
+		input += "eq1 = FullSimplify[Coefficient[SE+SEct," + momentum + "](*/.g1->g2*STW/CTW/.v->2*mw/g2/.mz->mw/CTW,{STW^2+CTW^2==1}*)];";
+		input += "eq2 = FullSimplify[Coefficient[SE+SEct," + momentum + ",0](*/.g1->g2*STW/CTW/.v->2*mw/g2/.mz->mw/CTW,{STW^2+CTW^2==1}*)];";
 		input += "sol = Solve[{eq1==0,eq2==0},{" + required_couplings[0] + "," + required_couplings[1] + "}];";
 		input += "Set @@@ sol[[1]];";
 		send_to_math(input);
@@ -824,15 +840,22 @@ void Compute_amp::solve_1loop(std::string particle,vector<std::string> diagram)
 			cout << "Error getting string from WSTP" << endl;
 		}
 		cout << required_couplings[1] << " = " << coupling_2 << endl;		
+		
+		string coupling_1_str = coupling_1;
+		string coupling_2_str = coupling_2;
+
+    ReplaceAll(coupling_1_str,from, to);
+    ReplaceAll(coupling_2_str,from, to);
+		
 		for (unsigned int i = 0; i < relationships.size() ; i++)
 		{
 			if (couplings[i] == required_couplings[0])
 			{
-				relationships[i] = coupling_1;
+				relationships[i] = coupling_1_str;
 			}
 			if (couplings[i] == required_couplings[1])
 			{
-				relationships[i] = coupling_2;
+				relationships[i] = coupling_2_str;
 			}
 		}
 		
@@ -843,7 +866,7 @@ void Compute_amp::solve_1loop(std::string particle,vector<std::string> diagram)
 		input += "eq1 = FullSimplify[SE+SEct];";
 		input += "sol = Solve[{eq1==0},{" + required_couplings[0] + "}];";
 		input += "Set @@@ sol[[1]];";
-		input += "ToString[" + required_couplings[0] + ",CForm]";
+		input += "ToString[FullSimplify[" + required_couplings[0] + "(*/.g1->g2*STW/CTW/.v->2*mw/g2/.mz->mw/CTW,{STW^2+CTW^2==1}*)],CForm]";
 		send_to_math(input);
   
 		const char* coupling_1;
@@ -853,11 +876,13 @@ void Compute_amp::solve_1loop(std::string particle,vector<std::string> diagram)
 			cout << "Error getting string from WSTP" << endl;
 		}
 		cout << required_couplings[0] << " = " << coupling_1 << endl;
+		string coupling_1_str = coupling_1;
+		ReplaceAll(coupling_1_str,from, to);
 		for (unsigned int i = 0; i < relationships.size() ; i++)
 		{
 			if (couplings[i] == required_couplings[0])
 			{
-				relationships[i] = coupling_1;
+				relationships[i] = coupling_1_str;
 			}
 		}
 		
@@ -928,20 +953,41 @@ void Compute_amp::calc_counter_terms()
   vector<std::string> tags_1;
   vector<std::string> particle_names_1,levels_1;
   
-  for (int i=0;i<nd;i++)
+  // the default value is 2, so if not specified do normal operation
+  if (options.loop_order == 2)
   {
-    if (levels[i]=="1" && particle_names[i]==options.particle)
-    {
-      particle_names_1.push_back(particle_names[i]);
-      tags_1.push_back(tags[i]);
-      levels_1.push_back(levels[i]);
-    }
-    
-  }
+	  for (int i=0;i<nd;i++)
+	  {
+	    if (levels[i]=="1" && particle_names[i]==options.particle)
+	    {
+	      particle_names_1.push_back(particle_names[i]);
+	      tags_1.push_back(tags[i]);
+	      levels_1.push_back(levels[i]);
+	    }
+	    
+	  }
+		string particle_simple = part_name_simple(options.particle_1,options.particle_2);
   
-  string particle_simple = part_name_simple(options.particle_1,options.particle_2);
+		solve_1loop(particle_simple,tags_1);
+	}
+	
+	if (options.loop_order == 3 && options.verbose)
+  {
+	  for (int i=0;i<nd;i++)
+	  {
+	    if ((levels[i]=="2" || levels[i]=="2c") && particle_names[i]==options.particle)
+	    {
+	      particle_names_1.push_back(particle_names[i]);
+	      tags_1.push_back(tags[i]);
+	      levels_1.push_back(levels[i]);
+	    }
+	  }
+	  string particle_simple = part_name_simple(options.particle_1,options.particle_2);
+		make_2loop_list(particle_simple,tags_1,levels_1);
+	}
+	
   
-  solve_1loop(particle_simple,tags_1);
+
   
 }
 

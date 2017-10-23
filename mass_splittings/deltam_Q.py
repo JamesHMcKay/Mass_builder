@@ -59,8 +59,8 @@ plt.plot(x,y2,'-',color='red',label='2-loop') #
 
 xlabel(r"renormalisation scale $Q$ (GeV)",fontsize=18)
 ylabel(r"$\Delta M$ (Mev)",fontsize=18)
-#plt.xlim([50,1000])
-#plt.ylim([163,170])
+plt.xlim([50,400])
+plt.ylim([163,168])
 #plt.ylim([149,154])
 
 plt.legend(loc=2)

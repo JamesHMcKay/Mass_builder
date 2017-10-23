@@ -17,6 +17,16 @@
 using namespace std;
 using namespace utils;
 
+void set_ma_zero(Bases &base)
+{
+  if(base.e1 == "ma"){base.e1="zeros";}
+  if(base.e2 == "ma"){base.e2="zeros";}
+  if(base.e3 == "ma"){base.e3="zeros";}
+  if(base.e4 == "ma"){base.e4="zeros";}
+  if(base.e5 == "ma"){base.e5="zeros";}
+}
+
+
 
 string get_id(std::vector<string> &masses, std::vector<string> &identifiers, string mass)
 {

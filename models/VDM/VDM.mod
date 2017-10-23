@@ -19,7 +19,7 @@ M$ClassesDescription = {
 	Indices -> {},
 	Mass -> 0,
 	Charge -> 0,
-	PropagatorLabel -> "A.c",
+	PropagatorLabel->ComposedChar["G","0"],
 	PropagatorType -> GhostDash,
 	PropagatorArrow -> Forward },
 
@@ -28,7 +28,7 @@ M$ClassesDescription = {
 	Indices -> {},
 	Mass -> 0,
 	Charge -> 0,
-	PropagatorLabel -> "A",
+	PropagatorLabel -> "\\gamma",
 	PropagatorType -> Sine,
 	PropagatorArrow -> None },
 
@@ -37,7 +37,7 @@ M$ClassesDescription = {
 	Indices -> {},
 	Mass -> MZ,
 	Charge -> 0,
-	PropagatorLabel -> "Z.c",
+	PropagatorLabel->ComposedChar["\\eta","Z"],
 	PropagatorType -> GhostDash,
 	PropagatorArrow -> Forward },
 
@@ -55,7 +55,7 @@ M$ClassesDescription = {
 	Indices -> {},
 	Mass -> MZ,
 	Charge -> 0,
-	PropagatorLabel -> "Z.f",
+	PropagatorLabel->ComposedChar["G","Z"],
 	PropagatorType -> ScalarDash,
 	PropagatorArrow -> None },
 
@@ -64,7 +64,7 @@ M$ClassesDescription = {
 	Indices -> {},
 	Mass -> MW,
 	Charge -> 1,
-	PropagatorLabel -> "W+.c",
+	PropagatorLabel->ComposedChar["\\eta","+"],
 	PropagatorType -> GhostDash,
 	PropagatorArrow -> Forward },
 
@@ -73,7 +73,7 @@ M$ClassesDescription = {
 	Indices -> {},
 	Mass -> MW,
 	Charge -> -1,
-	PropagatorLabel -> "W+.c",
+	PropagatorLabel->ComposedChar["\\eta","-"],
 	PropagatorType -> GhostDash,
 	PropagatorArrow -> Forward },
 
@@ -91,7 +91,7 @@ M$ClassesDescription = {
 	Indices -> {},
 	Mass -> MW,
 	Charge -> 1,
-	PropagatorLabel -> "W+.f",
+	PropagatorLabel->ComposedChar["G","+"],
 	PropagatorType -> ScalarDash,
 	PropagatorArrow -> Forward },
 
@@ -100,7 +100,7 @@ M$ClassesDescription = {
 	Indices -> {Index[Gluon]},
 	Mass -> 0,
 	Charge -> 0,
-	PropagatorLabel -> "G.c",
+	PropagatorLabel->ComposedChar["G","0"],
 	PropagatorType -> GhostDash,
 	PropagatorArrow -> Forward },
 
@@ -109,7 +109,7 @@ M$ClassesDescription = {
 	Indices -> {Index[Gluon]},
 	Mass -> 0,
 	Charge -> 0,
-	PropagatorLabel -> "G",
+	PropagatorLabel -> "g",
 	PropagatorType -> Cycles,
 	PropagatorArrow -> None },
 

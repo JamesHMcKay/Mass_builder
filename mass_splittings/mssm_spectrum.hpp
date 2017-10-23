@@ -43,6 +43,11 @@ public:
   
   double get_neutral_mass_2loop();  
   
+  // dummy functions to satisfy templated functions
+  double get_deltam2(){return 0;};
+  double get_deltam2_2loop(){return 0;};
+  
+  
 };
 
 #endif

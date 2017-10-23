@@ -30,15 +30,16 @@ int main(int argc, char *argv[])
   
   /*
   
-  EW_triplet_spectrum spec(data);
-  //spec.compute_spectra_flexiblesusy();
+  MDM_spectrum spec(data);
+  spec.compute_spectra_flexiblesusy();
   //spec.compute_spectra_MB_2loop();
   spec.compute_tsil();
   cout << "--- explicit --- " << endl;
   cout << "1-loop mass splitting = " <<  spec.get_deltam() << endl;
   cout << "2-loop mass splitting = " <<  spec.get_deltam_2loop() + spec.get_deltam() << endl;
+  cout << "1-loop mass splitting 2 = " <<  spec.get_deltam2() << endl;
+  cout << "2-loop mass splitting 2 = " <<  spec.get_deltam2_2loop() + spec.get_deltam2() << endl;
 	
-  
   EW_triplet_spectrum spec2(data);
   spec2.compute_spectra_flexiblesusy();
   spec2.compute_tsil_iterative();
@@ -48,9 +49,10 @@ int main(int argc, char *argv[])
   cout << "2-loop mass splitting = " <<  spec2.get_deltam_2loop() + spec2.get_deltam()<< endl;
   */
   
-  Figures<EW_triplet_spectrum> fig;
+  //Figures<EW_triplet_spectrum> fig;
+  Figures<MDM_spectrum> fig;
   
-  //fig.plot_M(data);
+  fig.plot_M(data);
   
   //fig.plot_2loop_uncertainties(data,false);
   
@@ -58,12 +60,12 @@ int main(int argc, char *argv[])
   
   //fig.plot_M_2loop_iterative(data);
   
-  fig.plot_Q(data);
+  //fig.plot_M(data);
   
   //fig.plot_decays(data);
   
   //fig.plot_M_flexiblesusy(data);
-  //fig.plot_M_flexiblesusy_2loop(data,"AB",false);
+  //fig.plot_M_flexiblesusy_2loop(data,"MDM",false);
   
   //fig.plot_deltam_2loop(data);
   

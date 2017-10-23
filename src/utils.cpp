@@ -28,6 +28,17 @@ namespace utils
     return getcwd(NULL,0);
   }
   
+  
+  void status_bar(double status)
+  {
+		std::string faces[6] = {":-C",":-(",":-|",":-)",":-D",":-O"};
+    int fc = floor((status * 6.0)/100);
+	  cout<< "\r" << "sorting integrals . . . " << status << "% complete " << faces[fc];
+	  std::cout << std::flush;
+	}
+  
+  
+  
   int get_loop_order(string type)
   {
     int loop_order;
@@ -1225,7 +1236,6 @@ namespace utils
 			myfile << " { " << endl;
 		}
     
-    
     if (type == "const")
     {
       myfile << "  const" << " = 1.0L"<<endl;
@@ -1234,6 +1244,9 @@ namespace utils
     {
       myfile << "  " <<  name << " = -i*TSIL_A_ ("<<base.e1<<"2 , Q2);"<<endl;
     }
+    
+    set_ma_zero(base);
+    
     if (type == "B")
     {
       myfile << "  " << name <<" = i*TSIL_B_ (" << base.e1 << "2, " << base.e2 << "2, s, Q2);"<< endl;

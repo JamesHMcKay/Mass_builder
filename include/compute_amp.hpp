@@ -202,6 +202,9 @@ public:
   // solve the 1-loop order linear equation to determine counter-term coupling
   void solve_1loop(std::string particle,vector<std::string> diagram);
   
+  // temporary functions for making a quick list of 2 loop diagrams
+  void make_2loop_list(std::string particle,vector<std::string> diagram,vector<std::string> level);
+    
   // Main function to print vertices and Feynman rules to LaTeX ready file
   void print_vertices();
   

@@ -63,6 +63,8 @@ Bases_product(){}
 
 };
 
+void set_ma_zero(Bases &base);
+
 vector<int> find_string_lengths(vector<string> input);
 
 string get_id(std::vector<string> &masses, std::vector<string> &identifiers, string mass);

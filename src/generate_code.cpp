@@ -679,6 +679,8 @@ void Generate_code::generate_code()
   main_output<< "   MassBuilderCTZ1 = 0;\n";
   main_output<< "   MassBuilderCTM2 = 0;\n";
   main_output<< "   MassBuilderCTZ1 = 0;\n";
+  main_output<< "   TSIL_REAL zeros2 = 0;\n";
+  
 
 
 

@@ -17,6 +17,7 @@
 
 
 #include "decays.hpp"
+#include "utils.hpp"
 
 template <class T>
 class Figures

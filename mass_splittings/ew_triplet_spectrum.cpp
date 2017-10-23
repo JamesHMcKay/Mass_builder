@@ -275,7 +275,7 @@ double EW_triplet_spectrum::iterative_ms_bar_mass(Data data, string particle)
   long double M_pole = data.MChi;
   data.P = M_tree;
   long double diff = 1;
-  long double precision = 1e-7;
+  long double precision = 1e-8;
   int iteration = 0;
   do
   {
@@ -341,7 +341,7 @@ void EW_triplet_spectrum::compute_spectra_MB_1loop()
   
 }
 
-
+/*
 // determine MSbar parameters
 void EW_triplet_spectrum::compute_spectra_MB_2loop()
 {
@@ -425,14 +425,15 @@ void EW_triplet_spectrum::compute_spectra_MB_2loop()
   
 }
 
+*/
 
 
-/*
 // determine MSbar parameters
 void EW_triplet_spectrum::compute_spectra_MB_2loop()
 {
   Self_energy se;
-  
+  cout.precision(8);
+  cout << data.MChi;
   // matching (?) of SM to Wino model
   data.alpha = data.alpha*( 1.0-real(extra_TSIL_interface_EW_triplet::gammagamma_Chi(data,data.Q)) /pow(data.Q,2) );
   
@@ -449,12 +450,16 @@ void EW_triplet_spectrum::compute_spectra_MB_2loop()
   data.mz = pow( pow(data.mz,2) - real(data.SE_1["V2"]) ,0.5);
   
   // need to iterate to determine MS bar mass for MChi to match equation (9) of Ibe et al.
-  data.MChi = iterative_ms_bar_mass(data, "F11");
+  data.MChi = iterative_ms_bar_mass(data, "F11_g1");
   
   data.P = data.MChi;
   data.do_tsil_all = true;
+  
+  cout << ":  " << data.MChi << " " << data.mw << ", " << data.mz << ", " << data.alpha << endl;
+  
+  
 }
-*/
+
 
 bool EW_triplet_spectrum::compute_spectra_flexiblesusy()
 {
@@ -529,8 +534,8 @@ bool EW_triplet_spectrum::compute_spectra_flexiblesusy()
   
   data.alpha = pow(g1*g2,2) / (4 * Pi * (g1*g1 + g2*g2));
   
-	data.SE_1["F11_g1"] = model.get_MFn_pole_slha() - data.MChi;
-	data.SE_1["F12_g1"] = model.get_MFc_pole_slha() - data.MChi;
+	data.SE_1["F7"] = model.get_MFn_pole_slha() - data.MChi;
+	data.SE_1["F5"] = model.get_MFc_pole_slha() - data.MChi;
   
   return error;
 }
@@ -542,8 +547,8 @@ void EW_triplet_spectrum::compute_tsil()
 	se.run_tsil(data);	
 	
 	// add derivatives of 1-loop self energies
-	data.SE_2["F11_g1"] = data.SE_2["F11_g1"] +  extra_TSIL_interface_EW_triplet::F11_der(data);
-	data.SE_2["F12_g1"] = data.SE_2["F12_g1"] +  extra_TSIL_interface_EW_triplet::F12_der(data);	
+	//data.SE_2["F11_g1"] = data.SE_2["F11_g1"] +  extra_TSIL_interface_EW_triplet::F11_der(data);
+	//data.SE_2["F12_g1"] = data.SE_2["F12_g1"] +  extra_TSIL_interface_EW_triplet::F12_der(data);	
 
 	if (!data.do_tsil_all)
 	{
