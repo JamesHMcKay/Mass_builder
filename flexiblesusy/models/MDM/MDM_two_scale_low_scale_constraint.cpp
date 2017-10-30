@@ -109,7 +109,7 @@ void MDM_low_scale_constraint<Two_scale>::apply()
           " model pointer must not be zero");
 
 
-
+	 std::cout << "MDM_low_scale_constraint::apply() ----- " << std::endl;
    model->calculate_DRbar_masses();
    update_scale();
    qedqcd.runto(scale, 1.0e-5);
@@ -129,8 +129,8 @@ void MDM_low_scale_constraint<Two_scale>::apply()
    MODEL->set_g3(new_g3);
 
 
-   if (model->get_thresholds())
-      qedqcd.setPoleMW(recalculate_mw_pole(qedqcd.displayPoleMW()));
+   //if (model->get_thresholds())
+      //qedqcd.setPoleMW(recalculate_mw_pole(qedqcd.displayPoleMW()));
 
 
 }
@@ -237,10 +237,10 @@ void MDM_low_scale_constraint<Two_scale>::calculate_threshold_corrections()
    double delta_alpha_em = 0.;
    double delta_alpha_s  = 0.;
 
-   if (model->get_thresholds()) {
-      delta_alpha_em = calculate_delta_alpha_em(alpha_em);
-      delta_alpha_s  = calculate_delta_alpha_s(alpha_s);
-   }
+ //  if (model->get_thresholds()) {
+  //    delta_alpha_em = calculate_delta_alpha_em(alpha_em);
+  //    delta_alpha_s  = calculate_delta_alpha_s(alpha_s);
+  // }
 
    const double alpha_em_drbar = alpha_em / (1.0 - delta_alpha_em);
    const double alpha_s_drbar  = alpha_s  / (1.0 - delta_alpha_s);
@@ -254,6 +254,8 @@ void MDM_low_scale_constraint<Two_scale>::calculate_threshold_corrections()
       MZDRbar = model->calculate_MVZ_DRbar(mz_pole);
       MWDRbar = model->calculate_MVWp_DRbar(mw_pole);
    }
+   
+   std::cout << "MWDRbar = " << MWDRbar << " MZDRbar = " << MZDRbar << std::endl;
 
    AlphaS = alpha_s_drbar;
    EDRbar = e_drbar;

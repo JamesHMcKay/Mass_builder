@@ -2164,6 +2164,7 @@ double CLASSNAME::CpconjVWpVWphh() const
    double result = 0.0;
 
    result = 0.5*v*Sqr(g2);
+   
 
    return result;
 }
@@ -3042,6 +3043,10 @@ double CLASSNAME::CpbarFgVPFgPR() const
    double result = 0.0;
 
    result = -2*g2*Sin(ThetaW());
+
+		
+		
+
 
    return result;
 }
@@ -3975,7 +3980,7 @@ std::complex<double> CLASSNAME::self_energy_VZ(double p ) const
 std::complex<double> CLASSNAME::self_energy_VWp(double p ) const
 {
    std::complex<double> result;
-
+	 
    result += AbsSqr(CpconjVWpbargPgWp())*B00(p,MVWp,MVP);
    result += AbsSqr(CpconjVWpbargWpCgP())*B00(p,MVP,MVWp);
    result += AbsSqr(CpconjVWpbargWpCgZ())*B00(p,MVZ,MVWp);
@@ -4632,7 +4637,7 @@ std::complex<double> CLASSNAME::self_energy_Fg_1(double p ) const
    result += -4*MFg*(-0.5 + B0(p,MFg,0))*Conj(CpbarFgVPFgPR())*CpbarFgVPFgPL();
    result += -4*MFg*(-0.5 + B0(p,MFg,MVZ))*Conj(CpbarFgVZFgPR())*CpbarFgVZFgPL(
       );
-
+      
    return result * oneOver16PiSqr;
 
 }
@@ -5465,8 +5470,10 @@ void CLASSNAME::calculate_MVZ_pole()
    // diagonalization with low precision
    const double M_tree(Sqr(MVZ));
    const double p = MVZ;
-   const double self_energy = Re(self_energy_VZ(p));
+   const double self_energy = Re(self_energy_VZ_heavy(p));
    const double mass_sqr = M_tree - self_energy;
+   std::cout << "computing physical mass, M_tree = " << MVZ << " m_pole = " << AbsSqrt(mass_sqr) << std::endl;
+
 
    if (mass_sqr < 0.)
       problems.flag_tachyon(MDM_info::VZ);
@@ -5707,8 +5714,13 @@ double CLASSNAME::calculate_MVP_DRbar(double)
 double CLASSNAME::calculate_MVZ_DRbar(double m_pole)
 {
    const double p = m_pole;
-   const double self_energy = Re(self_energy_VZ(p));
+   const double self_energy = Re(self_energy_VZ_heavy(p));
    const double mass_sqr = Sqr(m_pole) + self_energy;
+   
+   std::cout << "MZ pole = " << m_pole << " ms_bar = " << AbsSqrt(mass_sqr) << std::endl;
+   std::cout << "MFc = " << MFc << " g2 = " << g2 << ", Cos(ThetaW()) = " << Cos(ThetaW())  << " MVZ = " << MVZ << " MVWp = " << MVWp << " v = " << v << std::endl;
+	 std::cout << "self_energy_VZ_heavy(p) = " << self_energy_VZ_heavy(p) << " at Q = " << get_scale() << std::endl;
+
 
    if (mass_sqr < 0.) {
       problems.flag_tachyon(MDM_info::VZ);
@@ -5721,8 +5733,12 @@ double CLASSNAME::calculate_MVZ_DRbar(double m_pole)
 double CLASSNAME::calculate_MVWp_DRbar(double m_pole)
 {
    const double p = m_pole;
-   const double self_energy = Re(self_energy_VWp(p));
+   const double self_energy = Re(self_energy_VWp_heavy(p));
    const double mass_sqr = Sqr(m_pole) + self_energy;
+   std::cout.precision(10);
+   std::cout << "MW pole = " << m_pole << " ms_bar = " << AbsSqrt(mass_sqr) << std::endl;
+   std::cout << "MFc = " << MFc << " g2 = " << g2 << ", Cos(ThetaW()) = " << Cos(ThetaW())  << " MVZ = " << MVZ << " MVWp = " << MVWp << " v = " << v << std::endl;
+   std::cout << "self_energy_VWp_heavy(p) = " << self_energy_VWp_heavy(p) << " at Q = " << get_scale() << std::endl;
 
    if (mass_sqr < 0.) {
       problems.flag_tachyon(MDM_info::VWp);
@@ -5735,7 +5751,8 @@ double CLASSNAME::calculate_MVWp_DRbar(double m_pole)
 
 double CLASSNAME::ThetaW() const
 {
-   return ArcCos(Abs(ZZ(0,0)));
+   return ArcCos( MVWp/MVZ );  //cw =  mw/mz;
+   //return ArcCos(Abs(ZZ(0,0)));  //cw =  mw/mz;
 }
 
 

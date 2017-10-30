@@ -318,12 +318,12 @@ MQD[2] = FCGV["MS"];
 MQD[3] = FCGV["MB"];*)
 
 MLE[1] = FCGV["MF"];
-MLE[2] = FCGV["MF"];
-MLE[3] = FCGV["MF"];
-MQU[1] = FCGV["MU"];
+MLE[2] = FCGV["MM"];
+MLE[3] = FCGV["ML"];
+MQU[1] = FCGV["MF"];
 MQU[2] = FCGV["MC"];
 MQU[3] = FCGV["MT"];
-MQD[1] = FCGV["MD"];
+MQD[1] = FCGV["MF"];
 MQD[2] = FCGV["MS"];
 MQD[3] = FCGV["MB"];
 

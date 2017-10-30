@@ -28,12 +28,17 @@ int main(int argc, char *argv[])
   
   Data data(options);
   
-  /*
+  
   
   MDM_spectrum spec(data);
   spec.compute_spectra_flexiblesusy();
-  //spec.compute_spectra_MB_2loop();
-  spec.compute_tsil();
+  
+  data.alpha = spec.data.alpha;
+  
+  MDM_spectrum spec2(data);
+  spec2.compute_spectra_MB_2loop();
+  //spec.compute_tsil();
+	/*
   cout << "--- explicit --- " << endl;
   cout << "1-loop mass splitting = " <<  spec.get_deltam() << endl;
   cout << "2-loop mass splitting = " <<  spec.get_deltam_2loop() + spec.get_deltam() << endl;
@@ -52,7 +57,7 @@ int main(int argc, char *argv[])
   //Figures<EW_triplet_spectrum> fig;
   Figures<MDM_spectrum> fig;
   
-  fig.plot_M(data);
+  //fig.plot_M(data);
   
   //fig.plot_2loop_uncertainties(data,false);
   

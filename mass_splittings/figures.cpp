@@ -498,19 +498,35 @@ void Figures<T>::plot_M(Data data)
     //mssm_1loop.compute_spectra_flexiblesusy();
     //mssm_1loop.compute_spectra_MB_1loop();
     mssm_1loop.compute_tsil();
-    double delta_m_1 = mssm_1loop.get_deltam2();
+    double delta_m_1 = mssm_1loop.get_deltam();
     
     data.do_tsil_all = true;
+    
+    T mssm_2loopFS(data);
+    
+    mssm_2loopFS.compute_spectra_flexiblesusy();
+    mssm_2loopFS.compute_tsil();
+    double delta_m_2FS = mssm_2loopFS.get_deltam_2loop()+ mssm_2loopFS.get_deltam();
+    
+    //double delta_m_2FS = 0;
+    
+    
     T mssm_2loop(data);
     
-    //mssm_2loop.compute_spectra_flexiblesusy();
-    mssm_2loop.compute_spectra_MB_2loop();
+    //mssm_2loop.compute_spectra_MB_2loop();
+    cout << "compute tsil"<< endl;
     mssm_2loop.compute_tsil();
-    double delta_m_2 = mssm_2loop.get_deltam2_2loop()+ mssm_2loop.get_deltam2();
-    myfile << data.MChi << " " << delta_m_1 <<  " " << delta_m_2 << endl;
+    cout << "done " << endl;
+    double delta_m_2 = mssm_2loop.get_deltam_2loop()+ mssm_2loop.get_deltam();
+    
+    
+    
+    
+    
+    myfile << data.MChi << " " << delta_m_1 <<  " " << delta_m_2 << " " << delta_m_2FS << endl;
     status=(float(i)/pts)*100;
-		cout<< "\r" << "computing mass splitting . . . " << status << "% complete ";
-	  std::cout << std::flush;
+		//cout<< "\r" << "computing mass splitting . . . " << status << "% complete ";
+	  //std::cout << std::flush;
   }
   status=100;
   cout<< "\r" << "computing mass splittings . . . " << status << "% complete ";

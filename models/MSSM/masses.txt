@@ -5,8 +5,8 @@ mz z
 mh h
 mf f
 mt t
-mu u
 mc c
-md d
 ms s
 mb b
+mm m
+ml l

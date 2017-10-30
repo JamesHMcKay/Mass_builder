@@ -32,18 +32,21 @@ ax = fig.add_subplot(1,1,1)
 
 ax.xaxis.set_major_formatter(ticker.FormatStrFormatter("%d"))
 
-A=np.genfromtxt('mass_splittings/data2/deltam_M.txt',usecols=[0,1,2])
+A=np.genfromtxt('mass_splittings/data2/deltam_M.txt',usecols=[0,1,2,3])
 x=A[:,0]
 y1=A[:,1]*1000
 y2=A[:,2]*1000
+y3=A[:,3]*1000
 
 
 plt.plot(x,y1,'-',color='red',label='1-loop') #
 
 plt.plot(x,y2,'-',color='green',label='2-loop') #
 
-#plt.xlim([90,5000])
-#plt.ylim([145,175])
+plt.plot(x,y3,'--',color='green',label='2-loop FS') #
+
+plt.xlim([90,5000])
+plt.ylim([150,180])
 leg = plt.legend(loc='lower left')
 ax.set_xscale('log')
 
@@ -77,8 +80,8 @@ g=np.poly1d(gx)
 plt.plot(exp(r),g(r),'-',color='yellow')
 
 
-#plt.xlim([90,4000])
-#plt.ylim([145,172])
+plt.xlim([90,4000])
+plt.ylim([145,172])
 ax.set_xscale('log')
 
 plt.savefig("mass_splittings/figures2/interpolation.eps")
