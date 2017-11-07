@@ -48,10 +48,9 @@ Block SMINPUTS               # Standard Model inputs
 Block MINPAR
    3   0   # TanBeta
    4   0   # Sign(Mu)
-   5   0   # MassWBIN
 Block EXTPAR
    0   0   # Qin
-   1   0   # QEWSB
+   1   0   # QSUSY
    21   0   # mHd2IN
    22   0   # mHu2IN
 Block AeijIN
@@ -136,5 +135,6 @@ Block MSE2IN
    3   3   0   # me2Input(3,3)
 Block MSOFTIN
    1   0   # MassBInput
+   2   0   # MassWBInput
    3   0   # MassGInput
 

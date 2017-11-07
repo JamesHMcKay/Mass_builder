@@ -16,7 +16,7 @@
 // <http://www.gnu.org/licenses/>.
 // ====================================================================
 
-// File generated at Sat 2 Sep 2017 19:01:05
+// File generated at Tue 7 Nov 2017 11:41:24
 
 #include "MSSM_input_parameters.hpp"
 #include "MSSM_spectrum_generator.hpp"
@@ -41,12 +41,12 @@ void print_usage()
       "Options:\n"
       "  --TanBeta=<value>\n"
       "  --SignMu=<value>\n"
-      "  --MassWBIN=<value>\n"
       "  --Qin=<value>\n"
-      "  --QEWSB=<value>\n"
+      "  --QSUSY=<value>\n"
       "  --mHd2IN=<value>\n"
       "  --mHu2IN=<value>\n"
       "  --MassBInput=<value>\n"
+      "  --MassWBInput=<value>\n"
       "  --MassGInput=<value>\n"
 
       "  --help,-h                         print this help message"
@@ -65,13 +65,10 @@ void set_command_line_parameters(int argc, char* argv[],
       if(Command_line_options::get_parameter_value(option, "--SignMu=", input.SignMu))
          continue;
 
-      if(Command_line_options::get_parameter_value(option, "--MassWBIN=", input.MassWBIN))
-         continue;
-
       if(Command_line_options::get_parameter_value(option, "--Qin=", input.Qin))
          continue;
 
-      if(Command_line_options::get_parameter_value(option, "--QEWSB=", input.QEWSB))
+      if(Command_line_options::get_parameter_value(option, "--QSUSY=", input.QSUSY))
          continue;
 
       if(Command_line_options::get_parameter_value(option, "--mHd2IN=", input.mHd2IN))
@@ -81,6 +78,9 @@ void set_command_line_parameters(int argc, char* argv[],
          continue;
 
       if(Command_line_options::get_parameter_value(option, "--MassBInput=", input.MassBInput))
+         continue;
+
+      if(Command_line_options::get_parameter_value(option, "--MassWBInput=", input.MassWBInput))
          continue;
 
       if(Command_line_options::get_parameter_value(option, "--MassGInput=", input.MassGInput))

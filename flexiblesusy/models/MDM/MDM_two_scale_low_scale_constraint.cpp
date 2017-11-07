@@ -16,7 +16,7 @@
 // <http://www.gnu.org/licenses/>.
 // ====================================================================
 
-// File generated at Fri 13 Oct 2017 19:49:31
+// File generated at Tue 7 Nov 2017 22:08:55
 
 #include "MDM_two_scale_low_scale_constraint.hpp"
 #include "MDM_two_scale_model.hpp"
@@ -109,7 +109,7 @@ void MDM_low_scale_constraint<Two_scale>::apply()
           " model pointer must not be zero");
 
 
-	 std::cout << "MDM_low_scale_constraint::apply() ----- " << std::endl;
+
    model->calculate_DRbar_masses();
    update_scale();
    qedqcd.runto(scale, 1.0e-5);
@@ -129,8 +129,8 @@ void MDM_low_scale_constraint<Two_scale>::apply()
    MODEL->set_g3(new_g3);
 
 
-   //if (model->get_thresholds())
-      //qedqcd.setPoleMW(recalculate_mw_pole(qedqcd.displayPoleMW()));
+   if (model->get_thresholds())
+      qedqcd.setPoleMW(recalculate_mw_pole(qedqcd.displayPoleMW()));
 
 
 }
@@ -237,10 +237,10 @@ void MDM_low_scale_constraint<Two_scale>::calculate_threshold_corrections()
    double delta_alpha_em = 0.;
    double delta_alpha_s  = 0.;
 
- //  if (model->get_thresholds()) {
-  //    delta_alpha_em = calculate_delta_alpha_em(alpha_em);
-  //    delta_alpha_s  = calculate_delta_alpha_s(alpha_s);
-  // }
+   if (model->get_thresholds()) {
+      delta_alpha_em = calculate_delta_alpha_em(alpha_em);
+      delta_alpha_s  = calculate_delta_alpha_s(alpha_s);
+   }
 
    const double alpha_em_drbar = alpha_em / (1.0 - delta_alpha_em);
    const double alpha_s_drbar  = alpha_s  / (1.0 - delta_alpha_s);
@@ -254,8 +254,6 @@ void MDM_low_scale_constraint<Two_scale>::calculate_threshold_corrections()
       MZDRbar = model->calculate_MVZ_DRbar(mz_pole);
       MWDRbar = model->calculate_MVWp_DRbar(mw_pole);
    }
-   
-   std::cout << "MWDRbar = " << MWDRbar << " MZDRbar = " << MZDRbar << std::endl;
 
    AlphaS = alpha_s_drbar;
    EDRbar = e_drbar;
@@ -373,11 +371,15 @@ double MDM_low_scale_constraint<Two_scale>::calculate_delta_alpha_em(double alph
 
    const double currentScale = model->get_scale();
    const auto MFu = MODELPARAMETER(MFu);
+   const auto MFc = MODELPARAMETER(MFc);
+   const auto MFg = MODELPARAMETER(MFg);
 
    const double delta_alpha_em_SM = -0.28294212105225836*alphaEm*FiniteLog(Abs(
       MFu(2)/currentScale));
 
-   const double delta_alpha_em = 0;
+   const double delta_alpha_em = 0.15915494309189535*alphaEm*(
+      -1.3333333333333333*FiniteLog(Abs(MFc/currentScale)) - 5.333333333333333*
+      FiniteLog(Abs(MFg/currentScale)));
 
    return delta_alpha_em + delta_alpha_em_SM;
 

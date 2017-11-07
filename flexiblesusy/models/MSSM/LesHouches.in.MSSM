@@ -6,9 +6,9 @@ Block FlexibleSUSY
     1   0                    # max. iterations (0 = automatic)
     2   0                    # algorithm (0 = two_scale, 1 = lattice)
     3   0                    # calculate SM pole masses
-    4   2                    # pole mass loop order
+    4   1                    # pole mass loop order
     5   2                    # EWSB loop order
-    6   3                    # beta-functions loop order
+    6   0                    # beta-functions loop order
     7   2                    # threshold corrections loop order
     8   1                    # Higgs 2-loop corrections O(alpha_t alpha_s)
     9   1                    # Higgs 2-loop corrections O(alpha_b alpha_s)
@@ -59,12 +59,11 @@ Block SMINPUTS               # Standard Model inputs
 Block MINPAR                 # Input parameters
     3   10.                  # TanBeta
     4   1                    # SignMu
-    5   500
 Block EXTPAR
-    0   3000           # unification scale
-    1   2000
-   21   1562500000               # mHd2
-   22   -1562500000                # mHu2
+    0   1000           # unification scale
+    1   1000
+   21   1e9              # mHd2
+   22   -1e9                # mHu2
 Block AeijIN
     1   1   0.0
     2   2   0.0
@@ -78,56 +77,56 @@ Block AuijIN
     2   2   0.0
     3   3   0.0
 Block MSQ2IN
-  1  1     156250000.0          # mq2(1,1)
+  1  1     1.0E+8          # mq2(1,1)
   1  2     0.00000000E+00   # mq2(1,2)
   1  3     0.00000000E+00   # mq2(1,3)
   2  1     0.00000000E+00   # mq2(2,1)
-  2  2     156250000.0          # mq2(2,2)
+  2  2     1.0E+8          # mq2(2,2)
   2  3     0.00000000E+00   # mq2(2,3)
   3  1     0.00000000E+00   # mq2(3,1)
   3  2     0.00000000E+00   # mq2(3,2)
-  3  3     156250000.0          # mq2(3,3)
+  3  3     1.0E+8          # mq2(3,3)
 Block MSE2IN
-  1  1     156250000.0          # me2(1,1)
+  1  1     1.0E+8          # me2(1,1)
   1  2     0.00000000E+00   # me2(1,2)
   1  3     0.00000000E+00   # me2(1,3)
   2  1     0.00000000E+00   # me2(2,1)
-  2  2     156250000.0          # me2(2,2)
+  2  2     1.0E+8         # me2(2,2)
   2  3     0.00000000E+00   # me2(2,3)
   3  1     0.00000000E+00   # me2(3,1)
   3  2     0.00000000E+00   # me2(3,2)
-  3  3     156250000.0          # me2(3,3)
+  3  3     1.0E+8         # me2(3,3)
 Block MSL2IN
-  1  1     156250000.0          # ml2(1,1)
+  1  1     1.0E+8          # ml2(1,1)
   1  2     0.00000000E+00   # ml2(1,2)
   1  3     0.00000000E+00   # ml2(1,3)
   2  1     0.00000000E+00   # ml2(2,1)
-  2  2     156250000.0          # ml2(2,2)
+  2  2     1.0E+8          # ml2(2,2)
   2  3     0.00000000E+00   # ml2(2,3)
   3  1     0.00000000E+00   # ml2(3,1)
   3  2     0.00000000E+00   # ml2(3,2)
-  3  3     156250000.0          # ml2(3,3)
+  3  3     1.0E+8          # ml2(3,3)
 Block MSU2IN
-  1  1     156250000.0          # mu2(1,1)
+  1  1     1.0E+8          # mu2(1,1)
   1  2     0.00000000E+00   # mu2(1,2)
   1  3     0.00000000E+00   # mu2(1,3)
   2  1     0.00000000E+00   # mu2(2,1)
-  2  2     156250000.0          # mu2(2,2)
+  2  2     1.0E+8          # mu2(2,2)
   2  3     0.00000000E+00   # mu2(2,3)
   3  1     0.00000000E+00   # mu2(3,1)
   3  2     0.00000000E+00   # mu2(3,2)
-  3  3     156250000.0          # mu2(3,3)
+  3  3     1.0E+8          # mu2(3,3)
 Block MSD2IN
-  1  1     156250000.0          # md2(1,1)
+  1  1     1.0E+8         # md2(1,1)
   1  2     0.00000000E+00   # md2(1,2)
   1  3     0.00000000E+00   # md2(1,3)
   2  1     0.00000000E+00   # md2(2,1)
-  2  2     156250000.0          # md2(2,2)
+  2  2     1.0E+8          # md2(2,2)
   2  3     0.00000000E+00   # md2(2,3)
   3  1     0.00000000E+00   # md2(3,1)
   3  2     0.00000000E+00   # md2(3,2)
-  3  3     156250000.0          # md2(3,3)
+  3  3     1.0E+8          # md2(3,3)
 Block MSOFTIN
-     1     5000.0   # MassB
+     1     1.0E+4   # MassB
      2     500.0   # MassWB
-     3     5000.0   # MassG
+     3     1.0E+4   # MassG

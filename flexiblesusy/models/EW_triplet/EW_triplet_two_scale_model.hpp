@@ -16,7 +16,7 @@
 // <http://www.gnu.org/licenses/>.
 // ====================================================================
 
-// File generated at Thu 24 Aug 2017 11:18:34
+// File generated at Tue 7 Nov 2017 22:05:43
 
 /**
  * @file EW_triplet_two_scale_model.hpp
@@ -24,8 +24,8 @@
  *        value problem using the two_scale solver by solvingt EWSB
  *        and determine the pole masses and mixings
  *
- * This file was generated at Thu 24 Aug 2017 11:18:34 with FlexibleSUSY
- * 1.7.4 (git commit: unknown) and SARAH 4.9.3 .
+ * This file was generated at Tue 7 Nov 2017 22:05:43 with FlexibleSUSY
+ * 1.7.4 (git commit: unknown) and SARAH 4.12.2 .
  */
 
 #ifndef EW_triplet_TWO_SCALE_H

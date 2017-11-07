@@ -86,9 +86,8 @@ fsDefaultSMParameters = {
 fsMSSMDefaultInputParameters = {
    TanBeta -> 0,
    SignMu -> 0,
-   MassWBIN -> 0,
    Qin -> 0,
-   QEWSB -> 0,
+   QSUSY -> 0,
    mHd2IN -> 0,
    mHu2IN -> 0,
    Aeij -> {{0, 0, 0}, {0, 0, 0}, {0, 0, 0}},
@@ -100,6 +99,7 @@ fsMSSMDefaultInputParameters = {
    mu2Input -> {{0, 0, 0}, {0, 0, 0}, {0, 0, 0}},
    me2Input -> {{0, 0, 0}, {0, 0, 0}, {0, 0, 0}},
    MassBInput -> 0,
+   MassWBInput -> 0,
    MassGInput -> 0
 };
 
@@ -175,9 +175,8 @@ FSMSSMOpenHandle[OptionsPattern[]] :=
             ,
             OptionValue[TanBeta],
             OptionValue[SignMu],
-            OptionValue[MassWBIN],
             OptionValue[Qin],
-            OptionValue[QEWSB],
+            OptionValue[QSUSY],
             OptionValue[mHd2IN],
             OptionValue[mHu2IN],
             OptionValue[Aeij][[1,1]],
@@ -253,6 +252,7 @@ FSMSSMOpenHandle[OptionsPattern[]] :=
             OptionValue[me2Input][[3,2]],
             OptionValue[me2Input][[3,3]],
             OptionValue[MassBInput],
+            OptionValue[MassWBInput],
             OptionValue[MassGInput]
         }
 ];
@@ -326,9 +326,8 @@ FSMSSMSet[handle_Integer, p:OptionsPattern[]] :=
             ,
             OptionValue[TanBeta],
             OptionValue[SignMu],
-            OptionValue[MassWBIN],
             OptionValue[Qin],
-            OptionValue[QEWSB],
+            OptionValue[QSUSY],
             OptionValue[mHd2IN],
             OptionValue[mHu2IN],
             OptionValue[Aeij][[1,1]],
@@ -404,6 +403,7 @@ FSMSSMSet[handle_Integer, p:OptionsPattern[]] :=
             OptionValue[me2Input][[3,2]],
             OptionValue[me2Input][[3,3]],
             OptionValue[MassBInput],
+            OptionValue[MassWBInput],
             OptionValue[MassGInput]
         }] /. HoldPattern[OptionValue[param_]] :> FSMSSMCheckIsNumeric[param] /.
         { p } /.

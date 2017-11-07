@@ -16,7 +16,7 @@
 // <http://www.gnu.org/licenses/>.
 // ====================================================================
 
-// File generated at Sat 2 Sep 2017 19:01:02
+// File generated at Tue 7 Nov 2017 11:41:20
 
 /**
  * @file MSSM_mass_eigenstates.cpp
@@ -26,8 +26,8 @@
  * which solve EWSB and calculate pole masses and mixings from DRbar
  * parameters.
  *
- * This file was generated at Sat 2 Sep 2017 19:01:02 with FlexibleSUSY
- * 1.7.4 (git commit: unknown) and SARAH 4.9.3 .
+ * This file was generated at Tue 7 Nov 2017 11:41:20 with FlexibleSUSY
+ * 1.7.4 (git commit: unknown) and SARAH 4.12.2 .
  */
 
 #include "MSSM_mass_eigenstates.hpp"
@@ -18061,7 +18061,7 @@ double CLASSNAME::Betax() const
 
 double CLASSNAME::Alpha() const
 {
-   return ArcCos(ZH(0,1));
+   return ArcTan(ZH(1,1)/ZH(0,1));
 }
 
 double CLASSNAME::ThetaW() const

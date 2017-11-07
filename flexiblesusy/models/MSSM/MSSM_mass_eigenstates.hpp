@@ -16,7 +16,7 @@
 // <http://www.gnu.org/licenses/>.
 // ====================================================================
 
-// File generated at Sat 2 Sep 2017 19:01:02
+// File generated at Tue 7 Nov 2017 11:41:20
 
 /**
  * @file MSSM_mass_eigenstates.hpp
@@ -25,8 +25,8 @@
  *        value problem using the two_scale solver by solving EWSB
  *        and determine the pole masses and mixings
  *
- * This file was generated at Sat 2 Sep 2017 19:01:02 with FlexibleSUSY
- * 1.7.4 (git commit: unknown) and SARAH 4.9.3 .
+ * This file was generated at Tue 7 Nov 2017 11:41:20 with FlexibleSUSY
+ * 1.7.4 (git commit: unknown) and SARAH 4.12.2 .
  */
 
 #ifndef MSSM_MASS_EIGENSTATES_H

@@ -16,7 +16,7 @@
 // <http://www.gnu.org/licenses/>.
 // ====================================================================
 
-// File generated at Sat 2 Sep 2017 19:00:33
+// File generated at Tue 7 Nov 2017 11:40:50
 
 #include "MSSM_two_scale_initial_guesser.hpp"
 #include "MSSM_two_scale_model.hpp"
@@ -210,6 +210,8 @@ void MSSM_initial_guesser<Two_scale>::calculate_Ye_DRbar()
  * high-scale constraint (HighScaleInput):
  *
  * \code{.cpp}
+   MODEL->set_Mu(Re(1.));
+   MODEL->set_BMu(Re(0.));
 
  * \endcode
  *
@@ -229,6 +231,8 @@ void MSSM_initial_guesser<Two_scale>::guess_soft_parameters()
    high_constraint.apply();
 
    // apply user-defined initial guess at the high scale
+   MODEL->set_Mu(Re(1.));
+   MODEL->set_BMu(Re(0.));
 
 
    model->run_to(low_scale_guess, running_precision);

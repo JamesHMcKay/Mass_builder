@@ -16,7 +16,7 @@
 // <http://www.gnu.org/licenses/>.
 // ====================================================================
 
-// File generated at Sat 2 Sep 2017 19:00:31
+// File generated at Tue 7 Nov 2017 11:40:48
 
 #include "MSSM_slha_io.hpp"
 #include "MSSM_input_parameters.hpp"
@@ -75,7 +75,7 @@ void MSSM_slha_io::set_extpar(const MSSM_input_parameters& input)
 
    extpar << "Block EXTPAR\n";
    extpar << FORMAT_ELEMENT(0, input.Qin, "Qin");
-   extpar << FORMAT_ELEMENT(1, input.QEWSB, "QEWSB");
+   extpar << FORMAT_ELEMENT(1, input.QSUSY, "QSUSY");
    extpar << FORMAT_ELEMENT(21, input.mHd2IN, "mHd2IN");
    extpar << FORMAT_ELEMENT(22, input.mHu2IN, "mHu2IN");
    slha_io.set_block(extpar);
@@ -94,7 +94,6 @@ void MSSM_slha_io::set_minpar(const MSSM_input_parameters& input)
    minpar << "Block MINPAR\n";
    minpar << FORMAT_ELEMENT(3, input.TanBeta, "TanBeta");
    minpar << FORMAT_ELEMENT(4, input.SignMu, "SignMu");
-   minpar << FORMAT_ELEMENT(5, input.MassWBIN, "MassWBIN");
    slha_io.set_block(minpar);
 
 }
@@ -366,6 +365,7 @@ void MSSM_slha_io::fill(MSSM_input_parameters& input) const
    slha_io.read_block("AuijIN", input.Auij);
    input.MassBInput = slha_io.read_entry("MSOFTIN", 1);
    input.MassGInput = slha_io.read_entry("MSOFTIN", 3);
+   input.MassWBInput = slha_io.read_entry("MSOFTIN", 2);
    slha_io.read_block("MSD2IN", input.md2Input);
    slha_io.read_block("MSE2IN", input.me2Input);
    slha_io.read_block("MSL2IN", input.ml2Input);
@@ -497,7 +497,6 @@ void MSSM_slha_io::fill_minpar_tuple(MSSM_input_parameters& input,
    switch (key) {
    case 3: input.TanBeta = value; break;
    case 4: input.SignMu = value; break;
-   case 5: input.MassWBIN = value; break;
    default: WARNING("Unrecognized entry in block MINPAR: " << key); break;
    }
 
@@ -508,7 +507,7 @@ void MSSM_slha_io::fill_extpar_tuple(MSSM_input_parameters& input,
 {
    switch (key) {
    case 0: input.Qin = value; break;
-   case 1: input.QEWSB = value; break;
+   case 1: input.QSUSY = value; break;
    case 21: input.mHd2IN = value; break;
    case 22: input.mHu2IN = value; break;
    default: WARNING("Unrecognized entry in block EXTPAR: " << key); break;

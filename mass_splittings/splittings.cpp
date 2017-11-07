@@ -28,22 +28,28 @@ int main(int argc, char *argv[])
   
   Data data(options);
   
-  
-  
-  MDM_spectrum spec(data);
+    
+  MSSM_spectrum spec(data);
   spec.compute_spectra_flexiblesusy();
+  spec.compute_tsil();
+  cout << "FS mass splitting = " <<  spec.get_deltam() << endl;
   
-  data.alpha = spec.data.alpha;
   
-  MDM_spectrum spec2(data);
+  MSSM_spectrum spec2(data);
   spec2.compute_spectra_MB_2loop();
-  //spec.compute_tsil();
-	/*
+	spec2.compute_tsil();
+  cout << "MB mass splitting = " <<  spec2.get_deltam() << endl;  
+  
+  /*
+
+  spec.compute_tsil();
+	
   cout << "--- explicit --- " << endl;
   cout << "1-loop mass splitting = " <<  spec.get_deltam() << endl;
   cout << "2-loop mass splitting = " <<  spec.get_deltam_2loop() + spec.get_deltam() << endl;
   cout << "1-loop mass splitting 2 = " <<  spec.get_deltam2() << endl;
   cout << "2-loop mass splitting 2 = " <<  spec.get_deltam2_2loop() + spec.get_deltam2() << endl;
+	
 	
   EW_triplet_spectrum spec2(data);
   spec2.compute_spectra_flexiblesusy();
@@ -54,8 +60,10 @@ int main(int argc, char *argv[])
   cout << "2-loop mass splitting = " <<  spec2.get_deltam_2loop() + spec2.get_deltam()<< endl;
   */
   
+  Figures<MSSM_spectrum> fig;
+  
   //Figures<EW_triplet_spectrum> fig;
-  Figures<MDM_spectrum> fig;
+  //Figures<MDM_spectrum> fig;
   
   //fig.plot_M(data);
   

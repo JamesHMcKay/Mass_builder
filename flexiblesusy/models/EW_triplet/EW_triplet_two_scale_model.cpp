@@ -16,7 +16,7 @@
 // <http://www.gnu.org/licenses/>.
 // ====================================================================
 
-// File generated at Thu 24 Aug 2017 11:18:34
+// File generated at Tue 7 Nov 2017 22:05:43
 
 /**
  * @file EW_triplet_two_scale_model.cpp
@@ -26,8 +26,8 @@
  * which solve EWSB and calculate pole masses and mixings from DRbar
  * parameters.
  *
- * This file was generated at Thu 24 Aug 2017 11:18:34 with FlexibleSUSY
- * 1.7.4 (git commit: unknown) and SARAH 4.9.3 .
+ * This file was generated at Tue 7 Nov 2017 22:05:43 with FlexibleSUSY
+ * 1.7.4 (git commit: unknown) and SARAH 4.12.2 .
  */
 
 #include "EW_triplet_two_scale_model.hpp"

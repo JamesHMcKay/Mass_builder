@@ -294,10 +294,10 @@ bool MSSM_spectrum::compute_spectra_flexiblesusy()
   
   oneset.toMz();
   
-	input.QEWSB=data.Q;
-	input.Qin=data.Q;
+	//input.QSUSY=data.Q;
+	//input.Qin=data.Q;
   //input.HiggsIN = 0.5*pow(data.mh,2);
-  input.MassWBIN = data.MChi;
+  input.MassWBInput = data.MChi;
   
   
   spectrum_generator.run(oneset, input);
@@ -326,9 +326,9 @@ bool MSSM_spectrum::compute_spectra_flexiblesusy()
   data.mw = model.get_MVWm();
   data.mz = model.get_MVZ();
   //data.mh = model.get_Mhh_pole_slha(0);
-  data.mh = model.get_Mhh(0);
-  data.mt = model.get_MFu(2);
-  data.v = model.get_vu();
+  //data.mh = model.get_Mhh(0);
+  //data.mt = model.get_MFu(2);
+  //data.v = model.get_vu();
   
   double g1 = pow(3./5.,0.5)*model.get_g1();
   double g2 = model.get_g2();
@@ -414,7 +414,7 @@ double MSSM_spectrum::get_deltam()
 
 double MSSM_spectrum::get_deltam_2loop()
 {
-	return data.SE_1["F12_g1"]+data.SE_2["F12_g1"] - data.SE_2["F11_g1"] - data.SE_1["F11_g1"];
+	return data.SE_2["F12_g1"] - data.SE_2["F11_g1"];
 }
 
 double MSSM_spectrum::get_charged_mass()

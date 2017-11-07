@@ -60,9 +60,8 @@ handle = FSMSSMOpenHandle[
     fsModelParameters -> {
         TanBeta -> 0,
         SignMu -> 0,
-        MassWBIN -> 0,
         Qin -> 0,
-        QEWSB -> 0,
+        QSUSY -> 0,
         mHd2IN -> 0,
         mHu2IN -> 0,
         Aeij -> {{0, 0, 0}, {0, 0, 0}, {0, 0, 0}},
@@ -74,6 +73,7 @@ handle = FSMSSMOpenHandle[
         mu2Input -> {{0, 0, 0}, {0, 0, 0}, {0, 0, 0}},
         me2Input -> {{0, 0, 0}, {0, 0, 0}, {0, 0, 0}},
         MassBInput -> 0,
+        MassWBInput -> 0,
         MassGInput -> 0
     }
 ];

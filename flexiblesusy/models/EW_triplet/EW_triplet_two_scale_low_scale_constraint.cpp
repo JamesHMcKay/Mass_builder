@@ -16,7 +16,7 @@
 // <http://www.gnu.org/licenses/>.
 // ====================================================================
 
-// File generated at Thu 24 Aug 2017 11:18:24
+// File generated at Tue 7 Nov 2017 22:04:08
 
 #include "EW_triplet_two_scale_low_scale_constraint.hpp"
 #include "EW_triplet_two_scale_model.hpp"
@@ -369,11 +369,13 @@ double EW_triplet_low_scale_constraint<Two_scale>::calculate_delta_alpha_em(doub
 
    const double currentScale = model->get_scale();
    const auto MFu = MODELPARAMETER(MFu);
+   const auto MFc = MODELPARAMETER(MFc);
 
    const double delta_alpha_em_SM = -0.28294212105225836*alphaEm*FiniteLog(Abs(
       MFu(2)/currentScale));
 
-   const double delta_alpha_em = 0;
+   const double delta_alpha_em = -0.2122065907891938*alphaEm*FiniteLog(Abs(
+      MFc/currentScale));
 
    return delta_alpha_em + delta_alpha_em_SM;
 

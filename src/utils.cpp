@@ -586,8 +586,8 @@ namespace utils
     input+="], ";
     input+="IncomingMomenta -> {p}, OutgoingMomenta -> {p}, LoopMomenta -> {k1, k2} ,";
     input+="UndoChiralSplittings -> True,TransversePolarizationVectors -> {p}, ";
-    input+="DropSumOver -> True, List -> False,ChangeDimension -> D] // Contract // FCTraceFactor;";
-    
+    input+="DropSumOver -> False, List -> False,ChangeDimension -> D] // Contract // FCTraceFactor;";
+    input+="amp0 = amp0 /.SumOver[SUNFIndex[x_], 3]->3;";
     //input+="amp0 = amp0 /. GaugeXi[Z] -> Xi^2 /. GaugeXi[A] -> Xi^2 /. GaugeXi[W] -> Xi^2 /. GaugeXi[P] -> Xi^2 /. GaugeXi[Wp] -> Xi^2; ";
     
     

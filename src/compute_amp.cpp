@@ -863,10 +863,10 @@ void Compute_amp::solve_1loop(std::string particle,vector<std::string> diagram)
 	}
 	else if (nc_req == 1)
 	{
-		input += "eq1 = FullSimplify[SE+SEct];";
+		input += "eq1 = FullSimplify[SE+SEct(*/.g1->g2*STW/CTW/.v->2*mw/g2/.mz->mw/CTW,{STW^2+CTW^2==1}*)];";
 		input += "sol = Solve[{eq1==0},{" + required_couplings[0] + "}];";
 		input += "Set @@@ sol[[1]];";
-		input += "ToString[FullSimplify[" + required_couplings[0] + "(*/.g1->g2*STW/CTW/.v->2*mw/g2/.mz->mw/CTW,{STW^2+CTW^2==1}*)],CForm]";
+		input += "ToString[FullSimplify[" + required_couplings[0] + "(**)],CForm]";
 		send_to_math(input);
   
 		const char* coupling_1;

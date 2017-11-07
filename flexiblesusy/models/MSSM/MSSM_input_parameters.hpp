@@ -16,7 +16,7 @@
 // <http://www.gnu.org/licenses/>.
 // ====================================================================
 
-// File generated at Sat 2 Sep 2017 19:00:28
+// File generated at Tue 7 Nov 2017 11:40:45
 
 #ifndef MSSM_INPUT_PARAMETERS_H
 #define MSSM_INPUT_PARAMETERS_H
@@ -29,9 +29,8 @@ namespace flexiblesusy {
 struct MSSM_input_parameters {
    double TanBeta;
    int SignMu;
-   double MassWBIN;
    double Qin;
-   double QEWSB;
+   double QSUSY;
    double mHd2IN;
    double mHu2IN;
    Eigen::Matrix<double,3,3> Aeij;
@@ -43,16 +42,17 @@ struct MSSM_input_parameters {
    Eigen::Matrix<double,3,3> mu2Input;
    Eigen::Matrix<double,3,3> me2Input;
    double MassBInput;
+   double MassWBInput;
    double MassGInput;
 
    MSSM_input_parameters()
-      : TanBeta(0), SignMu(1), MassWBIN(0), Qin(0), QEWSB(0), mHd2IN(0), mHu2IN(0)
-   , Aeij(Eigen::Matrix<double,3,3>::Zero()), Adij(Eigen::Matrix<double,3,3>
-   ::Zero()), Auij(Eigen::Matrix<double,3,3>::Zero()), mq2Input(Eigen::Matrix<
-   double,3,3>::Zero()), ml2Input(Eigen::Matrix<double,3,3>::Zero()), md2Input(
+      : TanBeta(0), SignMu(1), Qin(0), QSUSY(0), mHd2IN(0), mHu2IN(0), Aeij(
+   Eigen::Matrix<double,3,3>::Zero()), Adij(Eigen::Matrix<double,3,3>::Zero()),
+   Auij(Eigen::Matrix<double,3,3>::Zero()), mq2Input(Eigen::Matrix<double,3,3>
+   ::Zero()), ml2Input(Eigen::Matrix<double,3,3>::Zero()), md2Input(
    Eigen::Matrix<double,3,3>::Zero()), mu2Input(Eigen::Matrix<double,3,3>::Zero
-   ()), me2Input(Eigen::Matrix<double,3,3>::Zero()), MassBInput(0), MassGInput(
-   0)
+   ()), me2Input(Eigen::Matrix<double,3,3>::Zero()), MassBInput(0), MassWBInput
+   (0), MassGInput(0)
 
    {}
 

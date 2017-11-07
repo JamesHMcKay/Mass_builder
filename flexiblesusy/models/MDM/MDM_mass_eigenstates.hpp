@@ -16,7 +16,7 @@
 // <http://www.gnu.org/licenses/>.
 // ====================================================================
 
-// File generated at Fri 13 Oct 2017 19:49:40
+// File generated at Tue 7 Nov 2017 22:10:31
 
 /**
  * @file MDM_mass_eigenstates.hpp
@@ -25,8 +25,8 @@
  *        value problem using the two_scale solver by solving EWSB
  *        and determine the pole masses and mixings
  *
- * This file was generated at Fri 13 Oct 2017 19:49:40 with FlexibleSUSY
- * 1.7.4 (git commit: unknown) and SARAH 4.9.3 .
+ * This file was generated at Tue 7 Nov 2017 22:10:31 with FlexibleSUSY
+ * 1.7.4 (git commit: unknown) and SARAH 4.12.2 .
  */
 
 #ifndef MDM_MASS_EIGENSTATES_H
@@ -237,6 +237,34 @@ public:
    std::complex<double> CphhbarFeFePL(unsigned gI1, unsigned gI2) const;
    std::complex<double> CphhbarFuFuPR(unsigned gI1, unsigned gI2) const;
    std::complex<double> CphhbarFuFuPL(unsigned gI1, unsigned gI2) const;
+   std::complex<double> CpVGVGVG() const;
+   std::complex<double> CpVGbargGgG() const;
+   double CpVGbarFdFdPL(unsigned gI1, unsigned gI2) const;
+   double CpVGbarFdFdPR(unsigned gI1, unsigned gI2) const;
+   double CpVGbarFuFuPL(unsigned gI1, unsigned gI2) const;
+   double CpVGbarFuFuPR(unsigned gI1, unsigned gI2) const;
+   double CpVGVGVGVG1() const;
+   double CpVGVGVGVG2() const;
+   double CpVGVGVGVG3() const;
+   double CpVPbargWpgWp() const;
+   double CpVPbargWpCgWpC() const;
+   double CpVPconjHpHp() const;
+   double CpVPconjVWpHp() const;
+   std::complex<double> CpVPVPconjHpHp() const;
+   double CpVPconjVWpVWp() const;
+   double CpVPbarFcFcPL() const;
+   double CpVPbarFcFcPR() const;
+   double CpVPbarFgFgPL() const;
+   double CpVPbarFgFgPR() const;
+   double CpVPbarFdFdPL(unsigned gI1, unsigned gI2) const;
+   double CpVPbarFdFdPR(unsigned gI1, unsigned gI2) const;
+   double CpVPbarFeFePL(unsigned gI1, unsigned gI2) const;
+   double CpVPbarFeFePR(unsigned gI1, unsigned gI2) const;
+   double CpVPbarFuFuPL(unsigned gI1, unsigned gI2) const;
+   double CpVPbarFuFuPR(unsigned gI1, unsigned gI2) const;
+   double CpVPVPconjVWpVWp1() const;
+   double CpVPVPconjVWpVWp2() const;
+   double CpVPVPconjVWpVWp3() const;
    std::complex<double> CpVZhhAh() const;
    double CpVZVZhh() const;
    double CpVZbargWpgWp() const;
@@ -333,6 +361,12 @@ public:
    double CpbarUFeconjHpFvPR(unsigned , unsigned ) const;
    double CpbarUFeconjVWpFvPR(unsigned , unsigned ) const;
    double CpbarUFeconjVWpFvPL(unsigned gO1, unsigned gI2) const;
+   double CpbarFvHpFePL(unsigned , unsigned ) const;
+   std::complex<double> CpbarFvHpFePR(unsigned gO1, unsigned gI2) const;
+   double CpbarFvVWpFePR(unsigned , unsigned ) const;
+   std::complex<double> CpbarFvVWpFePL(unsigned gO1, unsigned gI2) const;
+   double CpbarFvVZFvPR(unsigned , unsigned ) const;
+   double CpbarFvVZFvPL(unsigned gO1, unsigned gI2) const;
    double CpbarFcVPFcPR() const;
    double CpbarFcVPFcPL() const;
    double CpbarFcVWpFnPR() const;
@@ -347,6 +381,8 @@ public:
    double CpbarFgVWpFcPL() const;
    double CpbarFgVZFgPR() const;
    double CpbarFgVZFgPL() const;
+   double CpFnbarFcVWpPR() const;
+   double CpFnbarFcVWpPL() const;
    double CpFnconjVWpFcPR() const;
    double CpFnconjVWpFcPL() const;
    std::complex<double> CpbarFdFdAhPL(unsigned gO2, unsigned gI1) const;
@@ -384,6 +420,8 @@ public:
    std::complex<double> self_energy_Hp(double p ) const;
    std::complex<double> self_energy_Ah(double p ) const;
    std::complex<double> self_energy_hh(double p ) const;
+   std::complex<double> self_energy_VG(double p ) const;
+   std::complex<double> self_energy_VP(double p ) const;
    std::complex<double> self_energy_VZ(double p ) const;
    std::complex<double> self_energy_VWp(double p ) const;
    std::complex<double> self_energy_Fd_1(double p , unsigned gO1, unsigned gO2) const;
@@ -395,6 +433,9 @@ public:
    std::complex<double> self_energy_Fe_1(double p , unsigned gO1, unsigned gO2) const;
    std::complex<double> self_energy_Fe_PR(double p , unsigned gO1, unsigned gO2) const;
    std::complex<double> self_energy_Fe_PL(double p , unsigned gO1, unsigned gO2) const;
+   std::complex<double> self_energy_Fv_1(double p , unsigned gO1, unsigned gO2) const;
+   std::complex<double> self_energy_Fv_PR(double p , unsigned gO1, unsigned gO2) const;
+   std::complex<double> self_energy_Fv_PL(double p , unsigned gO1, unsigned gO2) const;
    std::complex<double> self_energy_Fc_1(double p ) const;
    std::complex<double> self_energy_Fc_PR(double p ) const;
    std::complex<double> self_energy_Fc_PL(double p ) const;

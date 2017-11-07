@@ -16,7 +16,7 @@
 // <http://www.gnu.org/licenses/>.
 // ====================================================================
 
-// File generated at Sat 2 Sep 2017 19:01:06
+// File generated at Tue 7 Nov 2017 11:41:24
 
 #include "MSSM_info.hpp"
 #include "MSSM_input_parameters.hpp"
@@ -326,9 +326,8 @@ void put_input_parameters(const Model_data& data, MLINK link)
 
    MLPutRuleTo(link, INPUTPARAMETER(TanBeta), "TanBeta");
    MLPutRuleTo(link, INPUTPARAMETER(SignMu), "SignMu");
-   MLPutRuleTo(link, INPUTPARAMETER(MassWBIN), "MassWBIN");
    MLPutRuleTo(link, INPUTPARAMETER(Qin), "Qin");
-   MLPutRuleTo(link, INPUTPARAMETER(QEWSB), "QEWSB");
+   MLPutRuleTo(link, INPUTPARAMETER(QSUSY), "QSUSY");
    MLPutRuleTo(link, INPUTPARAMETER(mHd2IN), "mHd2IN");
    MLPutRuleTo(link, INPUTPARAMETER(mHu2IN), "mHu2IN");
    MLPutRuleTo(link, INPUTPARAMETER(Aeij), "Aeij");
@@ -340,6 +339,7 @@ void put_input_parameters(const Model_data& data, MLINK link)
    MLPutRuleTo(link, INPUTPARAMETER(mu2Input), "mu2Input");
    MLPutRuleTo(link, INPUTPARAMETER(me2Input), "me2Input");
    MLPutRuleTo(link, INPUTPARAMETER(MassBInput), "MassBInput");
+   MLPutRuleTo(link, INPUTPARAMETER(MassWBInput), "MassWBInput");
    MLPutRuleTo(link, INPUTPARAMETER(MassGInput), "MassGInput");
 
 
@@ -604,9 +604,8 @@ Model_data make_data(double* pars, mint npars)
 
    INPUTPARAMETER(TanBeta) = pars[c++];
    INPUTPARAMETER(SignMu) = pars[c++];
-   INPUTPARAMETER(MassWBIN) = pars[c++];
    INPUTPARAMETER(Qin) = pars[c++];
-   INPUTPARAMETER(QEWSB) = pars[c++];
+   INPUTPARAMETER(QSUSY) = pars[c++];
    INPUTPARAMETER(mHd2IN) = pars[c++];
    INPUTPARAMETER(mHu2IN) = pars[c++];
    INPUTPARAMETER(Aeij(0,0)) = pars[c++];
@@ -682,6 +681,7 @@ Model_data make_data(double* pars, mint npars)
    INPUTPARAMETER(me2Input(2,1)) = pars[c++];
    INPUTPARAMETER(me2Input(2,2)) = pars[c++];
    INPUTPARAMETER(MassBInput) = pars[c++];
+   INPUTPARAMETER(MassWBInput) = pars[c++];
    INPUTPARAMETER(MassGInput) = pars[c++];
 
 

@@ -345,18 +345,47 @@ void EW_triplet_spectrum::compute_spectra_MB_1loop()
 // determine MSbar parameters
 void EW_triplet_spectrum::compute_spectra_MB_2loop()
 {
-  Self_energy se;
-  long double tol = 1e-8;
- 
-  // determine MS bar input parameters at Q
-  // only recompute the 1-loop functions for efficiency
-  
+	
+	
+	
+	
   data.do_tsil_all = false;
   long double MChi_pole = data.MChi;
   long double mw_pole = data.mw;
   long double mz_pole = data.mz;
+
+	
+	
+	// RGE evolution
+  //double A = (19./(10.*Pi)); // EW_triplet
+  double A = (17./(30.*Pi)); // Wino model
+  //double A = (7./(30.*Pi)); // SM
+  double alpha_mz = data.alpha;
+  double mu0 = data.mz;
+  double mu = data.Q;
+  
+  
+  Self_energy se;
+  long double tol = 1e-10;
+ 
+  // run alpha up to the matching scale (so that all threshold corrections are applied at the same place)
+  data.alpha = pow(   1.0/alpha_mz -  A * log( mu/mu0) , -1);
   long double alpha_SM = data.alpha;
-  double diff = 1000;
+  
+	// matching of SM to Wino model
+	double diff = 1000;
+
+  
+  // run g3 from mz up to mt_pole
+  double mt_pole = 173.34; // 173.5 matches Ibe et al. better so is most likely what they used, is also a value given in the 2017 PDG (as measured from cross-section measurments)
+	double g3_at_mz = pow(4*Pi*0.1184,0.5);
+	//double A3 = -(7./(16.*Pi*Pi)); // SM
+	double A3 = -(3./(16.*Pi*Pi)); // MSSM
+	double g3 = pow(   1.0/pow(g3_at_mz,2) -  A3 * log( mt_pole/mu0) , -0.5);
+		/////  get mw ms bar mass
+				
+  // determine MS bar input parameters at Q
+  // only recompute the 1-loop functions for efficiency
   
   Data data_original = data;
   
@@ -368,8 +397,29 @@ void EW_triplet_spectrum::compute_spectra_MB_2loop()
   
   for (int k = 0 ; k < 5 ; k ++)
   {
+		double cw =  data.mw/data.mz;
+	  double cw2 =  pow(cw,2);
+	  double sw =  pow(1.-cw2,0.5);  
+	  double e = pow(4*Pi*data.alpha,0.5);
+		double g2 = e/sw;
+		double v = 2*data.mw/g2;
 		
-		/////  get mw ms bar mass
+	  double yt = data.mt*pow(2,0.5)/v;
+//	  double dyt = (1/mt_pole) * (1/(16*Pi*Pi)) * ( 0.5*9*pow(yt,3) - 8.0*yt*pow(g3,2) ); // MSSM
+	  double dyt = (1/mt_pole) * (1/(16*Pi*Pi)) * ( 0.5*3*pow(yt,3) - 8.0*yt*pow(g3,2) ); // SM or EW triplet
+	  // RGE from the SM
+	  double yt_Q = (data.Q - mt_pole) * dyt + yt;
+	  data.mt = yt_Q*v/(pow(2,0.5));
+	
+//		data.Q = data.mt;
+
+		data.P = data.Q;
+		while (diff > tol*1e-6)
+		{
+			alphaMS = alpha_SM*( 1.0-real(extra_TSIL_interface_EW_triplet::gammagamma_Chi(data,data.Q)) /pow(data.Q,2) );
+			diff = abs(data.alpha - alphaMS);
+			data.alpha = alphaMS;
+		}	
 		
 		data.P = mw_pole;
 		diff = 100;
@@ -400,69 +450,99 @@ void EW_triplet_spectrum::compute_spectra_MB_2loop()
 			diff = abs(MChiMS - data.MChi);
 			data.MChi = MChiMS;
 		}
-		
-		
-		// matching of SM to Wino model
-		diff = 100;
-		data.P = data.Q;
-		while (diff > tol*1e-5)
-		{
-			alphaMS = alpha_SM*( 1.0-real(extra_TSIL_interface_EW_triplet::gammagamma_Chi(data,data.Q)) /pow(data.Q,2) );
-			diff = abs(data.alpha - alphaMS);
-			data.alpha = alphaMS;
-		}	
-		
 		 
 	}
   data.mw = mwMS;
   data.mz = mzMS;
   data.MChi = MChiMS;
-  data.alpha = alphaMS;
+  //data.alpha = alphaMS;
+  
+  cout << "mw = " << data.mw << " , mw = " << data.mz << endl;
   
   data.P = data.MChi;
   
   data.do_tsil_all = true;
   
 }
-
 */
 
 
 // determine MSbar parameters
 void EW_triplet_spectrum::compute_spectra_MB_2loop()
 {
-  Self_energy se;
-  cout.precision(8);
-  cout << data.MChi;
-  // matching (?) of SM to Wino model
-  data.alpha = data.alpha*( 1.0-real(extra_TSIL_interface_EW_triplet::gammagamma_Chi(data,data.Q)) /pow(data.Q,2) );
+  cout << "-------- Computing Mass Builder spectrum  --------"<< endl;
+	  
+	  // RGE evolution
+  double A = (19./(10.*Pi)); // EW_triplet
+  //double A = (17./(30.*Pi)); // Wino model
+  //double A = (7./(30.*Pi)); // SM
+  double alpha_mz = data.alpha;
+  double mu0 = data.mz;
+  double mu = data.Q;//pow(data.Q,0.5);
   
+  Self_energy se;
+  
+  cout.precision(8);
+  
+  // matching (?) of SM to Wino model
+  
+  
+  //data.alpha = pow(   1.0/alpha_mz -  A * log( mu/mu0) , -1);
+	
+	data.alpha = data.alpha*( 1.0-real(extra_TSIL_interface_EW_triplet::gammagamma_Chi(data,data.Q)) /pow(data.Q,2) );
+	cout << "alpha/alphaSM = " << ( 1.0-real(extra_TSIL_interface_EW_triplet::gammagamma_Chi(data,data.Q)) /pow(data.Q,2) ) << endl;
+	
   // determine MS bar input parameters at Q
   // only recompute the 1-loop functions for efficiency
   data.do_tsil_all = false;
   
-  data.P = data.mw;
-  se.run_tsil(data);
-  data.mw = pow( pow(data.mw,2) - real(data.SE_1["V3"]),0.5 );
+  double mw_pole = data.mw;
+  double mz_pole = data.mz;
+  double tol = 1e-8;
   
-  data.P = data.mz;
-  se.run_tsil(data);
-  data.mz = pow( pow(data.mz,2) - real(data.SE_1["V2"]) ,0.5);
+  for (int i = 0; i < 10; i++)
+	{
+	  data.P = mw_pole;
+		double diff = 100;
+	  while (diff > tol)
+	  {
+			se.run_tsil(data);
+			double mwMS  = pow( pow(mw_pole,2) - real(data.SE_1["V3"]),0.5 );
+			diff = abs(mwMS - data.mw);
+			data.mw = mwMS;
+		}
+	  ///// get mz ms bar mass
+		data.P = mz_pole;
+		diff = 100;
+	  while (diff > tol)
+	  {
+			se.run_tsil(data);
+			double mzMS = pow( pow(mz_pole,2) - real(data.SE_1["V2"]),0.5 );
+			diff = abs(mzMS - data.mz);
+			data.mz = mzMS;
+		}
+	  
+	}
+	
+	cout << "mz_MS = " << data.mz;
+	cout << ", mw_MS = " << data.mw << endl;
   
   // need to iterate to determine MS bar mass for MChi to match equation (9) of Ibe et al.
-  data.MChi = iterative_ms_bar_mass(data, "F11_g1");
+  //data.MChi = iterative_ms_bar_mass(data, "F11_g1");
+  
   
   data.P = data.MChi;
-  data.do_tsil_all = true;
   
-  cout << ":  " << data.MChi << " " << data.mw << ", " << data.mz << ", " << data.alpha << endl;
+  
+  data.do_tsil_all = true;
   
   
 }
 
-
 bool EW_triplet_spectrum::compute_spectra_flexiblesusy()
 {
+	
+	cout << "-------- Computing FlexibleSUSY spectrum  --------"<< endl;
 	Spectrum_generator_settings spectrum_generator_settings;
   
   QedQcd oneset;
@@ -514,11 +594,42 @@ bool EW_triplet_spectrum::compute_spectra_flexiblesusy()
   
   model.run_to(data.Q);
   
+  
+  double g1 = pow(3./5.,0.5)*model.get_g1();
+  double g2 = model.get_g2();
+  
+  data.alpha = pow(g1*g2,2) / (4 * Pi * (g1*g1 + g2*g2));
+  
   // MS bar masses
   if (data.do_tsil_all)
   {
 		data.mw = model.get_MVWp();
 		data.mz = model.get_MVZ();
+		data.mh = model.get_Mhh();
+		data.mt = model.get_MFu(2);
+		
+		// get MB self energies
+		Self_energy se;
+	  data.do_tsil_all = false;
+	  data.P = 80.386632;
+	  se.run_tsil(data);
+	  
+//	  double mwMS = pow( pow(data.mw,2) - real(data.SE_1["V3"]),0.5 );
+		
+		cout << "mw self energy FS = " << Re(model.self_energy_VWp(80.3866)) << ", MB = " << -real(data.SE_1["V3"]) << std::endl;
+		
+		data.P = data.mz;
+	  se.run_tsil(data);
+	  data.do_tsil_all = true;
+//	  double mwMS = pow( pow(data.mw,2) - real(data.SE_1["V3"]),0.5 );
+		
+		//cout << "mz self energy FS = " << Re(model.self_energy_VZ(data.mz)) << ", MB = " << -real(data.SE_1["V2"]) << std::endl;
+		data.P = data.MChi;
+		
+		cout << "mw = " << data.mw << " , mw = " << data.mz << endl;
+		
+		
+		
   }
   /*
   double thetaW = ArcCos(Abs(model.get_ZZ(0,0)));
@@ -529,10 +640,7 @@ bool EW_triplet_spectrum::compute_spectra_flexiblesusy()
 	//data.mt = model.get_MFu(2);
   data.v = model.get_v();
   */
-  double g1 = pow(3./5.,0.5)*model.get_g1();
-  double g2 = model.get_g2();
-  
-  data.alpha = pow(g1*g2,2) / (4 * Pi * (g1*g1 + g2*g2));
+
   
 	data.SE_1["F7"] = model.get_MFn_pole_slha() - data.MChi;
 	data.SE_1["F5"] = model.get_MFc_pole_slha() - data.MChi;
@@ -547,8 +655,8 @@ void EW_triplet_spectrum::compute_tsil()
 	se.run_tsil(data);	
 	
 	// add derivatives of 1-loop self energies
-	//data.SE_2["F11_g1"] = data.SE_2["F11_g1"] +  extra_TSIL_interface_EW_triplet::F11_der(data);
-	//data.SE_2["F12_g1"] = data.SE_2["F12_g1"] +  extra_TSIL_interface_EW_triplet::F12_der(data);	
+	data.SE_2["F11_g1"] = data.SE_2["F11_g1"] +  extra_TSIL_interface_EW_triplet::F11_der(data);
+	data.SE_2["F12_g1"] = data.SE_2["F12_g1"] +  extra_TSIL_interface_EW_triplet::F12_der(data);	
 
 	if (!data.do_tsil_all)
 	{

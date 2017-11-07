@@ -16,7 +16,7 @@
 // <http://www.gnu.org/licenses/>.
 // ====================================================================
 
-// File generated at Sat 2 Sep 2017 19:00:32
+// File generated at Tue 7 Nov 2017 11:40:49
 
 #include "MSSM_two_scale_susy_scale_constraint.hpp"
 #include "MSSM_two_scale_model.hpp"
@@ -83,36 +83,6 @@ void MSSM_susy_scale_constraint<Two_scale>::apply()
    update_scale();
 
    // apply user-defined susy scale constraints
-   const auto Aeij = INPUTPARAMETER(Aeij);
-   const auto Adij = INPUTPARAMETER(Adij);
-   const auto Auij = INPUTPARAMETER(Auij);
-   const auto mHd2IN = INPUTPARAMETER(mHd2IN);
-   const auto mHu2IN = INPUTPARAMETER(mHu2IN);
-   const auto mq2Input = INPUTPARAMETER(mq2Input);
-   const auto ml2Input = INPUTPARAMETER(ml2Input);
-   const auto md2Input = INPUTPARAMETER(md2Input);
-   const auto mu2Input = INPUTPARAMETER(mu2Input);
-   const auto me2Input = INPUTPARAMETER(me2Input);
-   const auto MassBInput = INPUTPARAMETER(MassBInput);
-   const auto MassWBIN = INPUTPARAMETER(MassWBIN);
-   const auto MassGInput = INPUTPARAMETER(MassGInput);
-   const auto Ye = MODELPARAMETER(Ye);
-   const auto Yd = MODELPARAMETER(Yd);
-   const auto Yu = MODELPARAMETER(Yu);
-
-   MODEL->set_TYe((Aeij*Ye).real());
-   MODEL->set_TYd((Adij*Yd).real());
-   MODEL->set_TYu((Auij*Yu).real());
-   MODEL->set_mHd2(Re(mHd2IN));
-   MODEL->set_mHu2(Re(mHu2IN));
-   MODEL->set_mq2((mq2Input).real());
-   MODEL->set_ml2((ml2Input).real());
-   MODEL->set_md2((md2Input).real());
-   MODEL->set_mu2((mu2Input).real());
-   MODEL->set_me2((me2Input).real());
-   MODEL->set_MassB(Re(MassBInput));
-   MODEL->set_MassWB(Re(MassWBIN));
-   MODEL->set_MassG(Re(MassGInput));
    MODEL->solve_ewsb();
 
 
@@ -170,9 +140,9 @@ void MSSM_susy_scale_constraint<Two_scale>::initialize()
    assert(model && "MSSM_susy_scale_constraint<Two_scale>::"
           "initialize(): model pointer is zero.");
 
-   const auto QEWSB = INPUTPARAMETER(QEWSB);
+   const auto QSUSY = INPUTPARAMETER(QSUSY);
 
-   initial_scale_guess = QEWSB;
+   initial_scale_guess = QSUSY;
 
    scale = initial_scale_guess;
 }
@@ -182,9 +152,9 @@ void MSSM_susy_scale_constraint<Two_scale>::update_scale()
    assert(model && "MSSM_susy_scale_constraint<Two_scale>::"
           "update_scale(): model pointer is zero.");
 
-   const auto QEWSB = INPUTPARAMETER(QEWSB);
+   const auto QSUSY = INPUTPARAMETER(QSUSY);
 
-   scale = QEWSB;
+   scale = QSUSY;
 
 
 }

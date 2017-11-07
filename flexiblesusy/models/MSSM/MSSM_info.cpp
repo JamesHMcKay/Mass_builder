@@ -16,7 +16,7 @@
 // <http://www.gnu.org/licenses/>.
 // ====================================================================
 
-// File generated at Sat 2 Sep 2017 19:00:31
+// File generated at Tue 7 Nov 2017 11:40:48
 
 #include "MSSM_info.hpp"
 
@@ -120,24 +120,24 @@ namespace MSSM_info {
       "ZZ(1,0)", "ZZ(1,1)"};
 
    const char* input_parameter_names[NUMBER_OF_INPUT_PARAMETERS] = {"TanBeta",
-      "SignMu", "MassWBIN", "Qin", "QEWSB", "mHd2IN", "mHu2IN", "Aeij(0,0)",
-      "Aeij(0,1)", "Aeij(0,2)", "Aeij(1,0)", "Aeij(1,1)", "Aeij(1,2)", "Aeij(2,0)"
-      , "Aeij(2,1)", "Aeij(2,2)", "Adij(0,0)", "Adij(0,1)", "Adij(0,2)",
-      "Adij(1,0)", "Adij(1,1)", "Adij(1,2)", "Adij(2,0)", "Adij(2,1)", "Adij(2,2)"
-      , "Auij(0,0)", "Auij(0,1)", "Auij(0,2)", "Auij(1,0)", "Auij(1,1)",
-      "Auij(1,2)", "Auij(2,0)", "Auij(2,1)", "Auij(2,2)", "mq2Input(0,0)",
-      "mq2Input(0,1)", "mq2Input(0,2)", "mq2Input(1,0)", "mq2Input(1,1)",
-      "mq2Input(1,2)", "mq2Input(2,0)", "mq2Input(2,1)", "mq2Input(2,2)",
-      "ml2Input(0,0)", "ml2Input(0,1)", "ml2Input(0,2)", "ml2Input(1,0)",
-      "ml2Input(1,1)", "ml2Input(1,2)", "ml2Input(2,0)", "ml2Input(2,1)",
-      "ml2Input(2,2)", "md2Input(0,0)", "md2Input(0,1)", "md2Input(0,2)",
-      "md2Input(1,0)", "md2Input(1,1)", "md2Input(1,2)", "md2Input(2,0)",
-      "md2Input(2,1)", "md2Input(2,2)", "mu2Input(0,0)", "mu2Input(0,1)",
-      "mu2Input(0,2)", "mu2Input(1,0)", "mu2Input(1,1)", "mu2Input(1,2)",
-      "mu2Input(2,0)", "mu2Input(2,1)", "mu2Input(2,2)", "me2Input(0,0)",
-      "me2Input(0,1)", "me2Input(0,2)", "me2Input(1,0)", "me2Input(1,1)",
-      "me2Input(1,2)", "me2Input(2,0)", "me2Input(2,1)", "me2Input(2,2)",
-      "MassBInput", "MassGInput"};
+      "SignMu", "Qin", "QSUSY", "mHd2IN", "mHu2IN", "Aeij(0,0)", "Aeij(0,1)",
+      "Aeij(0,2)", "Aeij(1,0)", "Aeij(1,1)", "Aeij(1,2)", "Aeij(2,0)", "Aeij(2,1)"
+      , "Aeij(2,2)", "Adij(0,0)", "Adij(0,1)", "Adij(0,2)", "Adij(1,0)",
+      "Adij(1,1)", "Adij(1,2)", "Adij(2,0)", "Adij(2,1)", "Adij(2,2)", "Auij(0,0)"
+      , "Auij(0,1)", "Auij(0,2)", "Auij(1,0)", "Auij(1,1)", "Auij(1,2)",
+      "Auij(2,0)", "Auij(2,1)", "Auij(2,2)", "mq2Input(0,0)", "mq2Input(0,1)",
+      "mq2Input(0,2)", "mq2Input(1,0)", "mq2Input(1,1)", "mq2Input(1,2)",
+      "mq2Input(2,0)", "mq2Input(2,1)", "mq2Input(2,2)", "ml2Input(0,0)",
+      "ml2Input(0,1)", "ml2Input(0,2)", "ml2Input(1,0)", "ml2Input(1,1)",
+      "ml2Input(1,2)", "ml2Input(2,0)", "ml2Input(2,1)", "ml2Input(2,2)",
+      "md2Input(0,0)", "md2Input(0,1)", "md2Input(0,2)", "md2Input(1,0)",
+      "md2Input(1,1)", "md2Input(1,2)", "md2Input(2,0)", "md2Input(2,1)",
+      "md2Input(2,2)", "mu2Input(0,0)", "mu2Input(0,1)", "mu2Input(0,2)",
+      "mu2Input(1,0)", "mu2Input(1,1)", "mu2Input(1,2)", "mu2Input(2,0)",
+      "mu2Input(2,1)", "mu2Input(2,2)", "me2Input(0,0)", "me2Input(0,1)",
+      "me2Input(0,2)", "me2Input(1,0)", "me2Input(1,1)", "me2Input(1,2)",
+      "me2Input(2,0)", "me2Input(2,1)", "me2Input(2,2)", "MassBInput",
+      "MassWBInput", "MassGInput"};
 
    const char* model_name = "MSSM";
 

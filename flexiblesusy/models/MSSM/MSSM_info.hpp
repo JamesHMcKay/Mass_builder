@@ -16,7 +16,7 @@
 // <http://www.gnu.org/licenses/>.
 // ====================================================================
 
-// File generated at Sat 2 Sep 2017 19:00:31
+// File generated at Tue 7 Nov 2017 11:40:48
 
 #ifndef MSSM_INFO_H
 #define MSSM_INFO_H
@@ -85,19 +85,19 @@ namespace MSSM_info {
       ImZUR2_0, ReZUR2_1, ImZUR2_1, ReZUR2_2, ImZUR2_2, ZZ0_0, ZZ0_1, ZZ1_0, ZZ1_1
       , NUMBER_OF_MIXINGS};
 
-   enum Input_parameters : unsigned {TanBeta, SignMu, MassWBIN, Qin, QEWSB,
-      mHd2IN, mHu2IN, Aeij0_0, Aeij0_1, Aeij0_2, Aeij1_0, Aeij1_1, Aeij1_2,
-      Aeij2_0, Aeij2_1, Aeij2_2, Adij0_0, Adij0_1, Adij0_2, Adij1_0, Adij1_1,
-      Adij1_2, Adij2_0, Adij2_1, Adij2_2, Auij0_0, Auij0_1, Auij0_2, Auij1_0,
-      Auij1_1, Auij1_2, Auij2_0, Auij2_1, Auij2_2, mq2Input0_0, mq2Input0_1,
-      mq2Input0_2, mq2Input1_0, mq2Input1_1, mq2Input1_2, mq2Input2_0, mq2Input2_1
-      , mq2Input2_2, ml2Input0_0, ml2Input0_1, ml2Input0_2, ml2Input1_0,
-      ml2Input1_1, ml2Input1_2, ml2Input2_0, ml2Input2_1, ml2Input2_2, md2Input0_0
-      , md2Input0_1, md2Input0_2, md2Input1_0, md2Input1_1, md2Input1_2,
-      md2Input2_0, md2Input2_1, md2Input2_2, mu2Input0_0, mu2Input0_1, mu2Input0_2
-      , mu2Input1_0, mu2Input1_1, mu2Input1_2, mu2Input2_0, mu2Input2_1,
-      mu2Input2_2, me2Input0_0, me2Input0_1, me2Input0_2, me2Input1_0, me2Input1_1
-      , me2Input1_2, me2Input2_0, me2Input2_1, me2Input2_2, MassBInput, MassGInput
+   enum Input_parameters : unsigned {TanBeta, SignMu, Qin, QSUSY, mHd2IN,
+      mHu2IN, Aeij0_0, Aeij0_1, Aeij0_2, Aeij1_0, Aeij1_1, Aeij1_2, Aeij2_0,
+      Aeij2_1, Aeij2_2, Adij0_0, Adij0_1, Adij0_2, Adij1_0, Adij1_1, Adij1_2,
+      Adij2_0, Adij2_1, Adij2_2, Auij0_0, Auij0_1, Auij0_2, Auij1_0, Auij1_1,
+      Auij1_2, Auij2_0, Auij2_1, Auij2_2, mq2Input0_0, mq2Input0_1, mq2Input0_2,
+      mq2Input1_0, mq2Input1_1, mq2Input1_2, mq2Input2_0, mq2Input2_1, mq2Input2_2
+      , ml2Input0_0, ml2Input0_1, ml2Input0_2, ml2Input1_0, ml2Input1_1,
+      ml2Input1_2, ml2Input2_0, ml2Input2_1, ml2Input2_2, md2Input0_0, md2Input0_1
+      , md2Input0_2, md2Input1_0, md2Input1_1, md2Input1_2, md2Input2_0,
+      md2Input2_1, md2Input2_2, mu2Input0_0, mu2Input0_1, mu2Input0_2, mu2Input1_0
+      , mu2Input1_1, mu2Input1_2, mu2Input2_0, mu2Input2_1, mu2Input2_2,
+      me2Input0_0, me2Input0_1, me2Input0_2, me2Input1_0, me2Input1_1, me2Input1_2
+      , me2Input2_0, me2Input2_1, me2Input2_2, MassBInput, MassWBInput, MassGInput
       , NUMBER_OF_INPUT_PARAMETERS};
 
    extern const double normalization_g1;

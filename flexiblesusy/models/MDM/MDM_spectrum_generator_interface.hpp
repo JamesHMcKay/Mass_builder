@@ -16,7 +16,7 @@
 // <http://www.gnu.org/licenses/>.
 // ====================================================================
 
-// File generated at Fri 13 Oct 2017 19:49:42
+// File generated at Tue 7 Nov 2017 22:10:32
 
 #ifndef MDM_SPECTRUM_GENERATOR_INTERFACE_H
 #define MDM_SPECTRUM_GENERATOR_INTERFACE_H

@@ -210,7 +210,7 @@ namespace extra_TSIL_interface_MDM
 		TSIL_COMPLEXCPP C2BCC_2 =   Complex(0,-5.333333333333333)*Power(g2,2)*Power(STW,2)*(2*Power(MChi,2) + Power(p,2)) ;
 		TSIL_COMPLEXCPP result2 =  + C20_2  + AcMB * C2AC_2 + BccMB * C2BCC_2;
 
-    return -(result/*+result2*/)/(16.0L*TSIL_POW(PI,2));
+    return -(result/*result2*/)/(16.0L*TSIL_POW(PI,2));
   }
   
 }
@@ -281,7 +281,6 @@ void MDM_spectrum::compute_spectra_MB_1loop()
 // determine MSbar parameters
 void MDM_spectrum::compute_spectra_MB_2loop()
 {
-	
 	cout << "------------- Computing MB spectrum -------------" << endl;
   Self_energy se;  
   // matching (?) of SM to Wino model
@@ -290,21 +289,21 @@ void MDM_spectrum::compute_spectra_MB_2loop()
   // determine MS bar input parameters at Q
   // only recompute the 1-loop functions for efficiency
   data.do_tsil_all = false;
-  cout << "MB: mw , mz = " << data.mw << ", " << data.mz << endl;
+  //cout << "MB: mw , mz = " << data.mw << ", " << data.mz << endl;
+  
   data.P = data.mw;
   se.run_tsil(data);
   data.mw = pow( pow(data.mw,2) - real(data.SE_1["V3"]),0.5 );
 
-	double mz_pole = data.mz;
+	//double mz_pole = data.mz;
   
-  data.P = 91.1876;
+  data.P = data.mz;
   se.run_tsil(data);
   data.mz = pow( pow(data.mz,2) - real(data.SE_1["V2"]) ,0.5);
   
-  std::cout << "MB: MZ pole = " << mz_pole << " ms_bar = " << data.mz << std::endl;
+  //std::cout << "MB: MZ pole = " << mz_pole << " ms_bar = " << data.mz << std::endl;
   
-  cout << "MB: self energy = " << data.SE_1["V2"] << " at Q = " << data.Q << endl;
-  
+  //cout << "MB: self energy = " << data.SE_1["V2"] << " at Q = " << data.Q << endl;
   
   // need to iterate to determine MS bar mass for MChi to match equation (9) of Ibe et al.
   data.MChi = iterative_ms_bar_mass(data, "F7");
@@ -340,13 +339,13 @@ void MDM_spectrum::compute_spectra_MB_2loop()
   long double MChiMS = 0.0;
   long double alphaMS = 0.0;
   
-  data.mz = 88.47644326;
-  data.mw = 76.45989508; 
+  //data.mz = 88.47644326;
+  //data.mw = 76.45989508; 
 	
 	diff = 100;
 	double mwMS_previous = 0;
-  while (diff > tol)
-  {
+  //while (diff > tol)
+  //{
 		data.P = mz_pole;
 		se.run_tsil(data);
 		mzMS = pow( pow(mz_pole,2) - real(data.SE_1["V2"]),0.5 );
@@ -359,24 +358,24 @@ void MDM_spectrum::compute_spectra_MB_2loop()
 		
 		cout << "SE( W ) = " << data.SE_1["V3"] << " mwMS = " << mwMS << endl;
 		
-		/*
-		data.P = data.Q;
-		alphaMS = alpha_SM*( 1.0-real(extra_TSIL_interface_MDM::gammagamma_Chi(data,data.Q)) /pow(data.Q,2) );
 		
-		data.alpha = alphaMS;
-		*/
+		//data.P = data.Q;
+		//alphaMS = alpha_SM*( 1.0-real(extra_TSIL_interface_MDM::gammagamma_Chi(data,data.Q)) /pow(data.Q,2) );
 		
-		diff = abs(mzMS - data.mz) + abs(mwMS - mwMS_previous);
+		//data.alpha = alphaMS;
+		
+		
+		diff = abs(mzMS - data.mz) + abs(mwMS - data.mw);
 		cout << "diff = " << diff << endl;
 		
-		//data.mw = mwMS;
-		mwMS_previous = mwMS;
+		data.mw = mwMS;
+		//mwMS_previous = mwMS;
 		data.mz = mzMS;
-	}
+	//}
 	
 			// matching of SM to Wino model
-	diff = 100;
-	data.mw = mwMS_previous;
+	
+	//data.mw = mwMS_previous;
 	
 	
 	data.P = MChi;
@@ -393,7 +392,6 @@ void MDM_spectrum::compute_spectra_MB_2loop()
 	
   
 }
-
 
 
 
@@ -532,13 +530,12 @@ bool MDM_spectrum::compute_spectra_flexiblesusy()
 void MDM_spectrum::compute_tsil()
 {
 	Self_energy se;
-	cout << "run tsil " << endl;
 	se.run_tsil(data);	
 	
 	// add derivatives of 1-loop self energies
-	//data.SE_2["F7"] = data.SE_2["F7"] +  extra_TSIL_interface_MDM::F7_der(data);
-	//data.SE_2["F6"] = data.SE_2["F6"] +  extra_TSIL_interface_MDM::F6_der(data);	
-	//data.SE_2["F5"] = data.SE_2["F5"] +  extra_TSIL_interface_MDM::F5_der(data);	
+	data.SE_2["F7"] = data.SE_2["F7"] +  extra_TSIL_interface_MDM::F7_der(data);
+	data.SE_2["F6"] = data.SE_2["F6"] +  extra_TSIL_interface_MDM::F6_der(data);	
+	data.SE_2["F5"] = data.SE_2["F5"] +  extra_TSIL_interface_MDM::F5_der(data);	
 
 
 	if (!data.do_tsil_all)

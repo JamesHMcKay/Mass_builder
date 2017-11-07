@@ -438,7 +438,7 @@ void Figures<T>::plot_Q(Data data)
 {
   ofstream myfile;
   myfile.open ("mass_splittings/data2/deltam_Q.txt");
-  int pts = 10;
+  int pts = 5;
   int status = 0;
   double max_Q = 400; // (GeV)
   double min_Q = 50; // (GeV)
@@ -479,11 +479,11 @@ void Figures<T>::plot_M(Data data)
 {
   ofstream myfile;
   myfile.open ("mass_splittings/data2/deltam_M.txt");
-  int pts = 10;
+  int pts = 5;
   double n = 0;
   int status = 0;
   double max_M = 1e4; // (GeV)
-  double min_M = 90; // (GeV)
+  double min_M = 100; // (GeV)
   double logMax = log10(max_M);
   double logMin = log10(min_M);
   data.mt = 163.3;
@@ -502,23 +502,23 @@ void Figures<T>::plot_M(Data data)
     
     data.do_tsil_all = true;
     
+    
     T mssm_2loopFS(data);
     
     mssm_2loopFS.compute_spectra_flexiblesusy();
     mssm_2loopFS.compute_tsil();
     double delta_m_2FS = mssm_2loopFS.get_deltam_2loop()+ mssm_2loopFS.get_deltam();
     
-    //double delta_m_2FS = 0;
+    //data.mw = mssm_2loopFS.data.mw;
+    //data.mz = mssm_2loopFS.data.mz;
+    //data.alpha = mssm_2loopFS.data.alpha;
     
     
     T mssm_2loop(data);
     
-    //mssm_2loop.compute_spectra_MB_2loop();
-    cout << "compute tsil"<< endl;
+    mssm_2loop.compute_spectra_MB_2loop();
     mssm_2loop.compute_tsil();
-    cout << "done " << endl;
     double delta_m_2 = mssm_2loop.get_deltam_2loop()+ mssm_2loop.get_deltam();
-    
     
     
     

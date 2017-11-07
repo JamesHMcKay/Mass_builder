@@ -16,7 +16,7 @@
 // <http://www.gnu.org/licenses/>.
 // ====================================================================
 
-// File generated at Fri 13 Oct 2017 19:49:28
+// File generated at Tue 7 Nov 2017 22:08:53
 
 #include "MDM_two_scale_soft_parameters.hpp"
 #include "wrappers.hpp"
@@ -101,10 +101,10 @@ double MDM_soft_parameters::calc_beta_v_two_loop(const Soft_traces& soft_traces)
 
    double beta_v;
 
-   beta_v = Re(-0.00125*twoLoop*v*(1257*Power(g1,4) + 10*Sqr(g1)*(50*
-      traceYdAdjYd + 150*traceYeAdjYe + 170*traceYuAdjYu - 9*Sqr(g2)) + 25*(57*
-      Power(g2,4) + 84*(3*traceYdAdjYd + traceYeAdjYe + 3*traceYuAdjYu)*Sqr(g2)
-      + 8*(-3*(9*traceYdAdjYdYdAdjYd - 2*traceYdAdjYuYuAdjYd + 3*
+   beta_v = Re(-0.00125*twoLoop*v*(1221*Power(g1,4) + 10*Sqr(g1)*(122*
+      traceYdAdjYd + 174*traceYeAdjYe + 242*traceYuAdjYu - 45*Sqr(g2)) + 25*(21
+      *Power(g2,4) + 108*(3*traceYdAdjYd + traceYeAdjYe + 3*traceYuAdjYu)*Sqr(
+      g2) + 8*(-3*(9*traceYdAdjYdYdAdjYd - 2*traceYdAdjYuYuAdjYd + 3*
       traceYeAdjYeYeAdjYe + 9*traceYuAdjYuYuAdjYu) + 80*(traceYdAdjYd +
       traceYuAdjYu)*Sqr(g3) + 24*Sqr(LamH)))));
 
