@@ -187,11 +187,9 @@ PropagatorArrow -> Forward}
  
 }
 
-
-MassFe[1] = mf;
-MassFe[2] = mf;
-MassFe[3] = mf;
-
+MassFe[1] = me;
+MassFe[2] = mm;
+MassFe[3] = ml;
 
 MassFv[1] = mf;
 MassFv[2] = mf;
@@ -204,11 +202,6 @@ MassFd[3] = mb;
 MassFu[1] = mu;
 MassFu[2] = mc;
 MassFu[3] = mt;
-
-MassFe[1] = mf;
-MassFe[2] = mf;
-MassFe[3] = mf;
-
 
 MassFd[gen_, y_] = MassFd[gen]
 MassFu[gen_, y_] = MassFu[gen]
