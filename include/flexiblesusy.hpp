@@ -23,12 +23,4 @@
 #include "flexiblesusy/models/EW_triplet/EW_triplet_physical.hpp"
 #include "flexiblesusy/models/EW_triplet/EW_triplet_info.hpp"
 
-#include "flexiblesusy/models/MSSM/MSSM_input_parameters.hpp"
-#include "flexiblesusy/models/MSSM/MSSM_slha_io.hpp"
-#include "flexiblesusy/models/MSSM/MSSM_spectrum_generator.hpp"
-#include "flexiblesusy/models/MSSM/MSSM_two_scale_model.hpp"
-#include "flexiblesusy/models/MSSM/MSSM_two_scale_model_slha.hpp"
-#include "flexiblesusy/models/MSSM/MSSM_physical.hpp"
-#include "flexiblesusy/models/MSSM/MSSM_info.hpp"
-
 #endif

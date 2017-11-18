@@ -24,6 +24,8 @@ class Decays
 	long double M_u = 1.05658372E-01;
 	// pion mass
 	long double M_pi = 0.139570L;
+	// charged kaon mass
+	long double M_ka = 0.493677L;
 	// electron mass
 	long double M_e = 5.10998928E-04;
 	
@@ -31,10 +33,12 @@ class Decays
 	int components = 3;
 	
 	// Fermi constant
-	long double G_F=1.16637876E-05;
+	long double G_F = 1.16637876E-05;
 
-  long double f_pi=0.13041;
-  long double V_ud=0.97425;
+  long double f_pi = 0.13041;
+  long double V_ud = 0.97425;
+  
+  long double V_us = 0.2253;
 	
 	
 	
@@ -45,7 +49,11 @@ class Decays
 	
 	long double calc_lifetime(long double deltam);
 	
+	void calc_lifetime(long double deltam, ofstream &out_file);
+	
 	long double pion_channel(long double deltam);
+	
+	long double kaon_channel(long double deltam);
 	
 	long double muon_channel(long double deltam);
 	

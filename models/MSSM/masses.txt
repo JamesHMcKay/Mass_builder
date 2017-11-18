@@ -10,5 +10,6 @@ mc c
 md d
 ms s
 mb b
-#mm m
-#ml l
+mm m
+ml l
+me e

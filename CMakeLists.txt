@@ -99,7 +99,7 @@ if (GSL_FOUND AND Boost_FOUND AND EIGEN3_FOUND AND FS)
 	# include flexiblesusy
 	include(cmake/flexiblesusy.cmake)
 	set(MS mass_splittings)
-	set(SRC_MASS_SPLITTINGS ${MS}/decays.hpp ${MS}/decays.cpp ${MS}/splittings.cpp ${MS}/mssm_spectrum.cpp ${MS}/mssm_spectrum.hpp ${MS}/ew_triplet_spectrum.cpp ${MS}/ew_triplet_spectrum.hpp ${MS}/mdm_spectrum.cpp ${MS}/mdm_spectrum.hpp ${MS}/figures.cpp ${MS}/figures.hpp)
+	set(SRC_MASS_SPLITTINGS ${MS}/decays.hpp ${MS}/decays.cpp ${MS}/splittings.cpp ${MS}/ew_triplet_spectrum.cpp ${MS}/ew_triplet_spectrum.hpp ${MS}/mdm_spectrum.cpp ${MS}/mdm_spectrum.hpp ${MS}/figures.cpp ${MS}/figures_2.cpp ${MS}/figures.hpp ${MS}/figures_2.hpp)
 endif()
 
 
@@ -185,10 +185,10 @@ TARGET_LINK_LIBRARIES(QED2 libtsil.a)
 
 
 # mass splittings target
-LINK_DIRECTORIES(${PROJECT_SOURCE_DIR}/flexiblesusy/src/ ${PROJECT_SOURCE_DIR}/flexiblesusy/models/EW_triplet/ ${PROJECT_SOURCE_DIR}/flexiblesusy/models/MSSM/ ${EIGEN3_INCLUDE_DIR})
+LINK_DIRECTORIES(${PROJECT_SOURCE_DIR}/flexiblesusy/src/ ${PROJECT_SOURCE_DIR}/flexiblesusy/models/EW_triplet/ ${EIGEN3_INCLUDE_DIR})
 add_executable(splittings EXCLUDE_FROM_ALL ${FS_INCLUDE} ${SRC_MASS_SPLITTINGS} ${SRC_FILES_GEN} ${HEADER_FILES_GEN} ${TSIL_HEADER_FILE} ${SRC_FILES} ${HEADER_FILES} ${GENERATED_SRC_FILES})
 Mathematica_ABSOLUTIZE_LIBRARY_DEPENDENCIES(splittings)
-TARGET_LINK_LIBRARIES(splittings libflexisusy.a libMSSM.a libEW_triplet.a libtsil.a ${GSL_LIBRARIES} ${LIBRARIES} ${Boost_LIBRARIES} )
+TARGET_LINK_LIBRARIES(splittings libflexisusy.a libEW_triplet.a libtsil.a ${GSL_LIBRARIES} ${LIBRARIES} ${Boost_LIBRARIES} )
 
 
 if (CMAKE_COMPILER_IS_GNUCXX)

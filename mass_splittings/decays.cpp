@@ -13,6 +13,20 @@ long double Decays::calc_lifetime(long double deltam)
 	return lifetime;
 }
 
+void Decays::calc_lifetime(long double deltam, ofstream &out_file)
+{
+	long double gamma = pion_channel(deltam) + electron_channel(deltam) + muon_channel(deltam) + kaon_channel(deltam);
+	out_file << " " << deltam;
+	out_file << " " << 1.0 / gamma;
+	
+	out_file << " " << pion_channel(deltam)/gamma;
+	out_file << " " << muon_channel(deltam)/gamma;
+	out_file << " " << electron_channel(deltam)/gamma;
+	out_file << " " << kaon_channel(deltam)/gamma << endl;
+}
+
+
+
 // decay channels go here
 // most have two options for how to calculate for the sake of comparison for different methods
 // use the method flag in the data strcuture to control this choice
@@ -41,6 +55,24 @@ long double Decays::muon_channel(long double deltam)
 	}
 
 }
+
+
+// kaon decay
+long double Decays::kaon_channel(long double deltam)
+{
+	
+	if (deltam > M_ka)
+	{
+	  long double A = (pow(components,2)-1.0L)*pow(G_F * f_pi * V_us ,2)*pow(deltam,3)/(4.0*Pi);
+	  return A * pow( 1.0L - pow(M_ka/deltam,2),0.5)/6.582119e-25;
+	}
+	else
+	{
+	  return 0;
+	}
+	
+}
+
 
 // pion decay
 long double Decays::pion_channel(long double deltam)

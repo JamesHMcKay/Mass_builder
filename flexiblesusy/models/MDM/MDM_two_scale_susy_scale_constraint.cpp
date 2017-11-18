@@ -16,7 +16,7 @@
 // <http://www.gnu.org/licenses/>.
 // ====================================================================
 
-// File generated at Tue 7 Nov 2017 22:08:55
+// File generated at Wed 15 Nov 2017 15:15:38
 
 #include "MDM_two_scale_susy_scale_constraint.hpp"
 #include "MDM_two_scale_model.hpp"
@@ -84,8 +84,10 @@ void MDM_susy_scale_constraint<Two_scale>::apply()
 
    // apply user-defined susy scale constraints
    const auto YcIN = INPUTPARAMETER(YcIN);
+   const auto HiggsIN = INPUTPARAMETER(HiggsIN);
 
    MODEL->set_Yc(Re(YcIN));
+   MODEL->set_mu2(Re(HiggsIN));
    MODEL->solve_ewsb();
 
 

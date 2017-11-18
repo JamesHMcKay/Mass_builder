@@ -5,9 +5,7 @@ ma 1e-5
 mw 80.385
 mz 91.1876
 mt 163.3
-#v 246
 mh 125.5
-MassBuilderJEpsilon 0.0
 mf 1e-20
 mu 1e-20
 mc 1e-20

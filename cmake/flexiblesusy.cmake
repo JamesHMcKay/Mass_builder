@@ -55,7 +55,7 @@ set(FS_OPTIONS ${FS_OPTIONS}
 	 )
 
 # Set the models (spectrum generators) existing in flexiblesusy (could autogen this, but that would build some things we don't need)
-set(BUILT_FS_MODELS EW_triplet MSSM MDM)
+set(BUILT_FS_MODELS EW_triplet MDM)
 
 # Explain how to build each of the flexiblesusy spectrum generators we need.  Configure now, serially, to prevent parallel build issues.
 string (REPLACE ";" "," BUILT_FS_MODELS_COMMAS "${BUILT_FS_MODELS}")

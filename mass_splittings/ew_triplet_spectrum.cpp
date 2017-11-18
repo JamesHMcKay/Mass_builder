@@ -38,6 +38,10 @@ using namespace softsusy;
 
 using namespace std;
 
+string charged_particle = "F12_g1";
+string neutral_particle = "F11_g1";
+
+
 namespace extra_TSIL_interface_EW_triplet
 {
 #include TSIL_PATH
@@ -87,13 +91,22 @@ namespace extra_TSIL_interface_EW_triplet
     
     dcomp ii=-1;ii=sqrt(ii);i=ii;
     Pi=PI;
-    cw =  mw/mz;
-    cw2 =  TSIL_POW(cw,2);
-    sw =  TSIL_POW(1.-cw2,0.5);
-    sw2 =  TSIL_POW(sw,2);
+    
+    
+     cw =  mw/mz;
+    cw2 =  pow(cw,2);
+    sw =  pow(1.-cw2,0.5);
+    sw2 =  pow(sw,2);
     STW =  sw;
     CTW =  cw;
-    e =  TSIL_POW(4*Pi*alpha,0.5);
+    //C2TW =  cw2-sw2;
+    //S2TW =  2*sw*cw;
+    e =  pow(4*Pi*alpha,0.5);
+    g1 =  e/cw;
+    g2 =  e/sw;
+    v =  2*mw/g2;
+    
+    
     
     TSIL_REAL a = -1., b = 1., c = 1.;
     
@@ -122,6 +135,56 @@ namespace extra_TSIL_interface_EW_triplet
     dBac = c*TSIL_dBds_(TSIL_POW(data.ma, 2),MChi2,s,Q2);
     
   }
+  
+  double F5_der(Data data)
+  {
+    
+    DoTSIL(data);
+    
+    p = data.P;
+    
+    TSIL_COMPLEXCPP result = (Power(g2,4)*(Aw + Az*Power(CTW,2) - Bcw*(2*Power(MChi,2) + Power(mw,2)) - 
+       Bcz*Power(CTW,2)*(2*Power(MChi,2) + Power(mz,2)) + Aa*Power(STW,2) - 
+       Bca*(Power(ma,2) + 2*Power(MChi,2))*Power(STW,2) - Ac*(1 + Power(CTW,2) + Power(STW,2)) + 
+       Power(MChi,2)*(1 + Power(CTW,2) + Power(STW,2)))*
+     (Ac - Aw + Ac*Power(CTW,2) - Az*Power(CTW,2) - Power(MChi,2) - Power(CTW,2)*Power(MChi,2) + 
+       Bcw*Power(mw,2) + Bcz*Power(CTW,2)*Power(mz,2) + Bca*Power(ma,2)*Power(STW,2) - 
+       (Aa - Ac + Power(MChi,2))*Power(STW,2) - 
+       2*Power(MChi,2)*(dBwc*(2*Power(MChi,2) + Power(mw,2)) + 
+          Power(CTW,2)*dBzc*(2*Power(MChi,2) + Power(mz,2)) + 
+          dBac*(Power(ma,2) + 2*Power(MChi,2))*Power(STW,2))))/(256.*Power(MChi,3)*Power(Pi,4));
+    
+    
+    return real(result);
+    
+  }
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  double F6_der(Data data)
+  {
+    
+    DoTSIL(data);
+    
+    p = data.P;
+    
+    TSIL_COMPLEXCPP result = (Power(g2,4)*(Ac - Aw - Power(MChi,2) + 2*Bcw*Power(MChi,2) + Bcw*Power(mw,2))*
+     (-Ac + Aw + Power(MChi,2) + 4*dBwc*Power(MChi,4) - Bcw*Power(mw,2) + 
+       2*dBwc*Power(MChi,2)*Power(mw,2)))/(64.*Power(MChi,3)*Power(Pi,4));
+    
+    
+    return real(result);
+    
+  }
+  
   
   double F11_der(Data data)
   {
@@ -337,33 +400,29 @@ void EW_triplet_spectrum::compute_spectra_MB_1loop()
   
   data.alpha = pow(   1.0/alpha_mz -  A * log( mu/mu0) , -1);
   
+  se.run_tsil(data);
+		
+  MChi_pole = data.MChi + real(data.SE_1[neutral_particle]);
+  
   data.do_tsil_all = false;
   
 }
 
-/*
+
 // determine MSbar parameters
 void EW_triplet_spectrum::compute_spectra_MB_2loop()
 {
-	
-	
-	
-	
   data.do_tsil_all = false;
-  long double MChi_pole = data.MChi;
   long double mw_pole = data.mw;
   long double mz_pole = data.mz;
 
-	
-	
 	// RGE evolution
-  //double A = (19./(10.*Pi)); // EW_triplet
-  double A = (17./(30.*Pi)); // Wino model
+  double A = (19./(10.*Pi)); // EW_triplet
+  //double A = (17./(30.*Pi)); // Wino model
   //double A = (7./(30.*Pi)); // SM
   double alpha_mz = data.alpha;
   double mu0 = data.mz;
   double mu = data.Q;
-  
   
   Self_energy se;
   long double tol = 1e-10;
@@ -372,46 +431,16 @@ void EW_triplet_spectrum::compute_spectra_MB_2loop()
   data.alpha = pow(   1.0/alpha_mz -  A * log( mu/mu0) , -1);
   long double alpha_SM = data.alpha;
   
-	// matching of SM to Wino model
-	double diff = 1000;
-
-  
-  // run g3 from mz up to mt_pole
-  double mt_pole = 173.34; // 173.5 matches Ibe et al. better so is most likely what they used, is also a value given in the 2017 PDG (as measured from cross-section measurments)
-	double g3_at_mz = pow(4*Pi*0.1184,0.5);
-	//double A3 = -(7./(16.*Pi*Pi)); // SM
-	double A3 = -(3./(16.*Pi*Pi)); // MSSM
-	double g3 = pow(   1.0/pow(g3_at_mz,2) -  A3 * log( mt_pole/mu0) , -0.5);
-		/////  get mw ms bar mass
-				
-  // determine MS bar input parameters at Q
-  // only recompute the 1-loop functions for efficiency
-  
   Data data_original = data;
   
   long double mwMS = 0.0;
   long double mzMS = 0.0;
-  long double MChiMS = 0.0;
   long double alphaMS = 0.0;
   
+  double diff = 1000;
   
   for (int k = 0 ; k < 5 ; k ++)
   {
-		double cw =  data.mw/data.mz;
-	  double cw2 =  pow(cw,2);
-	  double sw =  pow(1.-cw2,0.5);  
-	  double e = pow(4*Pi*data.alpha,0.5);
-		double g2 = e/sw;
-		double v = 2*data.mw/g2;
-		
-	  double yt = data.mt*pow(2,0.5)/v;
-//	  double dyt = (1/mt_pole) * (1/(16*Pi*Pi)) * ( 0.5*9*pow(yt,3) - 8.0*yt*pow(g3,2) ); // MSSM
-	  double dyt = (1/mt_pole) * (1/(16*Pi*Pi)) * ( 0.5*3*pow(yt,3) - 8.0*yt*pow(g3,2) ); // SM or EW triplet
-	  // RGE from the SM
-	  double yt_Q = (data.Q - mt_pole) * dyt + yt;
-	  data.mt = yt_Q*v/(pow(2,0.5));
-	
-//		data.Q = data.mt;
 
 		data.P = data.Q;
 		while (diff > tol*1e-6)
@@ -430,7 +459,7 @@ void EW_triplet_spectrum::compute_spectra_MB_2loop()
 			diff = abs(mwMS - data.mw);
 			data.mw = mwMS;
 		}
-	  ///// get mz ms bar mass
+
 		data.P = mz_pole;
 		diff = 100;
 	  while (diff > tol)
@@ -440,109 +469,18 @@ void EW_triplet_spectrum::compute_spectra_MB_2loop()
 			diff = abs(mzMS - data.mz);
 			data.mz = mzMS;
 		}
-	  
-		data.P = MChi_pole;
-		diff = 100;
-	  while (diff > tol)
-	  {
-			se.run_tsil(data);
-			MChiMS  =  MChi_pole - real(data.SE_1["F11_g1"]);
-			diff = abs(MChiMS - data.MChi);
-			data.MChi = MChiMS;
-		}
 		 
 	}
-  data.mw = mwMS;
-  data.mz = mzMS;
-  data.MChi = MChiMS;
-  //data.alpha = alphaMS;
-  
-  cout << "mw = " << data.mw << " , mw = " << data.mz << endl;
   
   data.P = data.MChi;
-  
   data.do_tsil_all = true;
   
 }
-*/
 
 
-// determine MSbar parameters
-void EW_triplet_spectrum::compute_spectra_MB_2loop()
-{
-  cout << "-------- Computing Mass Builder spectrum  --------"<< endl;
-	  
-	  // RGE evolution
-  double A = (19./(10.*Pi)); // EW_triplet
-  //double A = (17./(30.*Pi)); // Wino model
-  //double A = (7./(30.*Pi)); // SM
-  double alpha_mz = data.alpha;
-  double mu0 = data.mz;
-  double mu = data.Q;//pow(data.Q,0.5);
-  
-  Self_energy se;
-  
-  cout.precision(8);
-  
-  // matching (?) of SM to Wino model
-  
-  
-  //data.alpha = pow(   1.0/alpha_mz -  A * log( mu/mu0) , -1);
-	
-	data.alpha = data.alpha*( 1.0-real(extra_TSIL_interface_EW_triplet::gammagamma_Chi(data,data.Q)) /pow(data.Q,2) );
-	cout << "alpha/alphaSM = " << ( 1.0-real(extra_TSIL_interface_EW_triplet::gammagamma_Chi(data,data.Q)) /pow(data.Q,2) ) << endl;
-	
-  // determine MS bar input parameters at Q
-  // only recompute the 1-loop functions for efficiency
-  data.do_tsil_all = false;
-  
-  double mw_pole = data.mw;
-  double mz_pole = data.mz;
-  double tol = 1e-8;
-  
-  for (int i = 0; i < 10; i++)
-	{
-	  data.P = mw_pole;
-		double diff = 100;
-	  while (diff > tol)
-	  {
-			se.run_tsil(data);
-			double mwMS  = pow( pow(mw_pole,2) - real(data.SE_1["V3"]),0.5 );
-			diff = abs(mwMS - data.mw);
-			data.mw = mwMS;
-		}
-	  ///// get mz ms bar mass
-		data.P = mz_pole;
-		diff = 100;
-	  while (diff > tol)
-	  {
-			se.run_tsil(data);
-			double mzMS = pow( pow(mz_pole,2) - real(data.SE_1["V2"]),0.5 );
-			diff = abs(mzMS - data.mz);
-			data.mz = mzMS;
-		}
-	  
-	}
-	
-	cout << "mz_MS = " << data.mz;
-	cout << ", mw_MS = " << data.mw << endl;
-  
-  // need to iterate to determine MS bar mass for MChi to match equation (9) of Ibe et al.
-  //data.MChi = iterative_ms_bar_mass(data, "F11_g1");
-  
-  
-  data.P = data.MChi;
-  
-  
-  data.do_tsil_all = true;
-  
-  
-}
-
-bool EW_triplet_spectrum::compute_spectra_flexiblesusy()
+bool EW_triplet_spectrum::compute_spectra_flexiblesusy(int loop_order)
 {
 	
-	cout << "-------- Computing FlexibleSUSY spectrum  --------"<< endl;
 	Spectrum_generator_settings spectrum_generator_settings;
   
   QedQcd oneset;
@@ -559,17 +497,26 @@ bool EW_triplet_spectrum::compute_spectra_flexiblesusy()
   slha_io.fill(spectrum_generator_settings);
   
   spectrum_generator.set_settings(spectrum_generator_settings);
+  
+  //spectrum_generator.set_beta_loop_order(loop_order);
+  
+    
+  if (!data.do_tsil_all)
+  {
+		spectrum_generator.set_threshold_corrections_loop_order(0);
+  }
+  
   spectrum_generator.set_parameter_output_scale(slha_io.get_parameter_output_scale());
   
-  //oneset.setPoleMt(data.mt);
+  //oneset.setPoleMt(data.mt); // currently set this in LesHouches input file
   
   oneset.toMz();
   
-	input.QEWSB=data.Q;
-	input.Qin=data.Q;
+	input.QEWSB = data.Q;
+	input.Qin = data.Q;
+	
   input.HiggsIN = 0.5*pow(data.mh,2);
   input.YcIN = 0.5*data.MChi;
-  
   
   spectrum_generator.run(oneset, input);
 	
@@ -578,6 +525,7 @@ bool EW_triplet_spectrum::compute_spectra_flexiblesusy()
 	= spectrum_generator.get_problems();
 	const bool error = problems.have_problem();
 	problems.print_warnings(warnings);
+	
 	if (error==1)
 	{
 		// check for errors
@@ -586,65 +534,59 @@ bool EW_triplet_spectrum::compute_spectra_flexiblesusy()
 		
 		cout<< FORMAT_SPINFO(4,problems_str.str()) << endl;
 		
-		return error;
+		//return error;
 	}
+
 	EW_triplet_slha<Two_scale> model(spectrum_generator.get_model());
-	  
-  // update data struct with computed spectrum
-  
-  model.run_to(data.Q);
-  
-  
+	
+	model.run_to(data.Q);
+	
+	double diff = 100;
+	double tol = 1e-8;
+	
+	// set required Higgs MS bar mass
+
+	// initial guess
+	double mhMS = pow( pow(data.mh,2) + real(model.self_energy_hh(data.mh)) , 0.5);
+	model.set_mu2(0.5*pow(mhMS,2));
+	
+	// iterate
+	
+	diff = 100;
+	while( diff > tol )
+	{
+		model.solve_ewsb();
+		model.calculate_spectrum();
+		
+		double mh_pole = model.get_Mhh_pole_slha();
+		diff = abs(mh_pole - data.mh);
+		
+		// use this method rather than iterating the self energy expression
+		// since loop corrections are also involved, which aren't
+		// accounted for if we just did that
+		
+		mhMS = mhMS-(mh_pole - data.mh);
+		model.set_mu2(0.5*pow(mhMS,2));
+		
+	}
+
+  // get alpha_EM
   double g1 = pow(3./5.,0.5)*model.get_g1();
   double g2 = model.get_g2();
-  
   data.alpha = pow(g1*g2,2) / (4 * Pi * (g1*g1 + g2*g2));
   
-  // MS bar masses
+  // MS bar masses (only required for two-loop calculation)
   if (data.do_tsil_all)
   {
 		data.mw = model.get_MVWp();
 		data.mz = model.get_MVZ();
 		data.mh = model.get_Mhh();
 		data.mt = model.get_MFu(2);
-		
-		// get MB self energies
-		Self_energy se;
-	  data.do_tsil_all = false;
-	  data.P = 80.386632;
-	  se.run_tsil(data);
-	  
-//	  double mwMS = pow( pow(data.mw,2) - real(data.SE_1["V3"]),0.5 );
-		
-		cout << "mw self energy FS = " << Re(model.self_energy_VWp(80.3866)) << ", MB = " << -real(data.SE_1["V3"]) << std::endl;
-		
-		data.P = data.mz;
-	  se.run_tsil(data);
-	  data.do_tsil_all = true;
-//	  double mwMS = pow( pow(data.mw,2) - real(data.SE_1["V3"]),0.5 );
-		
-		//cout << "mz self energy FS = " << Re(model.self_energy_VZ(data.mz)) << ", MB = " << -real(data.SE_1["V2"]) << std::endl;
-		data.P = data.MChi;
-		
-		cout << "mw = " << data.mw << " , mw = " << data.mz << endl;
-		
-		
-		
   }
-  /*
-  double thetaW = ArcCos(Abs(model.get_ZZ(0,0)));
-  data.sw = Sin(thetaW);
-  data.cw = Cos(thetaW);
   
-  data.mh = model.get_Mhh();
-	//data.mt = model.get_MFu(2);
-  data.v = model.get_v();
-  */
-
-  
-	data.SE_1["F7"] = model.get_MFn_pole_slha() - data.MChi;
-	data.SE_1["F5"] = model.get_MFc_pole_slha() - data.MChi;
-  
+	data.SE_1[neutral_particle] = model.get_MFn_pole_slha() - data.MChi;
+	data.SE_1[charged_particle] = model.get_MFc_pole_slha() - data.MChi;
+	
   return error;
 }
 
@@ -655,13 +597,14 @@ void EW_triplet_spectrum::compute_tsil()
 	se.run_tsil(data);	
 	
 	// add derivatives of 1-loop self energies
-	data.SE_2["F11_g1"] = data.SE_2["F11_g1"] +  extra_TSIL_interface_EW_triplet::F11_der(data);
-	data.SE_2["F12_g1"] = data.SE_2["F12_g1"] +  extra_TSIL_interface_EW_triplet::F12_der(data);	
-
+	
+	data.SE_2[neutral_particle] = data.SE_2[neutral_particle] +  extra_TSIL_interface_EW_triplet::F11_der(data);
+	data.SE_2[charged_particle] = data.SE_2[charged_particle] +  extra_TSIL_interface_EW_triplet::F12_der(data);	
+	
 	if (!data.do_tsil_all)
 	{
-		data.SE_2["F11_g1"] = 0;
-		data.SE_2["F12_g1"] = 0;
+		data.SE_2[neutral_particle] = 0;
+		data.SE_2[charged_particle] = 0;
 	}
 
 }
@@ -672,7 +615,7 @@ bool EW_triplet_spectrum::compute_tsil_iterative()
 	Self_energy se;
 	se.run_tsil(data);
 	double m_F12;
-	double m_F11 = iterative_ms_bar_mass(data,"F11_g1");
+	double m_F11 = iterative_ms_bar_mass(data,neutral_particle);
 
 	if (m_F11 == 0)
 	{
@@ -681,7 +624,7 @@ bool EW_triplet_spectrum::compute_tsil_iterative()
 
 	if (m_F11 != 0)
 	{
-		m_F12 = iterative_ms_bar_mass(data,"F12_g1");
+		m_F12 = iterative_ms_bar_mass(data,charged_particle);
 		if (m_F12 == 0)
 		{
 			return false;
@@ -690,22 +633,22 @@ bool EW_triplet_spectrum::compute_tsil_iterative()
 	
 	if ( (m_F11 == 0 ) || (m_F12 == 0 ) )
 	{
-		data.SE_1["F11_g1"] = 0;
-		data.SE_1["F12_g1"] = 0;
-		data.SE_2["F11_g1"] = 0;
-		data.SE_2["F12_g1"] = 0;
+		data.SE_1[neutral_particle] = 0;
+		data.SE_1[charged_particle] = 0;
+		data.SE_2[neutral_particle] = 0;
+		data.SE_2[charged_particle] = 0;
 	}
 	else if (data.do_tsil_all)
 	{
-		data.SE_2["F11_g1"] = m_F11 - data.MChi;
-		data.SE_2["F12_g1"] = m_F12 - data.MChi;
-		data.SE_1["F11_g1"] = 0;
-		data.SE_1["F12_g1"] = 0;
+		data.SE_2[neutral_particle] = m_F11 - data.MChi;
+		data.SE_2[charged_particle] = m_F12 - data.MChi;
+		data.SE_1[neutral_particle] = 0;
+		data.SE_1[charged_particle] = 0;
 	}
 	else
 	{
-		data.SE_1["F11_g1"] = m_F11 - data.MChi;
-		data.SE_1["F12_g1"] = m_F12 - data.MChi;
+		data.SE_1[neutral_particle] = m_F11 - data.MChi;
+		data.SE_1[charged_particle] = m_F12 - data.MChi;
 	}	
 
 	return true;
@@ -735,32 +678,32 @@ double EW_triplet_spectrum::get_F11_der_it()
 
 double EW_triplet_spectrum::get_deltam()
 {
-	return data.SE_1["F12_g1"] - data.SE_1["F11_g1"];
+	return data.SE_1[charged_particle] - data.SE_1[neutral_particle];
 }
 
 double EW_triplet_spectrum::get_deltam_2loop()
 {
-	return data.SE_2["F12_g1"] - data.SE_2["F11_g1"];
+	return data.SE_2[charged_particle] - data.SE_2[neutral_particle];
 }
 
 double EW_triplet_spectrum::get_charged_mass()
 {
-	return data.MChi + data.SE_1["F12_g1"] ;
+	return data.MChi + data.SE_1[charged_particle] ;
 }
 
 double EW_triplet_spectrum::get_neutral_mass()
 {
-	return data.MChi + data.SE_1["F11_g1"] ;
+	return data.MChi + data.SE_1[neutral_particle] ;
 }
 
 
 double EW_triplet_spectrum::get_charged_mass_2loop()
 {
-	return data.MChi + data.SE_1["F12_g1"]+ data.SE_2["F12_g1"] ;
+	return data.MChi + data.SE_1[charged_particle]+ data.SE_2[charged_particle] ;
 }
 
 double EW_triplet_spectrum::get_neutral_mass_2loop()
 {
-	return data.MChi + data.SE_1["F11_g1"] + data.SE_2["F11_g1"];
+	return data.MChi + data.SE_1[neutral_particle] + data.SE_2[neutral_particle];
 }
 

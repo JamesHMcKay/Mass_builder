@@ -16,7 +16,7 @@
 // <http://www.gnu.org/licenses/>.
 // ====================================================================
 
-// File generated at Tue 7 Nov 2017 22:08:55
+// File generated at Wed 15 Nov 2017 15:15:39
 
 #include "MDM_two_scale_low_scale_constraint.hpp"
 #include "MDM_two_scale_model.hpp"
@@ -115,7 +115,6 @@ void MDM_low_scale_constraint<Two_scale>::apply()
    qedqcd.runto(scale, 1.0e-5);
    calculate_DRbar_gauge_couplings();
 
-   const auto HiggsIN = INPUTPARAMETER(HiggsIN);
    const auto g1 = MODELPARAMETER(g1);
    const auto g2 = MODELPARAMETER(g2);
 
@@ -123,7 +122,6 @@ void MDM_low_scale_constraint<Two_scale>::apply()
    calculate_Yu_DRbar();
    calculate_Yd_DRbar();
    calculate_Ye_DRbar();
-   MODEL->set_mu2(Re(HiggsIN));
    MODEL->set_g1(new_g1);
    MODEL->set_g2(new_g2);
    MODEL->set_g3(new_g3);

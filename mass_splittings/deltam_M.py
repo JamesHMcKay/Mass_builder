@@ -23,8 +23,8 @@ from matplotlib import ticker
 from matplotlib.ticker import ScalarFormatter
 from matplotlib import rc
 
-#rc('text', usetex=True)
-#plt.rc('font', family='Computer Modern Roman',weight='normal')
+rc('text', usetex=True)
+plt.rc('font', family='Computer Modern Roman',weight='normal')
 
 fig=plt.figure()
 
@@ -33,22 +33,23 @@ ax = fig.add_subplot(1,1,1)
 
 #ax.xaxis.set_major_formatter(ticker.FormatStrFormatter("%d"))
 
-A=np.genfromtxt('mass_splittings/data2/deltam_M.txt',usecols=[0,1,2,3])
+A=np.genfromtxt('mass_splittings/data2/deltam_M.txt',usecols=[0,1,2,3,4])
 x=A[:,0]
 y1=A[:,1]*1000
 y2=A[:,2]*1000
-y3=A[:,3]*1000
+xFS=A[:,3]
+yFS=A[:,4]*1000
 
 
 plt.plot(x,y1,'-',color='red',label='1-loop') #
 
 plt.plot(x,y2,'-',color='green',label='2-loop') #
 
-plt.plot(x,y3,'--',color='green',label='2-loop FS') #
+plt.plot(xFS,yFS,'--',color='green',label='2-loop FS') #
 
 #plt.xlim([100,4000])
 plt.ylim([150,180])
-#plt.ylim([660,680])
+#plt.ylim([100,800])
 leg = plt.legend(loc='upper left')
 ax.set_xscale('log')
 
@@ -68,18 +69,19 @@ subplots_adjust(hspace=0.3,wspace=0.)
 ax1 = fig.add_subplot(2,1,1)
 #ax1.xaxis.set_major_formatter(ticker.FormatStrFormatter("%d"))
 
-fx=np.polyfit(log(x),y2,4)
+fx=np.polyfit(log(xFS),yFS,4)
 f=np.poly1d(fx)
 
 print(np.poly1d(f))
 
 r=np.linspace(log(100),log(4000))
 
-ax1.plot(x,y2,'-',color='black',linewidth=2,label="$\mathrm{This\ work}$")
+ax1.plot(x,y2,'-',color='blue',linewidth=1.5,label="$\mathrm{1}\!-\!\mathrm{loop\ RGEs}$",zorder=10)
+ax1.plot(xFS,yFS,'-',color='red',linewidth=1.5,label="$\mathrm{2}\!-\!\mathrm{loop\ RGEs}$",zorder=10)
 
 gx = [-0.181509, 5.41948, -60.8831 , 305.383, -413.315]
 g=np.poly1d(gx)
-ax1.plot(exp(r),g(r),'--',color='blue',linewidth=2,label="$\mathrm{Ibe\ et\ al.\ Eq.\ (17)}$")
+ax1.plot(exp(r),g(r),'--',color='black',linewidth=1.5,label="$\mathrm{Ibe\ et\ al.\ Eq.\ (17)}$",zorder=100)
 
 
 ax1.set_xlim([200,4000])
@@ -96,10 +98,13 @@ ax1.set_xscale('log')
 
 
 
-ax2.fill_between(x, -0.02*ones(size(y2)), 0.02*ones(size(y2)),color='grey',alpha=0.4)
+ax2.fill_between(x, -0.02*ones(size(y2)), 0.02*ones(size(y2)),color='grey',alpha=0.3)
 
 
-ax2.plot(x,((g(log(x))-y2)/y2)*100,'-',color='black',linewidth=2)
+ax2.plot(x,((g(log(x))-y2)/y2)*100,'-',color='blue',linewidth=1.5)
+ax2.plot(xFS,((g(log(xFS))-yFS)/yFS)*100,'-',color='red',linewidth=1.5)
+
+ax2.plot(xFS,zeros(size(xFS)),'--',color='black',linewidth=1.5)
 
 #ax2.xaxis.set_major_formatter(ticker.FormatStrFormatter("%d"))
 
@@ -107,10 +112,12 @@ ax1.set_ylabel('$\Delta M = M_{\mathrm{pole}}^+ - M_{\mathrm{pole}}^0$ $(\mathrm
 ax2.set_xlabel('$M^0_{\mathrm{pole}}$ $(\mathrm{GeV})$',fontsize=12)
 ax2.set_ylabel('$\mathrm{Difference}$ $(\mathrm{\%}$)$',fontsize=12)
 
+ax1.annotate(r'$\mathrm{Wino\ model}$', xy=(300,160), xytext=(300,160),fontsize=14)
+ax1.annotate(r'$Q=163.3$ $\mathrm{GeV}$', xy=(300,159), xytext=(300,159),fontsize=14)
 
 
 ax2.set_xlim([200,4000])
-#ax2.set_ylim([-0.05,0.05])
+ax2.set_ylim([-0.05,0.05])
 ax2.set_xscale('log')
 
 ax1.set_xticks([200,1000,4000])

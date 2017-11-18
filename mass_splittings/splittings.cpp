@@ -12,7 +12,7 @@
 #include "self_energy.hpp"
 #include "cmake_variables.hpp"
 #include "figures.hpp"
-#include "mssm_spectrum.hpp"
+#include "figures_2.hpp"
 #include "ew_triplet_spectrum.hpp"
 #include "mdm_spectrum.hpp"
 
@@ -28,17 +28,13 @@ int main(int argc, char *argv[])
   
   Data data(options);
   
-    
-  MSSM_spectrum spec(data);
-  spec.compute_spectra_flexiblesusy();
-  spec.compute_tsil();
-  cout << "FS mass splitting = " <<  spec.get_deltam() << endl;
   
+  //EW_triplet_spectrum spec2(data);
+  //spec2.compute_spectra_flexiblesusy();
   
-  MSSM_spectrum spec2(data);
-  spec2.compute_spectra_MB_2loop();
-	spec2.compute_tsil();
-  cout << "MB mass splitting = " <<  spec2.get_deltam() << endl;  
+	//spec2.compute_tsil();
+	
+  //cout << "MDM mass splitting = " <<  spec2.get_deltam() << " " << spec2.get_deltam_2loop() <<  endl;  
   
   /*
 
@@ -60,14 +56,10 @@ int main(int argc, char *argv[])
   cout << "2-loop mass splitting = " <<  spec2.get_deltam_2loop() + spec2.get_deltam()<< endl;
   */
   
-  Figures<MSSM_spectrum> fig;
-  
-  //Figures<EW_triplet_spectrum> fig;
+  Figures<EW_triplet_spectrum> fig;
   //Figures<MDM_spectrum> fig;
   
   //fig.plot_M(data);
-  
-  //fig.plot_2loop_uncertainties(data,false);
   
   //fig.plot_M_2loop_explicit(data);
   
@@ -78,13 +70,19 @@ int main(int argc, char *argv[])
   //fig.plot_decays(data);
   
   //fig.plot_M_flexiblesusy(data);
-  //fig.plot_M_flexiblesusy_2loop(data,"MDM",false);
+  //fig.plot_M_flexiblesusy_2loop(data,"MSSM",false);
   
   //fig.plot_deltam_2loop(data);
   
   //fig.plot_uncertainties(data);
   
 	//fig.test(data);
-  
+	
+	
+	//Figures_2<EW_triplet_spectrum> fig_2;
+	Figures_2<MDM_spectrum> fig_2;
+	
+	fig_2.two_loop_plots(data, "MDM");  
+	
   return 0;
 }

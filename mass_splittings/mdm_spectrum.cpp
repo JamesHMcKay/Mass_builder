@@ -319,87 +319,76 @@ void MDM_spectrum::compute_spectra_MB_2loop()
 
 void MDM_spectrum::compute_spectra_MB_2loop()
 {
-	cout << "------------- Computing MB spectrum -------------" << endl;
-  Self_energy se;
-  long double tol = 1e-8;
- 
-  // determine MS bar input parameters at Q
-  // only recompute the 1-loop functions for efficiency
-  
-  data.do_tsil_all = false;
-  //data.mw = 79.06859081; // match the value FS changes this to
+	data.do_tsil_all = false;
   long double mw_pole = data.mw;
   long double mz_pole = data.mz;
-  long double MChi = data.MChi;
+
+	// RGE evolution
+  double A = (19./(10.*Pi)); // EW_triplet
+  //double A = (17./(30.*Pi)); // Wino model
+  //double A = (7./(30.*Pi)); // SM
+  double alpha_mz = data.alpha;
+  double mu0 = data.mz;
+  double mu = data.Q;
+  
+  Self_energy se;
+  long double tol = 1e-10;
+ 
+  // run alpha up to the matching scale (so that all threshold corrections are applied at the same place)
+  data.alpha = pow(   1.0/alpha_mz -  A * log( mu/mu0) , -1);
   long double alpha_SM = data.alpha;
-  double diff = 1000;
+  
+  Data data_original = data;
   
   long double mwMS = 0.0;
   long double mzMS = 0.0;
-  long double MChiMS = 0.0;
   long double alphaMS = 0.0;
   
-  //data.mz = 88.47644326;
-  //data.mw = 76.45989508; 
-	
-	diff = 100;
-	double mwMS_previous = 0;
-  //while (diff > tol)
-  //{
-		data.P = mz_pole;
-		se.run_tsil(data);
-		mzMS = pow( pow(mz_pole,2) - real(data.SE_1["V2"]),0.5 );
-
-		cout << "SE( Z ) = " << data.SE_1["V2"] << " mzMS = " << mzMS << endl;
-		
-		data.P = mw_pole;	
-		se.run_tsil(data);
-		mwMS  = pow( pow(mw_pole,2) - real(data.SE_1["V3"]),0.5 );
-		
-		cout << "SE( W ) = " << data.SE_1["V3"] << " mwMS = " << mwMS << endl;
-		
-		
-		//data.P = data.Q;
-		//alphaMS = alpha_SM*( 1.0-real(extra_TSIL_interface_MDM::gammagamma_Chi(data,data.Q)) /pow(data.Q,2) );
-		
-		//data.alpha = alphaMS;
-		
-		
-		diff = abs(mzMS - data.mz) + abs(mwMS - data.mw);
-		cout << "diff = " << diff << endl;
-		
-		data.mw = mwMS;
-		//mwMS_previous = mwMS;
-		data.mz = mzMS;
-	//}
-	
-			// matching of SM to Wino model
-	
-	//data.mw = mwMS_previous;
-	
-	
-	data.P = MChi;
-	
-	data.do_tsil_all = true;
-	
-	
-	
-	
-	std::cout << "MB: MZ pole = " << mz_pole << " ms_bar = " << data.mz << std::endl;
-	std::cout << "MB: MW pole = " << mw_pole << " ms_bar = " << data.mw << std::endl;
+  double diff = 1000;
   
-  cout << "MB: alpha = " << data.alpha << endl;
-	
+  for (int k = 0 ; k < 5 ; k ++)
+  {
+
+		data.P = data.Q;
+		while (diff > tol*1e-6)
+		{
+			alphaMS = alpha_SM*( 1.0-real(extra_TSIL_interface_MDM::gammagamma_Chi(data,data.Q)) /pow(data.Q,2) );
+			diff = abs(data.alpha - alphaMS);
+			data.alpha = alphaMS;
+		}	
+		
+		data.P = mw_pole;
+		diff = 100;
+	  while (diff > tol)
+	  {
+			se.run_tsil(data);
+			mwMS  = pow( pow(mw_pole,2) - real(data.SE_1["V3"]),0.5 );
+			diff = abs(mwMS - data.mw);
+			data.mw = mwMS;
+		}
+
+		data.P = mz_pole;
+		diff = 100;
+	  while (diff > tol)
+	  {
+			se.run_tsil(data);
+			mzMS = pow( pow(mz_pole,2) - real(data.SE_1["V2"]),0.5 );
+			diff = abs(mzMS - data.mz);
+			data.mz = mzMS;
+		}
+		 
+	}
+  
+  data.P = data.MChi;
+  data.do_tsil_all = true;
   
 }
 
 
 
 
-bool MDM_spectrum::compute_spectra_flexiblesusy()
+bool MDM_spectrum::compute_spectra_flexiblesusy(int loop_order)
 {
-	
-	cout << "------------- Computing FS spectrum -------------" << endl;
 	
 	Spectrum_generator_settings spectrum_generator_settings;
   
@@ -417,9 +406,16 @@ bool MDM_spectrum::compute_spectra_flexiblesusy()
   slha_io.fill(spectrum_generator_settings);
   
   spectrum_generator.set_settings(spectrum_generator_settings);
+  
+  if (!data.do_tsil_all)
+  {
+		spectrum_generator.set_threshold_corrections_loop_order(0);
+  }
+  
+  //spectrum_generator.set_beta_loop_order(loop_order);
+  
   spectrum_generator.set_parameter_output_scale(slha_io.get_parameter_output_scale());
   
-  //oneset.setPoleMt(data.mt);
   
   oneset.toMz();
   
@@ -428,7 +424,6 @@ bool MDM_spectrum::compute_spectra_flexiblesusy()
   input.HiggsIN = 0.5*pow(data.mh,2);
   input.YcIN = 0.5*data.MChi;
   
-  
   spectrum_generator.run(oneset, input);
 	
 	std::ostringstream warnings;
@@ -436,6 +431,7 @@ bool MDM_spectrum::compute_spectra_flexiblesusy()
 	= spectrum_generator.get_problems();
 	const bool error = problems.have_problem();
 	problems.print_warnings(warnings);
+	
 	if (error==1)
 	{
 		// check for errors
@@ -446,34 +442,61 @@ bool MDM_spectrum::compute_spectra_flexiblesusy()
 		
 		return error;
 	}
+
 	MDM_slha<Two_scale> model(spectrum_generator.get_model());
-	  
-  // update data struct with computed spectrum
-  
-  // MS bar masses
-  
+	
+	model.run_to(data.Q);
+	
+	double diff = 100;
+	double tol = 1e-8;
+	
+	// set required Higgs MS bar mass
+
+	// initial guess
+	double mhMS = pow( pow(data.mh,2) + real(model.self_energy_hh(data.mh)) , 0.5);
+	model.set_mu2(0.5*pow(mhMS,2));
+	
+	// iterate
+	diff = 100;
+	while( diff > tol )
+	{
+		model.solve_ewsb();
+		model.calculate_spectrum();
+		double mh_pole = model.get_Mhh_pole_slha();
+		diff = abs(mh_pole - data.mh);
+		
+		// use this method rather than iterating the self energy expression
+		// since loop corrections are also involved, which aren't
+		// accounted for if we just did that
+		
+		mhMS = mhMS-(mh_pole - data.mh);
+		model.set_mu2(0.5*pow(mhMS,2));
+	}
+
+  // get alpha_EM
   double g1 = pow(3./5.,0.5)*model.get_g1();
   double g2 = model.get_g2();
+  data.alpha = pow(g1*g2,2) / (4 * Pi * (g1*g1 + g2*g2));
   
-  // need to set masses to pole masses for this calculation along with the correct
-  // vev and gauge couplings (forcing tree-level relationships)
-
-  
-  
+  // MS bar masses (only required for two-loop calculation)
   if (data.do_tsil_all)
   {
-		
-	  data.mw = model.get_MVWp();
-	  data.mz = model.get_MVZ();
-	  data.mh = model.get_Mhh();
-	  data.mu = model.get_MFu(0);
-	  data.mc = model.get_MFu(1);
+		data.mw = model.get_MVWp();
+		data.mz = model.get_MVZ();
+		data.mh = model.get_Mhh();
+		data.mt = model.get_MFu(2);
+  }
+	  
+	  
+	  //data.mu = model.get_MFu(0);
+	  //data.mc = model.get_MFu(1);
 	  //data.mt = model.get_MFu(2);
 	  
-	  data.md =  model.get_MFd(0);
-	  data.ms =  model.get_MFd(1);
-	  data.mb =  model.get_MFd(2);
+	  //data.md =  model.get_MFd(0);
+	  //data.ms =  model.get_MFd(1);
+	  //data.mb =  model.get_MFd(2);
 	  
+	  /*
 	  cout << "  u mass = " << model.get_MFu(0) << endl;
 	  cout << "  c mass = " << model.get_MFu(1) << endl;
 	  cout << "  t mass = " << model.get_MFu(2) << endl;
@@ -485,43 +508,11 @@ bool MDM_spectrum::compute_spectra_flexiblesusy()
 	  cout << "  e mass = " << model.get_MFe(0) << endl;
 	  cout << "  mu mass = " << model.get_MFe(1) << endl;
 	  cout << "  tau mass = " << model.get_MFe(2) << endl;	  
-	  
-	  
-	  // check tree-level relationships:
-	  
-	  cout << "cw = mw/mz = " <<   data.mw/data.mz << endl;
-	  
-	  
-	  
-	  data.alpha = pow(g1*g2,2) / (4 * Pi * (g1*g1 + g2*g2));
-	  cout << "alpha = " << data.alpha << endl;
-	  
-	  
-	  //data.v = 2*data.mw/g2;
-	  //data.v = model.get_v();
-	  
-		//double thetaW = ArcCos(Abs(model.get_ZZ(0,0)));
-		//data.sw = Sin(thetaW);
-		//data.cw = Cos(thetaW);
-	  
-	  //data.g1 = g1;
-	  //data.g2 = g2;
-	  
-	  
-	  //cout << "mw self energy FS = " << Re(model.self_energy_VWp(data.mw)) << ", MB = " << -real(data.SE_1["V3"]) << std::endl;
-	}
+	  */
 	
-	
-	
-	
-  //data.g1 = g1;
-  //data.g2 = g2;
-  data.alpha = pow(g1*g2,2) / (4 * Pi * (g1*g1 + g2*g2));
-
-
  	data.SE_1["F7"] = model.get_MFn_pole_slha() - data.MChi;
+ 	data.SE_1["F6"] = model.get_MFg_pole_slha() - data.MChi;
   data.SE_1["F5"] = model.get_MFc_pole_slha() - data.MChi;
- 
 	
   return error;
 }
@@ -563,7 +554,7 @@ bool MDM_spectrum::compute_tsil_iterative()
 	
 	if (m_F7 != 0)
 	{
-		m_F6 = iterative_ms_bar_mass(data,"F6_g1");
+		m_F6 = iterative_ms_bar_mass(data,"F6");
 		if (m_F6 == 0)
 		{
 			return false;
@@ -613,25 +604,25 @@ double MDM_spectrum::get_deltam2_2loop()
 
 double MDM_spectrum::get_double_charged_mass()
 {
-	return data.MChi + data.SE_1["F6_g1"] + data.SE_1["F6_g1"];
+	return data.MChi + data.SE_1["F6"] + data.SE_1["F6"];
 }
 
 double MDM_spectrum::get_charged_mass()
 {
-	return data.MChi + data.SE_1["F5_g1"];
+	return data.MChi + data.SE_1["F5"];
 }
 
 double MDM_spectrum::get_neutral_mass()
 {
-	return data.MChi + data.SE_1["F7_g1"] ;
+	return data.MChi + data.SE_1["F7"] ;
 }
 
 double MDM_spectrum::get_charged_mass_2loop()
 {
-	return data.MChi + data.SE_1["F5_g1"]+data.SE_2["F5_g1"];
+	return data.MChi + data.SE_1["F5"]+data.SE_2["F5"];
 }
 
 double MDM_spectrum::get_neutral_mass_2loop()
 {
-	return data.MChi + data.SE_1["F7_g1"] + data.SE_2["F7_g1"] ;
+	return data.MChi + data.SE_1["F7"] + data.SE_2["F7"] ;
 }

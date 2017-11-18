@@ -35,6 +35,4 @@ MassBuilderQ2 Q2
 Xi
 alpha
 MassBuilderJEpsilon
-g1
-g2
 g

@@ -16,7 +16,7 @@
 // <http://www.gnu.org/licenses/>.
 // ====================================================================
 
-// File generated at Tue 7 Nov 2017 22:05:44
+// File generated at Wed 15 Nov 2017 19:56:30
 
 #ifndef EW_triplet_EFFECTIVE_COUPLINGS_H
 #define EW_triplet_EFFECTIVE_COUPLINGS_H

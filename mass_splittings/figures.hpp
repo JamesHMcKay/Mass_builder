@@ -10,8 +10,6 @@
 #include "self_energy.hpp"
 #include "cmake_variables.hpp"
 
-#include "mssm_spectrum.hpp"
-
 #include "ew_triplet_spectrum.hpp"
 #include "mdm_spectrum.hpp"
 
@@ -35,8 +33,6 @@ public:
 	void plot_M_flexiblesusy(Data data);
 	
 	void plot_uncertainties(Data data);
-	
-	void plot_2loop_uncertainties(Data data, bool do_iteration);
 	
 	void plot_M_flexiblesusy_2loop(Data data, string group, bool do_iteration);
 	

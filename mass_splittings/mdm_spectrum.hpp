@@ -12,13 +12,14 @@ public:
   
   // Mass Builder data structure
   Data data;
+  double MChi_pole;
    
   MDM_spectrum(Data data) : data(data) {};
   
   MDM_spectrum(){};
   
   // run FlexibleSUSY and update data structure with couplings and self energies
-  bool compute_spectra_flexiblesusy();
+  bool compute_spectra_flexiblesusy(int loop_order = 1);
   
   // set parameters according to method in Ibe et al. (2013)
   void compute_spectra_MB_1loop();
