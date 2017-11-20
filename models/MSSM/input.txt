@@ -1,22 +1,19 @@
 P 1e4
 Q 163.3
 MChi 1e4
-ma 1e-5
-mw 80.385
-mz 91.1876
-mt 173.34
-mh 125.5
-mf 1e-20
-alpha 0.007815919464765834
-Xi 1
-mu 1e-20
-mc 1e-20
-md 1e-20
-ms 1e-20
-mb 1e-20
-#mu 0.01
-#mc 1.5
-#md 0.01
-#ms 0.2
-#mb 4.7
-#null 0.0
+ma 1e-5												 # ficticous mass for photon
+mw 80.385                      # MW pole mass
+mz 91.18760000                 # MZ pole mass
+mt 1.732000000e+02             # top pole mass 1.733400000e+02
+mh 125.5											 # Higgs pole mass
+mf 1e-20                       # ficticous mass for neutrinos
+alpha 0.007815919464765834     # alpha_EM(MZ)
+Xi 1													 # gauge parameter
+mu 2.400000000e-03             # mu(2 GeV) MS-bar
+mc 1.270000000e+00             # mc(mc) MS-bar
+md 4.750000000e-03             # md(2 GeV) MS-bar
+ms 1.040000000e-01             # ms(2 GeV) MS-bar
+mb 4.200000000e+00             # mb(mb) SM MSbar
+mm 1.056583570e-01             # mmuon(pole)
+ml 1.777000000e+00             # mtau(pole)
+me 5.109989020e-04             # melectron(pole)

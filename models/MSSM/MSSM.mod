@@ -89,7 +89,7 @@ M$ClassesDescription = {
   F[1] == {
 	SelfConjugate -> False,
 	Indices -> {Index[Generation]},
-	Mass -> MLE,
+	Mass -> MFE,
 	QuantumNumbers -> {0 Charge, LeptonNumber},
 	PropagatorLabel -> ComposedChar["\\nu", Index[Generation]],
 	PropagatorType -> Straight,
@@ -316,6 +316,13 @@ MQU[3] = FCGV["MT"];
 MQD[1] = FCGV["MD"];
 MQD[2] = FCGV["MS"];
 MQD[3] = FCGV["MB"];*)
+
+
+MFE[1] = FCGV["MF"];
+MFE[2] = FCGV["MF"];
+MFE[3] = FCGV["MF"];
+
+
 
 MLE[1] = FCGV["ME"];
 MLE[2] = FCGV["MM"];

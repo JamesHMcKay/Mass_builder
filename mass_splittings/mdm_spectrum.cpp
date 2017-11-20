@@ -402,6 +402,26 @@ bool MDM_spectrum::compute_spectra_flexiblesusy(int loop_order)
   
   slha_io.read_from_file(slha_file);
   slha_io.fill(oneset);
+  
+  // set SM parameters from input data
+  
+	oneset.setPoleMt(data.mt);
+	
+	oneset.setPoleMtau(data.ml);
+	oneset.setMbMb(data.mb);
+	oneset.setMass(softsusy::mDown,    data.md);
+	oneset.setMass(softsusy::mUp,      data.mu);
+	oneset.setMass(softsusy::mStrange, data.ms);
+	oneset.setMass(softsusy::mCharm,   data.mc);
+
+  oneset.setAlpha(softsusy::ALPHA, data.alpha);
+	oneset.setAlpha(softsusy::ALPHAS, 0.1184000000);
+
+	oneset.setMass(softsusy::mElectron, data.me);
+	oneset.setMass(softsusy::mMuon,    data.mm);
+	oneset.setPoleMZ(data.mz);
+	oneset.setPoleMW(data.mw);
+  
   slha_io.fill(input);
   slha_io.fill(spectrum_generator_settings);
   
@@ -412,10 +432,9 @@ bool MDM_spectrum::compute_spectra_flexiblesusy(int loop_order)
 		spectrum_generator.set_threshold_corrections_loop_order(0);
   }
   
-  //spectrum_generator.set_beta_loop_order(loop_order);
+  spectrum_generator.set_beta_loop_order(loop_order);
   
   spectrum_generator.set_parameter_output_scale(slha_io.get_parameter_output_scale());
-  
   
   oneset.toMz();
   
@@ -485,31 +504,21 @@ bool MDM_spectrum::compute_spectra_flexiblesusy(int loop_order)
 		data.mz = model.get_MVZ();
 		data.mh = model.get_Mhh();
 		data.mt = model.get_MFu(2);
+		
+		data.mu = model.get_MFu(0);
+	  data.mc = model.get_MFu(1);
+	  
+	  data.md =  model.get_MFd(0);
+	  data.ms =  model.get_MFd(1);
+	  data.mb =  model.get_MFd(2);
+	  
+	  
+	  data.me =  model.get_MFe(0);
+	  data.mm =  model.get_MFe(1);
+	  data.ml =  model.get_MFe(2);	  
+	  
   }
-	  
-	  
-	  //data.mu = model.get_MFu(0);
-	  //data.mc = model.get_MFu(1);
-	  //data.mt = model.get_MFu(2);
-	  
-	  //data.md =  model.get_MFd(0);
-	  //data.ms =  model.get_MFd(1);
-	  //data.mb =  model.get_MFd(2);
-	  
-	  /*
-	  cout << "  u mass = " << model.get_MFu(0) << endl;
-	  cout << "  c mass = " << model.get_MFu(1) << endl;
-	  cout << "  t mass = " << model.get_MFu(2) << endl;
-	  
-	  cout << "  d mass = " << model.get_MFd(0) << endl;
-	  cout << "  s mass = " << model.get_MFd(1) << endl;
-	  cout << "  b mass = " << model.get_MFd(2) << endl;	  
-	  
-	  cout << "  e mass = " << model.get_MFe(0) << endl;
-	  cout << "  mu mass = " << model.get_MFe(1) << endl;
-	  cout << "  tau mass = " << model.get_MFe(2) << endl;	  
-	  */
-	
+  
  	data.SE_1["F7"] = model.get_MFn_pole_slha() - data.MChi;
  	data.SE_1["F6"] = model.get_MFg_pole_slha() - data.MChi;
   data.SE_1["F5"] = model.get_MFc_pole_slha() - data.MChi;

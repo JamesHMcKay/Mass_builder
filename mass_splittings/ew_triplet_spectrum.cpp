@@ -493,12 +493,33 @@ bool EW_triplet_spectrum::compute_spectra_flexiblesusy(int loop_order)
   
   slha_io.read_from_file(slha_file);
   slha_io.fill(oneset);
+  
+  // set SM parameters from input data
+  
+	oneset.setPoleMt(data.mt);
+	
+	oneset.setPoleMtau(data.ml);
+	oneset.setMbMb(data.mb);
+	oneset.setMass(softsusy::mDown,    data.md);
+	oneset.setMass(softsusy::mUp,      data.mu);
+	oneset.setMass(softsusy::mStrange, data.ms);
+	oneset.setMass(softsusy::mCharm,   data.mc);
+
+  oneset.setAlpha(softsusy::ALPHA, data.alpha);
+	oneset.setAlpha(softsusy::ALPHAS, 0.1184000000);
+
+	oneset.setMass(softsusy::mElectron, data.me);
+	oneset.setMass(softsusy::mMuon,    data.mm);
+	oneset.setPoleMZ(data.mz);
+	oneset.setPoleMW(data.mw);
+  
+  
   slha_io.fill(input);
   slha_io.fill(spectrum_generator_settings);
   
   spectrum_generator.set_settings(spectrum_generator_settings);
   
-  //spectrum_generator.set_beta_loop_order(loop_order);
+  spectrum_generator.set_beta_loop_order(loop_order);
   
     
   if (!data.do_tsil_all)
@@ -582,6 +603,20 @@ bool EW_triplet_spectrum::compute_spectra_flexiblesusy(int loop_order)
 		data.mz = model.get_MVZ();
 		data.mh = model.get_Mhh();
 		data.mt = model.get_MFu(2);
+		
+		
+		data.mu = model.get_MFu(0);
+	  data.mc = model.get_MFu(1);
+	  
+	  data.md =  model.get_MFd(0);
+	  data.ms =  model.get_MFd(1);
+	  data.mb =  model.get_MFd(2);
+	  
+	  
+	  data.me =  model.get_MFe(0);
+	  data.mm =  model.get_MFe(1);
+	  data.ml =  model.get_MFe(2);	  
+		
   }
   
 	data.SE_1[neutral_particle] = model.get_MFn_pole_slha() - data.MChi;

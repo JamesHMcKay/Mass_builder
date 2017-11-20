@@ -65,7 +65,10 @@ namespace templates
     <<"      i=i+1;\n"
     <<"    }\n"
     <<"    for (int n=0;n<i+1;n++)\n"
-    <<"    {\n";
+    <<"    {\n"
+    <<"      set_parameter(name[n],parameter[n]);\n"
+    <<"    }\n"
+    <<"  }\n";
   }
 
 

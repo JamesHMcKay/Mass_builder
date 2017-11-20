@@ -18,6 +18,53 @@
 
 using namespace std;
 
+/*
+template <class T>
+double get_deltam(Data data, )
+{
+	
+	T spec(data);
+  spec.compute_spectra_flexiblesusy(1);
+  
+	spec.compute_tsil();
+	
+  cout << "2-loop mass splitting = " <<  spec.get_deltam() + spec.get_deltam_2loop() <<  endl;  
+	
+	
+}*/
+
+
+
+
+
+template <class T>
+void uncertainties(Data data)
+{
+// vary SM parameters to see range of deltaM obtained
+
+
+  T spec(data);
+  spec.compute_spectra_flexiblesusy(1);
+  
+	spec.compute_tsil();
+	
+	cout.precision(17);
+	
+  cout << "1-loop mass splitting = " <<  spec.get_deltam() <<  endl;  
+  cout << "2-loop mass splitting = " <<  spec.get_deltam() + spec.get_deltam_2loop() <<  endl;  
+  
+  // want to print out upper, lower and range when varying parameter x
+  
+  
+	
+
+}
+
+
+
+
+
+
 int main(int argc, char *argv[])
 {
   User_input user(argc,argv);
@@ -28,6 +75,8 @@ int main(int argc, char *argv[])
   
   Data data(options);
   
+  
+  uncertainties<EW_triplet_spectrum>(data);
   
   //EW_triplet_spectrum spec2(data);
   //spec2.compute_spectra_flexiblesusy();
@@ -78,11 +127,10 @@ int main(int argc, char *argv[])
   
 	//fig.test(data);
 	
+	Figures_2<EW_triplet_spectrum> fig_2;
+	//Figures_2<MDM_spectrum> fig_2;
 	
-	//Figures_2<EW_triplet_spectrum> fig_2;
-	Figures_2<MDM_spectrum> fig_2;
-	
-	fig_2.two_loop_plots(data, "MDM");  
+	//fig_2.two_loop_plots(data, "MDM");  
 	
   return 0;
 }

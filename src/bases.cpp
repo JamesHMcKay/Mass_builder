@@ -216,12 +216,12 @@ std::map <std::string, Bases > set_bases(std::vector<string> masses, std::vector
   }
   
   
-  std::string massesSmall[7] = {"ma","mf","md","mu","ms","mb","mc"};
+  std::string massesSmall[10] = {"ma","mf","md","mu","ms","mb","mc","mm","ml","me"};
   
   for (int i1 = 0; i1 < n ; i1++)
   {
 		bool small_mass = false;
-		for (int j = 0; j < 7 ; j++)
+		for (int j = 0; j < 10 ; j++)
 		{
 			if (masses[i1] == massesSmall[j])
 			{

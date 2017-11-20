@@ -809,11 +809,16 @@ void Compute_amp::solve_1loop(std::string particle,vector<std::string> diagram)
 	// now solve relevant equations
 	
   string from="Power",to="TSIL_POW";
+  
+  //string simplifications = "/.g1->g2*STW/CTW/.v->2*mw/g2/.mz->mw/CTW,{STW^2+CTW^2==1}"; // MDM
+  
+  string simplifications = "/.mz->mw/cw,{sw^2+cw^2==1}"; // MSSM
+  
 	
 	if (nc_req == 2)
 	{
-		input += "eq1 = FullSimplify[Coefficient[SE+SEct," + momentum + "]/.g1->g2*STW/CTW/.v->2*mw/g2/.mz->mw/CTW,{STW^2+CTW^2==1}];";
-		input += "eq2 = FullSimplify[Coefficient[SE+SEct," + momentum + ",0]/.g1->g2*STW/CTW/.v->2*mw/g2/.mz->mw/CTW,{STW^2+CTW^2==1}];";
+		input += "eq1 = FullSimplify[Coefficient[SE+SEct," + momentum + "]" + simplifications + "];";
+		input += "eq2 = FullSimplify[Coefficient[SE+SEct," + momentum + ",0]" + simplifications + "];";
 		input += "sol = Solve[{eq1==0,eq2==0},{" + required_couplings[0] + "," + required_couplings[1] + "}];";
 		input += "Set @@@ sol[[1]];";
 		send_to_math(input);
@@ -863,7 +868,7 @@ void Compute_amp::solve_1loop(std::string particle,vector<std::string> diagram)
 	}
 	else if (nc_req == 1)
 	{
-		input += "eq1 = FullSimplify[SE+SEct/.g1->g2*STW/CTW/.v->2*mw/g2/.mz->mw/CTW,{STW^2+CTW^2==1}];";
+		input += "eq1 = FullSimplify[SE+SEct" + simplifications + "];";
 		input += "sol = Solve[{eq1==0},{" + required_couplings[0] + "}];";
 		input += "Set @@@ sol[[1]];";
 		input += "ToString[FullSimplify[" + required_couplings[0] + "(**)],CForm]";

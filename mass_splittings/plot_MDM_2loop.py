@@ -180,8 +180,8 @@ ax.set_ylim([1e-3,1.2])
 
 leg = ax.legend(loc='lower right',frameon=False,fontsize=18)
 
-plt.annotate(r"$\mathrm{Minimal\ dark\ matter}$", xy=(180,0.045), xytext=(180,0.045),fontsize=18)
-plt.annotate(r"$Q = 173.34\ (\mathrm{GeV})$", xy=(180,0.03), xytext=(180,0.03),fontsize=18)
+plt.annotate(r"$\mathrm{Minimal\ dark\ matter}$", xy=(210,0.045), xytext=(210,0.045),fontsize=18)
+plt.annotate(r"$Q = 173.34\ (\mathrm{GeV})$", xy=(210,0.03), xytext=(210,0.03),fontsize=18)
 
 
 
@@ -243,7 +243,7 @@ ax.set_xticklabels(['$\mathrm{100}$','$\mathrm{10}^{\mathrm{3}}$','$\mathrm{10}^
 plt.tick_params(labelsize=18)
 
 plt.annotate(r"$\mathrm{Minimal\ dark\ matter}$", xy=(1500,157), xytext=(1500,157),fontsize=18)
-plt.annotate(r"$Q = 173.34\ (\mathrm{GeV})$", xy=(1500,155.5), xytext=(1500,155.5),fontsize=18)
+plt.annotate(r"$m_t/2 \leq Q \leq 2m_t$", xy=(1500,155.5), xytext=(1500,155.5),fontsize=18)
 leg = ax.legend(bbox_to_anchor=(0.91,0.22),frameon=False,fontsize=18)
 
 
@@ -273,7 +273,7 @@ ax.set_xticklabels(['$\mathrm{100}$','$\mathrm{10}^{\mathrm{3}}$','$\mathrm{10}^
 plt.tick_params(labelsize=18)
 
 plt.annotate(r"$\mathrm{Minimal\ dark\ matter}$", xy=(1500,628), xytext=(1500,628),fontsize=18)
-plt.annotate(r"$Q = 173.34\ (\mathrm{GeV})$", xy=(1500,622), xytext=(1500,622),fontsize=18)
+plt.annotate(r"$m_t/2 \leq Q \leq 2m_t$", xy=(1500,622), xytext=(1500,622),fontsize=18)
 leg = ax.legend(bbox_to_anchor=(0.91,0.22),frameon=False,fontsize=18)
 
 
@@ -325,7 +325,7 @@ plt.annotate(r"$\chi^{+}$", xy=(20,10e4), xytext=(20,10e4),fontsize=18)
 
 
 plt.annotate(r"$\mathrm{Minimal\ dark\ matter}$", xy=(300,3), xytext=(300,3),fontsize=18)
-plt.annotate(r"$Q=173.15$ $(\mathrm{GeV})$", xy=(300,1), xytext=(300,1),fontsize=18)
+plt.annotate(r"$m_t/2 \leq Q \leq 2m_t$", xy=(300,1), xytext=(300,1),fontsize=18)
 
 xlabel(r"$\mathrm{Degenerate\ mass}$ $\hat{M}$ $(\mathrm{GeV})$",fontsize=18)
 ylabel(r"$\tau$ $(\mathrm{mm}/\mathrm{c})$",fontsize=18)

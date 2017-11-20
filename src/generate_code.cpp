@@ -102,51 +102,53 @@ void Generate_code::generate_data_hpp()
 
 
   // create constructor and user input reader
+	data_h<<"  void set_parameter(string name, double parameter)\n"
+	<<"  {\n";
 
-  data_input_block(data_h);
-
-  for (int i=0;i<nc;i++)
+	for (int i=0;i<nc;i++)
   {
-    data_h<<"      if (name[n]==\""<<couplings[i] <<"\")\n"
+    data_h<<"      if (name==\""<<couplings[i] <<"\")\n"
     <<"      {\n"
-    <<"        " <<couplings[i] << " = parameter[n];\n"
+    <<"        " <<couplings[i] << " = parameter;\n"
     <<"      }"<<endl;
   }
 
   for (int i=0;i<nm;i++)
   {
-    data_h<<"      if (name[n]==\""<<masses[i] <<"\")\n"
+    data_h<<"      if (name==\""<<masses[i] <<"\")\n"
     <<"      {\n"
-    <<"        " <<masses[i] << " = parameter[n];\n"
+    <<"        " <<masses[i] << " = parameter;\n"
     <<"      }"<<endl;
   }
 
 
   for (unsigned int i=0;i<particle_names_short_reduced.size();i++)
   {
-    data_h<<"      if (name[n]==\""<<particle_names_short_reduced[i] <<"\")\n"
+    data_h<<"      if (name==\""<<particle_names_short_reduced[i] <<"\")\n"
     <<"      {\n"
-    <<"        M_tree[\"" <<particle_names_short_reduced[i] << "\"] = parameter[n];\n"
+    <<"        M_tree[\"" <<particle_names_short_reduced[i] << "\"] = parameter;\n"
     <<"      }"<<endl;
   }
 
-  data_h<<"      if (name[n]==\"Q\")\n"
+  data_h<<"      if (name==\"Q\")\n"
   <<"      {\n"
-  <<"        Q = parameter[n];\n"
+  <<"        Q = parameter;\n"
   <<"      }"<<endl;
 
 
-  data_h<<"      if (name[n]==\"P\")\n"
+  data_h<<"      if (name==\"P\")\n"
   <<"      {\n"
-  <<"        P = parameter[n];\n"
+  <<"        P = parameter;\n"
   <<"      }"<<endl;
 
 
-  data_h<<"    }\n"
-  <<"  }\n"
-  <<"};\n"
+  data_h<<"  }\n";
 
+  data_input_block(data_h);
+
+  data_h<<"};\n"
   <<"#endif\n";
+  
   data_h.close();
 }
 

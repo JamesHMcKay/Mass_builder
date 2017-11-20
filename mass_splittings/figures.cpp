@@ -478,12 +478,12 @@ template <class T>
 void Figures<T>::plot_M(Data data)
 {
   ofstream myfile;
-  myfile.open ("mass_splittings/data2/deltam_M.txt");
-  int pts = 10;
+  myfile.open ("mass_splittings/data2/deltam_M_lightquarks.txt");
+  int pts = 60;
   double n = 0;
   int status = 0;
   double max_M = 5000; // (GeV)
-  double min_M = 150; // (GeV)
+  double min_M = 90; // (GeV)
   double logMax = log10(max_M);
   double logMin = log10(min_M);
   
@@ -504,24 +504,23 @@ void Figures<T>::plot_M(Data data)
     data.do_tsil_all = true;
     
     
-    T mssm_2loopFS(data);
+    T mssm_2loop_1loopRGE(data);
     
-    mssm_2loopFS.compute_spectra_flexiblesusy();
-    mssm_2loopFS.compute_tsil();
-    double delta_m_2FS = mssm_2loopFS.get_deltam_2loop()+ mssm_2loopFS.get_deltam();
+    mssm_2loop_1loopRGE.compute_spectra_flexiblesusy(1);
+    mssm_2loop_1loopRGE.compute_tsil();
+    double delta_m_2_1 = mssm_2loop_1loopRGE.get_deltam_2loop()+ mssm_2loop_1loopRGE.get_deltam();
     
-    T mssm_2loop(data);
+    T mssm_2loop_2loopRGE(data);
     
-    mssm_2loop.compute_spectra_flexiblesusy(1);
-    //mssm_2loop.compute_tsil();
-    //double delta_m_2 = mssm_2loop.get_deltam_2loop()+ mssm_2loop.get_deltam();
-    double delta_m_2 = 0;
+    mssm_2loop_2loopRGE.compute_spectra_flexiblesusy(2);
+    mssm_2loop_2loopRGE.compute_tsil();
+    double delta_m_2_2 = mssm_2loop_2loopRGE.get_deltam_2loop()+ mssm_2loop_2loopRGE.get_deltam();
     
     //myfile << data.MChi << " " << delta_m_1 <<  " " << delta_m_2;
     //myfile << " " << data.MChi << " " << delta_m_2FS << endl;
     
-    myfile << mssm_2loop.get_neutral_mass() << " " << delta_m_1 <<  " " << delta_m_2;
-    myfile << " " << mssm_2loopFS.get_neutral_mass() << " " << delta_m_2FS << endl;
+    myfile << mssm_2loop_1loopRGE.get_neutral_mass() << " " << delta_m_1 <<  " " << delta_m_2_1;
+    myfile << " " << mssm_2loop_2loopRGE.get_neutral_mass() << " " << delta_m_2_2 << endl;
     
     status=(float(i)/pts)*100;
 		cout<< "\r" << "computing mass splitting . . . " << status << "% complete ";
