@@ -102,7 +102,7 @@ void Generate_code::generate_data_hpp()
 
 
   // create constructor and user input reader
-	data_h<<"  void set_parameter(string name, double parameter)\n"
+	data_h<<"  void set_parameter(string name, long double parameter)\n"
 	<<"  {\n";
 
 	for (int i=0;i<nc;i++)

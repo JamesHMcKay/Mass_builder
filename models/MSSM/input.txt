@@ -1,6 +1,6 @@
-P 1e4
+P 3000
 Q 163.3
-MChi 1e4
+MChi 3000
 ma 1e-5												 # ficticous mass for photon
 mw 80.385                      # MW pole mass
 mz 91.18760000                 # MZ pole mass

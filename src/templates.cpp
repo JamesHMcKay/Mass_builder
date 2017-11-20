@@ -52,7 +52,7 @@ namespace templates
     <<"  Data(Options options) \n"
     <<"  {\n"
     <<"    exclude_photon_pole = options.exclude_photon_pole;\n"
-    <<"    double parameter [99];\n"
+    <<"    long double parameter [99];\n"
     <<"    std::string name [99]; int i=0;\n"
     <<"    std::ifstream input(options.input_list);\n"
     <<"    std::string line;\n"

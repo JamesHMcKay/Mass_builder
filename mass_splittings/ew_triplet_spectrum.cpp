@@ -478,7 +478,7 @@ void EW_triplet_spectrum::compute_spectra_MB_2loop()
 }
 
 
-bool EW_triplet_spectrum::compute_spectra_flexiblesusy(int loop_order)
+bool EW_triplet_spectrum::compute_spectra_flexiblesusy(int loop_order, bool mass_ql_zero)
 {
 	
 	Spectrum_generator_settings spectrum_generator_settings;
@@ -615,7 +615,23 @@ bool EW_triplet_spectrum::compute_spectra_flexiblesusy(int loop_order)
 	  
 	  data.me =  model.get_MFe(0);
 	  data.mm =  model.get_MFe(1);
-	  data.ml =  model.get_MFe(2);	  
+	  data.ml =  model.get_MFe(2);	
+	  
+	  if (mass_ql_zero)
+	  {
+			data.mu = data.mf;
+		  data.mc = data.mf;
+		  
+		  data.md =  data.mf;
+		  data.ms =  data.mf;
+		  data.mb =  data.mf;
+		  
+		  data.me =  data.mf;
+		  data.mm =  data.mf;
+		  data.ml =  data.mf;
+		}
+			
+	    
 		
   }
   
