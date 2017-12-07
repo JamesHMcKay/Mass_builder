@@ -332,7 +332,7 @@ void Figures<T>::plot_uncertainties(Data data)
 	double improved_upper_limit;
 	double improved_upper_limit_plus_1;  
 	
-	Decays decays(data);
+	Decays decays(data,1);
   
   // number of points to plot
   int pts =  150;
@@ -497,12 +497,10 @@ void Figures<T>::plot_M(Data data)
     T mssm_1loop(data);
     mssm_1loop.compute_spectra_flexiblesusy();
     
-    //mssm_1loop.compute_spectra_MB_1loop();
     mssm_1loop.compute_tsil();
     double delta_m_1 = mssm_1loop.get_deltam();
     
     data.do_tsil_all = true;
-    
     
     T mssm_2loop_1loopRGE(data);
     
@@ -515,9 +513,6 @@ void Figures<T>::plot_M(Data data)
     mssm_2loop_2loopRGE.compute_spectra_flexiblesusy(2);
     mssm_2loop_2loopRGE.compute_tsil();
     double delta_m_2_2 = mssm_2loop_2loopRGE.get_deltam_2loop()+ mssm_2loop_2loopRGE.get_deltam();
-    
-    //myfile << data.MChi << " " << delta_m_1 <<  " " << delta_m_2;
-    //myfile << " " << data.MChi << " " << delta_m_2FS << endl;
     
     myfile << mssm_2loop_1loopRGE.get_neutral_mass() << " " << delta_m_1 <<  " " << delta_m_2_1;
     myfile << " " << mssm_2loop_2loopRGE.get_neutral_mass() << " " << delta_m_2_2 << endl;
@@ -811,7 +806,7 @@ void Figures<T>::plot_M_flexiblesusy_2loop(Data data, string group,bool do_itera
 	    
 	  	T spec_explicit = spec;
 	    spec_explicit.compute_tsil();
-	    Decays decays(data);
+	    Decays decays(data,1);
 				
 			pole_mass_n_2loop << " " << spec_explicit.get_neutral_mass_2loop();
 			pole_mass_c_2loop << " " << spec_explicit.get_charged_mass_2loop();	

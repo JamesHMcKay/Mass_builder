@@ -28,21 +28,15 @@ SetOptions[DiracSlash,Dimension->D,FeynCalcInternal->True];SetOptions[DiracTrace
 
 path = "/Users/jamesmckay/Documents/Programs/Mass_builder/";
 kappa=1/(16\[Pi]^2);
-(*sw=Sin[\[Theta]];
-cw=Cos[\[Theta]];*)
+sw=Sin[\[Theta]];
+cw=Cos[\[Theta]];
 
 (* F11 *)
 
 F11SE = 0;
 ClearScalarProducts[];
 
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F11_g1_1_1.mx"}]];
-F11SE = F11SE + SelfEnergyFinite*kappa;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F11_g1_2_1.mx"}]];
-F11SE = F11SE + SelfEnergyFinite*kappa;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F11_g1_3_1.mx"}]];
+Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F11_g1_{1,2}_1.mx"}]];
 F11SE = F11SE + SelfEnergyFinite*kappa;
 
 F11SEdiv = makeFiniteAmplitude[F11SE,-1,D];
@@ -61,13 +55,7 @@ solF11 = Solve[{eq1==0,eq2==0},{d2Z, d2m}]
 
 F12SE = 0;
 
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_1_1.mx"}]];
-F12SE = F12SE + SelfEnergyFinite*kappa;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_2_1.mx"}]];
-F12SE = F12SE + SelfEnergyFinite*kappa;
-
-Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_3_1.mx"}]];
+Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_{1,2,3}_1.mx"}]];
 F12SE = F12SE + SelfEnergyFinite*kappa;
 
 F12SEdiv = makeFiniteAmplitude[F12SE,-1,D];

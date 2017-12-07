@@ -86,13 +86,13 @@ leg = ax1.legend(loc='lower right',frameon=False,fontsize=16)
 ax2.fill_between(x, -0.02*ones(size(y2)), 0.02*ones(size(y2)),color='grey',alpha=0.3)
 
 
-ax2.plot(x,((g(log(x))-y2)/y2)*100,'-',color='blue',linewidth=1.1)
-ax2.plot(x_2,((g(log(x_2))-y2_2)/y2_2)*100,'-',color='red',linewidth=1.1)
+ax2.plot(x,((y2-g(log(x)))/y2)*100,'-',color='blue',linewidth=1.1)
+ax2.plot(x_2,((y2_2-g(log(x_2)))/y2_2)*100,'-',color='red',linewidth=1.1)
 
 
 # plot the light quark lines
-ax2.plot(xl,((g(log(xl))-y2l)/y2l)*100,'--',color='blue',linewidth=1.1)
-ax2.plot(x_2l,((g(log(x_2l))-y2_2l)/y2_2l)*100,'--',color='red',linewidth=1.1)
+ax2.plot(xl,((y2l-g(log(xl)))/y2l)*100,'--',color='blue',linewidth=1.1)
+ax2.plot(x_2l,((y2_2l-g(log(x_2l)))/y2_2l)*100,'--',color='red',linewidth=1.1)
 
 ax2.plot(x_2,zeros(size(x_2)),'--',color='black',linewidth=1.1)
 
@@ -137,9 +137,6 @@ f=np.poly1d(fx)
 
 print '1-loop RGEs and negligible light quark masses'
 print(np.poly1d(f))
-
-
-
 
 
 x_2_fitl = x_2l[x_2l>100]

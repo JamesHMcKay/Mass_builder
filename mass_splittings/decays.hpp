@@ -29,27 +29,30 @@ class Decays
 	// electron mass
 	long double M_e = 5.10998928E-04;
 	
-	// number of components in multiplet
-	int components = 3;
+	// see https://link.springer.com/content/pdf/10.1007%2FJHEP07%282015%29074.pdf
+	int j; // isospin I = (-j,-j+1, . . . , j-1, j)
+	int I; // T3 eigenvalue
+	int T;
 	
 	// Fermi constant
 	long double G_F = 1.16637876E-05;
 
-  long double f_pi = 0.13041;
-  long double V_ud = 0.97425;
+  long double f_pi = 0.1302; // in GeV
+  long double f_k = 0.1556; // in GeV
+  long double V_ud = 0.97417;
   
-  long double V_us = 0.2253;
+  long double V_us =  0.2248;
 	
 	
 	
 	public:
 	Decays (){}  // defualt constructor
-	Decays(Data data) : data(data) {};
+	Decays(Data data, int j) : data(data), j(j) {};
 	
 	
-	long double calc_lifetime(long double deltam);
+	long double calc_lifetime(long double deltam, int I = 0);
 	
-	void calc_lifetime(long double deltam, ofstream &out_file);
+	void calc_lifetime(long double deltam, ofstream &out_file, int I = 0);
 	
 	long double pion_channel(long double deltam);
 	
@@ -59,7 +62,6 @@ class Decays
 	
 	long double electron_channel(long double deltam);
 	
-	long double pion_decay();
 };
 
 #endif

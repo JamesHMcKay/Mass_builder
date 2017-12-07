@@ -16,7 +16,7 @@
 // <http://www.gnu.org/licenses/>.
 // ====================================================================
 
-// File generated at Wed 15 Nov 2017 15:15:39
+// File generated at Mon 27 Nov 2017 21:10:30
 
 #include "MDM_two_scale_initial_guesser.hpp"
 #include "MDM_two_scale_model.hpp"
@@ -87,13 +87,10 @@ void MDM_initial_guesser<Two_scale>::guess()
  * (InitialGuessAtLowScale) is applied here:
  *
  * \code{.cpp}
-   const auto HiggsIN = INPUTPARAMETER(HiggsIN);
-
    MODEL->set_v(Re(LowEnergyConstant(vev)));
    calculate_Yu_DRbar();
    calculate_Yd_DRbar();
    calculate_Ye_DRbar();
-   MODEL->set_mu2(Re(HiggsIN));
 
  * \endcode
  */
@@ -134,13 +131,10 @@ void MDM_initial_guesser<Two_scale>::guess_susy_parameters()
    model->set_scale(mtpole);
 
    // apply user-defined initial guess at the low scale
-   const auto HiggsIN = INPUTPARAMETER(HiggsIN);
-
    MODEL->set_v(Re(LowEnergyConstant(vev)));
    calculate_Yu_DRbar();
    calculate_Yd_DRbar();
    calculate_Ye_DRbar();
-   MODEL->set_mu2(Re(HiggsIN));
 
 }
 

@@ -408,14 +408,15 @@ bool MDM_spectrum::compute_spectra_flexiblesusy(int loop_order, bool mass_ql_zer
 	oneset.setPoleMt(data.mt);
 	
 	oneset.setPoleMtau(data.ml);
-	oneset.setMbMb(data.mb);
+	//oneset.setMbMb(data.mb);
+	oneset.setMass(softsusy::mBottom,    data.mb);
 	oneset.setMass(softsusy::mDown,    data.md);
 	oneset.setMass(softsusy::mUp,      data.mu);
 	oneset.setMass(softsusy::mStrange, data.ms);
 	oneset.setMass(softsusy::mCharm,   data.mc);
 
   oneset.setAlpha(softsusy::ALPHA, data.alpha);
-	oneset.setAlpha(softsusy::ALPHAS, 0.1184000000);
+	oneset.setAlpha(softsusy::ALPHAS, data.alphaS);
 
 	oneset.setMass(softsusy::mElectron, data.me);
 	oneset.setMass(softsusy::mMuon,    data.mm);
@@ -471,11 +472,13 @@ bool MDM_spectrum::compute_spectra_flexiblesusy(int loop_order, bool mass_ql_zer
 	
 	// set required Higgs MS bar mass
 
+	
 	// initial guess
 	double mhMS = pow( pow(data.mh,2) + real(model.self_energy_hh(data.mh)) , 0.5);
 	model.set_mu2(0.5*pow(mhMS,2));
 	
 	// iterate
+	
 	diff = 100;
 	while( diff > tol )
 	{
@@ -492,6 +495,7 @@ bool MDM_spectrum::compute_spectra_flexiblesusy(int loop_order, bool mass_ql_zer
 		model.set_mu2(0.5*pow(mhMS,2));
 	}
 
+	
   // get alpha_EM
   double g1 = pow(3./5.,0.5)*model.get_g1();
   double g2 = model.get_g2();
@@ -505,6 +509,7 @@ bool MDM_spectrum::compute_spectra_flexiblesusy(int loop_order, bool mass_ql_zer
 		data.mh = model.get_Mhh();
 		data.mt = model.get_MFu(2);
 		
+		
 		data.mu = model.get_MFu(0);
 	  data.mc = model.get_MFu(1);
 	  
@@ -515,7 +520,7 @@ bool MDM_spectrum::compute_spectra_flexiblesusy(int loop_order, bool mass_ql_zer
 	  
 	  data.me =  model.get_MFe(0);
 	  data.mm =  model.get_MFe(1);
-	  data.ml =  model.get_MFe(2);	
+	  //data.ml =  model.get_MFe(2);	
 	    
 	  if (mass_ql_zero)
 	  {
@@ -530,6 +535,7 @@ bool MDM_spectrum::compute_spectra_flexiblesusy(int loop_order, bool mass_ql_zer
 		  data.mm =  data.mf;
 		  data.ml =  data.mf;
 		}
+		
 	  
   }
   

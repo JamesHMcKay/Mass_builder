@@ -42,9 +42,9 @@ BRe2 = BRe[BRe>0]
 xe = x[BRe>0]
 
 
-ax.plot(xpi,BRpi2,'-',color='blue',label=r'$\chi^+\rightarrow\chi^0e^+\nu_e$',linewidth=1,zorder=500) #
+ax.plot(xpi,BRpi2,'-',color='blue',label=r'$\chi^+\rightarrow\chi^0\pi^+$',linewidth=1,zorder=500) #
 ax.plot(xmu,BRmu2,'-',color='red',label=r'$\chi^+\rightarrow\chi^0\mu^+\nu_{\mu}$',linewidth=1,zorder=500) #
-ax.plot(xe,BRe2,'-',color='black',label=r'$\chi^+\rightarrow\chi^0\pi^+$',linewidth=1,zorder=500) #
+ax.plot(xe,BRe2,'-',color='black',label=r'$\chi^+\rightarrow\chi^0e^+\nu_e$',linewidth=1,zorder=500) #
 
 # 1-loop curves
 
@@ -65,9 +65,9 @@ BRe2 = BRe[BRe>0]
 xe = x[BRe>0]
 
 
-ax.plot(xpi,BRpi2,'--',color='blue',linewidth=1,zorder=500) #
-ax.plot(xmu,BRmu2,'--',color='red',linewidth=1,zorder=500) #
-ax.plot(xe,BRe2,'--',color='black',linewidth=1,zorder=500) #
+ax.plot(xpi,BRpi2,':',color='blue',linewidth=1.5,zorder=500) #
+ax.plot(xmu,BRmu2,':',color='red',linewidth=1.5,zorder=500) #
+ax.plot(xe,BRe2,':',color='black',linewidth=1.5,zorder=500) #
 
 
 
@@ -128,10 +128,10 @@ xe = x[BRe>0]
 BRka2 = BRe[BRka>0]
 xka = x[BRka>0]
 
-ax.plot(xpi,BRpi2,'-',color='blue',label=r'$\chi^{++}\rightarrow\chi^+e^+\nu_e$',linewidth=1,zorder=500) #
+ax.plot(xpi,BRpi2,'-',color='blue',label=r'$\chi^{++}\rightarrow\chi^+\pi^+$',linewidth=1,zorder=500) #
 ax.plot(xmu,BRmu2,'-',color='red',label=r'$\chi^{++}\rightarrow\chi^+\mu^+\nu_{\mu}$',linewidth=1,zorder=500) #
-ax.plot(xe,BRe2,'-',color='black',label=r'$\chi^{++}\rightarrow\chi^+\pi^+$',linewidth=1,zorder=500) #
-ax.plot(xka,BRka2,'-',color='orange',label=r'$\chi^{++}\rightarrow\chi^+k^+$',linewidth=1,zorder=500) #
+ax.plot(xe,BRe2,'-',color='black',label=r'$\chi^{++}\rightarrow\chi^+e^+\nu_e$',linewidth=1,zorder=500) #
+ax.plot(xka,BRka2,'-',color='orange',label=r'$\chi^{++}\rightarrow\chi^+K^+$',linewidth=1,zorder=500) #
 
 # 1-loop curves
 
@@ -156,10 +156,10 @@ BRka2 = BRe[BRka>0]
 xka = x[BRka>0]
 
 
-ax.plot(xpi,BRpi2,'--',color='blue',linewidth=1,zorder=500) #
-ax.plot(xmu,BRmu2,'--',color='red',linewidth=1,zorder=500) #
-ax.plot(xe,BRe2,'--',color='black',linewidth=1,zorder=500) #
-ax.plot(xka,BRka2,'--',color='orange',linewidth=1,zorder=500) #
+ax.plot(xpi,BRpi2,':',color='blue',linewidth=1.5,zorder=500) #
+ax.plot(xmu,BRmu2,':',color='red',linewidth=1.5,zorder=500) #
+ax.plot(xe,BRe2,':',color='black',linewidth=1.5,zorder=500) #
+ax.plot(xka,BRka2,':',color='orange',linewidth=1.5,zorder=500) #
 
 ax.set_xlabel(r"$\mathrm{Degenerate\ mass}$ $\hat{M}$ $(\mathrm{GeV})$",fontsize=18)
 ax.set_ylabel(r"$\mathrm{Branching\ ratio}$",fontsize=18)
@@ -228,9 +228,25 @@ upper2_2loop_smooth = spline(log10(x),upper2_2loop,log10(xnew1))
 ax.fill_between(xnew1, lower_1loop_smooth,upper_1loop_smooth,color='green',alpha=0.5,zorder=100,linewidth=0,label=r'$\mathrm{One\!-\!loop}$')	
 ax.fill_between(xnew1, lower_2loop_smooth,upper_2loop_smooth,color='red',alpha=0.5,zorder=100,linewidth=0,label=r'$\mathrm{Two\!-\!loop}$')	
 
+# do estimated uncertainties
+
+A=np.genfromtxt('mass_splittings/data2/estimated_uncertainties_MDM.txt',usecols=[0,1,2,3,4])
+
+x=A[:,0]
+lower_1loop=A[:,1]*1000
+upper_1loop=A[:,2]*1000
+
+
+xnew1 = np.linspace(x.min(),x.max(),5000)
+lower_1loop_smooth = spline(log10(x),lower_1loop,log10(xnew1))
+upper_1loop_smooth = spline(log10(x),upper_1loop,log10(xnew1))
+
+ax.fill_between(xnew1, lower_1loop_smooth,upper_1loop_smooth,color='green',alpha=0.2,zorder=10,linewidth=0)
+
+
 
 ax.set_xlabel(r"$\mathrm{Degenerate\ mass}$ $\hat{M}$ $(\mathrm{GeV})$",fontsize=18)
-ylabel(r"$\Delta M = M_{\mathrm{pole}}^+ - M_{\mathrm{pole}}^0$  $(\mathrm{MeV})$",fontsize=18)
+ylabel(r"$\Delta M^{(+)} = M_{\mathrm{pole}}^+ - M_{\mathrm{pole}}^0$  $(\mathrm{MeV})$",fontsize=18)
 
 ax.set_xscale('log')
 
@@ -258,9 +274,23 @@ ax = fig.add_subplot(111)
 ax.fill_between(xnew1, lower2_1loop_smooth,upper2_1loop_smooth,color='green',alpha=0.5,zorder=100,linewidth=0,label=r'$\mathrm{One\!-\!loop}$')	
 ax.fill_between(xnew1, lower2_2loop_smooth,upper2_2loop_smooth,color='red',alpha=0.5,zorder=100,linewidth=0,label=r'$\mathrm{Two\!-\!loop}$')	
 
+# do estimated uncertainties
+
+A=np.genfromtxt('mass_splittings/data2/estimated_uncertainties_MDM.txt',usecols=[0,3,4])
+
+x=A[:,0]
+lower2_1loop=A[:,1]*1000
+upper2_1loop=A[:,2]*1000
+
+
+xnew1 = np.linspace(x.min(),x.max(),5000)
+lower2_1loop_smooth = spline(log10(x),lower2_1loop,log10(xnew1))
+upper2_1loop_smooth = spline(log10(x),upper2_1loop,log10(xnew1))
+
+ax.fill_between(xnew1, lower2_1loop_smooth,upper2_1loop_smooth,color='green',alpha=0.2,zorder=10,linewidth=0)
 
 ax.set_xlabel(r"$\mathrm{Degenerate\ mass}$ $\hat{M}$ $(\mathrm{GeV})$",fontsize=18)
-ylabel(r"$\Delta M = M_{\mathrm{pole}}^{++} - M_{\mathrm{pole}}^0$  $(\mathrm{MeV})$",fontsize=18)
+ylabel(r"$\Delta M^{(++)} = M_{\mathrm{pole}}^{++} - M_{\mathrm{pole}}^0$  $(\mathrm{MeV})$",fontsize=18)
 
 ax.set_xscale('log')
 
@@ -312,10 +342,22 @@ lower2_2loop=A[:,7]*2.9979e11
 upper2_2loop=A[:,8]*2.9979e11
 
 
+A=np.genfromtxt('mass_splittings/data2/estimated_decays_MDM.txt',usecols=[0,1,2,3,4])
+
+
+x2=A[:,0]
+unc_lower_1loop=A[:,1]*2.9979e11
+unc_upper_1loop=A[:,2]*2.9979e11
+unc_lower2_1loop=A[:,3]*2.9979e11
+unc_upper2_1loop=A[:,4]*2.9979e11
+
+
 plt.fill_between(x, lower_1loop,upper_1loop,color='green',alpha=0.5,zorder=100,linewidth=0,label=r'$\mathrm{One\!-\!loop}$')	
+plt.fill_between(x2, unc_lower_1loop,unc_upper_1loop,color='green',alpha=0.2,zorder=10,linewidth=0)	
 plt.fill_between(x, lower_2loop,upper_2loop,color='red',alpha=0.5,zorder=100,linewidth=0,label=r'$\mathrm{Two\!-\!loop}$')	
 
 plt.fill_between(x, lower2_1loop,upper2_1loop,color='green',alpha=0.5,zorder=100,linewidth=0)	
+plt.fill_between(x2, unc_lower2_1loop,unc_upper2_1loop,color='green',alpha=0.2,zorder=10,linewidth=0)	
 plt.fill_between(x, lower2_2loop,upper2_2loop,color='red',alpha=0.5,zorder=100,linewidth=0)	
 
 
@@ -338,10 +380,10 @@ ax.set_xticks([1,10,100,1e3,1e4])
 ax.set_xticklabels(['$\mathrm{1}$','$\mathrm{10}$','$\mathrm{100}$','$\mathrm{10}^{\mathrm{3}}$','$\mathrm{10}^{\mathrm{4}}$'],fontsize=18)
 
 
-ax.set_yticks([10,100,1000,1e4,1e5,1e6])
-ax.set_yticklabels(['$\mathrm{10}$','$\mathrm{100}$','$\mathrm{1000}$','$\mathrm{10}^{\mathrm{3}}$','$\mathrm{10}^{\mathrm{4}}$','$\mathrm{10}^{\mathrm{5}}$','$\mathrm{10}^{\mathrm{6}}$'],fontsize=18)
+ax.set_yticks([1,10,100,1000,1e4,1e5,1e6])
+ax.set_yticklabels(['$\mathrm{1}$','$\mathrm{10}$','$\mathrm{100}$','$\mathrm{10}^{\mathrm{3}}$','$\mathrm{10}^{\mathrm{4}}$','$\mathrm{10}^{\mathrm{5}}$','$\mathrm{10}^{\mathrm{6}}$'],fontsize=18)
 
-leg = ax.legend(loc='lower left',frameon=False,fontsize=18)
+leg = ax.legend(bbox_to_anchor=(0.34,0.21),frameon=False,fontsize=18)
 
 
 plt.tick_params(labelsize=18)
@@ -355,18 +397,19 @@ ax2.set_xscale('log')
 #ax.set_yscale('log')
 
 ax2.fill_between(x, lower_1loop,upper_1loop,color='green',alpha=0.5,zorder=100,linewidth=0)	
+ax2.fill_between(x2, unc_lower_1loop,unc_upper_1loop,color='green',alpha=0.2,zorder=10,linewidth=0)	
 ax2.fill_between(x, lower_2loop,upper_2loop,color='red',alpha=0.5,zorder=100,linewidth=0)	
 
 #ax2.set_xlabel(r"$\hat{M}$ $(\mathrm{GeV})$",fontsize=16)
 ax2.set_ylabel(r"$\tau$ $(\mathrm{mm}/\mathrm{c})$",fontsize=14)
 
 ax2.set_xlim([200,1e4])
-ax2.set_ylim([45,70])
+ax2.set_ylim([14,25])
 
 ax2.set_xticks([])
 
-ax2.set_yticks([50,60,70])
-ax2.set_yticklabels(['$\mathrm{50}$','$\mathrm{60}$','$\mathrm{70}$'],fontsize=16)
+ax2.set_yticks([14,18,22,26])
+ax2.set_yticklabels(['$\mathrm{14}$','$\mathrm{18}$','$\mathrm{22}$','$\mathrm{26}$'],fontsize=16)
 ax2.set_title(r'$\chi^{+}$',fontsize=14)
 
 
@@ -377,18 +420,53 @@ ax3.set_xscale('log')
 #ax.set_yscale('log')
 
 ax3.fill_between(x, lower2_1loop,upper2_1loop,color='green',alpha=0.5,zorder=100,linewidth=0)	
+ax3.fill_between(x2, unc_lower2_1loop,unc_upper2_1loop,color='green',alpha=0.2,zorder=10,linewidth=0)	
 ax3.fill_between(x, lower2_2loop,upper2_2loop,color='red',alpha=0.5,zorder=100,linewidth=0)	
 
 ax3.set_xlabel(r"$\hat{M}$ $(\mathrm{GeV})$",fontsize=14,labelpad=0.1)
 ax3.set_ylabel(r"$\tau$ $(\mathrm{mm}/\mathrm{c})$",fontsize=14)
 
 ax3.set_xlim([200,1e4])
-ax3.set_ylim([0.35,0.5])
+ax3.set_ylim([0.16,0.24])
 
-ax3.set_yticks([0.3,0.4,0.5])
-ax3.set_yticklabels(['$\mathrm{0.3}$','$\mathrm{0.4}$','$\mathrm{0.5}$'],fontsize=16)
+ax3.set_yticks([0.16,0.20,0.24])
+ax3.set_yticklabels(['$\mathrm{0.16}$','$\mathrm{0.20}$','$\mathrm{0.24}$'],fontsize=16)
 
 ax3.set_title(r'$\chi^{++}$',fontsize=14)
 
 
 plt.savefig("mass_splittings/figures2/decays_MDM.pdf",bbox_inches='tight')
+
+
+
+
+
+#######   determine polynomial fits through the data
+
+
+print 'Polynomial fit to two-loop result for deltam1'
+A=np.genfromtxt('mass_splittings/data2/deltam_2loop_MDM.txt',usecols=[0,1])
+x=A[:,0]
+deltam=A[:,1]*1000
+x_fit = x[x>100]
+y_fit = deltam[x>100]
+x_fit2  = x_fit[x_fit<10000]
+y_fit2 = y_fit[x_fit<10000]
+fx=np.polyfit(log(x_fit2),y_fit2,4)
+f=np.poly1d(fx)
+print(np.poly1d(f))
+
+print 'Polynomial fit to two-loop result for deltam2'
+A=np.genfromtxt('mass_splittings/data2/deltam2_2loop_MDM.txt',usecols=[0,1])
+x=A[:,0]
+deltam=A[:,1]*1000
+x_fit = x[x>100]
+y_fit = deltam[x>100]
+x_fit2  = x_fit[x_fit<10000]
+y_fit2 = y_fit[x_fit<10000]
+fx=np.polyfit(log(x_fit2),y_fit2,4)
+f=np.poly1d(fx)
+print(np.poly1d(f))
+
+
+

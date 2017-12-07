@@ -105,8 +105,6 @@ V3SE = V3SE + SelfEnergyFinite*kappa;
 
 Get[FileNameJoin[{path, "/models/MDM/output/math_data_V3_24_1.mx"}]];
 V3SE = V3SE + SelfEnergyFinite*kappa;
-
-
 Get[FileNameJoin[{path, "/models/MDM/output/math_data_V3_25_1.mx"}]];
 V3SE = V3SE + SelfEnergyFinite*kappa;
 
@@ -885,3 +883,16 @@ FullSimplify[ZgammaM-(1/2)dZZA1*mz^2/.mz->mw/cw]
 
 
 
+
+
+FullSimplify[(1/2)*mz^2*dZZA1*kappa]
+
+
+FullSimplify[(1/2)*(dZAZ1+dZZA1)*kappa/.v->2*mw/g2/.ma->0/.mf->0]
+
+
+Get[FileNameJoin[{path, "/models/MDM/output/math_data_V2_1_1c.mx"}]];
+V2ct= makeFiniteAmplitude[SelfEnergyFinite*kappa,-1,D]/.MassBuilderCTM1->0/.MassBuilderCTZ1->0
+
+
+FullSimplify[dMZsq1*kappa/.e->g2*sw/.v->2*mw/g2/.ma->0/.mf->0]

@@ -16,7 +16,7 @@
 // <http://www.gnu.org/licenses/>.
 // ====================================================================
 
-// File generated at Wed 15 Nov 2017 15:15:50
+// File generated at Mon 27 Nov 2017 21:10:41
 
 /**
  * @file MDM_two_scale_model.hpp
@@ -24,7 +24,7 @@
  *        value problem using the two_scale solver by solvingt EWSB
  *        and determine the pole masses and mixings
  *
- * This file was generated at Wed 15 Nov 2017 15:15:50 with FlexibleSUSY
+ * This file was generated at Mon 27 Nov 2017 21:10:41 with FlexibleSUSY
  * 1.7.4 (git commit: unknown) and SARAH 4.12.2 .
  */
 

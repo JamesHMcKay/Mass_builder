@@ -28,8 +28,8 @@ SetOptions[DiracSlash,Dimension->D,FeynCalcInternal->True];SetOptions[DiracTrace
 
 path = "/Users/jamesmckay/Documents/Programs/Mass_builder/";
 kappa=1/(16\[Pi]^2);
-(*sw=Sin[\[Theta]];
-cw=Cos[\[Theta]];*)
+sw=Sin[\[Theta]];
+cw=Cos[\[Theta]];
 V3SE = 0;
 ClearScalarProducts[];
 Get[FileNameJoin[{path, "/models/MSSM/output/math_data_V3_1_1.mx"}]];
@@ -925,3 +925,27 @@ FullSimplify[ZgammaM-(1/2)dZZA1*mz^2/.mz->mw/cw]
 
 
 
+
+
+FullSimplify[dZAA1*kappa/.e->g2*sw]
+
+
+FullSimplify[dMZsq1*kappa/.e->g2*sw/.v->2*mw/g2/.ma->0/.mf->0]
+
+
+FullSimplify[Tan[x]Cos[2x]]
+
+
+FullSimplify[(1/2)*mz^2*dZZA1*kappa/.e->g2*sw/.mw->cw*mz]
+
+
+FullSimplify[(1/2)*(dZAZ1+dZZA1)*kappa/.v->2*mw/g2/.ma->0/.mf->0/.e->g2*sw/.mw->cw*mz]
+
+
+FullSimplify[(Cos[x])^2(Tan[x])^2+(Sin[x])^2-1]
+
+
+384/96
+
+
+FullSimplify[Sec[\[Theta]]^2]

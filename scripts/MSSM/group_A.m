@@ -51,6 +51,8 @@ sumN1=makeFiniteAmplitude[N13+N14+N15+N5c,-1,D];
 
 sumN2=makeFiniteAmplitude[N13+N14+N15+N5c,-2,D];
 
+
+
 (* Particle 2 *)
 Get[FileNameJoin[{path, "/models/MSSM/output/math_data_F12_g1_17_2.mx"}]];
 C1 =SelfEnergyFinite*kappa^2;
@@ -115,18 +117,18 @@ sol2=Solve[{eq2==0,eq4==0,eq5==0,eq7==0},{Ca,Cz2}]
 
 Set@@@sol2[[1]];
 
-(*sw=Sin[Theta];
-cw=Cos[Theta];*)
+sw=Sin[Theta];
+cw=Cos[Theta];
 
 
-eq1=FullSimplify[sumN1-sumC1/.dg2->4*e^3/sw^3,{sw^2+cw^2==1,Cw1+Cw2==-4}]
+eq1=FullSimplify[sumN1-sumC1/.dg2->4*e^3/sw^3/.mz->mw/cw,{sw^2+cw^2==1,Cw1+Cw2==-4}]
 eq1=FullSimplify[sumN2-sumC2/.dg2->4*e^3/sw^3,{sw^2+cw^2==1,Cw1+Cw2==-4}]
 
 
-eq1=FullSimplify[sumN1/.dg2->4*e^3/sw^3,{sw^2+cw^2==1,Cw1+Cw2==-4}]
-eq1=FullSimplify[sumN2/.dg2->4*e^3/sw^3,{sw^2+cw^2==1,Cw1+Cw2==-4}]
-eq1=FullSimplify[sumC1/.dg2->4*e^3/sw^3,{sw^2+cw^2==1,Cw1+Cw2==-4}]
-eq1=FullSimplify[sumC2/.dg2->4*e^3/sw^3,{sw^2+cw^2==1,Cw1+Cw2==-4}]
+eq1=FullSimplify[sumN1/.dg2->4*e^3/sw^3/.mz->mw/cw,{sw^2+cw^2==1,Cw1+Cw2==-4}]
+eq1=FullSimplify[sumN2/.dg2->4*e^3/sw^3/.mz->mw/cw,{sw^2+cw^2==1,Cw1+Cw2==-4}]
+eq1=FullSimplify[sumC1/.dg2->4*e^3/sw^3/.mz->mw/cw,{sw^2+cw^2==1,Cw1+Cw2==-4}]
+eq1=FullSimplify[sumC2/.dg2->4*e^3/sw^3/.mz->mw/cw,{sw^2+cw^2==1,Cw1+Cw2==-4}]
 
 
 dg2*kappa
@@ -143,3 +145,6 @@ eq1=FullSimplify[sumC2/.dg2->4*e^3/sw^3,{sw^2+cw^2==1,Cw1+Cw2==-4}]
 
 
 
+
+
+dg2

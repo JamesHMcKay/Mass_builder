@@ -498,15 +498,17 @@ bool EW_triplet_spectrum::compute_spectra_flexiblesusy(int loop_order, bool mass
   
 	oneset.setPoleMt(data.mt);
 	
-	oneset.setPoleMtau(data.ml);
-	oneset.setMbMb(data.mb);
+	
+	oneset.setPoleMtau(data.ml); // doesn't seem to work
+	//oneset.setMbMb(data.mb); // also doesn't work, replaced below
+	oneset.setMass(softsusy::mBottom,    data.mb);
 	oneset.setMass(softsusy::mDown,    data.md);
 	oneset.setMass(softsusy::mUp,      data.mu);
 	oneset.setMass(softsusy::mStrange, data.ms);
 	oneset.setMass(softsusy::mCharm,   data.mc);
 
   oneset.setAlpha(softsusy::ALPHA, data.alpha);
-	oneset.setAlpha(softsusy::ALPHAS, 0.1184000000);
+	oneset.setAlpha(softsusy::ALPHAS, data.alphaS);
 
 	oneset.setMass(softsusy::mElectron, data.me);
 	oneset.setMass(softsusy::mMuon,    data.mm);
@@ -612,10 +614,10 @@ bool EW_triplet_spectrum::compute_spectra_flexiblesusy(int loop_order, bool mass
 	  data.ms =  model.get_MFd(1);
 	  data.mb =  model.get_MFd(2);
 	  
-	  
 	  data.me =  model.get_MFe(0);
 	  data.mm =  model.get_MFe(1);
-	  data.ml =  model.get_MFe(2);	
+	  //data.ml =  model.get_MFe(2);	
+	  
 	  
 	  if (mass_ql_zero)
 	  {

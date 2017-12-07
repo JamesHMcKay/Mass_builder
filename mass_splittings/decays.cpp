@@ -5,16 +5,21 @@
 
 using namespace std;
 
-long double Decays::calc_lifetime(long double deltam)
+
+
+
+long double Decays::calc_lifetime(long double deltam, int I)
 {
-	long double gamma = pion_channel(deltam) + electron_channel(deltam) + muon_channel(deltam);
+	T = j*(j+1)-I*(I+1);
+	long double gamma = pion_channel(deltam) + electron_channel(deltam) + muon_channel(deltam)+ kaon_channel(deltam);
 	long double lifetime = 1.0 / gamma;
 
 	return lifetime;
 }
 
-void Decays::calc_lifetime(long double deltam, ofstream &out_file)
+void Decays::calc_lifetime(long double deltam, ofstream &out_file, int I)
 {
+	T = j*(j+1)-I*(I+1);
 	long double gamma = pion_channel(deltam) + electron_channel(deltam) + muon_channel(deltam) + kaon_channel(deltam);
 	out_file << " " << deltam;
 	out_file << " " << 1.0 / gamma;
@@ -28,18 +33,8 @@ void Decays::calc_lifetime(long double deltam, ofstream &out_file)
 
 
 // decay channels go here
-// most have two options for how to calculate for the sake of comparison for different methods
-// use the method flag in the data strcuture to control this choice
-// each decay width function checks if mass difference is sufficient, rather do this in the
-// function itself rather than in the call above so we can then use these widths independently
+// each decay width function checks if mass difference is sufficient
 
-// subroutine used in both pion_channel function
-long double Decays::pion_decay()  // taken from http://www2.ph.ed.ac.uk/~playfer/PPlect12.pdf
-{
-	long double A = pow(G_F * V_ud * f_pi* M_u,2) * M_pi/(8.0*Pi);
-
-	return A*pow(1.0L-pow(M_u/M_pi,2),2)/6.582119e-25;
-}
 
 // muon decay, from arXiv:0903.3381
 long double Decays::muon_channel(long double deltam)
@@ -63,7 +58,7 @@ long double Decays::kaon_channel(long double deltam)
 	
 	if (deltam > M_ka)
 	{
-	  long double A = (pow(components,2)-1.0L)*pow(G_F * f_pi * V_us ,2)*pow(deltam,3)/(4.0*Pi);
+	  long double A = T*pow(G_F * f_pi * V_us ,2)*pow(deltam,3)/(Pi);
 	  return A * pow( 1.0L - pow(M_ka/deltam,2),0.5)/6.582119e-25;
 	}
 	else
@@ -80,7 +75,7 @@ long double Decays::pion_channel(long double deltam)
 	
 	if (deltam > M_pi)
 	{
-	  long double A = (pow(components,2)-1.0L)*pow(G_F * f_pi * V_ud ,2)*pow(deltam,3)/(4.0*Pi);
+	  long double A = T*pow(G_F * f_pi * V_ud ,2)*pow(deltam,3)/(Pi);
 	  return A * pow( 1.0L - pow(M_pi/deltam,2),0.5)/6.582119e-25;
 	}
 	else
@@ -101,7 +96,7 @@ long double Decays::electron_channel(long double deltam)
 	  
 	  corrections=(1.0L-8.0L*x-12*pow(x,2)*log(x)+8*pow(x,3)-pow(x,4));
 	  
-	  long double A=(pow(components,2)-1.0L)*pow(G_F,2)/(60.0L*pow(Pi,3));
+	  long double A= 4.0L*T*pow(G_F,2)/(60.0L*pow(Pi,3));
 	  
 	  return corrections*A*pow(deltam,5)/6.582119e-25;
 	}

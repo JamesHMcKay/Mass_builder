@@ -16,7 +16,7 @@
 // <http://www.gnu.org/licenses/>.
 // ====================================================================
 
-// File generated at Wed 15 Nov 2017 15:15:50
+// File generated at Mon 27 Nov 2017 21:10:41
 
 /**
  * @file MDM_two_scale_model.cpp
@@ -26,7 +26,7 @@
  * which solve EWSB and calculate pole masses and mixings from DRbar
  * parameters.
  *
- * This file was generated at Wed 15 Nov 2017 15:15:50 with FlexibleSUSY
+ * This file was generated at Mon 27 Nov 2017 21:10:41 with FlexibleSUSY
  * 1.7.4 (git commit: unknown) and SARAH 4.12.2 .
  */
 
