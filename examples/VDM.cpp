@@ -223,9 +223,12 @@ void compute_spectra(Data &data)
   Self_energy se;
   se.run_tsil(data_Q);
   
-  cout << "data.SE_1[V1]  = " << data_Q.SE_1["V1"] << endl;
+  //cout << "data.SE_1[V1]  = " << data_Q.SE_1["V1"] << endl;
+  //cout << "alpha(MZ) = " << alpha << " ";
   
-  alpha = alpha * ( 1.0 - data_Q.SE_1["V1"] /pow(data.Q,2) );
+  //alpha = alpha * ( 1.0 - data_Q.SE_1["V1"] /pow(data.Q,2) );
+  
+  //cout << " alpha(" << mu << ") = " << alpha << endl;
   
   data.EE = pow( (4.*Pi) * alpha , 0.5) ;
 }
@@ -248,6 +251,7 @@ int main(int argc, char *argv[])
   long double logMin = log10(10.0L);
   
   std::vector<double> Q(5);
+  double mz = data.MZ;
   double EE_mz = data.EE;
   Pi = PI;
   // number of points to plot
@@ -259,8 +263,8 @@ int main(int argc, char *argv[])
     data.MVp = M;
     data.MV0 = M;
     data.P = M;
-    Q[0] = 2.0 * 173.15;
-    Q[1] = 0.5 * 173.15;
+    Q[0] = 2.0 * mz;
+    Q[1] = 0.5 * mz;
     Q[2] = 0.5 * M ;
     Q[3] = M ;
     Q[4] = 2.0 * M;
@@ -275,7 +279,7 @@ int main(int argc, char *argv[])
 	    data.EE = EE_mz;
 		}
 		
-		data.Q = 173.15;
+		data.Q = mz;//173.15;
 		compute_spectra(data);
 		deltam << " " << extra_TSIL_interface::one_loop_analytic(data);
 		data.EE = EE_mz;

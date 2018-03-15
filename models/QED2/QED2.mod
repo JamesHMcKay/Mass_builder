@@ -25,13 +25,22 @@ IndexRange[ Index[Generation] ] = Range[ 3 ]
 (*     Declared particles    *)
 
 M$ClassesDescription = {
+U[1] == {
+    SelfConjugate -> False,
+    QuantumNumbers -> {GhostNumber},
+    PropagatorLabel -> "uA",
+    PropagatorType -> GhostDash,
+    PropagatorArrow -> Forward,
+    Mass -> 0,
+    Indices -> {} },
+
 F[2] == {
     SelfConjugate -> False,
     Indices -> {Index[Generation]},
     QuantumNumbers -> {Q, LeptonNumber},
     PropagatorLabel -> "l",
     PropagatorType -> Straight,
-    PropagatorArrow -> Forward,
+    PropagatorArrow -> Forward*Ghost -> u,
     Mass -> Mlep },
 
 V[1] == {
@@ -47,9 +56,9 @@ V[1] == {
 (*        Definitions       *)
 
 
-Mlep[ 1 ] := mf;
-Mlep[ 2 ] := mf;
-Mlep[ 3 ] := mf;
+Mlep[ 1 ] := ME;
+Mlep[ 2 ] := MM;
+Mlep[ 3 ] := ML;
 ma[ ___ ] := ma;
 
 
@@ -62,7 +71,7 @@ TheLabel[ F[2, {3}] ] := "ta";
 
 M$CouplingMatrices = {
 
-C[ V[1] , V[1] ] == {{0, (-I)*Z3}, {0, I*Z3m}, {0, I*Z3}},
+C[ V[1] , V[1] ] == {{0, (-I)*Z3}, {0, I*Z3}},
 
 C[ -F[2, {e1x2}] , F[2, {e2x2}] , V[1] ] == {{I*EL*IndexDelta[e1x2, e2x2], I*EL*Z1*IndexDelta[e1x2, e2x2]}, {I*EL*IndexDelta[e1x2, e2x2], I*EL*Z1*IndexDelta[e1x2, e2x2]}},
 

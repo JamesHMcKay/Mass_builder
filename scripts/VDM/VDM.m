@@ -14,7 +14,6 @@ SetOptions[DiracSlash, Dimension -> D,
  DiracTraceEvaluate -> True]; null = 0;
 
 
-(* Determine one-loop counter-term couplings *)
 path = "/Users/jamesmckay/Documents/Programs/Mass_builder/";
 kappa=1/(16\[Pi]^2);
 (*STW=Sin[\[Theta]];
@@ -87,3 +86,64 @@ DeltaMTest = (EE^2 / (192*Pi^2*MChi^3*SW^2)) * ( Bwp*F[MW]-CW^2*Bzp*F[MZ] + Aw*G
 CW=Cos[\[Theta]];
 SW=Sin[\[Theta]];
 FullSimplify[DeltaM-DeltaMTest/.p->MChi,{CW^2+SW^2==1,CTW==MW/MZ}]
+
+
+FullSimplify[SEn]
+
+
+FullSimplify[Coefficient[SEn,p,2]]
+
+
+FullSimplify[Coefficient[SEn,p,0]]
+
+
+(* check counter-terms *)
+
+
+V6SE = 0;
+ClearScalarProducts[];
+
+Get[FileNameJoin[{path, "/models/VDM/output/math_data_V6_{1,2,3,4,5}_1.mx"}]];
+V6SE = V6SE + SelfEnergyFinite*kappa;
+
+Get[FileNameJoin[{path, "/models/VDM/output/math_data_V6_{6,7,8}_1.mx"}]];
+V6SE = V6SE + SelfEnergyFinite*kappa;
+
+Get[FileNameJoin[{path, "/models/VDM/output/math_data_V6_1_1c.mx"}]];
+V6SE = V6SE + SelfEnergyFinite*kappa;
+
+SEn = makeFiniteAmplitude[V6SE,-1,D]/.MVp->MChi/.MV0->MChi/.MassBuilderCTM1->0/.MassBuilderCTZ1->0/.Pair[Momentum[p], Momentum[p]]->p^2;
+
+eq1 = FullSimplify[Coefficient[SEn,p,2]];
+eq2 = FullSimplify[Coefficient[SEn,p,0]];
+solV6 = Solve[{eq1==0,eq2==0},{d6Z, d6M}];
+Set @@@ solV6[[1]];
+
+
+V5SE = 0;
+ClearScalarProducts[];
+
+Get[FileNameJoin[{path, "/models/VDM/output/math_data_V5_{1,2,3,4,5,6,7,8}_1.mx"}]];
+V5SE = V5SE + SelfEnergyFinite*kappa;
+
+Get[FileNameJoin[{path, "/models/VDM/output/math_data_V5_{9,10,11,12}_1.mx"}]];
+V5SE = V5SE + SelfEnergyFinite*kappa;
+
+Get[FileNameJoin[{path, "/models/VDM/output/math_data_V5_1_1c.mx"}]];
+V5SE = V5SE + SelfEnergyFinite*kappa;
+
+SEn = makeFiniteAmplitude[V5SE,-1,D]/.MVp->MChi/.MV0->MChi/.MassBuilderCTM1->0/.MassBuilderCTZ1->0/.Pair[Momentum[p], Momentum[p]]->p^2;
+
+eq1 = FullSimplify[Coefficient[SEn,p,2]];
+eq2 = FullSimplify[Coefficient[SEn,p,0]];
+solV5 = Solve[{eq1==0,eq2==0},{d5Z, d5M}];
+Set @@@ solV5[[1]];
+
+
+FullSimplify[d6Z,{CW^2+SW^2==1}]
+FullSimplify[d6M,{CW^2+SW^2==1}]
+FullSimplify[d5Z,{CW^2+SW^2==1}]
+FullSimplify[d5M,{CW^2+SW^2==1}]
+
+
+
