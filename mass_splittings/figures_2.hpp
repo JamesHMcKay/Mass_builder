@@ -41,12 +41,6 @@ public:
 	
 	void two_loop_plots_uncertainties(Data data, string group);
 	
-	void test_MDM(Data data);
-	
-	//Limits find_uncertainties(Data data);
-	
-	//Limits find_uncertainties2(Data data);
-	
 };
 
 
