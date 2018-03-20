@@ -224,6 +224,84 @@ void run_mass_builder_mode_1a(Options options,int argc, char *argv[])
   
 }
 
+
+
+// compute a list of diagrams
+void run_mass_builder_mode_1a_noMPI(Options options)
+{
+  std::string particles [1000];
+  std::string types [1000];
+  
+  std::string diagrams [1000]; int i=0;
+  std::string model = options.model;
+  const char *file_diagrams;
+  if (options.input_list==""){
+    const char *ext = ".txt";
+    const char* file_diagrams_tmp = "models/";
+    string c_file_diagrams = file_diagrams_tmp + model + "/diagrams" + ext;
+    file_diagrams = c_file_diagrams.c_str();
+  }
+  else
+  {
+    file_diagrams = options.input_list.c_str();
+  }
+  std::ifstream input(file_diagrams);
+  std::string line;
+  while(getline(input, line) && i < 1000)
+  {
+    if (!line.length() || line[0] == '#')
+      continue;
+    std::istringstream iss(line);
+    iss>> particles[i] >> diagrams[i] >> types[i];
+    i=i+1;
+  }
+  
+  bool multi_particle = false;
+  string second_particle = "";
+  
+  if (options.particle_1!=options.particle_2)
+  {
+   second_particle = options.particle_2;
+   multi_particle = true;
+  }
+  
+	cout << "\n";
+	cout << "Mass Builder is running\n";
+	cout << "\n";
+
+  for (int task = 0; task < i; task++)
+  {
+		
+		// execute calculation
+		options.particle_1 = particles[task];
+		
+		if (multi_particle)
+		{
+			options.particle_2 = second_particle;
+			options.particle = options.particle_1 + "_" + options.particle_2;
+		}
+		else
+		{
+			options.particle_2 = particles[task];
+			options.particle = particles[task];
+		}
+		
+		options.diagram = diagrams[task];
+		options.set_type(types[task]);
+		Compute_amp ca(options);
+		ca.calc_diagram();
+	}
+      
+	cout << "\n";
+	cout << "  Normal end of execution.\n";
+	cout << "\n";
+	timestamp ( );
+  
+  
+}
+
+
+
 // compute one specified diagram
 void run_mass_builder_mode_1b(Options options)
 {
@@ -303,7 +381,7 @@ int main(int argc, char *argv[])
   {
     if ((options.particle == "") || (options.diagram == ""))
     {
-      run_mass_builder_mode_1a(options,argc, argv);
+      run_mass_builder_mode_1a_noMPI(options/*,argc, argv*/);
     }
     else
     {
