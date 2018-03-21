@@ -43,7 +43,6 @@ void User_input::user_interface()
   if (find_string("-a")){ options.run_mode = 1;}
   if (find_string("-b")){ options.run_mode = 2;}
   if (find_string("-s")){ options.n_group = 2;}
-  if (find_string("-t")){ options.latex_output = true;}
   if (find_string("-l"))
   {
     string input = "loop order";
@@ -152,7 +151,7 @@ void User_input::user_interface()
 
   if (find_string("-k"))
   {
-    string input = "diagram number";
+    string input = "epsilon order";
     if (find_and_read_string("-k",input)){options.epsilon_order = input;}
   }
 
@@ -166,11 +165,11 @@ void User_input::user_interface()
   
   if (find_string("reuse")){ options.force = false;}
   
-  if (find_string("offshell")){ options.onshell = false;}
+  if (find_string("onshell")){ options.onshell = false;}
   
-  if (find_string("excludephotonpole")){ options.exclude_photon_pole = true;}
+  if (find_string("expole")){ options.exclude_photon_pole = false;}
   
-  if (find_string("TARCER")){ options.fire = false;}
+  if (find_string("-t")){ options.fire = false;}
   
   if (options.particle_1!=options.particle_2)
   {

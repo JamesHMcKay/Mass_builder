@@ -1,5 +1,5 @@
 kappa 1/TSIL_POW(16.0L*Pi,2)
-d1M (g*g/2+lambda*Ms2/2)
+d1M (TSIL_POW(g,2) + lambda*TSIL_POW(Ms,2))/2.
 d1Z 0
 MassBuilderCTZ1 -(lambda*lambda/24.)
 MassBuilderCTM1 (-5.*lambda*g*g/8.-lambda*lambda*Ms2/4.)

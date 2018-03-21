@@ -16,7 +16,6 @@ public:
 	bool verbose = false;
 	bool optimise = false;
 	bool detailed_output = false;
-	bool latex_output = false;
 	bool use_lorentz = true;
 	// currently force MB to recompute all amplitudes
 	bool force = true; 

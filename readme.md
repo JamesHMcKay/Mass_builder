@@ -6,9 +6,11 @@ This program is designed to build, up from the level of a FeynArts model file, a
 I make use of the following tools to complete this process:
 
 - **FeynArts:** (hep-ph/0012260) is used to generate the two-loop amplitudes
-- **FeynCalc:**  (ArXiv:1601.01167) is used to reduce the amplitudes
+- **FeynCalc:**  (arXiv:1601.01167) is used to reduce the amplitudes
 - **TARCER:**  (hep-ph/9801383) is used to reduce the resulting amplitudes to basis integrals
 - **TSIL:**  (hep-ph/0501132) is used to evaluate the basis integrals
+- **FIRE5:**  (arXiv:1408.2372) to reduce basis integrals
+- **FeynHelpers** (arXiv:1611.06793) to communicate with FIRE5
 
 I also make use of FindMathematica.cmake (Sascha Kratky 2010-2016 ) for locating the Mathematica installation within the cmake system.
 
@@ -72,53 +74,22 @@ One loop self energy of particle S1 = -0.0316688
 Two loop self energy of particle S1 = 2.91938e-05
 ```
 
-Finally, we may compute the tree-level counter-term coupling with the command
-```
-./mass_builder -b -m Scalar -p S[1]
-```
-which will make use of the already computed one-loop amplitudes to solve for the required counter-term.  This is of particular help in problems with many complicated one-loop amplitudes.
-
-Before generating further code it is important to run the scripts/config.sh again, as this will clean the previous generated files (such that cmake won't find these and try and compile them with the new, potentially inconsistent, code).
-
-Advanced example
---
-In this example we compute the one-loop self energies for an electroweak multiplet, in the context of the MSSM.  Follow the commands below to generate a figure showing mass splittings as a function of the electroweak multiplet tree-level mass.
-
-First remove any existing generated files using
-```
-./scripts/clean.sh
-```
-as these would interfere with the new generated output.  To generate the code for this example enter the following commands.
-
-```
-mkdir models/MSSM/output
-./mass_builder -a -m MSSM -i models/MSSM/lists/example_1.txt
-./mass_builder -g -m MSSM -i models/MSSM/lists/example_1.txt
-cd build
-cmake .
-make MSSM
-```
-This will build a new executable that demonstrates how one may call Mass Builder from external functions.  The source file is located in examples/MSSM.cpp.  Once this has built run the following to generate a figure.
-
-```
-./MSSM -i models/MSSM/input.txt
-python examples/plot_MSSM.py
-```
-This will place a figure mass_splittings_MSSM.eps in the root directory.
+Before generating further code it is important to run the scripts/clean.sh again, as this will clean the previous generated files (such that cmake won't find these and try and compile them with the new, potentially inconsistent, code).
 
 Supported models
 --
-I supply four models with Mass Builder, although implementing new models is straight forward.  The available models are
+I support five models with Mass Builder, although implementing new models is straight forward.  The available models are
 
 - **Scalar:** a simple scalar field theory with a cubic and quartic interaction
-- **EW_triplet:** an electroweak triplet model consisting of the SU(2)xU(1) gauge sector and Higgs fields
+- **MDM:** an electroweak quintuplet model
 - **MSSM:** a modified version of the MSSM FeynArts model file shipped with FeynArts version 3.9
 - **VDM:** a vector multiplet extension of the SM
+- **QED:** a simple massless QED model
 
 Further information
 --
 
-Please see the documentation in documentation/Mass_builder.pdf for detailed information on the algorithm structure and the many features available in code.  Some of these features are:
+Please see the documentation in Mass_builder.pdf for detailed information on the algorithm structure and the many features available in code.  Some of these features are:
 
 - convenient printing of FeynArts diagrams
 - automatic computation of tree-level counter-term couplings
