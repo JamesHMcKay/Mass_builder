@@ -28,7 +28,7 @@ if(Mathematica_FOUND AND Mathematica_WSTP_FOUND)
   set(LIBRARIES ${LIBRARIES} ${Mathematica_WSTP_LIBRARIES} ${Mathematica_MathLink_LIBRARY})
 endif()
 
-SET(FS "true" CACHE STRING "true")
+SET(FS "false" CACHE STRING "false")
 
 message("compile FS = " ${FS})
 

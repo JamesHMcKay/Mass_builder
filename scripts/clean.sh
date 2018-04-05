@@ -18,7 +18,7 @@ fi
 if [ ! -d "output" ]; then
   mkdir output
 fi
-if [ ! -d "models/EW_triplet/output" ]; then
+if [ ! -d "models/MDM/output" ]; then
   mkdir models/EW_triplet/output
 fi
 if [ ! -d "models/Scalar/output" ]; then
