@@ -93,7 +93,7 @@ void set_id(std::vector<string> &masses_input, std::vector<string> &identifiers_
       }
     }
     // check for duplicates in new list
-    if ( !(remove_duplicates(identifiers).size()) == (identifiers.size()) )
+    if ( !( remove_duplicates(identifiers).size() == identifiers.size() ) )
     {
       // if the above hasn't worked just throw an error, can do something fancy later
       cout << "FATAL ERROR, mass names are too long and too similar please provide unique identifiers or relabel, if two masses are intended to be the same then give them the same identifier, this is the only way for Mass_builder to know it's safe to assign these the same mass";
