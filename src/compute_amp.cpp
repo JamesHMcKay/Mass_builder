@@ -428,7 +428,7 @@ bool Compute_amp::calc_diagram()
 		WSClose(link);
 		cout << "WSTP link closed successfully" << endl;
 	}
-  
+  //delete[] &input;
   
   
   ///// organise output data////////
@@ -732,7 +732,7 @@ void Compute_amp::solve_1loop(std::string particle,vector<std::string> diagram)
   load_libraries();
   WSNewPacket(link);
   
-  std::string input;
+  std::string input = "";
   
 
   input += "kappa=1/(16*Pi^2);";
@@ -865,6 +865,8 @@ void Compute_amp::solve_1loop(std::string particle,vector<std::string> diagram)
 		}
 		
 		
+		
+		
 	}
 	else if (nc_req == 1)
 	{
@@ -904,7 +906,7 @@ void Compute_amp::solve_1loop(std::string particle,vector<std::string> diagram)
   
   WSClose(link);
   cout << "WSTP link closed successfully" << endl;
-  
+  delete[] &input;
   
   // now update the couplings list
   
@@ -947,7 +949,7 @@ void Compute_amp::calc_counter_terms()
   
   vector<std::string> tags;
   vector<std::string> particle_names,levels;
-  string level;
+  //string level;
   int nd; // number of diagrams
   
   cout << "input list = " << file_diagrams << endl;
@@ -974,6 +976,7 @@ void Compute_amp::calc_counter_terms()
 		string particle_simple = part_name_simple(options.particle_1,options.particle_2);
   
 		solve_1loop(particle_simple,tags_1);
+		
 	}
 	
 	if (options.loop_order == 3 && options.verbose)

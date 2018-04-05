@@ -99,7 +99,7 @@ public:
   {
 		string cwd = getcwd(NULL,0);
     
-    std::string input;
+    std::string input ="";
     
     input = "$LoadAddOns = {\"FeynHelpers\"};";
     input+= "$LoadTARCER = True;";
@@ -132,7 +132,7 @@ public:
 			 log_out << "   " << endl;
 			 log_out << "(* ::Section:: *)" << endl;
 		}
-		input = "";
+		
   }
   
   // Wait to receive a packet from the kernel
