@@ -1,0 +1,28 @@
+To produce figures in 1712.00968:
+
+Install contents of output directories into models/MDM/output and models/MSSM/output
+
+Open mass_splittings/splittings.cpp and uncomment the stuff under "Figures for second paper" that is relevant for MDM
+
+./mass_buidler -g -m MDM -i models/MDM/lists/Full.txt
+cd build
+cmake .
+make splittings -j4
+cd ..
+./splittings -i models/MDM/input.txt
+python mass_splittings/plotting_scripts/plot_MDM_2loop.py
+
+
+
+Open mass_splittings/splittings.cpp and uncomment the stuff under "Figures for second paper" that is relevant for EW_triplet (MSSM)
+
+./scripts/clean.sh
+./mass_buidler -g -m MSSM -i models/MSSM/lists/Full.txt
+cd build
+cmake .
+make splittings -j4
+cd ..
+./splittings -i models/MSSM/input.txt
+python mass_splittings/plotting_scripts/plot_MSSM_2loop.py
+
+Figures 4 and 10 are a bit of a hassle to make and I will not explain them here right now.

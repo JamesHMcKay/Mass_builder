@@ -370,16 +370,16 @@ double MDM_low_scale_constraint<Two_scale>::calculate_delta_alpha_em(double alph
    const double currentScale = model->get_scale();
    const auto MFu = MODELPARAMETER(MFu);
    const auto MFc = MODELPARAMETER(MFc);
-   //const auto MFg = MODELPARAMETER(MFg);
+   const auto MFg = MODELPARAMETER(MFg);
 
    const double delta_alpha_em_SM = -0.28294212105225836*alphaEm*FiniteLog(Abs(
       MFu(2)/currentScale));
       
-   const double  delta_alpha_em = -0.2122065907891938*alphaEm*FiniteLog(Abs(MFc/currentScale));
+   //const double  delta_alpha_em = -0.2122065907891938*alphaEm*FiniteLog(Abs(MFc/currentScale));
 
-/*   const double delta_alpha_em = 0.15915494309189535*alphaEm*(
+   const double delta_alpha_em = 0.15915494309189535*alphaEm*(
       -1.3333333333333333*FiniteLog(Abs(MFc/currentScale)) - 5.333333333333333*
-      FiniteLog(Abs(MFg/currentScale)));*/
+      FiniteLog(Abs(MFg/currentScale)));
 
    return delta_alpha_em + delta_alpha_em_SM;
 

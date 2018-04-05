@@ -321,8 +321,8 @@ void Figures_2<T>::two_loop_plots(Data data, string group)
 	
   // set range of plot
   long double logMax = log10(1.0e4L);
-  long double logMin = log10(100.0L);
-  //long double logMin = log10(1.0L);
+  //long double logMin = log10(100.0L);
+  long double logMin = log10(1.0L);
   
   std::vector<double> Q(2);
   
@@ -555,7 +555,7 @@ void Figures_2<T>::two_loop_plots_uncertainties(Data data, string group)
 	  
 	  double error_upper = pow(alpha2/(4*Pi) , 2) * Pi * mt; // using top pole mass
 
-	  cout << "error = " << error_upper*1000 << " MeV" << endl;
+	  //cout << "error = " << error_upper*1000 << " MeV" << endl;
 	  
 	  double error_lower = error_upper;
 	  
