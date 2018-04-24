@@ -184,7 +184,7 @@ bool Compute_amp::calc_diagram()
   
   // generate a .m file to call within Mathematica (since it is a very long list)
   ofstream math_1;
-  math_1.open (add_mpi_ext("output/math_1", options.mpi_process, "m"));
+  math_1.open (add_mpi_ext(get_cwd()+"/output/math_1", options.mpi_process, "m"));
   print_math_basis(full_basis,math_1,"amp1","4","amp2");
   math_1 << "Export[\""<<get_cwd()<<"/output/output_"<< options.mpi_process << ".txt\", {" << endl;
   
@@ -200,7 +200,7 @@ bool Compute_amp::calc_diagram()
   
   // call the .m file in Mathematica
   input+= "AppendTo[$Path, \"" + get_cwd() + "/output/\"];";
-  string filename = add_mpi_ext("output/math_1", options.mpi_process, "m");
+  string filename = get_cwd()+add_mpi_ext("output/math_1", options.mpi_process, "m");
   input += "<< " + filename + ";";
   
   send_to_math(input);
@@ -213,8 +213,8 @@ bool Compute_amp::calc_diagram()
   int temp_int = 0;
   
   // get the output from Mathematica (list of coefficients and bases object identifiers)
-  const char* file_integrals2_tmp = "output/output_";
-  string c_file_integrals2 = file_integrals2_tmp + std::to_string(options.mpi_process) + ext;
+  const char* file_integrals2_tmp = "/output/output_";
+  string c_file_integrals2 = get_cwd()+file_integrals2_tmp + std::to_string(options.mpi_process) + ext;
   const char *file_integrals2 = c_file_integrals2.c_str();
   get_data(output_string, coeff_new, temp_int,file_integrals2, true);
   
@@ -241,7 +241,7 @@ bool Compute_amp::calc_diagram()
   
   // the trail amplitude construction is done in a .m file which we will call in Mathematica
   ofstream math_2;
-  math_2.open (add_mpi_ext("output/math_2", options.mpi_process, "m"));
+  math_2.open (add_mpi_ext(get_cwd()+"/output/math_2", options.mpi_process, "m"));
   
   // print the bases to the .m file
   print_math_basis(reduced_basis,math_2, "amp1","4","amp2");
@@ -278,14 +278,14 @@ bool Compute_amp::calc_diagram()
   math_2.close();
   
   // ask Mathematica to evaluate math_2.m
-  filename = add_mpi_ext("output/math_2", options.mpi_process, "m");
+  filename = add_mpi_ext(get_cwd()+"/output/math_2", options.mpi_process, "m");
   input += "<< " + filename + ";";
   send_to_math(input);
   
   // read in the result of the above check
   temp_int = 0;
-  const char* file_integrals4_tmp = "output/output2_";
-  string c_file_integrals4 = file_integrals4_tmp + std::to_string(options.mpi_process) + ext;
+  const char* file_integrals4_tmp = "/output/output2_";
+  string c_file_integrals4 = get_cwd()+file_integrals4_tmp + std::to_string(options.mpi_process) + ext;
   const char *file_integrals4 = c_file_integrals4.c_str();
   vector<std::string> coeff_new_prod;
   prod_basis.clear();
@@ -337,7 +337,7 @@ bool Compute_amp::calc_diagram()
   
   // generate final .m file to construct the amplitude
   ofstream math_3;
-  math_3.open (add_mpi_ext("output/math_3", options.mpi_process, "m"));
+  math_3.open (add_mpi_ext(get_cwd()+"/output/math_3", options.mpi_process, "m"));
   
   print_math_basis(reduced_basis,math_3,"amp1","4","amp2");
   print_math_basis(prod_basis,math_3,"amp1","4","amp2");
@@ -416,7 +416,7 @@ bool Compute_amp::calc_diagram()
   math_3 << " }, \"Table\", \"FieldSeparators\" -> \" \", \"TextDelimiters\" -> \"\"];" << endl;
   math_3.close();
   
-  filename = add_mpi_ext("output/math_3", options.mpi_process, "m");
+  filename = add_mpi_ext(get_cwd()+"/output/math_3", options.mpi_process, "m");
   input += "<< " + filename + ";";
   
   send_to_math(input);
@@ -444,7 +444,7 @@ bool Compute_amp::calc_diagram()
   // BASIS INTEGRAL COEFFICIENTS //
   
   const char* coeff_integrals_tmp = "/output/coeff_integrals_";
-  string c_coeff_integrals = "models/" + options.model +coeff_integrals_tmp + tag + ext;
+  string c_coeff_integrals = get_cwd()+"/models/" + options.model +coeff_integrals_tmp + tag + ext;
   const char *coeff_integrals = c_coeff_integrals.c_str();
   ofstream coeff_integrals_out;
   coeff_integrals_out.open (coeff_integrals);
@@ -472,8 +472,8 @@ bool Compute_amp::calc_diagram()
   
   // PRODUCTS COEFFICIENTS //
   
-  const char* file_integrals3_tmp = "output/output_products_";
-  string c_file_integrals3 = file_integrals3_tmp + std::to_string(options.mpi_process) + ext;
+  const char* file_integrals3_tmp = "/output/output_products_";
+  string c_file_integrals3 = get_cwd()+file_integrals3_tmp + std::to_string(options.mpi_process) + ext;
   const char *file_integrals3 = c_file_integrals3.c_str();
   vector<string> name_products,coeff_products_new;
   
@@ -490,7 +490,7 @@ bool Compute_amp::calc_diagram()
   vector<string> reduced_prod_names = extract_keys(reduced_prod_map);
   
   const char* coeff_products_tmp = "/output/coeff_products_";
-  string c_coeff_products = "models/" + options.model +coeff_products_tmp + tag + ext;
+  string c_coeff_products = get_cwd()+"/models/" + options.model +coeff_products_tmp + tag + ext;
   const char *coeff_products = c_coeff_products.c_str();
   
   ofstream coeff_products_out;
@@ -511,7 +511,7 @@ bool Compute_amp::calc_diagram()
   
   
   const char* summation_tmp = "/output/summation_"; // vector containing file names
-  string c_summation = "models/" + options.model +summation_tmp + tag + ext;
+  string c_summation = get_cwd()+"/models/" + options.model +summation_tmp + tag + ext;
   const char *summation = c_summation.c_str();
   
   ofstream summation_out;
@@ -602,7 +602,7 @@ bool Compute_amp::calc_diagram()
   reduced_basis_id.erase( unique( reduced_basis_id.begin(), reduced_basis_id.end() ), reduced_basis_id.end() );
   
   const char* basis_integrals_tmp = "/output/basis_integrals_"; // vector containing file names
-  string c_basis_integrals = "models/" + options.model + basis_integrals_tmp + tag + ext;
+  string c_basis_integrals = get_cwd()+"/models/" + options.model + basis_integrals_tmp + tag + ext;
   const char *basis_integrals = c_basis_integrals.c_str();
   
   ofstream basis_integral_out;
@@ -768,7 +768,7 @@ void Compute_amp::solve_1loop(std::string particle,vector<std::string> diagram)
   
   // get the list of couplings from couplings.txt and find which ones are relevant here
   
-  string c_file_couplings = "models/" + options.model + "/couplings.txt";  // need to make this model independent
+  string c_file_couplings = get_cwd()+"/models/" + options.model + "/couplings.txt";  // need to make this model independent
   const char *file_couplings = c_file_couplings.c_str();
 	
 	int nc = 0;
@@ -938,8 +938,8 @@ void Compute_amp::calc_counter_terms()
 	
   
   const char *ext = ".txt";
-  const char* file_diagrams_tmp = "models/";
-  string c_file_diagrams = file_diagrams_tmp + options.model + "/output/avail_diagrams_" + ext;
+  const char* file_diagrams_tmp = "/models/";
+  string c_file_diagrams = get_cwd()+file_diagrams_tmp + options.model + "/output/avail_diagrams_" + ext;
   const char *file_diagrams = c_file_diagrams.c_str();
   
   if (options.input_list!="")
