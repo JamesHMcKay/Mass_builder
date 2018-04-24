@@ -200,7 +200,7 @@ bool Compute_amp::calc_diagram()
   
   // call the .m file in Mathematica
   input+= "AppendTo[$Path, \"" + get_cwd() + "/output/\"];";
-  string filename = get_cwd()+add_mpi_ext("output/math_1", options.mpi_process, "m");
+  string filename = get_cwd()+add_mpi_ext("/output/math_1", options.mpi_process, "m");
   input += "<< " + filename + ";";
   
   send_to_math(input);
