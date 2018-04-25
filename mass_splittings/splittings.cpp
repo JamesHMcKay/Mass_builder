@@ -190,10 +190,6 @@ void uncertainties(Data data)
 }
 
 
-
-
-
-
 int main(int argc, char *argv[])
 {
   User_input user(argc,argv);
@@ -204,12 +200,17 @@ int main(int argc, char *argv[])
   
   Data data(options);
   
-  
+  // produce values for the uncertainties table
+  // wino model
   //j = 1; uncertainties<EW_triplet_spectrum>(data);
+  // MDM model
+  //j = 2; uncertainties<MDM_spectrum>(data);
   
-  //j = 2;uncertainties<MDM_spectrum>(data);
   
-  Figures<EW_triplet_spectrum> fig;
+  
+  
+  // Figures for first paper
+  //Figures<EW_triplet_spectrum> fig;
   //Figures<MDM_spectrum> fig;
   
   //fig.plot_M(data);
@@ -229,16 +230,21 @@ int main(int argc, char *argv[])
   
   //fig.plot_uncertainties(data);
   
-	//fig.test(data);
-	
+  
+  
+	// Figures for second paper
+	/*
 	Figures_2<EW_triplet_spectrum> fig_2;
-	//Figures_2<MDM_spectrum> fig_2;
+	fig_2.two_loop_plots(data, "MSSM");
+	fig_2.two_loop_plots_uncertainties(data, "MSSM");
+	*/
 	
-	//fig_2.test_MDM(data);
-	
-	fig_2.two_loop_plots(data, "MSSM_partial");
-	
-	//fig_2.two_loop_plots_uncertainties(data, "MSSM");
+
+	/*
+	Figures_2<MDM_spectrum> fig_2;	
+	fig_2.two_loop_plots(data, "MDM");
+	fig_2.two_loop_plots_uncertainties(data, "MDM");
+	*/
 	
   return 0;
 }
