@@ -124,7 +124,7 @@ set(SRC_itMSSM examples/itMSSM.cpp)
 set(SRC_VDM examples/VDM.cpp)
 set(SRC_QED examples/QED.cpp)
 set(SRC_QED2 examples/QED2.cpp)
-set(SRC_MDM examples/MDM.cpp)
+set(SRC_MDM examples/MSSM.cpp)
 
 
 # include generated source files
@@ -162,7 +162,7 @@ add_executable(QED EXCLUDE_FROM_ALL ${SRC_QED} ${SRC_FILES_GEN} ${HEADER_FILES_G
 
 add_executable(QED2 EXCLUDE_FROM_ALL ${SRC_QED2} ${SRC_FILES_GEN} ${HEADER_FILES_GEN} ${TSIL_HEADER_FILE} ${SRC_FILES} ${HEADER_FILES} ${GENERATED_SRC_FILES})
 
-add_executable(MDM EXCLUDE_FROM_ALL ${SRC_MDM} ${SRC_FILES_GEN} ${HEADER_FILES_GEN} ${TSIL_HEADER_FILE} ${SRC_FILES} ${HEADER_FILES} ${GENERATED_SRC_FILES})
+add_executable(MSSM EXCLUDE_FROM_ALL ${SRC_MDM} ${SRC_FILES_GEN} ${HEADER_FILES_GEN} ${TSIL_HEADER_FILE} ${SRC_FILES} ${HEADER_FILES} ${GENERATED_SRC_FILES})
 
 
 # Mass Builder required the WSTP and MPI libraries
@@ -173,7 +173,7 @@ Mathematica_ABSOLUTIZE_LIBRARY_DEPENDENCIES(mass_builder)
 
 # Examples only require the TSIL libraries
 
-TARGET_LINK_LIBRARIES(MDM libtsil.a)
+TARGET_LINK_LIBRARIES(MSSM libtsil.a)
 
 TARGET_LINK_LIBRARIES(VDM libtsil.a)
 

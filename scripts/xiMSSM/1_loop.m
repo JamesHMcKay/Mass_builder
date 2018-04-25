@@ -18,8 +18,8 @@ SetOptions[DiracSlash, Dimension -> D,
 
 path = "/Users/jamesmckay/Documents/Programs/Mass_builder/";
 kappa = 1/(16 \[Pi]^2);
-sw=Sin[\[Theta]];
-cw=Cos[\[Theta]];
+(*sw=Sin[\[Theta]];
+cw=Cos[\[Theta]];*)
 (*F11*)
 
 F11SE = 0;
@@ -84,8 +84,8 @@ Clear[d1Z,d2Z,d1m,d2m]
 
 path = "/Users/jamesmckay/Documents/Programs/Mass_builder/";
 kappa = 1/(16 \[Pi]^2);
-sw=Sin[\[Theta]];
-cw=Cos[\[Theta]];
+(*sw=Sin[\[Theta]];
+cw=Cos[\[Theta]];*)
 (*F11*)
 
 F11SE = 0;
@@ -206,3 +206,6 @@ FullSimplify[F12SE1-F12SE2]
 
 
 
+
+
+FullSimplify[F12SE1-F11SE1/.Xi->1]

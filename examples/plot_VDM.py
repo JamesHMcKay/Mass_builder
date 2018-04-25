@@ -103,8 +103,8 @@ plt.plot(x,y1,'-',color='black',linewidth=1.3)
 
 plt.xscale('log')
 
-xlabel(r"$\hat{M}_V$ (GeV)",fontsize=18)
-ylabel(r"$\Delta M=M_V^+-M_V^0$ (MeV)",fontsize=18)
+xlabel(r"$\hat{M}_V$ $(\mathrm{GeV})$",fontsize=18)
+ylabel(r"$\Delta M$ $(\mathrm{MeV})$",fontsize=18)
 
 #plt.ylim([-250,-100])
 plt.ylim([100,250])
@@ -133,8 +133,8 @@ plt.savefig("mass_splittings.pdf")
 figData = pylab.figure()
 ax = pylab.gca()
 
-plt.plot(x,y1,'-',color='red',label="$Q=2 M_Z$") #
-plt.plot(x,y2,'-',color='black',label="$Q=M_Z/2$")
+plt.plot(x,y1,'-',color='red',label="$Q=2 m_Z$") #
+plt.plot(x,y2,'-',color='black',label="$Q=m_Z/2$")
 plt.plot(x,y3,'-',color='yellow',label="$Q=\hat{M}_V/2$")#
 plt.plot(x,y4,'-',color='blue',label="$Q= \hat{M}_V$")
 plt.plot(x,y5,'-',color='#ff7f00',label="$Q=2 \hat{M}_V$")
