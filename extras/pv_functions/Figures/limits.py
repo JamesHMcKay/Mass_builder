@@ -32,14 +32,14 @@ plt.plot(x,y2,'--',color='blue',label='$r=0.9999$',linewidth=1.5) #
 plt.plot(x,y3,'-.',color='blue',label='$r=0.99$',linewidth=1.5) #
 
 
-xlabel(r"$\hat{M}$ $(\mathrm{GeV})$ ",fontsize=16)
-ylabel(r"$\frac{\hat{M}}{\pi}[B_0(r\hat{M},\hat{M},m_1)-B_0(r\hat{M},\hat{M},m_2)]$ $(\mathrm{GeV})$ ",fontsize=16)
+xlabel(r"$\hat{M}$ $(\mathrm{GeV})$ ",fontsize=20)
+ylabel(r"$\frac{\hat{M}}{\pi}[B_0(r\hat{M},\hat{M},m_1)-B_0(r\hat{M},\hat{M},m_2)]$ $(\mathrm{GeV})$ ",fontsize=20)
 
-plt.tick_params(labelsize=14)
+plt.tick_params(labelsize=20)
 
 plt.xscale('log')
 plt.legend(loc=2,fancybox=True, framealpha=0.5)
 plt.ylim([-10,120])
 plt.xlim([min(x),max(x)])
 
-plt.savefig("../Figures/Figures/limits_2.pdf")
+plt.savefig("../Figures/Figures/limits_2.pdf",bbox_inches='tight')

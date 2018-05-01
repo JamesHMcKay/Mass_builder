@@ -206,7 +206,8 @@ int main(int argc, char *argv[])
   // MDM model
   //j = 2; uncertainties<MDM_spectrum>(data);
   
-  
+  j = 2;
+  get_deltam<MDM_spectrum>(data,  "mh"     ,  data.mh     , 1.6L				 );
   
   
   // Figures for first paper

@@ -4,7 +4,7 @@ MChi  	9600										# multiplet MS-bar mass at Q
 ma 			1e-5                    # ficticous mass for photon
 mw	  	80.385                  # MW pole mass
 mz 			91.18760000             # MZ pole mass
-mt 			1.732000000e+02         # top pole mass 1.733400000e+02
+mt 			1.7334000000e+02         # top pole mass 1.733400000e+02
 mh 			125.5									  # Higgs pole mass
 mf 			1e-20                   # ficticous mass for neutrinos
 alpha 	0.007815919464765834    # alpha_EM(MZ)
@@ -17,4 +17,4 @@ mb 			4.200000000e+00         # mb(mb) SM MSbar
 mm 			1.056583570e-01         # mmuon(pole)
 ml 			1.777000000e+00         # mtau(pole)
 me 			5.109989020e-04         # melectron(pole)
-alphaS  1.184000000e-01         # alpha_s(MZ) SM MSbar
+alphaS  1.181000000e-01         # alpha_s(MZ) SM MSbar

@@ -575,6 +575,11 @@ bool Compute_amp::calc_diagram()
   if (seperate_amp)
   {
 		
+		summation_out << "  if (real(C10)!=0 && abs(log10(abs(real(C10))) - log10(abs(real(ma*ma*result1)))) > 12.0)\n"
+		<< "  {\n"
+		<< "    exclude_photon_pole = true;\n"
+		<< "  }\n";
+		
 		summation_out << "  if (exclude_photon_pole)\n"
 		<< "  {\n"
 		<< "    return result2;\n"
