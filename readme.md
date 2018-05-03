@@ -16,6 +16,9 @@ I also make use of FindMathematica.cmake (Sascha Kratky 2010-2016 ) for locating
 
 Documentation
 --
+Please see Mass_builder.pdf for the most up to date and detailed installation instructions and user guide.
+
+
 This is an interface tool making use of the existing Mathematica and C packages to compute a numerical self energy.  The process is separated into three main steps, although many other features are available.  1) Amplitude calculation — this is where we run FeynCalc and and decompose the amplitude into a list of basis integrals and corresponding coefficients. 2) Code Generation — in this step we used the stored output from step one to generate C++ code which can interface to the TSIL libraries.  3) Code evaluation — this is the numerical evaluation of the self energy using the TSIL libraries.
 
 
@@ -24,10 +27,12 @@ Installation
 
 This program requires Mathematica, FeynCalc, FeynArts (patched for use with FeynCalc) and TARCER to be installed.
 
-The easiest way to install FeynCalc, FeynArts and Tarcer is via the automated installation method.  Open a Mathematica notebook or kernel session and enter
+The easiest way to install FeynCalc, FeynArts, FeynHelpers and Tarcer is via the automated installation method.  Open a Mathematica notebook or kernel session and enter
 ```
 Import["https://raw.githubusercontent.com/FeynCalc/feyncalc/master/install.m"]
 InstallFeynCalc[]
+Import["https://raw.githubusercontent.com/FeynCalc/feynhelpers/master/install.m"]
+InstallFeynHelpers[]
 ```
 when requested to install the latest version of FeynArts say yes, as this will automatically patch the FeynArts installation.  If you do not follow this method then it is not possible to run FeynArts and FeynCalc in the same session (as we need to do) as many function names are identical between the packages, so to avoid name shadowing follow the recommend method.
 
@@ -49,6 +54,8 @@ cmake -DTSIL_PATH=/path/to/tsil-1.4/ ..
 make -jn
 ```
 where you must specify the location of the TSIL directory as a flag to the cmake call , and n corresponds to the number of processes you have available.
+
+See Mass_builder.pdf for more details on installation of the FlexibleSUSY models and interface.
 
 Quick start guide — basic example
 --
