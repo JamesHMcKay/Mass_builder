@@ -206,13 +206,9 @@ int main(int argc, char *argv[])
   // MDM model
   //j = 2; uncertainties<MDM_spectrum>(data);
   
-  j = 2;
-  get_deltam<MDM_spectrum>(data,  "mh"     ,  data.mh     , 1.6L				 );
-  
   
   // Figures for first paper
   //Figures<EW_triplet_spectrum> fig;
-  //Figures<MDM_spectrum> fig;
   
   //fig.plot_M(data);
   
@@ -234,6 +230,7 @@ int main(int argc, char *argv[])
   
   
 	// Figures for second paper
+	
 	/*
 	Figures_2<EW_triplet_spectrum> fig_2;
 	fig_2.two_loop_plots(data, "MSSM");

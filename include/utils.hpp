@@ -101,7 +101,7 @@ namespace utils
   
   void print_math_body_2(std::string &input,Options options,std::vector<std::string> masses);
   
-  void print_tarcer_recurse(std::string &input);
+  void print_tarcer_recurse(std::string &input,Options options);
   
   void remove_fake_IR_divergence(std::string &input, std::vector<std::string> masses);
   

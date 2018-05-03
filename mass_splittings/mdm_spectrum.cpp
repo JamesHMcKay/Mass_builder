@@ -204,12 +204,13 @@ namespace extra_TSIL_interface_MDM
 	  TSIL_COMPLEXCPP result =  + C20  + AcMB * C2AC + BccMB * C2BCC;
 	  
 	  // use this if using full quintuplet model
-	  
+	  /*
 	  TSIL_COMPLEXCPP C20_2 = (16*Power(g2,2)*(6*Power(MChi,2) - Power(p,2))*Power(STW,2))/9.;
 		TSIL_COMPLEXCPP C2AC_2 =   Complex(0,10.666666666666666)*Power(g2,2)*Power(STW,2) ;
 		TSIL_COMPLEXCPP C2BCC_2 =   Complex(0,-5.333333333333333)*Power(g2,2)*Power(STW,2)*(2*Power(MChi,2) + Power(p,2)) ;
 		TSIL_COMPLEXCPP result2 =  + C20_2  + AcMB * C2AC_2 + BccMB * C2BCC_2;
-
+		*/
+		
     return -(result/*result2*/)/(16.0L*TSIL_POW(PI,2));
   }
   

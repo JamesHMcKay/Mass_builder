@@ -118,7 +118,7 @@ bool Compute_amp::calc_diagram()
     send_to_math(input);
     
     // send command to apply TARCER recurse function
-    utils::print_tarcer_recurse(input);
+    utils::print_tarcer_recurse(input,options);
     send_to_math(input);
     
     // expand basis integrals into finite plus divergent pieces (using MassBuilder. package)

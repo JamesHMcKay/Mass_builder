@@ -1,4 +1,4 @@
-MChi c
+MChi C
 ma a
 mw w
 mz z
@@ -9,3 +9,11 @@ mt t
 mw*Xi wx
 mz*Xi zx
 ma*Xi ax
+mu u
+md d
+ms s
+mb b
+mm m
+ml l
+me y
+mc c

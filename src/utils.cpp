@@ -582,14 +582,20 @@ namespace utils
     
     input+="amp0 = FCFAConvert[";
     input+="CreateFeynAmp[subdiags0,Truncated -> " + truncated;
-    //input+=", GaugeRules -> {}";
+    
+    if (options.general_gauge)
+    {
+			input+=", GaugeRules -> {}";
+		}
     input+="], ";
     input+="IncomingMomenta -> {p}, OutgoingMomenta -> {p}, LoopMomenta -> {k1, k2} ,";
     input+="UndoChiralSplittings -> True,TransversePolarizationVectors -> {p}, ";
     input+="DropSumOver -> False, List -> False,ChangeDimension -> D] // Contract // FCTraceFactor;";
     input+="amp0 = amp0 /.SumOver[SUNFIndex[x_], 3]->3;";
-    //input+="amp0 = amp0 /. GaugeXi[Z] -> Xi^2 /. GaugeXi[A] -> Xi^2 /. GaugeXi[W] -> Xi^2 /. GaugeXi[P] -> Xi^2 /. GaugeXi[Wp] -> Xi^2; ";
-    
+    if (options.general_gauge)
+    {
+			input+="amp0 = amp0 /. GaugeXi[Z] -> Xi^2 /. GaugeXi[A] -> Xi^2 /. GaugeXi[W] -> Xi^2 /. GaugeXi[P] -> Xi^2 /. GaugeXi[Wp] -> Xi^2; ";
+    }
     
     // correct for additional factors of Pi introduced by FeynArts
     
@@ -747,7 +753,7 @@ namespace utils
 
   }
   
-  void print_tarcer_recurse(std::string &input)
+  void print_tarcer_recurse(std::string &input,Options options)
   {
     input+="SE = TarcerRecurse[tfiamp0];";
     input+="SEk = (1/(4 Pair[Momentum[p, D],Momentum[p, D]])) DiracTrace[ DiracGamma[Momentum[p, D], D].SE ];";
@@ -756,7 +762,10 @@ namespace utils
     input+="SE = SE /. Pair[Momentum[Polarization[p, -I, Transversality -> True], D], Momentum[Polarization[p, I, Transversality -> True], D]] -> -1 ;";
     input+="SE = SE /. Sqrt[Xi^2]->Xi;"; // avoid doing a simplify (with specified Xi > 0) just to change this
     // uncomment the following line if using a different gauge choice
-    //input+="SEn = SEn /. GaugeXi[Z] -> 0 /. GaugeXi[P] -> 0 /. GaugeXi[Wp] -> 0  /. GaugeXi[S[1]] -> 0 /. GaugeXi[S[2]] -> 0 /. GaugeXi[S[3]] -> 0 ;\n";
+    if (options.general_gauge)
+    {
+			input+="SEn = SEn /. GaugeXi[Z] -> 0 /. GaugeXi[P] -> 0 /. GaugeXi[Wp] -> 0  /. GaugeXi[S[1]] -> 0 /. GaugeXi[S[2]] -> 0 /. GaugeXi[S[3]] -> 0 ;\n";
+		}
   }
   
   

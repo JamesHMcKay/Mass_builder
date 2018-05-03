@@ -10,4 +10,4 @@ mh 125.5
 MassBuilderJEpsilon 0.0
 mf 0.01
 alpha 0.00781592
-Xi 3
+Xi 1

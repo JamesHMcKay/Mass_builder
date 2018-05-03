@@ -169,6 +169,8 @@ void User_input::user_interface()
   
   if (find_string("expole")){ options.exclude_photon_pole = false;}
   
+  if (find_string("gauge")){ options.general_gauge = true; options.fire = false;}
+  
   if (find_string("-t")){ options.fire = false;}
   
   if (options.particle_1!=options.particle_2)

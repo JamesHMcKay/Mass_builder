@@ -155,10 +155,7 @@ void plot_M(Data data)
   //cout<< "\r" << "computing mass splittings . . . " << status << "% complete ";
   //cout << "\n";
   
-  cout << "example mass splitting routine complete" << endl;
-  cout << "now run: "<< endl;
-  cout << "          python examples/plot_MSSM.py "<< endl;
-  cout << "to make plot in this directory "<< endl;
+
   
   myfile.close();
 }
@@ -169,7 +166,7 @@ void plot_M(Data data)
 void plot_limits(Data data)
 {
   ofstream myfile;
-  myfile.open ("limits.txt");
+  myfile.open ("examples/limits.txt");
   using namespace extra_TSIL_interface;
   long double Q=163,q,q1,q2,q3,q4,q5;
   double mw = data.mw;
@@ -190,17 +187,6 @@ void plot_limits(Data data)
   {
     n=(float(i)/float(100))*8;  //(float(i)/100)*2000+1;
     M=pow(10,n);
-    /*
-    q1=real(M*(B0(M,M,ma)-B0(M,M,mb))/(3.14159L));
-    q=0.9999;
-    q2=real(M*(B0(M*q,M,ma)-B0(M*q,M,mb))/(3.14159L));
-    q=0.99;
-    q3=real(M*(B0(M*q,M,ma)-B0(M*q,M,mb))/(3.14159L));
-    q=1.001;
-    q4=real(M*(B0(M*q,M,ma)-B0(M*q,M,mb))/(3.14159L));
-    q=1.0001;
-    q5=real(M*(B0(M*q,M,ma)-B0(M*q,M,mb))/(3.14159L));
-    */
     
     q1=c*real(M*(sw2*B0(M,M,0,Q)+cw2*B0(M,M,mz,Q)-B0(M,M,mw,Q))/(3.14159L));
     q=0.9999;
@@ -235,6 +221,13 @@ int main(int argc, char *argv[])
   
   plot_M(data);
   plot_limits(data);
+  
+  cout << "example mass splitting routine complete" << endl;
+  cout << "now run: "<< endl;
+  cout << "          python examples/plot_MSSM.py "<< endl;
+  cout << "          python examples/plot_limits.py "<< endl;
+  cout << "to make plot in this directory "<< endl;
+  
   
   return 0;
 }

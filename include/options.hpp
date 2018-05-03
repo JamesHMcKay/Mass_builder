@@ -38,6 +38,9 @@ public:
 	string restrictions = "";
 	string epsilon_order = "0";
 	
+	// compute amplitudes in a general gauge
+	bool general_gauge = false;
+	
 	bool onshell = true;
 	
 	bool fermion = false;
