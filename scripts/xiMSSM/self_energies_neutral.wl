@@ -115,6 +115,12 @@ SelfEnergyFinite = makeFiniteAmplitude[SelfEnergyFinite,0, D];
 
 
 
+FullSimplify[SelfEnergyFinite/.Pair[Momentum[p], Momentum[p]]->MChi^2/.p->MChi]
+
+
+
+
+
  << /Users/jamesmckay/Documents/Programs/Mass_builder/output/math_1_0.m; 
  
 << /Users/jamesmckay/Documents/Programs/Mass_builder/output/math_2_0.m; 

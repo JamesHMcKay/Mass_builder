@@ -33,7 +33,7 @@ plt.plot(x,y3,'-.',color='blue',label='$r=0.99$',linewidth=1.5) #
 
 
 xlabel(r"$\hat{M}$ $(\mathrm{GeV})$ ",fontsize=20)
-ylabel(r"$\frac{\hat{M}}{\pi}[B_0(r\hat{M},\hat{M},m_1)-B_0(r\hat{M},\hat{M},m_2)]$ $(\mathrm{GeV})$ ",fontsize=20)
+ylabel(r"$\frac{\hat{M}}{\pi}[B(r\hat{M},\hat{M},m_1)-B(r\hat{M},\hat{M},m_2)]$ $(\mathrm{GeV})$ ",fontsize=20)
 
 plt.tick_params(labelsize=20)
 
